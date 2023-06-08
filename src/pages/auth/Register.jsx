@@ -66,13 +66,13 @@ function Register() {
   
   const handleRegister = (user) => {
     console.log(user)
-    // try{
-    //   user = {user}
-    //   localStorage.setItem('user', user);
-    //   <Navigate to="dashboard" replace />
-    // }catch(error){
-    //   user = error
-    // }
+    try{
+      user = {user}
+      localStorage.setItem('user', user);
+      <Navigate to="dashboard" replace />
+    }catch(error){
+      user = error
+    }
   }
 
   return (

@@ -13,7 +13,7 @@ function DashboardNavbar() {
     <Disclosure as="nav" className="bg-gray-800">
     {({ open }) => (
       <>
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-full px-2 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
               {/* Mobile menu button*/}
@@ -41,7 +41,7 @@ function DashboardNavbar() {
               </div>
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4">
-                  {navigation.map((item) => (
+                  {/* {navigation.map((item) => (
                     <a
                       key={item.name}
                       href={item.href}
@@ -53,7 +53,7 @@ function DashboardNavbar() {
                     >
                       {item.name}
                     </a>
-                  ))}
+                  ))} */}
                 </div>
               </div>
             </div>
@@ -127,7 +127,7 @@ function DashboardNavbar() {
 
         <Disclosure.Panel className="sm:hidden">
           <div className="space-y-1 px-2 pb-3 pt-2">
-            {navigation.map((item) => (
+            {/* {navigation.map((item) => (
               <Disclosure.Button
                 key={item.name}
                 as="a"
@@ -140,7 +140,7 @@ function DashboardNavbar() {
               >
                 {item.name}
               </Disclosure.Button>
-            ))}
+            ))} */}
           </div>
         </Disclosure.Panel>
       </>
