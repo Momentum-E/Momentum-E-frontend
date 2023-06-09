@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base{
+    html{
+
+    }
+    .link {
+        @apply p-2 flex rounded-md font-normal gap-6 items-center md:cursor-pointer cursor-default duration-200;
+    }
+    .active {
+        @apply bg-blue-200 text-black font-medium;
+    }
+}

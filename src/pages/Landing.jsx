@@ -49,7 +49,7 @@ function Landing() {
                     >  
                       <button className='font-bold p-3 rounded-md flex hover:text-white hover:bg-gray-800'>
                         Learn More 
-                        <span className=' mt-0.5 w-5 ml-1 mt-1 group-hover:translate-x-1 transition ease-in-out flex items-center justify-center'>
+                        <span className=' mt-0.5 w-5 ml-1 group-hover:translate-x-1 transition ease-in-out flex items-center justify-center'>
                           <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                             <path fillRule="evenodd" d="M3.75 12a.75.75 0 01.75-.75h13.19l-5.47-5.47a.75.75 0 011.06-1.06l6.75 6.75a.75.75 0 010 1.06l-6.75 6.75a.75.75 0 11-1.06-1.06l5.47-5.47H4.5a.75.75 0 01-.75-.75z" clipRule="evenodd" />
                           </svg>
@@ -77,7 +77,7 @@ function Landing() {
                     >  
                       <button className='font-bold p-3 rounded-md flex hover:text-white hover:bg-gray-800'>
                         Learn More 
-                        <span className=' mt-0.5 w-5 ml-1 mt-1 group-hover:translate-x-1 transition ease-in-out flex items-center justify-center'>
+                        <span className=' mt-0.5 w-5 ml-1 group-hover:translate-x-1 transition ease-in-out flex items-center justify-center'>
                           <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                             <path fillRule="evenodd" d="M3.75 12a.75.75 0 01.75-.75h13.19l-5.47-5.47a.75.75 0 011.06-1.06l6.75 6.75a.75.75 0 010 1.06l-6.75 6.75a.75.75 0 11-1.06-1.06l5.47-5.47H4.5a.75.75 0 01-.75-.75z" clipRule="evenodd" />
                           </svg>
@@ -105,7 +105,7 @@ function Landing() {
                     >  
                       <button className='font-bold p-3 rounded-md flex hover:text-white hover:bg-gray-800'>
                         Learn More 
-                        <span className=' mt-0.5 w-5 ml-1 mt-1 group-hover:translate-x-1 transition ease-in-out flex items-center justify-center'>
+                        <span className=' mt-0.5 w-5 ml-1 group-hover:translate-x-1 transition ease-in-out flex items-center justify-center'>
                           <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                             <path fillRule="evenodd" d="M3.75 12a.75.75 0 01.75-.75h13.19l-5.47-5.47a.75.75 0 011.06-1.06l6.75 6.75a.75.75 0 010 1.06l-6.75 6.75a.75.75 0 11-1.06-1.06l5.47-5.47H4.5a.75.75 0 01-.75-.75z" clipRule="evenodd" />
                           </svg>
@@ -348,11 +348,11 @@ function Landing() {
         </section> */}
 
         <section className="pb-20 relative block bg-blueGray-800">
-          <div
+          {/* <div
             className="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20 h-20"
             style={{ transform: "translateZ(0)" }}
           >
-            {/* <svg
+            <svg
               className="absolute bottom-0 overflow-hidden"
               xmlns="http://www.w3.org/2000/svg"
               preserveAspectRatio="none"
@@ -365,8 +365,8 @@ function Landing() {
                 className="text-blueGray-800 fill-current"
                 points="2560 0 2560 100 0 100"
               ></polygon>
-            </svg> */}
-          </div>
+            </svg>
+          </div> */}
 
           <div className="container mx-auto px-4 lg:pt-24 lg:pb-64">
             <div className="flex flex-wrap text-center justify-center">
