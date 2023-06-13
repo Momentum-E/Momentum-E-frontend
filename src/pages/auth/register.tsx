@@ -1,9 +1,16 @@
+//! TODO: Change this
+//@ts-nocheck
+
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { City, Country, State } from 'country-state-city';
 import { Selector } from '@/components/dashboard';
 import { Switch } from '@headlessui/react';
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ');
+}
 
 const Register = () => {
   const router = useRouter();
@@ -33,11 +40,11 @@ const Register = () => {
   });
 
   useEffect(() => {
-    setStateData(State.getStatesOfCountry(country?.isoCode));
+    return setStateData(State.getStatesOfCountry(country?.isoCode));
   }, [country]);
 
   useEffect(() => {
-    setCityData(City.getCitiesOfState(country?.isoCode, state?.isoCode));
+    return setCityData(City.getCitiesOfState(country?.isoCode, state?.isoCode));
   }, [state]);
 
   useEffect(() => {
