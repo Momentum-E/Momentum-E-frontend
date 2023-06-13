@@ -1,18 +1,25 @@
 import React from 'react';
-import curvedLandingBackground from '../assets/images/curved14.jpg';
 import Link from 'next/link';
-import whitecurvedBackground from '../assets/images/white-curved.jpeg';
 import Image from 'next/image';
+import {
+  Car,
+  CarBattery,
+  Fingerprint,
+  Friends,
+  Html,
+  LightBulb,
+  Medal,
+  PaperPlane,
+  Poll,
+  Rocket,
+  Truck,
+} from '@/utils/icons';
 
 function Landing() {
   return (
     <main>
       <div className="relative -z-2 pt-32 pb-32 flex content-center items-center justify-center min-h-screen-75">
-        <div
-          className="absolute w-full h-full bg-center bg-cover"
-          style={{
-            backgroundImage: `url(${curvedLandingBackground})`,
-          }}></div>
+        <div className="absolute w-full h-full bg-center bg-cover bg-[url('../assets/images/curved14.jpg')]"></div>
         <div className="container relative mx-auto">
           <div className="items-center flex flex-wrap">
             <div className="w-full h-full lg:w-2/3 px-4 ml-auto mr-auto text-center">
@@ -33,7 +40,9 @@ function Landing() {
               <div className="relative group flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                 <div className="px-4 py-5 group flex-auto">
                   <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-indigo-900">
-                    <i className="fa-solid fa-car "></i>
+                    <figure className="text-xl">
+                      <Car />
+                    </figure>
                   </div>
                   <h6 className="text-xl font-semibold">Individual Owner</h6>
                   <p className="mt-2 mb-4 text-blueGray-500">
@@ -68,7 +77,9 @@ function Landing() {
               <div className="relative group flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                 <div className="px-4 py-5 flex-auto">
                   <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-indigo-900">
-                    <i className="fa-solid fa-truck-pickup"></i>
+                    <figure className="text-xl">
+                      <Truck />
+                    </figure>
                   </div>
                   <h6 className="text-xl font-semibold">Fleet Owner</h6>
                   <p className="mt-2 mb-4 text-blueGray-500">
@@ -103,7 +114,9 @@ function Landing() {
               <div className="relative group flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                 <div className="px-4 py-5 flex-auto">
                   <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-indigo-900">
-                    <i className="fa-solid fa-car-battery"></i>
+                    <figure>
+                      <CarBattery />
+                    </figure>
                   </div>
                   <h6 className="text-xl font-semibold">
                     Battery Rocomposition
@@ -140,7 +153,9 @@ function Landing() {
           <div className="flex flex-wrap items-center mt-32">
             <div className="w-full md:w-5/12 px-4 mr-auto ml-auto">
               <div className="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-white">
-                <i className="fas fa-user-friends text-xl"></i>
+                <figure className="text-2xl">
+                  <Friends />
+                </figure>
               </div>
               <h3 className="text-3xl mb-2 font-semibold leading-normal">
                 Working with us is a pleasure
@@ -219,7 +234,9 @@ function Landing() {
             <div className="w-full md:w-5/12 ml-auto mr-auto px-4">
               <div className="md:pr-12">
                 <div className="text-lightBlue-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-lightBlue-300">
-                  <i className="fas fa-rocket text-xl"></i>
+                  <figure className="text-2xl">
+                    <Rocket />
+                  </figure>
                 </div>
                 <h3 className="text-3xl font-semibold">A growing company</h3>
                 <p className="mt-4 text-lg leading-relaxed text-blueGray-500">
@@ -232,7 +249,9 @@ function Landing() {
                     <div className="flex items-center">
                       <div>
                         <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 mr-3">
-                          <i className="fas fa-fingerprint"></i>
+                          <figure className="text-xl">
+                            <Fingerprint />
+                          </figure>
                         </span>
                       </div>
                       <div>
@@ -246,7 +265,9 @@ function Landing() {
                     <div className="flex items-center">
                       <div>
                         <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 mr-3">
-                          <i className="fab fa-html5"></i>
+                          <figure className="text-xl">
+                            <Html />
+                          </figure>
                         </span>
                       </div>
                       <div>
@@ -260,7 +281,9 @@ function Landing() {
                     <div className="flex items-center">
                       <div>
                         <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 mr-3">
-                          <i className="far fa-paper-plane"></i>
+                          <figure className="text-xl">
+                            <PaperPlane />
+                          </figure>
                         </span>
                       </div>
                       <div>
@@ -277,13 +300,11 @@ function Landing() {
         </div>
       </section>
 
-      <section className="pb-20 relative block bg-blueGray-800">
+      <section className="pb-20 relative block">
         <div className="container mx-auto px-4 lg:pt-24 lg:pb-64">
           <div className="flex flex-wrap text-center justify-center">
             <div className="w-full lg:w-6/12 px-4">
-              <h2 className="text-4xl font-semibold text-white">
-                Build something
-              </h2>
+              <h2 className="text-4xl font-semibold ">Build something</h2>
               <p className="text-lg leading-relaxed mt-4 mb-4 text-blueGray-400">
                 Put the potentially record low maximum sea ice extent tihs year
                 down to low ice. According to the National Oceanic and
@@ -294,7 +315,9 @@ function Landing() {
           <div className="flex flex-wrap mt-12 justify-center">
             <div className="w-full lg:w-3/12 px-4 text-center">
               <div className="text-blueGray-800 p-3 w-12 h-12 shadow-lg rounded-full bg-white inline-flex items-center justify-center">
-                <i className="fas fa-medal text-xl"></i>
+                <figure className="text-xl">
+                  <Medal />
+                </figure>
               </div>
               <h6 className="text-xl mt-5 font-semibold text-white">
                 Excelent Services
@@ -306,7 +329,9 @@ function Landing() {
             </div>
             <div className="w-full lg:w-3/12 px-4 text-center">
               <div className="text-blueGray-800 p-3 w-12 h-12 shadow-lg rounded-full bg-white inline-flex items-center justify-center">
-                <i className="fas fa-poll text-xl"></i>
+                <figure>
+                  <Poll />
+                </figure>
               </div>
               <h5 className="text-xl mt-5 font-semibold text-white">
                 Grow your market
@@ -318,7 +343,9 @@ function Landing() {
             </div>
             <div className="w-full lg:w-3/12 px-4 text-center">
               <div className="text-blueGray-800 p-3 w-12 h-12 shadow-lg rounded-full bg-white inline-flex items-center justify-center">
-                <i className="fas fa-lightbulb text-xl"></i>
+                <figure>
+                  <LightBulb />
+                </figure>
               </div>
               <h5 className="text-xl mt-5 font-semibold text-white">
                 Launch time
