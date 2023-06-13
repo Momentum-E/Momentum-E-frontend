@@ -1,7 +1,8 @@
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import logo from '../assets/logos/logo_white_nocap.png';
+import logo from '../../assets/logos/logo_white_nocap.png';
 import Link from 'next/link';
+import Image from 'next/image';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -28,16 +29,20 @@ const Navbar = () => {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   {/* expanded image */}
-                  <img
+                  <Image
                     className="block h-8 w-auto lg:hidden"
-                    src="../assets/logos/logo_white_nocap.png"
+                    src={logo}
                     alt="Momentum-E"
+                    height={100}
+                    width={100}
                   />
                   {/* reduced image */}
-                  <img
+                  <Image
                     className="hidden h-8 w-auto lg:block"
-                    src="../assets/logos/logo_white_nocap.png"
+                    src={logo}
                     alt="Momentum-e"
+                    height={100}
+                    width={100}
                   />
                 </div>
                 <div className="hidden lg:mx-auto sm:ml-6 sm:block">
