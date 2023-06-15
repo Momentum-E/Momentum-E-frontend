@@ -18,7 +18,7 @@ const Login = () => {
   };
 
   return (
-    <div className="block">
+    <div>
       <form onSubmit={onSubmit}>
         <label htmlFor="email" className="block">
           Email
