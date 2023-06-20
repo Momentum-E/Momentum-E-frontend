@@ -2,12 +2,14 @@
 import React, { useState, useContext } from 'react';
 import { AccountContext } from './account';
 import Link from 'next/link';
+import toast, { Toaster } from 'react-hot-toast';
 
 const SignIn = () => {
   const [input, setInput] = useState({
     email: '',
     password: '',
   });
+  const [errorData, setErrorData] = useState<>()
 
   const onInputChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -16,6 +18,24 @@ const SignIn = () => {
       [name]: value,
     }));
   };
+
+  const handleAWSError = (err) => {
+    if (err.code === 'NotAuthorizedException'){
+      const errorMessage = err.message || 'An unknown error occurred.';
+      setErrorData(errorMessage);
+      
+      //AWS error message with a toast message 
+      toast.error(errorMessage)
+    }
+    // if (err.code === 'UsernameExistsException'){
+    //   const errorMessage = err.message || 'User already present.';
+    //   setErrorData(errorMessage);
+    //   toast.success(errorMessage)
+    // }
+    else{
+      console.error(err);
+    }
+  }
 
   const { authenticate } = useContext(AccountContext);
 
@@ -26,11 +46,15 @@ const SignIn = () => {
       .then((data: any) => {
         console.log('Logged In!', data);
       })
-      .catch((err: any) => console.error('error', err));
+      .catch((err: any) => {
+        console.error('error', err)
+        handleAWSError(err)
+      });
   };
 
   return (
     <main>
+      <div><Toaster/></div> 
       <section className="relative w-full h-full py-36 min-h-screen">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -64,7 +88,7 @@ const SignIn = () => {
                     type="email"
                     required={true}
                     autoComplete="email"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={input.email}
                     onChange={(e) => onInputChange(e)}
                   />
@@ -73,26 +97,26 @@ const SignIn = () => {
               <div>
                 <div className="flex items-center justify-between">
                   <label
-                    htmlFor="password"
+                    htmlFor={"password"}
                     className="block text-sm font-medium leading-6 text-gray-900">
                     Password<span className="text-red-500 pl-1">*</span>
                   </label>
                   <div className="text-sm">
-                    <a
-                      href="#"
+                    <Link
+                      href="/"
                       className="font-semibold text-indigo-600 hover:text-indigo-500">
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="mt-2">
                   <input
-                    id="password"
+                    id={"password"}
                     name="password"
                     type="password"
                     autoComplete="current-password"
                     required={true}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     value={input.password}
                     onChange={(e) => onInputChange(e)}
                   />
@@ -109,7 +133,7 @@ const SignIn = () => {
             <p className="mt-10 text-center text-sm text-gray-500">
               Not a member?{' '}
               <Link
-                href="/register"
+                href="/auth/register"
                 className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                 Register
               </Link>
