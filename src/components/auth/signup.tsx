@@ -88,7 +88,7 @@ const Signup = () => {
       } 
       else{
         console.log(data);
-        setErrorData(data?.user)
+        setErrorData(data)
       }
     });
   };
