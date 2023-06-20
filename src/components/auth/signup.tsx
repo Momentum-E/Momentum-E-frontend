@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 import { City, Country, State } from 'country-state-city';
 import { Selector } from '@/components/dashboard';
 import { Switch } from '@headlessui/react';
+import { CognitoUser } from 'amazon-cognito-identity-js';
+import toast, { Toaster } from 'react-hot-toast';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -22,6 +24,7 @@ const Signup = () => {
   const [country, setCountry] = useState();
   const [state, setState] = useState();
   const [city, setCity] = useState();
+  const [errorData, setErrorData] = useState<CognitoUser | undefined | any>()
  
   const [input, setInput] = useState({
     firstName: '',
@@ -55,19 +58,44 @@ const Signup = () => {
     }));
   };
 
+  const handleAWSError = (err) => {
+    if (err.code === 'InvalidPasswordException'){
+      const errorMessage = err.message || 'An unknown error occurred.';
+      setErrorData(errorMessage);
+      
+      //AWS error message with a toast message 
+      toast.error(errorMessage)
+    }
+    if (err.code === 'UsernameExistsException'){
+      const errorMessage = err.message || 'User already present.';
+      setErrorData(errorMessage);
+      
+      //AWS error message with a toast message 
+      toast.success(errorMessage)
+    }
+    else{
+      console.error(err);
+    }
+  }
+
   const onSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
     userPool.signUp(input.email, input.password, [], null, (err, data) => {
       if (err) {
-        console.log(err);
+        // console.log(err)
+        handleAWSError(err)
+      } 
+      else{
+        console.log(data);
+        setErrorData(data?.user)
       }
-      console.log(data);
     });
   };
 
   return (
     <div className="isolate px-6 py-24 sm:py-32 lg:px-8">
+        <div><Toaster/></div> 
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Sign Up
@@ -77,12 +105,13 @@ const Signup = () => {
             battery
           </p>
         </div>
-
-       <form
-        action="#"
-        method="POST"
-        onSubmit={(event) => onSubmit(event)}
-        className="mx-auto mt-16 max-w-xl sm:mt-20">
+       
+        <form
+          action="#"
+          method="POST"
+          onSubmit={(event) => onSubmit(event)}
+          className="mx-auto mt-16 max-w-xl sm:mt-20"
+        >
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <label
@@ -190,26 +219,44 @@ const Signup = () => {
             </div>
           </div>
 
-          {input.password != input.confirmPassword && (
-            <div className="w-full text-red-500 bg-red-200 opacity-100 flex items-center justify-center">
-              Passwords do not match
-            </div>
-          )}
+          <div className="sm:col-span-2 space-y-2">
 
-          <div className="sm:col-span-2 mt-2.5 space-y-8">
-            <div>
-              <label
-                htmlFor="country"
-                className="block text-sm font-semibold leading-6 text-gray-900">
-                Country<span className="text-red-500 pl-1">*</span>
-              </label>
-              <Selector
-                id={'country'}
-                data={countryData}
-                selected={country}
-                setSelected={setCountry}
-              />
+            {/* Matching Password Error */}
+            {input.password != input.confirmPassword && (
+              <div className="w-full text-sm font-semibold leading-6 text-red-500 bg-red-200 opacity-100 flex items-center justify-center">
+                Passwords do not match
+              </div>
+            )}
+
+            {/* AWS Cognito Password Authentication */}
+            <div className="w-full text-sm font-semibold leading-6 text-red-500 bg-red-200 opacity-100 flex items-center justify-center">
+              {errorData}
             </div>
+
+            <div className="text-xs font-semibold">
+              <ul>
+                <li>Password must be minimum of 8 characters.</li>
+                <li>Password must have uppercase characters</li>
+                <li>Password must have numbers.</li>
+                <li>Password must have symbol characters</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="sm:col-span-2 space-y-8">
+          <div>
+            <label
+              htmlFor="country"
+              className="block text-sm font-semibold leading-6 text-gray-900">
+              Country<span className="text-red-500 pl-1">*</span>
+            </label>
+            <Selector
+              id={'country'}
+              data={countryData}
+              selected={country}
+              setSelected={setCountry}
+            />
+          </div>
 
             <div>
               {state && (
@@ -251,6 +298,7 @@ const Signup = () => {
           <Switch.Group as="div" className="flex gap-x-4 sm:col-span-2">
             <div className="flex h-6 items-center">
               <Switch
+                
                 checked={agreed}
                 onChange={() => setAgreed(!agreed)}
                 className={classNames(
@@ -267,7 +315,7 @@ const Signup = () => {
                 />
               </Switch>
             </div>
-            <Switch.Label className="text-sm leading-6 text-gray-600">
+            <Switch.Label htmlFor={'policy_agreement'} className="text-sm leading-6 text-gray-600">
               By selecting this, you agree to our{' '}
               <Link href="/" className="font-semibold text-indigo-600">
                 privacy&nbsp;policy
