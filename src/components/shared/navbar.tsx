@@ -102,7 +102,7 @@ const Navbar = () => {
               </Disclosure.Button>
               <Disclosure.Button>
                 <Link
-                  href="/login"
+                  href="auth/login"
                   className={classNames(
                     'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
                   )}>
@@ -111,7 +111,7 @@ const Navbar = () => {
               </Disclosure.Button>
               <Disclosure.Button>
                 <Link
-                  href="/register"
+                  href="auth/register"
                   className={classNames(
                     'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
                   )}>
