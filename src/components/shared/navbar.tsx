@@ -58,19 +58,16 @@ const Navbar = () => {
                         Home
                       </Link>
                       <a
-                        href="#aboutus"
+                        href="/#aboutus"
                         className={
                           'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'
                         }>
                         About Us
                       </a>
-                      <Link
+                      <Status 
+                        classname={'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'}
                         href="/auth/login"
-                        className={
-                          'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'
-                        }>
-                        <Status />
-                      </Link>
+                      />
                       <Link
                         href="/auth/register"
                         className={
@@ -95,17 +92,20 @@ const Navbar = () => {
                     Home
                   </Link>
                 </Disclosure.Button>
-                <Disclosure.Button as="a" href="#aboutus">
-                  <span
-                    className={classNames(
-                      'text-gray-300 w-1/5 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
-                    )}>
-                    About Us
-                  </span>
+                <Disclosure.Button>
+                  <Link 
+                    href="/#aboutus">
+                    <span
+                      className={classNames(
+                        'text-gray-300 w-1/5 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
+                      )}>
+                      About Us
+                    </span>
+                  </Link>
                 </Disclosure.Button>
                 <Disclosure.Button>
                   <Link
-                    href="auth/login"
+                    href="/auth/login"
                     className={classNames(
                       'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
                     )}>
@@ -114,7 +114,7 @@ const Navbar = () => {
                 </Disclosure.Button>
                 <Disclosure.Button>
                   <Link
-                    href="auth/register"
+                    href="/auth/register"
                     className={classNames(
                       'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
                     )}>

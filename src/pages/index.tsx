@@ -377,7 +377,9 @@ function Landing() {
                       Full Name
                     </label>
                     <input
+                      id='full-name'
                       type="text"
+                      autoComplete='full-name'
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Full Name"
                     />
@@ -390,7 +392,9 @@ function Landing() {
                       Email
                     </label>
                     <input
+                      id='email'
                       type="email"
+                      autoComplete='email'
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
                     />
@@ -399,15 +403,18 @@ function Landing() {
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                      htmlFor="message">
+                      htmlFor="message"
+                    >
                       Message
                     </label>
                     <textarea
+                      autoComplete='message'
+                      id='message'
                       rows={4}
                       cols={80}
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
                       placeholder="Type a message..."
-                    />
+                    />  
                   </div>
                   <div className="text-center mt-6">
                     <button
