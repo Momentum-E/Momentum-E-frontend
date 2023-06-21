@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { City, Country, State } from 'country-state-city';
 import { Selector } from '@/components/dashboard';
 import { Switch } from '@headlessui/react';
-import { CognitoUser } from 'amazon-cognito-identity-js';
+// import { CognitoUser } from 'amazon-cognito-identity-js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,7 +25,7 @@ const Signup = () => {
   const [country, setCountry] = useState();
   const [state, setState] = useState();
   const [city, setCity] = useState();
-  const [errorData, setErrorData] = useState<CognitoUser | undefined | any>();
+  const [errorData, setErrorData] = useState<undefined | any>();
 
   const [input, setInput] = useState({
     firstName: '',
@@ -59,7 +59,7 @@ const Signup = () => {
     }));
   };
 
-  const handleAWSError = (err) => {
+  const handleAWSError = (err:any) => {
     if (err.code === 'InvalidPasswordException') {
       const errorMessage = err.message || 'An unknown error occurred.';
       setErrorData(errorMessage);
@@ -89,7 +89,6 @@ const Signup = () => {
         router.replace('/dashboard');
         console.log(data);
         //! TODO: The error is coming from here. If we remove this then everything works perfectly fine.
-        setErrorData(data);
       }
     });
   };
