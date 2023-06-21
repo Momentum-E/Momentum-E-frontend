@@ -2,16 +2,19 @@
 import React, { useState, useContext } from 'react';
 import { AccountContext } from './account';
 import Link from 'next/link';
-import toast, { Toaster } from 'react-hot-toast';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
 
 const SignIn = () => {
+  const router = useRouter();
   const [input, setInput] = useState({
     email: '',
     password: '',
   });
-  const [errorData, setErrorData] = useState<>()
+  const [errorData, setErrorData] = useState<>();
 
-  const onInputChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInput((prev) => ({
       ...prev,
@@ -20,22 +23,22 @@ const SignIn = () => {
   };
 
   const handleAWSError = (err) => {
-    if (err.code === 'NotAuthorizedException'){
+    if (err.code === 'NotAuthorizedException') {
       const errorMessage = err.message || 'An unknown error occurred.';
       setErrorData(errorMessage);
-      
-      //AWS error message with a toast message 
-      toast.error(errorMessage)
+
+      //AWS error message with a toast message
+      toast.error(errorMessage);
     }
     // if (err.code === 'UsernameExistsException'){
     //   const errorMessage = err.message || 'User already present.';
     //   setErrorData(errorMessage);
     //   toast.success(errorMessage)
     // }
-    else{
+    else {
       console.error(err);
     }
-  }
+  };
 
   const { authenticate } = useContext(AccountContext);
 
@@ -45,24 +48,20 @@ const SignIn = () => {
     authenticate(input.email, input.password)
       .then((data: any) => {
         console.log('Logged In!', data);
+        router.replace('/dashboard');
+        toast.success('User Login Successfully!');
       })
       .catch((err: any) => {
-        console.error('error', err)
-        handleAWSError(err)
+        console.error('error', err);
+        handleAWSError(err);
       });
   };
 
   return (
     <main>
-      <div><Toaster/></div> 
       <section className="relative w-full h-full py-36 min-h-screen">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            {/* <img
-              className="mx-auto h-10 w-auto"
-              src=""
-              alt="Your Company"
-            /> */}
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
               Sign in to your account
             </h2>
@@ -73,8 +72,7 @@ const SignIn = () => {
               className="space-y-6"
               action="#"
               method="POST"
-              onSubmit={(event) => handleLogin(event)}
-            >
+              onSubmit={(event) => handleLogin(event)}>
               <div>
                 <label
                   htmlFor="email"
@@ -97,7 +95,7 @@ const SignIn = () => {
               <div>
                 <div className="flex items-center justify-between">
                   <label
-                    htmlFor={"password"}
+                    htmlFor={'password'}
                     className="block text-sm font-medium leading-6 text-gray-900">
                     Password<span className="text-red-500 pl-1">*</span>
                   </label>
@@ -111,7 +109,7 @@ const SignIn = () => {
                 </div>
                 <div className="mt-2">
                   <input
-                    id={"password"}
+                    id={'password'}
                     name="password"
                     type="password"
                     autoComplete="current-password"
@@ -141,6 +139,7 @@ const SignIn = () => {
           </div>
         </div>
       </section>
+      <ToastContainer />
     </main>
   );
 };
