@@ -19,7 +19,7 @@ const Status = ({classname,href}:Status_props) => {
   }, [getSession]);
 
   return (
-    <div>
+    <>
       {status ? (
         <button onClick={logout}>Logout</button>
       ) : (
@@ -27,7 +27,7 @@ const Status = ({classname,href}:Status_props) => {
           <button>Login</button>
         </Link>
       )}
-    </div>
+    </>
   );
 };
 
