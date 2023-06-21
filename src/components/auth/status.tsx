@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AccountContext } from './account';
+import Link from 'next/link';
 
 const Status = () => {
   const [status, setStatus] = useState<boolean>(false);
@@ -14,7 +15,13 @@ const Status = () => {
 
   return (
     <div>
-      {status ? <button onClick={logout}>Logout</button> : null}
+      {status ? (
+        <button onClick={logout}>Logout</button>
+      ) : (
+        <Link href="/auth/login">
+          <button>Login</button>
+        </Link>
+      )}
     </div>
   );
 };
