@@ -20,7 +20,7 @@ const Navbar = () => {
               <div className="relative flex h-16 items-center justify-between">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   {/* Mobile menu button*/}
-                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
                     {open ? (
                       <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -53,25 +53,27 @@ const Navbar = () => {
                       <Link
                         href="/"
                         className={
-                          'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'
+                          'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-sm font-medium'
                         }>
                         Home
                       </Link>
                       <a
                         href="/#aboutus"
                         className={
-                          'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'
+                          'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-sm font-medium'
                         }>
                         About Us
                       </a>
-                      <Status 
-                        classname={'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'}
+                      <Status
+                        classname={
+                          'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-sm font-medium'
+                        }
                         href="/auth/login"
                       />
                       <Link
                         href="/auth/register"
                         className={
-                          'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'
+                          'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-sm font-medium'
                         }>
                         Register
                       </Link>
@@ -83,31 +85,30 @@ const Navbar = () => {
 
             <Disclosure.Panel className="sm:hidden">
               <ul className="space-y-1 px-2 pb-3 pt-2">
-                <Disclosure.Button as='li'>
+                <Disclosure.Button as="li">
                   <Link
                     href="/"
                     className={classNames(
-                      'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
+                      'text-gray-300 hover:bg-gray-700 hover:text-white-100 block rounded-md px-3 py-2 text-base font-medium'
                     )}>
                     Home
                   </Link>
                 </Disclosure.Button>
-                <Disclosure.Button as='li'>
-                  <Link 
-                    href="/#aboutus">
+                <Disclosure.Button as="li">
+                  <Link href="/#aboutus">
                     <span
                       className={classNames(
-                        'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium'
+                        'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-base font-medium'
                       )}>
                       About Us
                     </span>
                   </Link>
                 </Disclosure.Button>
-                <Disclosure.Button as='li'>
+                <Disclosure.Button as="li">
                   <Link
                     href="/auth/login"
                     className={classNames(
-                      'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
+                      'text-gray-300 hover:bg-gray-700 hover:text-white-100 block rounded-md px-3 py-2 text-base font-medium'
                     )}>
                     Login
                   </Link>
@@ -116,7 +117,7 @@ const Navbar = () => {
                   <Link
                     href="/auth/register"
                     className={classNames(
-                      'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
+                      'text-gray-300 hover:bg-gray-700 hover:text-white-100 block rounded-md px-3 py-2 text-base font-medium'
                     )}>
                     Register
                   </Link>

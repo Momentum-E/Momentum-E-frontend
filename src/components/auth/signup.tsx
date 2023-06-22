@@ -60,7 +60,7 @@ const Signup = () => {
     }));
   };
 
-  const handleAWSError = (err:any) => {
+  const handleAWSError = (err: any) => {
     if (err.code === 'InvalidPasswordException') {
       const errorMessage = err.message || 'An unknown error occurred.';
       setErrorData(errorMessage);
@@ -82,32 +82,32 @@ const Signup = () => {
   async function retrieveVerificationCode() {
     const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
     const params = {
-      UserPoolId: "ap-south-1_1k0YcvhBt",
-      ClientId: "5anhoi3gpfgvnqsd609smuh0qi",
-    //   Email:"",
-      Username:input.email,
+      UserPoolId: 'ap-south-1_1k0YcvhBt',
+      ClientId: '5anhoi3gpfgvnqsd609smuh0qi',
+      //   Email:"",
+      Username: input.email,
     };
-  
+
     try {
-      const response = await cognitoIdentityServiceProvider.adminGetUser(
-        params
-      ).promise();
-      
+      const response = await cognitoIdentityServiceProvider
+        .adminGetUser(params)
+        .promise();
+
       const userAttributes = response.UserAttributes;
       const verificationCodeAttribute = userAttributes.find(
-        attribute => attribute.Name === 'email_verified'
+        (attribute) => attribute.Name === 'email_verified'
       );
-  
+
       if (verificationCodeAttribute) {
-          const verificationCode:string | undefined = verificationCodeAttribute.Value;
-          toast.success('Verification code:' + verificationCode);
-          localStorage.setItem('verificationCode', verificationCode);
-    } else {
+        const verificationCode: string | undefined =
+          verificationCodeAttribute.Value;
+        toast.success('Verification code:' + verificationCode);
+        localStorage.setItem('verificationCode', verificationCode);
+      } else {
         toast.error('Verification code not found.');
       }
-    } 
-    catch (error) {
-        toast.error('Error retrieving verification code:' + error);
+    } catch (error) {
+      toast.error('Error retrieving verification code:' + error);
     }
   }
 
@@ -121,7 +121,7 @@ const Signup = () => {
       } else {
         // router.replace('/auth/confirmSignup');
         console.log(data);
-        retrieveVerificationCode()
+        retrieveVerificationCode();
         //! TODO: The error is coming from here. If we remove this then everything works perfectly fine.
       }
     });
@@ -367,7 +367,7 @@ const Signup = () => {
               input.password === input.confirmPassword && agreed
                 ? `hover:bg-indigo-500 `
                 : ` `
-            } block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}>
+            } block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white-100 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}>
             Register
           </button>
         </div>
