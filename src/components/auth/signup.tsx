@@ -9,6 +9,7 @@ import { Switch } from '@headlessui/react';
 // import { CognitoUser } from 'amazon-cognito-identity-js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CognitoIdentityServiceProvider, SES } from 'aws-sdk';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -78,6 +79,38 @@ const Signup = () => {
     }
   };
 
+  async function retrieveVerificationCode() {
+    const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
+    const params = {
+      UserPoolId: "ap-south-1_1k0YcvhBt",
+      ClientId: "5anhoi3gpfgvnqsd609smuh0qi",
+    //   Email:"",
+      Username:input.email,
+    };
+  
+    try {
+      const response = await cognitoIdentityServiceProvider.adminGetUser(
+        params
+      ).promise();
+      
+      const userAttributes = response.UserAttributes;
+      const verificationCodeAttribute = userAttributes.find(
+        attribute => attribute.Name === 'email_verified'
+      );
+  
+      if (verificationCodeAttribute) {
+          const verificationCode:string | undefined = verificationCodeAttribute.Value;
+          toast.success('Verification code:' + verificationCode);
+          localStorage.setItem('verificationCode', verificationCode);
+    } else {
+        toast.error('Verification code not found.');
+      }
+    } 
+    catch (error) {
+        toast.error('Error retrieving verification code:' + error);
+    }
+  }
+
   const onSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
@@ -86,8 +119,9 @@ const Signup = () => {
         // console.log(err)
         handleAWSError(err);
       } else {
-        router.replace('/dashboard');
+        // router.replace('/auth/confirmSignup');
         console.log(data);
+        retrieveVerificationCode()
         //! TODO: The error is coming from here. If we remove this then everything works perfectly fine.
       }
     });

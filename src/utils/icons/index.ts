@@ -9,3 +9,4 @@ export { default as PaperPlane } from './paper-plane';
 export { default as Medal } from './medal';
 export { default as Poll } from './poll';
 export { default as LightBulb } from './light-bulb';
+export {default as DottedIcon} from './dottedIcon'

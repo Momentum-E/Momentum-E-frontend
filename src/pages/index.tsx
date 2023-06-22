@@ -13,27 +13,32 @@ import {
   Poll,
   Rocket,
   Truck,
+  DottedIcon
 } from '@/utils/icons';
+import {
+  unrivaled_performance_img1,
+  unrivaled_performance_img2
+} from '@/assets/images/'
 
 function Landing() {
   return (
-    <main>
-      <div className="relative -z-2 pt-32 pb-32 flex content-center items-center justify-center min-h-screen-75">
-        <div className="absolute w-full h-full bg-center bg-cover bg-[url('../assets/images/curved14.jpg')]"></div>
+    <main className='px-5 mx-auto lg:px-16'>
+      <div className="relative pt-5 pb-32 flex content-center items-center justify-center min-h-screen-75">
         <div className="container relative mx-auto">
-          <div className="items-center flex flex-wrap">
-            <div className="w-full h-full lg:w-2/3 px-4 ml-auto mr-auto text-center">
-              <div className="pr-12">
-                <h1 className="text-white font-semibold text-6xl">
-                  Know your battery better through our deep analysis
-                </h1>
-              </div>
+          <div className="items-center flex flex-wrap w-full h-full lg:w-2/3 ml-auto mr-auto text-center">
+            {/* <DottedIcon classname={`absolute top-0 left`}/> */}
+            <div className="relative text-5xl text-white font-bold">
+              <DottedIcon classname={`absolute left-0`}/>
+              <h1 className='pt-10 '>
+                  Know your battery  better through our deep analysis 
+              </h1>
+              <DottedIcon classname={`absolute right-0`}/>
             </div>
           </div>
         </div>
       </div>
 
-      <section className="pb-20 -mt-24">
+      {/* <section className="pb-20 -mt-24">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap ">
             <div className="lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center">
@@ -200,51 +205,58 @@ function Landing() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <section className="relative py-20">
-        <div
-          className="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20 h-20"
-          style={{ transform: 'translateZ(0)' }}>
-          <svg
-            className="absolute bottom-0 overflow-hidden"
-            xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="none"
-            version="1.1"
-            viewBox="0 0 2560 100"
-            x="0"
-            y="0">
-            <polygon
-              className="text-white fill-current"
-              points="2560 0 2560 100 0 100"></polygon>
-          </svg>
+      {/* The Grid to be EDITTED */}
+      <section className='grid grid-rows-7 grid-cols-4 gap-2'>
+        <Image src="" alt="" className=" row-span-2" />
+        <div className="row-span-5 bg-[#C6DE41]">
+          Individual Owner
         </div>
 
-        <div className="container mx-auto px-4">
+        <div className="row-span-3 bg-[#C6DE41]">Fleet Owner</div>
+        <Image src="" alt="" className="row-span-4" />
+        
+        <Image src="" alt="" className="row-span-5" />
+        <Image src="" alt="" className="row-span-2" />
+        
+        <div className="row-span-5 bg-[#C6DE41]">Battery Recompositon</div>
+        <Image src="" alt="" className="row-span-2" />
+      </section>
+
+      <section className="relative lg:pt-20 pt-30">
+        {/* Heading */}
+        <div className="relative pt-5 pb-10 flex content-center items-center justify-center">
+            <div className="">
+              <div className="relative items-center w-full h-full  ml-auto mr-auto text-center lg:w-2/3">
+                <DottedIcon classname={`absolute -translate-x-2`}/>
+                <h1 className='pt-5 text-4xl w-full text-white font-bold'>
+                  OUR UNRIVALED PERFORMANCE
+                </h1>
+                <DottedIcon classname={`absolute right-0 sm:-translate-y-3 sm:-translate-x-3`}/>
+              </div>
+            </div>
+        </div>
+
+        {/* Working with us is a pleasure */}
+        <div className=" mx-auto">
           <div className="items-center flex flex-wrap">
             <div className="w-full md:w-4/12 ml-auto mr-auto px-4">
+            <h3 className="text-3xl pb-5 font-semibold text-white block lg:hidden">Working with us is a pleasure</h3>
               <Image
-                alt="..."
-                className="max-w-full rounded-lg shadow-lg"
-                src="https://images.unsplash.com/photo-1555212697-194d092e3b8f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-                width={500}
-                height={500}
+                alt="Working with us is a pleasure"
+                className="max-w-full w-full h-full rounded-lg shadow-lg"
+                src={unrivaled_performance_img1}
               />
             </div>
-            <div className="w-full md:w-5/12 ml-auto mr-auto px-4">
+            <div className="w-full md:w-5/12 ml-auto mr-auto pt-4 px-4">
               <div className="md:pr-12">
-                <div className="text-lightBlue-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-lightBlue-300">
-                  <figure className="text-2xl">
-                    <Rocket />
-                  </figure>
-                </div>
-                <h3 className="text-3xl font-semibold">A growing company</h3>
-                <p className="mt-4 text-lg leading-relaxed text-blueGray-500">
-                  The extension comes with three pre-built pages to help you get
-                  started faster. You can change the text and images and you`re
-                  good to go.
+                <h3 className="text-3xl font-semibold text-white hidden lg:block">Working with us is a pleasure</h3>
+                <p className="mt-4 text-lg leading-relaxed text-[#FFFFFFBF]">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                  Doloremque, corporis nulla tempora pariatur 
                 </p>
-                <ul className="list-none mt-6">
+                {/* <ul className="list-none mt-6 text-[#FFFFFFBF]">
                   <li className="py-2">
                     <div className="flex items-center">
                       <div>
@@ -293,14 +305,88 @@ function Landing() {
                       </div>
                     </div>
                   </li>
-                </ul>
+                </ul> */}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* A growing company */}
+        <div className=" mx-auto lg:pt-5 pt-20">
+          <div className="items-center flex flex-row-reverse flex-wrap">
+            <div className="w-full md:w-4/12 ml-auto mr-auto px-4">
+            <h3 className="text-3xl pb-5 font-semibold text-white block lg:hidden">A growing company</h3>
+              <Image
+                alt="A growing company"
+                className="max-w-full w-full h-full rounded-lg shadow-lg"
+                src={unrivaled_performance_img2}
+              />
+            </div>
+            <div className="w-full md:w-5/12 ml-auto mr-auto pt-4 px-4">
+              <div className="md:pr-12">
+                <h3 className="text-3xl font-semibold text-white hidden lg:block">A growing company</h3>
+                <p className="mt-4 text-lg leading-relaxed text-[#FFFFFFBF]">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                  Doloremque, corporis nulla tempora pariatur 
+                </p>
+                {/* <ul className="list-none mt-6 text-[#FFFFFFBF]">
+                  <li className="py-2">
+                    <div className="flex items-center">
+                      <div>
+                        <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 mr-3">
+                          <figure className="text-xl">
+                            <Fingerprint />
+                          </figure>
+                        </span>
+                      </div>
+                      <div>
+                        <h4 className="text-blueGray-500">
+                          Carefully crafted components
+                        </h4>
+                      </div>
+                    </div>
+                  </li>
+                  <li className="py-2">
+                    <div className="flex items-center">
+                      <div>
+                        <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 mr-3">
+                          <figure className="text-xl">
+                            <Html />
+                          </figure>
+                        </span>
+                      </div>
+                      <div>
+                        <h4 className="text-blueGray-500">
+                          Amazing page examples
+                        </h4>
+                      </div>
+                    </div>
+                  </li>
+                  <li className="py-2">
+                    <div className="flex items-center">
+                      <div>
+                        <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 mr-3">
+                          <figure className="text-xl">
+                            <PaperPlane />
+                          </figure>
+                        </span>
+                      </div>
+                      <div>
+                        <h4 className="text-blueGray-500">
+                          Dynamic components
+                        </h4>
+                      </div>
+                    </div>
+                  </li>
+                </ul> */}
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      <section className="pb-20 relative block">
+      
+      {/* TO BE EDITTED BY SHIVAM */}
+      <section className="pb-20 block">
         <div className="container mx-auto px-4 lg:pt-24 lg:pb-64">
           <div className="flex flex-wrap text-center justify-center">
             <div className="w-full lg:w-6/12 px-4">
@@ -358,36 +444,45 @@ function Landing() {
           </div>
         </div>
       </section>
-      <section className="relative block py-24 lg:pt-0 bg-blueGray-800">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center lg:-mt-64 -mt-48">
-            <div className="w-full lg:w-6/12 px-4">
-              <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200">
-                <div className="flex-auto p-5 lg:p-10">
-                  <h4 className="text-2xl font-semibold">
-                    Want to work with us?
-                  </h4>
-                  <p className="leading-relaxed mt-1 mb-4 text-blueGray-500">
-                    Complete this form and we will get back to you in 24 hours.
-                  </p>
+
+      {/* Want to work with us */}
+      <section className="container pt-24 pb-10 mx-auto block lg:pt-0 text-white">
+        <div className="flex flex-wrap justify-center lg:-mt-64 -mt-48">
+          <div className="w-full lg:w-6/12">
+            <div className="flex flex-col flex-auto lg:p-10 min-w-0 break-words w-full mb-6">
+              <div className="">
+                <div className="pt-5 pb-10 flex content-center items-center justify-center">
+                  <div className="w-full">
+                    <div className="relative items-center w-full h-full ml-auto mr-auto text-center ">
+                      <DottedIcon classname={`absolute lg:-translate-x-6 lg:-translate-y-4`}/>
+                      <h1 className='pt-5 text-3xl w-full text-white font-bold'>
+                        Want to work with us
+                      </h1>
+                      <DottedIcon classname={`absolute right-0 sm:-translate-y-7 lg:-translate-y-2 lg:translate-x-3`}/>
+                    </div>
+                  </div>
+                </div>
+                {/* <p className="leading-relaxed mt-1 mb-4 text-blueGray-500">
+                  Complete this form and we will get back to you in 24 hours.
+                </p> */}
+                <div className="space-y-4">
                   <div className="relative w-full mb-3 mt-8">
                     <label
-                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      className="block uppercase text-xs font-bold pb-2"
                       htmlFor="full-name">
                       Full Name
                     </label>
                     <input
                       id='full-name'
                       type="text"
-                      autoComplete='full-name'
-                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Full Name"
+                      autoComplete='name'
+                      className="border-b border-[#C6DE41] px-3 py-2 text-white bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150"
                     />
                   </div>
 
                   <div className="relative w-full mb-3">
                     <label
-                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      className="block uppercase text-xs font-bold pb-2"
                       htmlFor="email">
                       Email
                     </label>
@@ -395,30 +490,29 @@ function Landing() {
                       id='email'
                       type="email"
                       autoComplete='email'
-                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      placeholder="Email"
+                      className="border-b border-[#C6DE41] px-3 py-2 text-white bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150"
                     />
                   </div>
 
                   <div className="relative w-full mb-3">
                     <label
-                      className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                      className="block uppercase text-xs font-bold pb-4"
                       htmlFor="message"
                     >
                       Message
                     </label>
                     <textarea
-                      autoComplete='message'
                       id='message'
                       rows={4}
                       cols={80}
-                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+                      className="border border-[#C6DE41] px-3 py-3 text-white bg-transparent rounded text-sm focus:outline-none focus:ring-0 w-full"
                       placeholder="Type a message..."
-                    />  
+                    />    
                   </div>
-                  <div className="text-center mt-6">
+
+                  <div className="text-right mt-6">
                     <button
-                      className="hover:bg-white hover:text-gray-800 bg-gray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      className=" hover:bg-white bg-[#C6DE41] text-black active:bg-[#C6DE4180] text-xs font-medium uppercase px-2 py-2 rounded-lg hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
                       type="button">
                       Send Message
                     </button>

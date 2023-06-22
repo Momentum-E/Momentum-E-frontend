@@ -76,7 +76,8 @@ const SignIn = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900">
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
                   Email address<span className="text-red-500 pl-1">*</span>
                 </label>
                 <div className="mt-2">
