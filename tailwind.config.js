@@ -6,6 +6,17 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    colors: {
+      'white': {
+        100: '#ffffff',
+        200: '#C1C3C0',
+      },
+      'black': '#000000',
+      'me-green': {
+        100: '#83952B',
+        200: '#C6DE41',
+      },
+    },
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -14,11 +25,11 @@ module.exports = {
       },
       gridTemplateRows: {
         // Simple 8 row grid
-        '7': 'repeat(7, minmax(0, 1fr))',
+        7: 'repeat(7, minmax(0, 1fr))',
 
         // // Complex site-specific row configuration
         // 'layout': '200px minmax(900px, 1fr) 100px',
-      }
+      },
     },
   },
   plugins: [],
