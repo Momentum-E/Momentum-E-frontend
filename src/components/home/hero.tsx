@@ -86,18 +86,9 @@ const Hero = () => {
           />
         </div>
         <div className="flex justify-evenly py-10">
-          <ItemCard
-            heading="Individual Owner"
-            description="Know your battery better through our Know your battery better through our deep analysis"
-          />
-          <ItemCard
-            heading="Individual Owner"
-            description="Know your battery better through our Know your battery better through our deep analysis"
-          />
-          <ItemCard
-            heading="Individual Owner"
-            description="Know your battery better through our Know your battery better through our deep analysis"
-          />
+          <ItemCard description="Know your battery better through our Know your battery better through our deep analysis" />
+          <ItemCard description="Know your battery better through our Know your battery better through our deep analysis" />
+          <ItemCard description="Know your battery better through our Know your battery better through our deep analysis" />
         </div>
       </div>
     </div>

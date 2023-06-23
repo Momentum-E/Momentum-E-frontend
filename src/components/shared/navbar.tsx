@@ -16,7 +16,7 @@ const Navbar = () => {
       <Disclosure as="nav" className="relative z-10">
         {({ open }) => (
           <>
-            <div className=" max-w-7xl px-2 sm:px-6 lg:px-16">
+            <div className=" max-w-7xl px-2 sm:px-6 lg:px-16 text-white-100">
               <div className="relative flex h-16 items-center justify-between">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   {/* Mobile menu button*/}
@@ -57,13 +57,13 @@ const Navbar = () => {
                         }>
                         Home
                       </Link>
-                      <a
-                        href="/#aboutus"
+                      <Link
+                        href="/aboutus"
                         className={
                           'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-sm font-medium'
                         }>
                         About Us
-                      </a>
+                      </Link>
                       <Status
                         classname={
                           'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-sm font-medium'
@@ -89,7 +89,7 @@ const Navbar = () => {
                   <Link
                     href="/"
                     className={classNames(
-                      'text-gray-300 hover:bg-gray-700 hover:text-white-100 block rounded-md px-3 py-2 text-base font-medium'
+                      'text-gray-300 hover:bg-gray-700 hover:text-white-100 block rounded-md px-3 py-2 text-base font-bold'
                     )}>
                     Home
                   </Link>
