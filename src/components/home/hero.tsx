@@ -3,10 +3,12 @@ import {
   unrivaled_performance_img1,
   unrivaled_performance_img2,
 } from '@/assets/images/';
-import { Heading, ItemCard } from './';
+import { Heading, ItemCard, GetInTouch } from './';
 import Image from 'next/image';
 
+
 const Hero = () => {
+  
   return (
     <div className=" text-white-100 py-5">
       <div className="h-screen py-10">
@@ -91,6 +93,7 @@ const Hero = () => {
           <ItemCard description="Know your battery better through our Know your battery better through our deep analysis" />
         </div>
       </div>
+      <GetInTouch/>
     </div>
   );
 };

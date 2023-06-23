@@ -2,7 +2,7 @@ import { Hero } from '@/components/home';
 
 function Landing() {
   return (
-    <main className="px-40 text-white">
+    <main className="px-4 lg:px-16">
       <Hero />
     </main>
   );

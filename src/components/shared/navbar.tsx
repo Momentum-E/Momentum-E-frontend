@@ -88,9 +88,8 @@ const Navbar = () => {
                 <Disclosure.Button as="li">
                   <Link
                     href="/"
-                    className={classNames(
-                      'text-gray-300 hover:bg-gray-700 hover:text-white-100 block rounded-md px-3 py-2 text-base font-bold'
-                    )}>
+                    className= 'text-white-100 hover:bg-gray-700 hover:text-white-200 block rounded-md px-3 py-2 text-base font-bold'
+                    >
                     Home
                   </Link>
                 </Disclosure.Button>
@@ -98,7 +97,7 @@ const Navbar = () => {
                   <Link href="/#aboutus">
                     <span
                       className={classNames(
-                        'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-base font-medium'
+                        ' text-white-100 hover:bg-gray-700 hover:text-white-200 rounded-md px-3 py-2 text-base font-medium'
                       )}>
                       About Us
                     </span>
@@ -108,7 +107,7 @@ const Navbar = () => {
                   <Link
                     href="/auth/login"
                     className={classNames(
-                      'text-gray-300 hover:bg-gray-700 hover:text-white-100 block rounded-md px-3 py-2 text-base font-medium'
+                      'text-white-100 hover:bg-gray-700 hover:text-white-200 block rounded-md px-3 py-2 text-base font-medium'
                     )}>
                     Login
                   </Link>
@@ -117,7 +116,7 @@ const Navbar = () => {
                   <Link
                     href="/auth/register"
                     className={classNames(
-                      'text-gray-300 hover:bg-gray-700 hover:text-white-100 block rounded-md px-3 py-2 text-base font-medium'
+                      'text-white-100 hover:bg-gray-700 hover:text-white-200 block rounded-md px-3 py-2 text-base font-medium'
                     )}>
                     Register
                   </Link>
