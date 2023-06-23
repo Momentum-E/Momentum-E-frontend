@@ -53,27 +53,27 @@ const Navbar = () => {
                       <Link
                         href="/"
                         className={
-                          'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-sm font-medium'
+                          'hover:bg-gray-700 rounded-md px-3 py-2 text-sm font-medium'
                         }>
                         Home
                       </Link>
                       <Link
                         href="/aboutus"
                         className={
-                          'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-sm font-medium'
+                          'hover:bg-gray-700 rounded-md px-3 py-2 text-sm font-medium'
                         }>
                         About Us
                       </Link>
                       <Status
                         classname={
-                          'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-sm font-medium'
+                          'hover:bg-gray-700 rounded-md px-3 py-2 text-sm font-medium'
                         }
                         href="/auth/login"
                       />
                       <Link
                         href="/auth/register"
                         className={
-                          'text-gray-300 hover:bg-gray-700 hover:text-white-100 rounded-md px-3 py-2 text-sm font-medium'
+                          'hover:bg-gray-700 rounded-md px-3 py-2 text-sm font-medium'
                         }>
                         Register
                       </Link>

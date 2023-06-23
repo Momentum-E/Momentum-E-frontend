@@ -16,7 +16,10 @@ module.exports = {
         100: '#83952B',
         200: '#C6DE41',
       },
-      'red-500':'#FF0000'
+      'red-500':'#FF0000',
+      'gray': {
+        '700': 'rgb(55 65 81)'
+      },
     },
     extend: {
       backgroundImage: {
