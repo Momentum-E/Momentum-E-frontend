@@ -84,7 +84,6 @@ const Signup = () => {
     const params = {
       UserPoolId: 'ap-south-1_1k0YcvhBt',
       ClientId: '5anhoi3gpfgvnqsd609smuh0qi',
-      //   Email:"",
       Username: input.email,
     };
 
@@ -108,6 +107,7 @@ const Signup = () => {
       }
     } catch (error) {
       toast.error('Error retrieving verification code:' + error);
+      localStorage.setItem('verificationError', error);
     }
   }
 

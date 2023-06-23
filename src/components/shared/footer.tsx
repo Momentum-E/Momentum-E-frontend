@@ -13,46 +13,46 @@ const Footer = () => {
             </figure>
           </div>
           <div className="p-5 w-48">
-            <div className=" uppercase text-gray-200 font-bold text-xl">
+            <div className=" uppercase text-white-100 font-bold text-xl">
               Home
             </div>
-            <a className="my-3 block" href="#aboutus">
-              About Us
+            <a className="my-3 block text-white-200" href="#aboutus">
+              <span className='hover:border-b hover:border-white-200'>About Us</span>
             </a>
-            <a className="my-3 block" href="#services">
-              Services
+            <a className="my-3 block text-white-200" href="#services">
+              <span className='hover:border-b hover:border-white-200'>Services</span>
             </a>
-            <a className="my-3 block" href="#product">
-              Products
+            <a className="my-3 block text-white-200" href="#product">
+              <span className='hover:border-b hover:border-white-200'>Products</span>
             </a>
           </div>
           <div className="p-5 w-48 ">
-            <div className="text-xl uppercase text-gray-100 font-bold">
+            <div className="text-xl uppercase text-white-100 font-bold">
               User
             </div>
-            <Link className="my-3 block" href="login">
-              Sign in
+            <Link className="my-3 block text-white-200 hover:border-b hover:border-white-200" href="/auth/login">
+              <span className='hover:border-b hover:border-white-200'>Sign in</span>
             </Link>
-            <Link className="my-3 block" href="register">
-              New Account
+            <Link className="my-3 block text-white-200 hover:border-b hover:border-white-200" href="/auth/register">
+              <span className='hover:border-b hover:border-white-200'>New Account</span>
             </Link>
           </div>
           <div className="p-5 w-48 ">
-            <div className="text-xl uppercase text-gray-100 font-bold">
+            <div className="text-xl uppercase text-white-100 font-bold">
               Product
             </div>
-            <Link className="my-3 block" href="/#">
-              Our Services
+            <Link className="my-3 block text-white-200 hover:border-b hover:border-white-200" href="/#">
+              <span className='hover:border-b hover:border-white-200'>Our Services</span>
             </Link>
-            <Link className="my-3 block" href="/#">
-              Analytics
+            <Link className="my-3 block text-white-200 hover:border-b hover:border-white-200" href="/#">
+              <span className='hover:border-b hover:border-white-200'>Analytics</span>
             </Link>
-            <Link className="my-3 block" href="pricing">
-              Pricing
+            <Link className="my-3 block text-white-200 hover:border-b hover:border-white-200" href="pricing">
+              <span className='hover:border-b hover:border-white-200'>Pricing</span>
             </Link>
           </div>
-          <div className="p-5 w-48 ">
-            <div className="text-xl uppercase text-gray-100 font-bold">
+          <div className="p-5 w-48 text-white-200">
+            <div className="text-xl uppercase text-white-100 font-bold">
               Contact us
             </div>
             91 Springboard, Bannerghatta Road, Bangalore
