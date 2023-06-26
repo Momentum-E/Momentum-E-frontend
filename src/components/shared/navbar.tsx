@@ -10,13 +10,13 @@ export default function NavBar() {
       <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
         <div>
           <div className="flex items-center justify-between py-3 md:py-5 md:block">
-            <a href="javascript:void(0)">
+            <Link href="/">
               <h2 className="text-2xl font-bold text-white-100">
                 <figure>
                   <Image src={logo} alt="Logo" height={100} width={100} />
                 </figure>
               </h2>
-            </a>
+            </Link>
             <div className="md:hidden">
               <button
                 className="p-2 text-gray-700 rounded-md outline-none focus:border-gray-400 focus:border"
@@ -70,16 +70,16 @@ export default function NavBar() {
             </ul>
 
             <div className="mt-3 space-y-2 lg:hidden md:inline-block">
-              <a
-                href="javascript:void(0)"
+              <Link
+                href="/auth/login"
                 className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-800">
                 Sign in
-              </a>
-              <a
-                href="javascript:void(0)"
+              </Link>
+              <Link
+                href="/auth/register"
                 className="inline-block w-full px-4 py-2 text-center text-white-100 bg-white rounded-md shadow hover:bg-gray-100">
                 Sign up
-              </a>
+              </Link>
             </div>
           </div>
         </div>
