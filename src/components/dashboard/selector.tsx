@@ -32,13 +32,13 @@ const Selector: React.FC<SelectorProps> = ({
             required
             autoComplete={'id'}
             id={id}
-            className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className="block w-full border border-[#C6DE41] px-2 py-2 text-white-100 bg-transparent rounded text-sm focus:outline-none focus:ring-0 sm:text-sm sm:leading-6"
             displayValue={(person) => person.name}
             onChange={(event) => setQuery(event.target.value)}
           />
           <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronUpDownIcon
-              className="h-5 w-5 text-gray-400 hover:text-gray-500"
+              className="h-5 w-5 text-white-200 hover:text-me-green-100"
               aria-hidden="true"
             />
           </Combobox.Button>
@@ -49,7 +49,7 @@ const Selector: React.FC<SelectorProps> = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
           afterLeave={() => setQuery('')}>
-          <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white-100 py-1 text-base shadow-lg ring-1 ring-me-green-100 ring-opacity-5 focus:outline-none sm:text-sm">
             {filteredPeople.length === 0 && query !== '' ? (
               <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                 Nothing found.
@@ -60,7 +60,7 @@ const Selector: React.FC<SelectorProps> = ({
                   key={i}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? 'bg-indigo-500 text-white' : 'text-gray-900'
+                      active ? 'bg-me-green-100' : 'text-black'
                     }`
                   }
                   value={person}>
@@ -75,7 +75,7 @@ const Selector: React.FC<SelectorProps> = ({
                       {selected ? (
                         <span
                           className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                            active ? 'text-white' : 'text-indigo-700'
+                            active ? 'text-black' : 'text-me-green-100/100'
                           }`}>
                           <CheckIcon className="h-5 w-5" aria-hidden="true" />
                         </span>

@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import userPool from '../../components/user-pool/user-pool';
 import { useRouter } from 'next/router';
-import getUserData from '../GetUserData';
 
 const confirmSignup = ({username}:any) => {
   
@@ -25,7 +24,7 @@ const confirmSignup = ({username}:any) => {
       } else {
         console.log(data);
         toast.success('Account verified successfully');
-        router.replace('/dashboard')
+        router.replace('/GetUserData')
       }
     });
   };
@@ -56,7 +55,9 @@ const confirmSignup = ({username}:any) => {
                   <input
                     id="OTP"
                     name="otp"
-                    type="input"
+                    type="text"
+                    pattern="[0-9]*"
+                    inputMode='numeric'
                     required={true}
                     autoComplete="email"
                     className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"

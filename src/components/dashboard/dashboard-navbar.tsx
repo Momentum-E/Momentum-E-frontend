@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { DashboardNavbarProps } from '@/utils/props/props';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import logo from './../assets/logos/logo_white_nocap.png';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
