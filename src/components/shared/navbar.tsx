@@ -2,8 +2,12 @@ import { useState } from 'react';
 import logo from '../../assets/logos/logo_white_nocap.png';
 import Image from 'next/image';
 import Link from 'next/link';
+        
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(' ');
+}
 
   return (
     <nav className="w-full bg-purple-500 shadow">
