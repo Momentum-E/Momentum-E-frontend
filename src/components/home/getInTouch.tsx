@@ -4,23 +4,10 @@ import { Dialog, Transition } from '@headlessui/react';
 const getInTouch = () => {
 
     let [isOpen, setIsOpen] = useState(false) 
-    // const [userMessage, setUserMessage] = useState({
-    //     name:"",
-    //     email:"",
-    //     message:"",
-    // })
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [message, setMessage] = useState("")
-
-    // const onInputChange = (e:React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>) => {
-    //     const { name, value } = e.target;
-    //     setUserMessage((prev) => ({
-    //       ...prev,
-    //       [name]: value,
-    //     }));
-    // };
-
+    
     const onMessageSubmit = () => {
         setIsOpen(false)
     }
@@ -130,7 +117,7 @@ const getInTouch = () => {
                                       rows={4}
                                       cols={80}
                                       required={true}
-                                      className="border border-[#C6DE41] px-3 py-3 text-white bg-transparent rounded text-sm focus:outline-none focus:ring-0 w-full"
+                                      className="border border-[#C6DE41] px-3 py-3 bg-transparent rounded text-sm focus:outline-none focus:ring-0 w-full"
                                       placeholder="Type a message..."
                                       value={message}
                                       onChange={(e)=>setMessage(e.target.value)}
