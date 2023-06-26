@@ -20,7 +20,9 @@ module.exports = {
       'gray': {
         '700': 'rgb(55 65 81)'
       },
+      transparent: 'transparent',
     },
+    
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

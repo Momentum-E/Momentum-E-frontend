@@ -1,14 +1,33 @@
-// @ts-nocheck
+// @ts-nochec
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js';
+import userPool from '../../components/user-pool/user-pool';
+import { useRouter } from 'next/router';
+import getUserData from '../GetUserData';
 
-const confirmSignup = () => {
-  const [oneTimePassword, setoneTimePassword] = useState('');
-
-  const handleConfirmSignup = (e: any) => {
-    retrieveVerificationCode();
+const confirmSignup = ({username}:any) => {
+  
+  const router = useRouter();
+  const [OTP, setOTP] = useState('')
+  const verifyAccount = (e:any) => {
+    e.preventDefault();
+    const user = new CognitoUser({
+      Username: username,
+      Pool: userPool,
+    });
+    console.log(user);
+    user.confirmRegistration(OTP, true, (err, data) => {
+      if (err) {
+        console.log(err);
+        toast.error("Couldn't verify account");
+      } else {
+        console.log(data);
+        toast.success('Account verified successfully');
+        router.replace('/dashboard')
+      }
+    });
   };
 
   return (
@@ -16,7 +35,7 @@ const confirmSignup = () => {
       <section className="relative w-full h-full py-32 min-h-screen">
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <h2 className="mt-10 text-center text-xl font-bold leading-9 tracking-tight text-gray-900">
+            <h2 className="mt-10 text-center text-xl font-bold leading-9 tracking-tight text-white-100">
               Confirm OTP sent on your email to Register
             </h2>
           </div>
@@ -26,31 +45,31 @@ const confirmSignup = () => {
               className="space-y-6"
               action="#"
               method="POST"
-              onSubmit={(event) => handleConfirmSignup(event)}>
+              onSubmit={(event) => verifyAccount(event)}>
               <div>
                 <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900">
+                  htmlFor="OTP"
+                  className="block text-sm font-medium leading-6 text-white-100">
                   Confirm OTP
                 </label>
                 <div className="mt-2">
                   <input
-                    id="email"
-                    name="email"
-                    type="email"
+                    id="OTP"
+                    name="otp"
+                    type="input"
                     required={true}
                     autoComplete="email"
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    value={oneTimePassword}
-                    onChange={(e) => setoneTimePassword(e.target.value)}
+                    className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
+                    value={OTP}
+                    onChange={(e) => setOTP(e.target.value)}
                   />
                 </div>
               </div>
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white-100 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                  Log In
+                  className="flex w-full justify-center rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  Confirm OTP
                 </button>
               </div>
             </form>
