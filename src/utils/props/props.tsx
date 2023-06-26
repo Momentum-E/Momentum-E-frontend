@@ -16,3 +16,14 @@ export type DashboardNavbarProps = {
   setIsOpen: any;
   isOpen: any;
 };
+
+export type HeadingProps = {
+  primaryHeading?: string;
+  secondaryHeading?: string;
+  tertiaryHeading?: string;
+};
+
+export type ItemCardProps = {
+  heading?: string;
+  description?: string;
+};

@@ -20,7 +20,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 <Disclosure.Button
-                  className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                  className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                   onClick={() => setIsOpen(true)}>
                   <span className="sr-only">Open main menu</span>
                   {isOpen ? (
@@ -65,7 +65,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div className="flex items-center justify-center">
-                    <span className="text-white pr-2 overflow-hidden text-ellipsis">
+                    <span className="text-white-100 pr-2 overflow-hidden text-ellipsis">
                       Hello Mannan
                     </span>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
