@@ -55,7 +55,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
     isTab && setIsOpen(false);
   }, [pathname]);
 
-  function addVehicle() {}
+  function addVehicle() {
+    
+  }
 
   return (
     <div className="">
@@ -68,14 +70,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
         animate={isOpen ? 'open' : 'close'}
         className="bg-white space-y-4 text-gray shadow-md z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed">
         {/* logo */}
-        <div className="flex gap-2.5 py-3 mx-3 mt-2 border-b border-slate-300 items-center justify-center">
+        <div className="flex gap-2.5 py-3 mx-3 mt-2 text-white-100 border-b border-white-100 items-center justify-center">
           <span className="text-xl whitespace-pre">Dashboard</span>
         </div>
 
         {/* adding vehicle button */}
         {isOpen ? (
           <div
-            className="flex px-4 mx-3 p-2 text-black bg-blue-100 rounded-lg items-center justify-center hover:bg-blue-200 cursor-pointer focus:bg-blue-200"
+            className="flex px-4 mx-3 p-2 text-white-100 bg-gray-700/20 rounded-lg items-center justify-center hover:bg-gray-700/40 cursor-pointer focus:bg-blue-200"
             onClick={() => addVehicle()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -102,8 +104,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
               stroke="currentColor"
               className="w-5 h-5">
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M12 4.5v15m7.5-7.5h-15"
               />
             </svg>
@@ -111,7 +113,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
         )}
 
         {/* vehice items */}
-        <span className="pl-3 text-slate-500 inline-block mb-2">Vehicles</span>
+        <span className="pl-3 text-white-100 inline-block mb-2">Vehicles</span>
         <div className="flex flex-col h-full space-y-2">
           <ul
             className="whitespace-pre px-2.5 flex flex-col gap-1 h-[70%] md:h-[68%]
@@ -120,7 +122,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
               <li key={data.vehicle_no}>
                 <Link
                   href={`/dashboard/${data.vehicle_no}`}
-                  className="link hover:bg-blue-100">
+                  className="link hover:bg-gray-700/25 text-white-100">
                   {data.vehicle_no}
                 </Link>
               </li>
@@ -132,7 +134,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
         <motion.div
           className={`${
             isOpen ? `rotate-0 ` : `rotate-180 `
-          } border-2 rounded-lg border-black p-1 absolute w-fit h-fit z-50 right-3.5 bottom-5 cursor-pointer md:block hidden`}
+          } border-2 rounded-lg border-white-200 p-1 absolute w-fit h-fit z-50 right-3.5 bottom-5 cursor-pointer md:block hidden`}
           onClick={() => setIsOpen(!isOpen)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +142,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="text-black w-5 h-5">
+            className="text-white-200 w-5 h-5">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"

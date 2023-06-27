@@ -6,8 +6,6 @@ import { useRouter } from 'next/router';
 import { Switch } from '@headlessui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js';
-// import { CognitoIdentityServiceProvider, SES } from 'aws-sdk';
 
 import ConfirmSignUp from '@/pages/auth/confirmSignup';
 
