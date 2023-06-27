@@ -3,9 +3,11 @@ import { useRouter } from 'next/router';
 import { City, Country, State } from 'country-state-city';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Selector } from '@/components/dashboard';
 
 const GetUserData = () => {
   const countryData = Country.getAllCountries();
+
   const [stateData, setStateData] = useState<any>();
   const [cityData, setCityData] = useState<any>();
   const [country, setCountry] = useState<any>();
@@ -111,7 +113,7 @@ const GetUserData = () => {
             />
           </div>
         </div>
-        <div className="sm:col-span-2 space-y-8">
+        {/* <div className="sm:col-span-2 space-y-8">
           <div>
             <label
               htmlFor="country"
@@ -130,7 +132,7 @@ const GetUserData = () => {
               }}
               className="block w-full border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 ease-linear transition-all duration-150 sm:text-sm sm:leading-6">
               {countryData.map((country) => (
-                <option key={country.isoCode} value={country.isoCode}>
+                <option className='' key={country.isoCode} value={country.isoCode}>
                   {country.name}
                 </option>
               ))}
@@ -223,7 +225,52 @@ const GetUserData = () => {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
+        <div className="sm:col-span-2 mt-2.5 space-y-8">
+            <div>
+              <label htmlFor="country" className="block text-sm font-semibold leading-6 text-gray-900">
+                Country<span className='text-red-500 pl-1'>*</span>
+              </label>
+              <Selector
+                id={'country'}
+                data={countryData}
+                selected={country}
+                setSelected={setCountry}
+              />
+            </div>
+            
+            <div>
+              {state && (
+                <div>
+                  <label htmlFor="state" className="block text-sm font-semibold leading-6 text-gray-900">
+                    State<span className='text-red-500 pl-1'>*</span>
+                  </label>
+                  <Selector
+                    id={'state'}
+                    data={stateData}
+                    selected={state}
+                    setSelected={setState}
+                  />
+                </div>
+              )}
+            </div>
+            
+            <div>
+              {city && (
+                <div>
+                  <label htmlFor="city" className="block text-sm font-semibold leading-6 text-gray-900">
+                    City<span className='text-red-500 pl-1'>*</span>
+                  </label>
+                  <Selector 
+                    id={'city'}
+                    data={cityData} 
+                    selected={city} 
+                    setSelected={setCity} 
+                  />
+                </div>
+              )}
+            </div>
+          </div>
       </div>
       <div>
         <button

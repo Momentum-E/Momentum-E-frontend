@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React, { createContext,useState,useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import { useRouter } from 'next/router';
 import Pool from '../user-pool/user-pool';
@@ -7,6 +7,25 @@ const AccountContext = createContext();
 
 const Account = ({ children }) => {
   const router = useRouter()
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
+
+  const checkAuthentication = async () => {
+    try {
+      const user = Pool.getCurrentUser();
+      if (user) {
+        await getSession(user);
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+    }
+  };
 
   const getSession = async () => {
     return await new Promise((resolve, reject) => {
@@ -35,10 +54,12 @@ const Account = ({ children }) => {
         onSuccess: (data) => {
           console.log('onSuccess: ', data);
           resolve(data);
+          setIsAuthenticated(true);
         },
         onFailure: (err) => {
           console.error('onFailure: ', err);
           reject(err);
+          setIsAuthenticated(true);
         },
         newPasswordRequired: (data) => {
           console.log('newPasswordRequired: ', data);
@@ -53,11 +74,16 @@ const Account = ({ children }) => {
     if (user) {
       user.signOut();
       router.replace('/')
+      setIsAuthenticated(false);
     }
   };
 
   return (
-    <AccountContext.Provider value={{ authenticate, getSession, logout }}>
+    <AccountContext.Provider value={{
+      isAuthenticated,
+      authenticate,
+      getSession,
+      logout }}>
       {children}
     </AccountContext.Provider>
   );

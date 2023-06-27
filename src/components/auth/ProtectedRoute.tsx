@@ -19,7 +19,9 @@ const ProtectedRoute = ({Component}:any) => {
     checkAuthentication();
   }, [getSession, router]);
 
-    return <Component />;
+    return (
+      <Component />
+    );
 }
 
 export default ProtectedRoute

@@ -8,13 +8,15 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const router = useRouter()
   const currentPath = router.asPath
+
+  // need to remove navbar and footer conditonally
   return (
     <Account>
       <AccountContext.Consumer>
         {(accountContext) => (
           <>
             {currentPath !== '/dashboard' && <Navbar />}
-            <Component {...pageProps} accountContext={accountContext}/>
+              <Component {...pageProps} accountContext={accountContext}/>
             {currentPath !== '/dashboard' && <Footer />}
           </>
         )}

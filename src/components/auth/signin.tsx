@@ -11,7 +11,7 @@ const SignIn = () => {
     email: '',
     password: '',
   });
-  const [errorData, setErrorData] = useState();
+  // const [errorData, setErrorData] = useState();
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -24,7 +24,7 @@ const SignIn = () => {
   const handleAWSError = (err:any) => {
     if (err.code === 'NotAuthorizedException') {
       const errorMessage = err.message || 'An unknown error occurred.';
-      setErrorData(errorMessage);
+      // setErrorData(errorMessage);
       //AWS error message with a toast message
       toast.error(errorMessage);
     }
