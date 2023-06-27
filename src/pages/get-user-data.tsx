@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { City, Country, State } from 'country-state-city';
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const GetUserData = () => {
   const countryData = Country.getAllCountries();
@@ -16,6 +15,8 @@ const GetUserData = () => {
     firstName: '',
     lastName: '',
   });
+
+  const router = useRouter();
 
   useEffect(() => {
     return setStateData(State.getStatesOfCountry(country?.isoCode));
@@ -53,8 +54,12 @@ const GetUserData = () => {
         state: state?.isoCode,
         city: city?.name,
       },
+      email: localStorage.getItem('email'),
+      password: localStorage.getItem('password'),
     };
     console.log(formData);
+    toast.success('User successfully created');
+    router.replace('/dashboard');
   };
 
   return (
@@ -227,6 +232,7 @@ const GetUserData = () => {
           Register
         </button>
       </div>
+      <ToastContainer />
     </form>
   );
 };

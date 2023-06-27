@@ -73,6 +73,8 @@ const Signup = () => {
         toast.success('Please confirm your email to continue');
       }
     });
+    localStorage.setItem('password', input.password);
+    localStorage.setItem('email', input.email);
   };
 
   return (
