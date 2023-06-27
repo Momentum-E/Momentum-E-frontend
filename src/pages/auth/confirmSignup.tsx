@@ -1,4 +1,3 @@
-// @ts-nochec
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,11 +5,10 @@ import { CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import userPool from '../../components/user-pool/user-pool';
 import { useRouter } from 'next/router';
 
-const confirmSignup = ({username}:any) => {
-  
+const ConfirmSignup = ({ username }: any) => {
   const router = useRouter();
-  const [OTP, setOTP] = useState('')
-  const verifyAccount = (e:any) => {
+  const [OTP, setOTP] = useState('');
+  const verifyAccount = (e: any) => {
     e.preventDefault();
     const user = new CognitoUser({
       Username: username,
@@ -24,7 +22,7 @@ const confirmSignup = ({username}:any) => {
       } else {
         console.log(data);
         toast.success('Account verified successfully');
-        router.replace('/GetUserData')
+        router.replace('/get-user-data');
       }
     });
   };
@@ -57,7 +55,7 @@ const confirmSignup = ({username}:any) => {
                     name="otp"
                     type="text"
                     pattern="[0-9]*"
-                    inputMode='numeric'
+                    inputMode="numeric"
                     required={true}
                     autoComplete="email"
                     className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
@@ -81,4 +79,4 @@ const confirmSignup = ({username}:any) => {
     </main>
   );
 };
-export default confirmSignup;
+export default ConfirmSignup;
