@@ -1,11 +1,13 @@
 import React, { createContext } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
-
+import { useRouter } from 'next/router';
 import Pool from '../user-pool/user-pool';
 
 const AccountContext = createContext();
 
 const Account = ({ children }) => {
+  const router = useRouter()
+
   const getSession = async () => {
     return await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser();
@@ -46,10 +48,11 @@ const Account = ({ children }) => {
     });
   };
 
-  const logout = () => {
+  const logout = async () => {
     const user = Pool.getCurrentUser();
     if (user) {
       user.signOut();
+      router.replace('/')
     }
   };
 

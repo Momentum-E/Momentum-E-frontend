@@ -50,7 +50,8 @@ const getUserData = () => {
   };
 
     const onSubmit = (e: { preventDefault: () => void }) => {
-
+        e.preventDefault()
+        router.replace('/dashboard')
     }
 
 
@@ -157,6 +158,13 @@ const getUserData = () => {
                     </div>
                     <ToastContainer />
                 </div>
+            </div>
+            <div>
+                <button
+                    type="submit"
+                    className="flex justify-center w-full rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    Log In
+                </button>
             </div>
         </form>
     )
