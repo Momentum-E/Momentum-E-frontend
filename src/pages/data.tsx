@@ -67,6 +67,7 @@ const Dashboard = () => {
                   const userData = response.Item;
                   //@ts-ignore
                   setUserData(userData);
+                  console.log(userData)
                 } catch (error) {
                   console.error('Error fetching user data:', error);
                 }

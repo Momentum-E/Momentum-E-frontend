@@ -79,7 +79,7 @@ const Signup = () => {
     <div className="">
       {verifyProcess === false ? (
         <div className="isolate px-6 py-24 sm:py-32 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
+          <div className="mx-auto max-w-2xl pb-10 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-white-100 sm:text-4xl">
               Sign Up
             </h2>
@@ -235,7 +235,7 @@ const Signup = () => {
           </form>
         </div>
       ) : (
-        <ConfirmSignUp username={input.email} />
+        <ConfirmSignUp username={input.email} password={(input.password)}/>
       )}
       <ToastContainer />
     </div>

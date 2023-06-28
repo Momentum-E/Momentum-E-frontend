@@ -76,12 +76,12 @@ function classNames(...classes: string[]) {
               <div className="mt-3 space-y-2 lg:hidden md:inline-block">
                 <Link
                   href="/auth/login"
-                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-800">
+                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
                   Login
                 </Link>
                 <Link
                   href="/auth/register"
-                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-white rounded-md shadow hover:bg-gray-100">
+                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
                   Register
                 </Link>
               </div>
@@ -90,22 +90,22 @@ function classNames(...classes: string[]) {
         <div className="hidden space-x-2 md:inline-block">
           <Link
             href="/"
-            className="px-4 py-2 text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-800">
+            className="px-4 py-2 text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
             Home
           </Link>
           <Link
             href="/#aboutus"
-            className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-100">
+            className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
             About Us
           </Link>
           <Link
             href="/auth/login"
-            className="px-4 py-2 text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-800">
+            className="px-4 py-2 text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
             Login
           </Link>
           <Link
             href="/auth/register"
-            className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-100">
+            className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
             Register
           </Link>
         </div>

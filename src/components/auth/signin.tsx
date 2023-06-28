@@ -92,7 +92,7 @@ const SignIn = () => {
                   </label>
                   <div className="text-sm">
                     <Link
-                      href="/"
+                      href="/auth/forgot-password"
                       className="font-semibold text-white-200 hover:text-indigo-500">
                       Forgot password?
                     </Link>

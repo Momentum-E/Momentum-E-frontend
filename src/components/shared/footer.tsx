@@ -60,7 +60,7 @@ const Footer = () => {
                 <span className='hover:border-b hover:border-white-200'>Pricing</span>
               </Link>
             </div>
-            <div className="p-5 w-48 text-sm text-white-200">
+            <div className="p-5 w-40 text-sm text-white-200">
               <div className="uppercase text-white-100 font-bold">
                 Contact us
               </div>
@@ -69,13 +69,10 @@ const Footer = () => {
           </div>
         </div>
       </div>
-
-      <div className="bg-gray-800 pt-2 ">
-        <div
-          className="flex pb-5 px-3 m-auto  text-gray-100 text-md flex-col
-            md:flex-row max-w-6xl">
-          <div className="mt-2">© Copyright 2023. All Rights Reserved.</div>
-        </div>
+      <div
+        className="flex pb-5 px-5 m-auto text-gray-100 text-md flex-col
+          md:flex-row max-w-7xl">
+        <div className="mt-2">© Copyright 2023. All Rights Reserved.</div>
       </div>
     </div>
   );

@@ -59,11 +59,11 @@ const Account = ({ children }) => {
         onFailure: (err) => {
           console.error('onFailure: ', err);
           reject(err);
-          setIsAuthenticated(true);
+          setIsAuthenticated(false);
         },
         newPasswordRequired: (data) => {
           console.log('newPasswordRequired: ', data);
-          resolve(data);
+          alert('New password required, kindly change your password.')
         },
       });
     });
