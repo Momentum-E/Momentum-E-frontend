@@ -12,15 +12,18 @@ export default function App({ Component, pageProps }: AppProps) {
   // need to remove navbar and footer conditonally
   return (
     <Account>
-      <AccountContext.Consumer>
-        {(accountContext) => (
+    <AccountContext.Consumer>
+      {(accountContext) => {
+        const { isAuthenticated } = accountContext;
+        return (
           <>
-            {currentPath !== '/dashboard' && <Navbar />}
-              <Component {...pageProps} accountContext={accountContext}/>
-            {currentPath !== '/dashboard' && <Footer />}
+            {!isAuthenticated && <Navbar />} {/* Render Navbar only if user is authenticated */}
+            <Component {...pageProps} accountContext={accountContext} />
+            {!isAuthenticated && <Footer />}
           </>
-        )}
-      </AccountContext.Consumer>
-    </Account>
+        );
+      }}
+    </AccountContext.Consumer>
+  </Account>
   );
 }
