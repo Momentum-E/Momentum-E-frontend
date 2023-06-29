@@ -1,8 +1,10 @@
 import React,{useState} from 'react'
-// import userPool from '../user-pool/user-pool'
-import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import Pool from '../user-pool/user-pool'
+// import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { ToastContainer,toast } from 'react-toastify';
-import AWS from 'aws-sdk';
+// import AWS from 'aws-sdk';
+import { CognitoUser } from 'amazon-cognito-identity-js';
+import { useRouter } from 'next/router';
 
 const ForgotPassword = () => {
     // AWS.config.update({ region: 'ap-south-1' });    
@@ -12,39 +14,69 @@ const ForgotPassword = () => {
     const [step, setStep] = useState('request');
     // const [errorMessage, setErrorMessage] = useState('');
     // const [success, setSuccess] = useState('');
+    const router = useRouter()
+    
+    var userData = {
+        Username: username,
+        Pool: Pool,
+    };
+    const user = new CognitoUser(userData);
 
     const initiateForgotPassword = async () => {
-        const cognitoClient = new CognitoIdentityServiceProvider();
-        try {
-        await cognitoClient.forgotPassword({
-            ClientId: '5anhoi3gpfgvnqsd609smuh0qi',
-            Username: username,
-        }).promise();
-        setStep('confirm');
-        toast.success('email present')
-        } catch (error:any) {
-            console.log('err:' + error.message);
-            toast.error(error.message + '. Email not present')
-        }
+        // const cognitoClient = new CognitoIdentityServiceProvider();
+        // try {
+        // await cognitoClient.forgotPassword({
+        //     ClientId: '5anhoi3gpfgvnqsd609smuh0qi',
+        //     Username: username,
+        // }).promise();
+        // setStep('confirm');
+        // toast.success('email present')
+        // } catch (error:any) {
+        //     console.log('err:' + error.message);
+        //     toast.error(error.message + '. Email not present')
+        // }
+        
+        user.forgotPassword({
+            onSuccess: function(data) {
+                console.log(data)
+                toast.success('Code sent to:' + data)
+                setStep('confirm');
+            },
+            onFailure: function(err) {
+                toast.error(err.message || JSON.stringify(err))
+            },
+        });
     };
 
   const confirmForgotPassword = async () => {
-    const cognitoClient = new CognitoIdentityServiceProvider();
+    // const cognitoClient = new CognitoIdentityServiceProvider();
 
-    try {
-      await cognitoClient.confirmForgotPassword({
-        ClientId: 'YOUR_APP_CLIENT_ID',
-        ConfirmationCode: confirmationCode,
-        Password: newPassword,
-        Username: username,
-      }).promise();
+    // try {
+    //   await cognitoClient.confirmForgotPassword({
+    //     ClientId: 'YOUR_APP_CLIENT_ID',
+    //     ConfirmationCode: confirmationCode,
+    //     Password: newPassword,
+    //     Username: username,
+    //   }).promise();
 
-      console.log('Password reset successfully!');
-      toast.success('Password reset successfully!')
-    } catch (error:any) {
-        console.log(error.message);
-        toast.error(error.message)
-    }
+    //   console.log('Password reset successfully!');
+    //   toast.success('Password reset successfully!')
+    // } catch (error:any) {
+    //     console.log(error.message);
+    //     toast.error(error.message)
+    // }
+    
+    user.confirmPassword(confirmationCode, newPassword, {
+        onSuccess() {
+            console.log('Password confirmed!');
+            toast.success('Password confirmed!')
+            router.push('/auth/login/')
+        },
+        onFailure(err) {
+            console.log('Password not confirmed!');
+            toast.error('Password not confirmed!')
+        },
+    });
   };
 
     return (
@@ -94,15 +126,15 @@ const ForgotPassword = () => {
                         </div>
                         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                             <label
-                                htmlFor="email"
+                                htmlFor="token"
                                 className="block text-sm font-medium leading-6 text-white-100">
                                 Confirmation Code:
                             </label>
-                            <div className="mt-2">
+                            <div className="">
                                 <input
-                                id="email"
-                                name="email"
-                                type="text"
+                                type="number" 
+                                name="token" 
+                                id="token" 
                                 required={true}
                                 autoComplete="email"
                                 className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
@@ -112,14 +144,14 @@ const ForgotPassword = () => {
                             </div>
                             
                             <label
-                                htmlFor="email"
-                                className="block text-sm font-medium leading-6 text-white-100">
+                                htmlFor="password"
+                                className="block text-sm mt-3 font-medium leading-6 text-white-100">
                                 New Password:
                             </label>
-                            <div className="mt-2">
+                            <div className="">
                                 <input
-                                id="email"
-                                name="email"
+                                id="password"
+                                name="password"
                                 type="text"
                                 required={true}
                                 autoComplete="email"
