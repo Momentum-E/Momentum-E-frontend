@@ -16,6 +16,7 @@
     "amazon-cognito-identity-js": "^6.2.0",
     "autoprefixer": "10.4.14",
     "aws-sdk": "^2.1398.0",
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "country-state-city": "^3.1.4",
     "eslint": "8.42.0",
