@@ -1,99 +1,114 @@
-// import { useEffect, useState } from 'react';
-// import {
-//   CognitoUserPool,
-//   CognitoUserAttribute,
-// } from 'amazon-cognito-identity-js';
-// import AWS from 'aws-sdk';
+import { useEffect, useState } from 'react';
+import {
+  CognitoUserPool,
+  CognitoUserAttribute,
+} from 'amazon-cognito-identity-js';
+import AWS from 'aws-sdk';
+import axios from 'axios';
 
-// const Dashboard = () => {
-//   const [userData, setUserData] = useState(null);
+const checkApi = () => {
+  axios
+    .get('http://localhost:5000/check')
+    .then((res) => console.log(res.data.message))
+    .catch((err) => {
+      console.error(err);
+    });
+};
 
-//   useEffect(() => {
-//     const fetchUserData = async () => {
-//       const userPoolId = 'ap-south-1_1k0YcvhBt';
-//       const clientId = '5anhoi3gpfgvnqsd609smuh0qi';
-//       const region = 'ap-south-1';
-//       const identityPoolId = 'ap-south-1:c3738724-8009-4c80-89de-ce4f21a2da6b';
-//       const tableName = 'MomentumUsers';
+const Dashboard = () => {
+  const [userData, setUserData] = useState(null);
 
-//       const poolData = {
-//         UserPoolId: userPoolId,
-//         ClientId: clientId,
-//       };
-//       const userPool = new CognitoUserPool(poolData);
-//       const cognitoUser = userPool.getCurrentUser();
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userPoolId = 'ap-south-1_1k0YcvhBt';
+      const clientId = '5anhoi3gpfgvnqsd609smuh0qi';
+      const region = 'ap-south-1';
+      const identityPoolId = 'ap-south-1:c3738724-8009-4c80-89de-ce4f21a2da6b';
+      const tableName = 'MomentumUsers';
 
-//       if (cognitoUser !== null) {
-//         //@ts-ignore
-//         cognitoUser.getSession((err, session) => {
-//           if (err) {
-//             console.error('Error getting user session:', err);
-//           } else {
-//             const { accessToken } = session;
+      const poolData = {
+        UserPoolId: userPoolId,
+        ClientId: clientId,
+      };
+      const userPool = new CognitoUserPool(poolData);
+      const cognitoUser = userPool.getCurrentUser();
 
-//             AWS.config.update({
-//               region: region,
-//               credentials: new AWS.CognitoIdentityCredentials({
-//                 IdentityPoolId: identityPoolId,
-//                 Logins: {
-//                   [`cognito-idp.${region}.amazonaws.com/${userPoolId}`]: session
-//                     .getIdToken()
-//                     .getJwtToken(),
-//                 },
-//               }),
-//             });
+      if (cognitoUser !== null) {
+        //@ts-ignore
+        cognitoUser.getSession((err, session) => {
+          if (err) {
+            console.error('Error getting user session:', err);
+          } else {
+            const { accessToken } = session;
 
-//             const dynamodb = new AWS.DynamoDB.DocumentClient();
+            AWS.config.update({
+              region: region,
+              credentials: new AWS.CognitoIdentityCredentials({
+                IdentityPoolId: identityPoolId,
+                Logins: {
+                  [`cognito-idp.${region}.amazonaws.com/${userPoolId}`]: session
+                    .getIdToken()
+                    .getJwtToken(),
+                },
+              }),
+            });
 
-//             // Retrieve user attributes from Cognito
-//             cognitoUser.getUserAttributes(async (err, attributes) => {
-//               if (err) {
-//                 console.error('Error retrieving user attributes:', err);
-//               } else {
-//                 const userIdAttribute = attributes?.find(
-//                   (attr) => attr.Name === 'sub'
-//                 );
-//                 const userId = userIdAttribute?.Value;
+            const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-//                 const params = {
-//                   TableName: tableName,
-//                   Key: {
-//                     userId: userId,
-//                   },
-//                 };
+            // Retrieve user attributes from Cognito
+            cognitoUser.getUserAttributes(async (err, attributes) => {
+              if (err) {
+                console.error('Error retrieving user attributes:', err);
+              } else {
+                const userIdAttribute = attributes?.find(
+                  (attr) => attr.Name === 'sub'
+                );
+                const userId = userIdAttribute?.Value;
 
-//                 try {
-//                   const response = await dynamodb.get(params).promise();
-//                   const userData = response.Item;
-//                   //@ts-ignore
-//                   setUserData(userData);
-//                   console.log(userData)
-//                 } catch (error) {
-//                   console.error('Error fetching user data:', error);
-//                 }
-//               }
-//             });
-//           }
-//         });
-//       }
-//     };
+                const params = {
+                  TableName: tableName,
+                  Key: {
+                    userId: userId,
+                  },
+                };
 
-//     fetchUserData();
-//   }, []);
+                try {
+                  const response = await dynamodb.get(params).promise();
+                  const userData = response.Item;
+                  //@ts-ignore
+                  setUserData(userData);
+                  console.log(userData);
+                } catch (error) {
+                  console.error('Error fetching user data:', error);
+                }
+              }
+            });
+          }
+        });
+      }
+    };
 
-//   return (
-//     <div>
-//       <h1>Dashboard</h1>
-//       {userData && (
-//         <div>
-//           {/* <h2>Welcome, {userData.name}</h2> */}
-//           {userData}
-//           {/* <p>Email: {userData.email}</p> */}
-//           {/* Display other user data as needed */}
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
+    fetchUserData();
+  }, []);
 
-// export default Dashboard;
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <button onClick={checkApi}>
+        <span className="text-white-100 px-20">
+          Check API health in console
+        </span>
+      </button>
+      {userData && (
+        <div>
+          {/* <h2>Welcome, {userData.name}</h2> */}
+          {userData}
+          {/* <p>Email: {userData.email}</p> */}
+          {/* Display other user data as needed */}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Dashboard;
