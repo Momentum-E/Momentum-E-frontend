@@ -51,6 +51,7 @@ const SignIn = () => {
 
       // check is the email is verified
         console.log(data)
+        router.replace('/dashboard')
         // We need to get all the user data from the Dynamo DB
       })
       .catch((err: any) => {

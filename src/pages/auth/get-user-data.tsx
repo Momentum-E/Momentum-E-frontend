@@ -57,7 +57,7 @@ const GetUserData = () => {
 
     // Log the form data
     const formData = {
-      company_name:'',
+      company_name:companyName,
       address: {
         country: country?.isoCode,
         state: state?.isoCode,
@@ -69,7 +69,7 @@ const GetUserData = () => {
     };
     console.log(formData);
     toast.success('User successfully created');
-    // router.replace('/dashboard');
+    router.replace('/auth/login');
   };
 
   return (
