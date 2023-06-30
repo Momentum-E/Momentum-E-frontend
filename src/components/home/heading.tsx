@@ -10,14 +10,14 @@ const Heading: React.FC<HeadingProps> = ({
   return (
     <>
       <div className="flex justify-center items-center md:py-5">
-        <figure className="-translate-y-10 px-6">
+        <figure className="-translate-y-10 md:px-6 px-0">
           <DottedIcon />
         </figure>
         <div className="md:text-5xl text-2xl font-bold text-center">
           <h1>{primaryHeading}</h1>
           <h1>{secondaryHeading}</h1>
         </div>
-        <figure className="translate-y-7 px-6">
+        <figure className="translate-y-7 md:first-letter:px-6">
           <DottedIcon />
         </figure>
       </div>

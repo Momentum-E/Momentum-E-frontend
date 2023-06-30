@@ -1,2 +1,8 @@
 export {default as unrivaled_performance_img1} from './collage-customer-experience-concept-1.png'
 export {default as unrivaled_performance_img2} from './growth-concept.png'
+export { default as battery_insight_1 } from './battery-insight-1.svg'
+export { default as battery_insight_2 } from './battery-insight-2.svg'
+export { default as battery_insight_3 } from './battery-insight-3.svg'
+export {default as momentum_e_1} from './momentum-e-platform-1.svg' 
+export {default as momentum_e_2} from './momentum-e-platform-2.svg' 
+export {default as momentum_e_3} from './momentum-e-platform-3.svg' 

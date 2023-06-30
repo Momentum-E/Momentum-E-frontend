@@ -11,13 +11,13 @@ function classNames(...classes: string[]) {
 
   return (
     <nav className="w-full bg-purple-500 shadow">
-      <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
+      <div className="justify-between px-4 mx-auto lg:max-w-5xl md:items-center md:flex md:px-8">
         <div>
           <div className="flex items-center justify-between py-3 md:py-5 md:block">
             <Link href="/">
               <h2 className="text-2xl font-bold text-white-100">
                 <figure>
-                  <Image src={logo} alt="Logo" height={100} width={100} />
+                  <Image src={logo} alt="Logo" className=' w-32 h-auto' />
                 </figure>
               </h2>
             </Link>
@@ -58,7 +58,7 @@ function classNames(...classes: string[]) {
         </div>
         <div>
           <div
-            className={`justify-self-center pb-3 lg:hidden mt-8 md:block md:pb-0 md:mt-0 ${
+            className={`justify-self-center pb-3 md:hidden mt-8 md:pb-0 md:mt-0 ${
               navbar ? 'block' : 'hidden'
             }`}>
             <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">

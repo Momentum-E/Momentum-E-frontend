@@ -26,4 +26,7 @@ export type HeadingProps = {
 export type ItemCardProps = {
   heading?: string;
   description?: string;
+  imageSource?:any,
+  imageAlt?:any,
+  imageClassname?:string,
 };

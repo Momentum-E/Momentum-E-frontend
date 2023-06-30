@@ -3,12 +3,12 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import {useRouter} from 'next/router';
 import { Account, AccountContext } from '@/components/auth/account';
+import Dashboard from './dashboard';
 
 export default function App({ Component, pageProps }: AppProps) {
 
   const router = useRouter()
-  const currentPath = router.asPath
-
+  
   // need to remove navbar and footer conditonally
   return (
     <Account>
@@ -17,9 +17,19 @@ export default function App({ Component, pageProps }: AppProps) {
         const { isAuthenticated } = accountContext;
         return (
           <>
-            {!isAuthenticated && <Navbar />} {/* Render Navbar only if user is authenticated */}
-            <Component {...pageProps} accountContext={accountContext} />
-            {!isAuthenticated && <Footer />}
+          {
+            !isAuthenticated ? 
+            (
+              <>
+                <Navbar /> {/* Render Navbar only if user is authenticated */}
+                <Component {...pageProps} accountContext={accountContext} />
+                <Footer />
+              </>
+            ):
+            (
+              <Dashboard accountContext={accountContext} />
+            )
+            }
           </>
         );
       }}

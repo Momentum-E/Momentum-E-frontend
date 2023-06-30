@@ -86,7 +86,7 @@ const ConfirmSignup = ({ username }: any) => {
                 </div>
                 <button
                   type='button'
-                  className='block text-sm font-medium leading-6 text-white-200 hover:border-b hover:border-white-200'
+                  className='block text-sm font-medium leading-6 text-white-200 hover: hover:underline'
                   onClick={resendConfirmationCode}
                 >
                   Resend Cofirmation Code
@@ -94,7 +94,7 @@ const ConfirmSignup = ({ username }: any) => {
                 <div>
                   <button
                     type="submit"
-                    className="flex w-full justify-center rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    className="flex w-full justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Confirm OTP
                   </button>
                 </div>

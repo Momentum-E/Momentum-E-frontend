@@ -2,6 +2,12 @@ import React from 'react';
 import {
   unrivaled_performance_img1,
   unrivaled_performance_img2,
+  battery_insight_1,
+  battery_insight_2,
+  battery_insight_3,
+  momentum_e_1,
+  momentum_e_2,
+  momentum_e_3
 } from '@/assets/images/';
 import { Heading, ItemCard, GetInTouch } from './';
 import Image from 'next/image';
@@ -10,31 +16,41 @@ const Hero = () => {
   
   return (
     <div className=" text-white-100 py-5">
-      <div className="md:h-screen py-10">
+      <div className="lg:h-screen py-10">
         <div>
           <Heading
-            primaryHeading="Know your battery better"
-            secondaryHeading="through our deep analysis"
-            tertiaryHeading="Know your battery better through our deep analysis Know your battery
-        better through"
+            primaryHeading="Electic Vehicle Battery"
+            secondaryHeading="Insight"
+            tertiaryHeading="Manage your EV with confidence"
           />
         </div>
         <div className="flex flex-wrap justify-evenly py-10">
           <ItemCard
-            heading="Individual Owner"
-            description="Know your battery better through our Know your battery better through our deep analysis"
+            imageSource={battery_insight_1}
+            imageAlt='EV Owner'
+            imageClassname=''
+            heading="EV Owner"
+            description="Know your battery health and performance. Maximize resale value."
           />
           <ItemCard
-            heading="Individual Owner"
-            description="Know your battery better through our Know your battery better through our deep analysis"
+            imageSource={battery_insight_2}
+            imageAlt='EV Owner'
+            imageClassname=''
+            heading="EV Fleets"
+            description="Optimize costs. Maximize uptime."
           />
           <ItemCard
-            heading="Individual Owner"
-            description="Know your battery better through our Know your battery better through our deep analysis"
+            imageSource={battery_insight_3}
+            imageAlt='EV Owner'
+            imageClassname=''
+            heading="EV Battery Recyclers"
+            description="List on our platform. Increase battery supply."
           />
         </div>
       </div>
-      <div>
+
+      {/* Future Use */}
+      {/* <div>
         <Heading
           primaryHeading="OUR UNRIVALED PERFORMANCE"
           tertiaryHeading="Know your battery better through our deep "
@@ -77,18 +93,34 @@ const Hero = () => {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
+
       <div>
         <div className="pt-24">
           <Heading
-            primaryHeading="BUILD SOMETHING"
-            tertiaryHeading="Know your battery better through our Know your battery better through our deep analysis"
+            primaryHeading="MOMENTUM-E PLATFORM"
+            tertiaryHeading="Know your battery better through our deep analysis"
           />
         </div>
         <div className="flex flex-wrap justify-evenly py-10">
-          <ItemCard description="Know your battery better through our Know your battery better through our deep analysis" />
-          <ItemCard description="Know your battery better through our Know your battery better through our deep analysis" />
-          <ItemCard description="Know your battery better through our Know your battery better through our deep analysis" />
+          <ItemCard 
+          imageSource={momentum_e_1}
+          imageAlt=''
+          imageClassname=''
+          description="Actionable insights through proprietary machine learning algorithms." 
+          />
+          <ItemCard 
+          imageSource={momentum_e_2}
+          imageAlt=''
+          imageClassname=''
+          description="Know your battery’s state of charge, state of health and range obtained."
+          />
+          <ItemCard
+          imageSource={momentum_e_3}
+          imageAlt=''
+          imageClassname=''
+          description="Battery degradation is non-linear and varied, our platform helps you monitor and manage your battery performance and plan for end of life application."
+          />
         </div>
       </div>
       <GetInTouch/>
