@@ -8,47 +8,32 @@ import Dashboard from './dashboard';
 export default function App({ Component, pageProps }: AppProps) {
 
   const router = useRouter()
-
+  
   // need to remove navbar and footer conditonally
   return (
     <Account>
-      <AccountContext.Consumer>
-        {(accountContext) => {
-          const { isAuthenticated } = accountContext;
-          return (
-            <>
-              {/* {!isAuthenticated && <Navbar />} */}
-              {
-                !isAuthenticated ? 
-                (
-                  <>
-                    <Navbar />
-                    <Component {...pageProps} accountContext={accountContext} />    
-                    <Footer/>
-                  </>
-                )
-                :
-                (
-                  <>
-                  {/* All the properties or attributes can be extracted from the "accountContext" */}
-                  <Dashboard accountContext={accountContext}/>
-                  {/* <Component {...pageProps} accountContext={accountContext} /> */}
-
-                  {/* EXPLANATION ABOUT THE CODE 
-                  In the above code, the isAuthenticated property is extracted 
-                  from the accountContext object provided by the AccountContext.Consumer.
-                  If the user is authenticated (isAuthenticated is true), the Navbar
-                  component will be rendered; otherwise, it will be skipped.
-                  Make sure you have the appropriate logic in your Account component
-                  to update the isAuthenticated state based on user authentication status. */}
-                  </>
-                )
-              }
-              {/* {!isAuthenticated && <Footer />} */}
-            </>
-          );
-        }}
-      </AccountContext.Consumer>
+    <AccountContext.Consumer>
+      {(accountContext) => {
+        const { isAuthenticated } = accountContext;
+        return (
+          <>
+          {
+            !isAuthenticated ? 
+            (
+              <>
+                <Navbar /> {/* Render Navbar only if user is authenticated */}
+                <Component {...pageProps} accountContext={accountContext} />
+                <Footer />
+              </>
+            ):
+            (
+              <Dashboard accountContext={accountContext} />
+            )
+            }
+          </>
+        );
+      }}
+    </AccountContext.Consumer>
   </Account>
   );
 }

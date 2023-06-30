@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
+import ConfirmSignup from '@/pages/auth/confirmSignup';
 
 const SignIn = () => {
   const router = useRouter();
+  const [userConfirmed, setUserConfirmed] = useState(true)
   const [input, setInput] = useState({
     email: '',
     password: '',
@@ -27,12 +29,19 @@ const SignIn = () => {
       //AWS error message with a toast message
       toast.error(errorMessage);
     }
+    if (err.code === 'UserNotConfirmedException') {
+      const errorMessage = err.message + 'Please verify your email.';
+      // setErrorData(errorMessage);
+      //AWS error message with a toast message
+      toast.error(errorMessage);
+      setUserConfirmed(false)
+    }
     else {
       console.error(err);
     }
   };
 
-  const { authenticate, checkEmailConfirmation } = useContext(AccountContext);
+  const { authenticate } = useContext(AccountContext);
 
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -41,108 +50,110 @@ const SignIn = () => {
     .then((data: any) => {
 
       // check is the email is verified
-      checkEmailConfirmation(input.email)
-      .then((isConfirmed:any) => {
-        // Proceed with sign-in or display appropriate message based on `isConfirmed` value
-        router.replace(`/dashboard/${input.email}`);
-        toast.success(isConfirmed)
-      })
-      .catch((error:any) => {
-        toast.error(error + 'You have not confirmed your email')
-        // Handle any errors that may occur during email confirmation check
-      });
+        console.log(data)
         // We need to get all the user data from the Dynamo DB
       })
       .catch((err: any) => {
-        console.error('error', err);
+        // console.error('error', err);
         handleAWSError(err);
       });
   };
 
   return (
-    <main>
-      <section className="relative w-full h-full py-20 min-h-screen">
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-100">
-              Sign in to your account
-            </h2>
-          </div>
+    <>
+    {
+      userConfirmed ? 
+      (
+        <main>
+          <section className="relative w-full h-full py-20 min-h-screen">
+            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+              <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-100">
+                  Sign in to your account
+                </h2>
+              </div>
 
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form
-              className="space-y-6"
-              action="#"
-              method="POST"
-              onSubmit={(event) => handleLogin(event)}>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-white-100">
-                  Email address<span className="text-red-500 pl-1">*</span>
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required={true}
-                    autoComplete="email"
-                    className="border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                    value={input.email}
-                    onChange={(e) => onInputChange(e)}
-                  />
-                </div>
-              </div>
-              <div>
-                <div className="flex items-center justify-between">
-                  <label
-                    htmlFor={'password'}
-                    className="block text-sm font-medium leading-6 text-white-100">
-                    Password<span className="text-red-500 pl-1">*</span>
-                  </label>
-                  <div className="text-sm">
-                    <Link
-                      href="/auth/forgot-password"
-                      className="font-semibold text-white-200 hover:text-indigo-500">
-                      Forgot password?
-                    </Link>
+              <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <form
+                  className="space-y-6"
+                  action="#"
+                  method="POST"
+                  onSubmit={(event) => handleLogin(event)}>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium leading-6 text-white-100">
+                      Email address<span className="text-red-500 pl-1">*</span>
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required={true}
+                        autoComplete="email"
+                        className="border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
+                        value={input.email}
+                        onChange={(e) => onInputChange(e)}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="mt-2">
-                  <input
-                    id={'password'}
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required={true}
-                    className="border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                    value={input.password}
-                    onChange={(e) => onInputChange(e)}
-                  />
-                </div>
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <label
+                        htmlFor={'password'}
+                        className="block text-sm font-medium leading-6 text-white-100">
+                        Password<span className="text-red-500 pl-1">*</span>
+                      </label>
+                      <div className="text-sm">
+                        <Link
+                          href="/auth/forgot-password"
+                          className="font-semibold text-white-200 hover:text-indigo-500">
+                          Forgot password?
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="mt-2">
+                      <input
+                        id={'password'}
+                        name="password"
+                        type="password"
+                        autoComplete="current-password"
+                        required={true}
+                        className="border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
+                        value={input.password}
+                        onChange={(e) => onInputChange(e)}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      className="flex justify-center w-full rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                      Log In
+                    </button>
+                  </div>
+                </form>
+                <p className="mt-10 text-center text-sm text-white-100">
+                  Not a member?{' '}
+                  <Link
+                    href="/auth/register"
+                    className="font-semibold leading-6 text-white-200 hover:text-indigo-500">
+                    Register
+                  </Link>
+                </p>
               </div>
-              <div>
-                <button
-                  type="submit"
-                  className="flex justify-center w-full rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                  Log In
-                </button>
-              </div>
-            </form>
-            <p className="mt-10 text-center text-sm text-white-100">
-              Not a member?{' '}
-              <Link
-                href="/auth/register"
-                className="font-semibold leading-6 text-white-200 hover:text-indigo-500">
-                Register
-              </Link>
-            </p>
-          </div>
-        </div>
-      </section>
-      <ToastContainer />
-    </main>
+            </div>
+          </section>
+        </main>
+
+      ):
+      (
+        <ConfirmSignup username={input.email}/>
+      )
+    }
+    <ToastContainer />
+    </>
   );
 };
 

@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Sidebar, DashboardNavbar, DashboardContent } from '@/components/dashboard';
-import {
-  CognitoUserPool,
-  CognitoUserAttribute,
-} from 'amazon-cognito-identity-js';
-import AWS from 'aws-sdk';
+// import {
+//   CognitoUserPool,
+//   CognitoUserAttribute,
+// } from 'amazon-cognito-identity-js';
+// import AWS from 'aws-sdk';
 
 
-const DashboardComponent = () => {
+const DashboardComponent = ({accountContext}:any) => {
   
   let isTab = useMediaQuery({ query: '(max-width:768px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);

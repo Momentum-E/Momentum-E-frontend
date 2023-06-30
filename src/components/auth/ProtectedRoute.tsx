@@ -1,28 +1,28 @@
-import React,{Children, useContext, useEffect} from 'react'
+import React,{useContext, useEffect} from 'react'
 import { useRouter } from 'next/router'
 import { AccountContext } from './account'
 
-const ProtectedRoute = (Component:any) => {
-  const ComponentWithAuth = (props:any) => {
-    const { getSession } = useContext(AccountContext);
-    const router = useRouter();
-    useEffect(() => {
-      checkAuthentication();
-    }, [getSession, router]);
+const ProtectedRoute = ({Component,accountContext}:any) => {
+  const { getSession } = useContext(AccountContext);
+  const router = useRouter();
+
+  useEffect(() => {
     const checkAuthentication = async () => {
       try {
         // Check if the user has an active session
         await getSession();
-        // router.replace('/dashboard')
+        router.replace('/dashboard')
       } catch (error) {
         // If there is no active session, redirect to the login page
-        router.push('/auth/login');
+        router.replace('/auth/login');
       }
     };
-    return <Component {...props}/>
-  }
+    checkAuthentication();
+  }, [getSession, router]);
 
-    return ComponentWithAuth
+    return (
+      <Component accountContext={accountContext}/>
+    );
 }
 
 export default ProtectedRoute

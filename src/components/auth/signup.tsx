@@ -54,6 +54,9 @@ const Signup = () => {
 
   const onSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
+
+    // This is code for adding email as an attribute 
+
     // const attributeList = [];
     // attributeList.push(
     //   new CognitoUserAttribute({
@@ -61,6 +64,7 @@ const Signup = () => {
     //     Value: input.email,
     //   })
     // );
+
     userPool.signUp(input.email, input.password, [], null, (err, data) => {
       if (err) {
         // console.log(err)
@@ -77,7 +81,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="">
+    <div>
       {verifyProcess === false ? (
         <div className="isolate px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto max-w-2xl pb-10 text-center">
@@ -96,6 +100,7 @@ const Signup = () => {
             onSubmit={(event) => onSubmit(event)}
             className="mx-auto max-w-xl sm:mt-20">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+
               {/* <div className="sm:col-span-2">
                 <label
                   htmlFor="username"
@@ -115,7 +120,7 @@ const Signup = () => {
                   />
                 </div>
               </div> */}
-              
+
               <div className="sm:col-span-2">
                 <label
                   htmlFor="email"
@@ -247,7 +252,7 @@ const Signup = () => {
                 type="submit"
                 className={`${
                   input.password === input.confirmPassword && agreed
-                    ? `hover:bg-me-green-100 `
+                    ? `hover:bg-me-green-200/90 `
                     : ` `
                 } block w-full rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}>
                 Register
@@ -255,9 +260,12 @@ const Signup = () => {
             </div>
           </form>
         </div>
-      ) : (
-        <ConfirmSignUp username={input.email} password={(input.password)}/>
-      )}
+      ) 
+      : 
+      (
+        <ConfirmSignUp username={input.email} />
+      )
+      }
       <ToastContainer />
     </div>
   );
