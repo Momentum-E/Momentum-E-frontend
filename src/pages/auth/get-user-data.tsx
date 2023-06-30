@@ -16,9 +16,9 @@ const GetUserData = () => {
 
   const [stateData, setStateData] = useState<any>();
   const [cityData, setCityData] = useState<any>();
-  const [country, setCountry] = useState<any>();
-  const [state, setState] = useState<any>();
-  const [city, setCity] = useState<any>();
+  const [country, setCountry] = useState<any>('');
+  const [state, setState] = useState<any>("");
+  const [city, setCity] = useState<any>("");
   const [ownerType,setOwnerType] = useState(owner_type[0])
   const [input, setInput] = useState({
     firstName: '',
@@ -65,62 +65,91 @@ const GetUserData = () => {
       },
       email: localStorage.getItem('email'),
       password: localStorage.getItem('password'),
-      owner_type: ownerType.type
+      owner_type: ownerType.type,
     };
     console.log(formData);
     toast.success('User successfully created');
-    router.replace('/dashboard');
+    // router.replace('/dashboard');
   };
 
   return (
     <form
       method="POST"
       onSubmit={onSubmit}
-      className="w-full h-full py-10 py-5 space-y-10 min-h-screen mx-auto max-w-xl sm:mt-20">
+      className="w-full h-full py-10 space-y-10 min-h-screen mx-auto max-w-xl sm:mt-20">
       <p className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-100">
         This is the last step! Please enter a few more information
       </p>
       <div className="grid grid-cols-1 px-5 gap-x-8 gap-y-6 sm:grid-cols-2">
-        <div>
-          <label
-            htmlFor="firstName"
-            className="block text-sm font-semibold leading-6 text-white-100">
-            First name
-            <span className="text-red-500 pl-1">*</span>
-          </label>
-          <div className="mt-2.5">
-            <input
-              type="text"
-              name="firstName"
-              id="firstName"
-              required={true}
-              autoComplete="given-name"
-              className="block w-full border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-              value={input.firstName}
-              onChange={onInputChange}
-            />
-          </div>
-        </div>
-        <div>
-          <label
-            htmlFor="lastName"
-            className="block text-sm font-semibold leading-6 text-white-100">
-            Last name
-            <span className="text-red-500 pl-1">*</span>
-          </label>
-          <div className="mt-2.5">
-            <input
-              type="text"
-              name="lastName"
-              id="lastName"
-              required={true}
-              autoComplete="family-name"
-              className="block w-full border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-              value={input.lastName}
-              onChange={onInputChange}
-            />
-          </div>
-        </div>
+        {
+          ownerType.type === 'Individual Owner' ?
+          (
+            <>
+              <div>
+                <label
+                  htmlFor="firstName"
+                  className="block text-sm font-semibold leading-6 text-white-100">
+                  First name
+                  <span className="text-red-500 pl-1">*</span>
+                </label>
+                <div className="mt-2.5">
+                  <input
+                    type="text"
+                    name="firstName"
+                    id="firstName"
+                    required={true}
+                    autoComplete="given-name"
+                    className="block w-full border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
+                    value={input.firstName}
+                    onChange={onInputChange}
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="lastName"
+                  className="block text-sm font-semibold leading-6 text-white-100">
+                  Last name
+                  <span className="text-red-500 pl-1">*</span>
+                </label>
+                <div className="mt-2.5">
+                  <input
+                    type="text"
+                    name="lastName"
+                    id="lastName"
+                    required={true}
+                    autoComplete="family-name"
+                    className="block w-full border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
+                    value={input.lastName}
+                    onChange={onInputChange}
+                  />
+                </div>
+              </div>
+            </>
+          ):
+          (
+            <div>
+              <label
+                htmlFor="company"
+                className="block text-sm font-semibold leading-6 text-white-100">
+                Company Name:
+                <span className="text-red-500 pl-1">*</span>
+              </label>
+              <div className="mt-2.5">
+                <input
+                  type="text"
+                  name="company"
+                  id="company"
+                  required={true}
+                  autoComplete="company"
+                  className="block w-full border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
+                  value={input.lastName}
+                  onChange={onInputChange}
+                />
+              </div>
+            </div>
+          )
+        }
         <div className="sm:col-span-2 space-y-8">
             <label htmlFor="country" className="block text-sm font-semibold leading-6 text-white-100">
               Type of Owner<span className='text-red-500 pl-1'>*</span>

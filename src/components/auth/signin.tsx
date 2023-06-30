@@ -11,7 +11,6 @@ const SignIn = () => {
     email: '',
     password: '',
   });
-  // const [errorData, setErrorData] = useState();
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,14 +32,26 @@ const SignIn = () => {
     }
   };
 
-  const { authenticate } = useContext(AccountContext);
+  const { authenticate, checkEmailConfirmation } = useContext(AccountContext);
 
-  const handleLogin = (event: { preventDefault: () => void }) => {
+  const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-
+    
     authenticate(input.email, input.password)
-      .then((data: any) => {
-        router.replace('/dashboard');
+    .then((data: any) => {
+
+      // check is the email is verified
+      checkEmailConfirmation(input.email)
+      .then((isConfirmed:any) => {
+        // Proceed with sign-in or display appropriate message based on `isConfirmed` value
+        router.replace(`/dashboard/${input.email}`);
+        toast.success(isConfirmed)
+      })
+      .catch((error:any) => {
+        toast.error(error + 'You have not confirmed your email')
+        // Handle any errors that may occur during email confirmation check
+      });
+        // We need to get all the user data from the Dynamo DB
       })
       .catch((err: any) => {
         console.error('error', err);

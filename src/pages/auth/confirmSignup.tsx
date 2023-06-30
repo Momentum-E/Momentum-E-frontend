@@ -47,7 +47,7 @@ const ConfirmSignup = ({ username }: any) => {
   return (
     <div>
       {
-        getUserDataProcess === false ?
+        !getUserDataProcess === false ?
         (
         <div className="relative w-full h-full py-32 min-h-screen">
           <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

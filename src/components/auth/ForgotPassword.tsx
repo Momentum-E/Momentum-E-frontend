@@ -23,19 +23,9 @@ const ForgotPassword = () => {
     const user = new CognitoUser(userData);
 
     const initiateForgotPassword = async () => {
-        // const cognitoClient = new CognitoIdentityServiceProvider();
-        // try {
-        // await cognitoClient.forgotPassword({
-        //     ClientId: '5anhoi3gpfgvnqsd609smuh0qi',
-        //     Username: username,
-        // }).promise();
-        // setStep('confirm');
-        // toast.success('email present')
-        // } catch (error:any) {
-        //     console.log('err:' + error.message);
-        //     toast.error(error.message + '. Email not present')
-        // }
-        
+        // Should add code to implement if the email is present in the database
+        // and only then run the code below
+        // Testing remaining for the code 
         user.forgotPassword({
             onSuccess: function(data) {
                 console.log(data)
@@ -49,32 +39,15 @@ const ForgotPassword = () => {
     };
 
   const confirmForgotPassword = async () => {
-    // const cognitoClient = new CognitoIdentityServiceProvider();
-
-    // try {
-    //   await cognitoClient.confirmForgotPassword({
-    //     ClientId: 'YOUR_APP_CLIENT_ID',
-    //     ConfirmationCode: confirmationCode,
-    //     Password: newPassword,
-    //     Username: username,
-    //   }).promise();
-
-    //   console.log('Password reset successfully!');
-    //   toast.success('Password reset successfully!')
-    // } catch (error:any) {
-    //     console.log(error.message);
-    //     toast.error(error.message)
-    // }
-    
     user.confirmPassword(confirmationCode, newPassword, {
         onSuccess() {
-            console.log('Password confirmed!');
-            toast.success('Password confirmed!')
+            console.log('Password reset confirmed!');
+            toast.success('Password reset confirmed!')
             router.push('/auth/login/')
         },
         onFailure(err) {
-            console.log('Password not confirmed!');
-            toast.error('Password not confirmed!')
+            console.log('Password reset not confirmed!');
+            toast.error('Password reset not confirmed!')
         },
     });
   };

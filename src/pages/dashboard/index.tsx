@@ -2,10 +2,13 @@ import React from 'react';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import DashboardComponent from '../../components/dashboard/DashboardComponent';
 
-const Dashboard = () => {
+const Dashboard = ({accountContext}:any) => {
+
+  // just like getting sessions we can get user data and pass it as props to the dashboardComponent
+  // const {getSession} =  accountContext;
   return(
-    <ProtectedRoute Component={DashboardComponent}/> 
+    <DashboardComponent/>
   )
 };
 
-export default Dashboard;
+export default ProtectedRoute(Dashboard);
