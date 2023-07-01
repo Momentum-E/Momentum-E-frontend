@@ -1,42 +1,45 @@
-import React, { Fragment,useContext, useEffect,useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { DashboardNavbarProps } from '@/utils/props/props';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { AccountContext } from '../auth/account';
 import Image from 'next/image';
-import logo from '../../assets/logos/logo_white_nocap.png'
-import { useRouter } from 'next/router';
+import logo from '../../assets/logos/logo_white_nocap.png';
+import axios from 'axios';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const DashboardNavbar: React.FC<DashboardNavbarProps> = ({setIsOpen,isOpen,}) => {
+const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
+  setIsOpen,
+  isOpen,
+}) => {
   const { getSession, logout } = useContext(AccountContext);
-  const [userEmail, setuserEmail] = useState("")
-  const router = useRouter();
-
-  // const { authenticate } = useContext(AccountContext);
-  const SignOut = () => {
-    logout();
-  }
-
-  // temporarily using this to get the user details
-  const getUserDetails = async () => {
-    try {
-      const session = await getSession();
-      const userEmail = session.idToken.payload.email;
-      // console.log('User Email:', userEmail);
-      setuserEmail(userEmail)
-    } catch (error) {
-      console.error('Error retrieving user details:', error);
-    }
-  };
+  const [user, setUser] = useState(null);
+  const [name, setName] = useState<string>('');
 
   useEffect(() => {
-    getUserDetails();
+    const fetchuserdetails = async () => {
+      try {
+        const session = await getSession();
+        const userId = session.idToken.payload.sub;
+        const response = await axios.get(
+          `http://localhost:5000/auth/users/${userId}`
+        );
+        console.log(response.data);
+        setName(response.data.firstName);
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchuserdetails();
   }, []);
 
-  
+  const SignOut = () => {
+    logout();
+  };
 
   return (
     <Disclosure as="nav" className="relative w-full z-10 bg-gray-800">
@@ -50,12 +53,34 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({setIsOpen,isOpen,}) =>
                   onClick={() => setIsOpen(true)}>
                   <span className="sr-only">Open main menu</span>
                   {isOpen ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="block h-6 w-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="block h-6 w-6">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="block w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="block w-6 h-6">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                      />
                     </svg>
                   )}
                 </Disclosure.Button>
@@ -73,37 +98,22 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({setIsOpen,isOpen,}) =>
                     alt="Momentum-E"
                   />
                 </div>
-                {/* <div className="hidden sm:ml-6 sm:block">
-                <div className="flex space-x-4">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'rounded-md px-3 py-2 text-sm font-medium'
-                      )}
-                      aria-current={item.current ? 'page' : undefined}
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-              </div> */}
               </div>
               <div className="absolute h-full inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div className="flex justify-center p-1 overflow-hidden text-ellipsis">
                     <span className="text-white-100 mr-2 overflow-hidden text-ellipsis hidden lg:flex lg:items-end">
-                      Hello {userEmail}
+                      Hello, {name}
                     </span>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
-                      <img
+                      <Image
                         className="h-8 w-8 rounded-full"
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
+                        alt="Image of the person"
+                        width={100}
+                        height={100}
                       />
                     </Menu.Button>
                   </div>
@@ -119,7 +129,6 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({setIsOpen,isOpen,}) =>
                       <Menu.Item as={'ul'}>
                         {({ active }) => (
                           <li
-                            
                             className={classNames(
                               active ? 'bg-gray-700' : '',
                               'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200'

@@ -54,6 +54,7 @@ const GetUserData = () => {
     e.preventDefault();
 
     const formData = {
+      userId: localStorage.getItem('userId'),
       email: localStorage.getItem('email'),
       firstName: input.firstName,
       lastName: input.lastName,
@@ -79,6 +80,7 @@ const GetUserData = () => {
 
     // console.log(formData);
     localStorage.removeItem('email');
+    localStorage.removeItem('userId');
     toast.success('User successfully created');
     router.replace('/auth/login');
   };

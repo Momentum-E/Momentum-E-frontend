@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import userPool from '../user-pool/user-pool';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -55,7 +55,7 @@ const Signup = () => {
   const onSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    // This is code for adding email as an attribute 
+    // This is code for adding email as an attribute
 
     // const attributeList = [];
     // attributeList.push(
@@ -72,11 +72,11 @@ const Signup = () => {
       } else {
         // router.replace('/auth/confirmSignup');
         console.log(data);
+        localStorage.setItem('userId', data?.userSub);
         setVerifyProcess(true);
         toast.success('Please confirm your email to continue');
       }
     });
-    localStorage.setItem('password', input.password);
     localStorage.setItem('email', input.email);
   };
 
@@ -100,7 +100,6 @@ const Signup = () => {
             onSubmit={(event) => onSubmit(event)}
             className="mx-auto max-w-xl mt-20 md:mt-5">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-
               {/* <div className="sm:col-span-2">
                 <label
                   htmlFor="username"
@@ -260,12 +259,9 @@ const Signup = () => {
             </div>
           </form>
         </div>
-      ) 
-      : 
-      (
+      ) : (
         <ConfirmSignUp username={input.email} />
-      )
-      }
+      )}
       <ToastContainer />
     </div>
   );
