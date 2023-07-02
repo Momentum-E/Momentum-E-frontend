@@ -1,8 +1,8 @@
-import React,{useContext, useEffect} from 'react'
-import { useRouter } from 'next/router'
-import { AccountContext } from './account'
+import React, { useContext, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { AccountContext } from './account';
 
-const ProtectedRoute = ({Component,accountContext}:any) => {
+const ProtectedRoute = ({ Component, accountContext }: any) => {
   const { getSession } = useContext(AccountContext);
   const router = useRouter();
 
@@ -11,7 +11,7 @@ const ProtectedRoute = ({Component,accountContext}:any) => {
       try {
         // Check if the user has an active session
         await getSession();
-        router.replace('/dashboard')
+        // router.replace('/dashboard')
       } catch (error) {
         // If there is no active session, redirect to the login page
         router.replace('/auth/login');
@@ -20,9 +20,7 @@ const ProtectedRoute = ({Component,accountContext}:any) => {
     checkAuthentication();
   }, [getSession, router]);
 
-    return (
-      <Component accountContext={accountContext}/>
-    );
-}
+  return <Component accountContext={accountContext} />;
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;

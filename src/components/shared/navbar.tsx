@@ -1,13 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import logo from '../../assets/logos/logo_white_nocap.png';
 import Image from 'next/image';
 import Link from 'next/link';
-        
+
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
 
   return (
     <nav className="w-full bg-purple-500 shadow">
@@ -17,7 +14,7 @@ function classNames(...classes: string[]) {
             <Link href="/">
               <h2 className="text-2xl font-bold text-white-100">
                 <figure>
-                  <Image src={logo} alt="Logo" className=' w-32 h-auto' />
+                  <Image src={logo} alt="Logo" className=" w-32 h-auto" />
                 </figure>
               </h2>
             </Link>
@@ -68,23 +65,20 @@ function classNames(...classes: string[]) {
               <li className="text-white-100 hover:text-indigo-200">
                 <Link href="/about-us">About Us</Link>
               </li>
-              {/* <li className="text-white-100 hover:text-indigo-200">
-                <Link href="/contact-us">Contact US</Link>
-              </li> */}
             </ul>
 
-              <div className="mt-3 space-y-2 lg:hidden md:inline-block">
-                <Link
-                  href="/auth/login"
-                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
-                  Login
-                </Link>
-                <Link
-                  href="/auth/register"
-                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
-                  Register
-                </Link>
-              </div>
+            <div className="mt-3 space-y-2 lg:hidden md:inline-block">
+              <Link
+                href="/auth/login"
+                className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
+                Login
+              </Link>
+              <Link
+                href="/auth/register"
+                className="inline-block w-full px-4 py-2 text-center text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
+                Register
+              </Link>
+            </div>
           </div>
         </div>
         <div className="hidden space-x-2 md:inline-block">

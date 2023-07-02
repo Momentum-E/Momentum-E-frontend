@@ -5,6 +5,7 @@ import { AccountContext } from '../auth/account';
 import Image from 'next/image';
 import logo from '../../assets/logos/logo_white_nocap.png';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -17,6 +18,9 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   const { getSession, logout } = useContext(AccountContext);
   const [user, setUser] = useState(null);
   const [name, setName] = useState<string>('');
+  const [id, setId] = useState<string>('');
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchuserdetails = async () => {
@@ -28,6 +32,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
         );
         console.log(response.data);
         setName(response.data.firstName);
+        setId(response.data.userId);
         setUser(response.data);
       } catch (error) {
         console.error('Error:', error);
@@ -132,7 +137,8 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                             className={classNames(
                               active ? 'bg-gray-700' : '',
                               'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200'
-                            )}>
+                            )}
+                            onClick={() => router.replace('/user/' + id)}>
                             Your Profile
                           </li>
                         )}
