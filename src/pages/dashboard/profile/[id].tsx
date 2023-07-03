@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { Listbox, Transition } from '@headlessui/react';
 import { Selector } from '@/components/dashboard';
 import { City, Country, State } from 'country-state-city';
+import {DashboardNavbar} from '@/components/dashboard';
 
 const owner_type = [{ type: 'Individual Owner' }, { type: 'Fleet Owner' }];
 
@@ -88,12 +89,13 @@ const Profile = () => {
       company_name: companyName,
     }
     console.log(newFormData)
-
+    
   }
 
 
   return (
     <>
+      <DashboardNavbar page={'profile'}/>/
       <form
         method="POST"
         onSubmit={(e)=>onSubmit(e)}
