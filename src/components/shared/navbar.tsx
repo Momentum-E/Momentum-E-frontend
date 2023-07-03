@@ -1,14 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import logo from '../../assets/logos/logo_white_nocap.png';
 import Image from 'next/image';
 import Link from 'next/link';
+import { AccountContext } from '../auth/account';
 
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
-
+  
+  const isAuthenticated = useContext(AccountContext)
+  useEffect(() => {
+  }, [isAuthenticated])
+  
   return (
     <nav className="w-full bg-purple-500 shadow">
-      <div className="justify-between px-4 mx-auto lg:max-w-5xl md:items-center md:flex md:px-8">
+      <div className="justify-between px-4 mx-auto lg:max-w-6xl md:items-center md:flex md:px-8">
         <div>
           <div className="flex items-center justify-between py-3 md:py-5 md:block">
             <Link href="/">
@@ -67,18 +72,33 @@ export default function NavBar() {
               </li>
             </ul>
 
-            <div className="mt-3 space-y-2 lg:hidden md:inline-block">
-              <Link
-                href="/auth/login"
-                className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
-                Login
-              </Link>
-              <Link
-                href="/auth/register"
-                className="inline-block w-full px-4 py-2 text-center text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
-                Register
-              </Link>
-            </div>
+            {
+              isAuthenticated ?
+              (
+              <div className="mt-3 space-y-2 lg:hidden md:inline-block">
+                <Link
+                  href="/auth/login"
+                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
+                  Login
+                </Link>
+                <Link
+                  href="/auth/register"
+                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
+                  Register
+                </Link>
+              </div>
+              ):
+              (
+                <div className="">
+                  <Link
+                  href="/dashboard/"
+                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
+                  Dashboard
+                </Link>
+                </div>
+              )
+            }
+
           </div>
         </div>
         <div className="hidden space-x-2 md:inline-block">
@@ -92,18 +112,32 @@ export default function NavBar() {
             className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
             About Us
           </Link>
-          <Link
-            href="/auth/login"
-            className="px-4 py-2 text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
-            Login
-          </Link>
-          <Link
-            href="/auth/register"
-            className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
-            Register
-          </Link>
+          {
+            isAuthenticated ?
+            (
+              <>
+                <Link
+                  href="/auth/login"
+                  className="px-4 py-2 text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
+                  Login
+                </Link>
+                <Link
+                  href="/auth/register"
+                  className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
+                  Register
+                </Link>
+              </>
+            ):
+            (
+              <Link
+                href="/dashboard/"
+                className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
+                Dashboard
+              </Link>
+            )
+          }
         </div>
       </div>
     </nav>
-  );
+  )
 }

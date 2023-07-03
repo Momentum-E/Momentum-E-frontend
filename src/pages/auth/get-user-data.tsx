@@ -14,9 +14,9 @@ const GetUserData = () => {
 
   const [stateData, setStateData] = useState<any>();
   const [cityData, setCityData] = useState<any>();
-  const [country, setCountry] = useState<any>('');
-  const [state, setState] = useState<any>('');
-  const [city, setCity] = useState<any>('');
+  const [country, setCountry] = useState<any>();
+  const [state, setState] = useState<any>();
+  const [city, setCity] = useState<any>();
   const [ownerType, setOwnerType] = useState(owner_type[0]);
   const [companyName, setCompanyName] = useState('');
   const [input, setInput] = useState({
@@ -60,8 +60,10 @@ const GetUserData = () => {
       lastName: input.lastName,
       owner_type: ownerType.type,
       address: {
-        country: country?.isoCode,
-        state: state?.isoCode,
+        // country: country?.isoCode,
+        // state: state?.isoCode,
+        country: country?.name,
+        state: state?.name,
         city: city?.name,
       },
       company_name: companyName,
@@ -72,17 +74,18 @@ const GetUserData = () => {
       data: formData,
     })
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data, formData);
+        toast.success('User successfully created');
       })
       .catch((err) => {
         console.error(err);
+        toast.error(err, );
       });
 
     // console.log(formData);
     localStorage.removeItem('email');
     localStorage.removeItem('userId');
-    toast.success('User successfully created');
-    router.replace('/auth/login');
+    // router.replace('/auth/login');
   };
 
   return (

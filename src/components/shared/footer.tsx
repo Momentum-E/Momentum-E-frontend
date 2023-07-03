@@ -2,18 +2,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../../assets/logos/logo_white_nocap.png';
 
-const Footer = () => {
-  return (
+const Footer = ({isAuthenticated}:any) => {
+  return !isAuthenticated ? (
     <div className="text-white-100">
       <div className="bg-gray-800 ">
         <div className="max-w-7xl m-auto text-gray-100 flex flex-wrap justify-between pt-5 border-t">
-
           <div className="p-5 w-48 ">
             <figure>
               <Image src={logo} height={120} width={120} alt="logo" />
             </figure>
           </div>
-
           <div className="flex flex-wrap justify-evenly text-sm">
             <div className="p-5 w-40 text-sm">
               <div className=" uppercase text-white-100 font-bold">
@@ -75,7 +73,8 @@ const Footer = () => {
         <div className="mt-2">© Copyright 2023. All Rights Reserved.</div>
       </div>
     </div>
-  );
+  ):
+  null
 };
 
 export default Footer;

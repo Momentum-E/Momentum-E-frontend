@@ -15,6 +15,7 @@ export type SidebarProps = {
 export type DashboardNavbarProps = {
   setIsOpen: any;
   isOpen: any;
+  isAuthenticated: any,
 };
 
 export type HeadingProps = {

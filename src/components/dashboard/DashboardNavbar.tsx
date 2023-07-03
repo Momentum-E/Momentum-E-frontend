@@ -47,7 +47,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   };
 
   return (
-    <Disclosure as="nav" className="relative w-full z-10 bg-gray-800">
+    <Disclosure as="nav" className="relative w-full z-10">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8">

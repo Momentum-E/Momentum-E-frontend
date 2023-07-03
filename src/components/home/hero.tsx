@@ -24,7 +24,7 @@ const Hero = () => {
             tertiaryHeading="Manage your EV with confidence"
           />
         </div>
-        <div className="flex flex-wrap justify-evenly py-10">
+        <div className="flex flex-wrap justify-evenly py-10 space-y-5 md:space-y-0">
           <ItemCard
             imageSource={battery_insight_1}
             imageAlt='EV Owner'
