@@ -7,9 +7,7 @@ import { AccountContext } from '../auth/account';
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
   
-  const isAuthenticated = useContext(AccountContext)
-  useEffect(() => {
-  }, [isAuthenticated])
+  const {isAuthenticated} = useContext(AccountContext)
   
   return (
     <nav className="w-full bg-purple-500 shadow">
@@ -73,7 +71,7 @@ export default function NavBar() {
             </ul>
 
             {
-              isAuthenticated ?
+              !isAuthenticated ?
               (
               <div className="mt-3 space-y-2 lg:hidden md:inline-block">
                 <Link
@@ -113,7 +111,7 @@ export default function NavBar() {
             About Us
           </Link>
           {
-            isAuthenticated ?
+            !isAuthenticated ?
             (
               <>
                 <Link

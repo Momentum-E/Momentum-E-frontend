@@ -121,7 +121,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
             {vehicle_data.map((data) => (
               <li key={data.vehicle_no}>
                 <Link
-                  href={`/dashboard/${data.vehicle_no}`}
+                  href={`/dashboard/vehicles/${data.vehicle_no}`}
                   className="link hover:bg-gray-700/25 text-white-100">
                   {data.vehicle_no}
                 </Link>
