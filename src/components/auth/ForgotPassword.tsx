@@ -1,152 +1,150 @@
-import React,{useState} from 'react'
-import Pool from '../user-pool/user-pool'
-// import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { ToastContainer,toast } from 'react-toastify';
-// import AWS from 'aws-sdk';
+import React, { useState } from 'react';
+import Pool from '../user-pool/user-pool';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { useRouter } from 'next/router';
 
 const ForgotPassword = () => {
-    // AWS.config.update({ region: 'ap-south-1' });    
-    const [username, setUsername] = useState('');
-    const [confirmationCode, setConfirmationCode] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [step, setStep] = useState('request');
-    // const [errorMessage, setErrorMessage] = useState('');
-    // const [success, setSuccess] = useState('');
-    const router = useRouter()
-    
-    var userData = {
-        Username: username,
-        Pool: Pool,
-    };
-    const user = new CognitoUser(userData);
+  // AWS.config.update({ region: 'ap-south-1' });
+  const [username, setUsername] = useState('');
+  const [confirmationCode, setConfirmationCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [step, setStep] = useState('request');
+  // const [errorMessage, setErrorMessage] = useState('');
+  // const [success, setSuccess] = useState('');
+  const router = useRouter();
 
-    const initiateForgotPassword = async () => {
-        // Should add code to implement if the email is present in the database
-        // and only then run the code below
-        // Testing remaining for the code 
-        user.forgotPassword({
-            onSuccess: function(data) {
-                console.log(data)
-                toast.success('Code sent to:' + data)
-                setStep('confirm');
-            },
-            onFailure: function(err) {
-                toast.error(err.message || JSON.stringify(err))
-            },
-        });
-    };
+  var userData = {
+    Username: username,
+    Pool: Pool,
+  };
+  const user = new CognitoUser(userData);
 
-  const confirmForgotPassword = async () => {
-    user.confirmPassword(confirmationCode, newPassword, {
-        onSuccess() {
-            console.log('Password reset confirmed!');
-            toast.success('Password reset confirmed!')
-            router.push('/auth/login/')
-        },
-        onFailure(err) {
-            console.log('Password reset not confirmed!');
-            toast.error('Password reset not confirmed!')
-        },
+  const initiateForgotPassword = async () => {
+    // Should add code to implement if the email is present in the database
+    // and only then run the code below
+    // Testing remaining for the code
+    user.forgotPassword({
+      onSuccess: function (data) {
+        console.log(data);
+        toast.success('Code sent to:' + data);
+        setStep('confirm');
+      },
+      onFailure: function (err) {
+        toast.error(err.message || JSON.stringify(err));
+      },
     });
   };
 
-    return (
-        <div className='relative w-full h-full py-20 min-h-screen'>
-            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-                {step === 'request' && (
-                    <div>
-                        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                            <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-white-100">
-                                Confirm OTP sent on your email to Register
-                            </h2>
-                        </div>
-                        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                        <label
-                            htmlFor="email"
-                            className="block text-sm font-medium leading-6 text-white-100">
-                            Enter your email:
-                        </label>
-                        <div className="mt-2">
-                            <input
-                            id="email"
-                            name="email"
-                            type="text"
-                            required={true}
-                            autoComplete="email"
-                            className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            onClick={initiateForgotPassword}
-                            className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                            Confirm OTP
-                        </button>
-                        </div>
-                    </div>
-                )}
-                {step === 'confirm' && (
-                  
-                    <div>
-                        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                            <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-white-100">
-                                Confirm OTP sent on your email to Register
-                            </h2>
-                        </div>
-                        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                            <label
-                                htmlFor="token"
-                                className="block text-sm font-medium leading-6 text-white-100">
-                                Confirmation Code:
-                            </label>
-                            <div className="">
-                                <input
-                                type="number" 
-                                name="token" 
-                                id="token" 
-                                required={true}
-                                autoComplete="email"
-                                className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                                value={confirmationCode} 
-                                onChange={(e) => setConfirmationCode(e.target.value)}
-                                />
-                            </div>
-                            
-                            <label
-                                htmlFor="password"
-                                className="block text-sm mt-3 font-medium leading-6 text-white-100">
-                                New Password:
-                            </label>
-                            <div className="">
-                                <input
-                                id="password"
-                                name="password"
-                                type="text"
-                                required={true}
-                                autoComplete="email"
-                                className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                                value={newPassword} 
-                                onChange={(e) => setNewPassword(e.target.value)} 
-                                />
-                            </div>
+  const confirmForgotPassword = async () => {
+    user.confirmPassword(confirmationCode, newPassword, {
+      onSuccess() {
+        console.log('Password reset confirmed!');
+        toast.success('Password reset confirmed!');
+        router.push('/auth/login/');
+      },
+      onFailure(err) {
+        console.log('Password reset not confirmed!');
+        toast.error('Password reset not confirmed!');
+      },
+    });
+  };
 
-                            <button
-                                type="submit"
-                                onClick={confirmForgotPassword}
-                                className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                Confirm OTP
-                            </button>
-                        </div>
-                    </div>
-                )}
+  return (
+    <div className="relative w-full h-full py-20 min-h-screen">
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        {step === 'request' && (
+          <div>
+            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+              <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-white-100">
+                Confirm OTP sent on your email to Register
+              </h2>
             </div>
-        <ToastContainer/>
-        </div>
-    );
-}
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-white-100">
+                Enter your email:
+              </label>
+              <div className="mt-2">
+                <input
+                  id="email"
+                  name="email"
+                  type="text"
+                  required={true}
+                  autoComplete="email"
+                  className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+              <button
+                type="submit"
+                onClick={initiateForgotPassword}
+                className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Confirm OTP
+              </button>
+            </div>
+          </div>
+        )}
+        {step === 'confirm' && (
+          <div>
+            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+              <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-white-100">
+                Confirm OTP sent on your email to Register
+              </h2>
+            </div>
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+              <label
+                htmlFor="token"
+                className="block text-sm font-medium leading-6 text-white-100">
+                Confirmation Code:
+              </label>
+              <div className="">
+                <input
+                  type="number"
+                  name="token"
+                  id="token"
+                  required={true}
+                  autoComplete="email"
+                  className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
+                  value={confirmationCode}
+                  onChange={(e) => setConfirmationCode(e.target.value)}
+                />
+              </div>
 
-export default ForgotPassword
+              <label
+                htmlFor="password"
+                className="block text-sm mt-3 font-medium leading-6 text-white-100">
+                New Password:
+              </label>
+              <div className="">
+                <input
+                  id="password"
+                  name="password"
+                  type="text"
+                  required={true}
+                  autoComplete="email"
+                  className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                onClick={confirmForgotPassword}
+                className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Confirm OTP
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+      <ToastContainer />
+    </div>
+  );
+};
+
+export default ForgotPassword;

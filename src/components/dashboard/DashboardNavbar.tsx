@@ -6,6 +6,7 @@ import Image from 'next/image';
 import logo from '../../assets/logos/logo_white_nocap.png';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -14,6 +15,7 @@ function classNames(...classes: string[]) {
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   setIsOpen,
   isOpen,
+  page
 }) => {
   const { getSession, logout } = useContext(AccountContext);
   const [user, setUser] = useState(null);
@@ -47,7 +49,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   };
 
   return (
-    <Disclosure as="nav" className="relative w-full z-10 bg-gray-800">
+    <Disclosure as="nav" className="relative w-full z-10">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8">
@@ -106,9 +108,21 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
               </div>
               <div className="absolute h-full inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {/* Profile dropdown */}
+                <div className="hidden md:flex">
+                  <Link
+                    href="/"
+                    className="px-4 py-2 text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
+                    Home
+                  </Link>
+                  <Link
+                    href="/#aboutus"
+                    className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
+                    About Us
+                  </Link>
+                </div>
                 <Menu as="div" className="relative ml-3">
-                  <div className="flex justify-center p-1 overflow-hidden text-ellipsis">
-                    <span className="text-white-100 mr-2 overflow-hidden text-ellipsis hidden lg:flex lg:items-end">
+                  <div className="flex justify-center items-center p-1 overflow-hidden text-ellipsis">
+                    <span className="text-white-100 mr-2 h-[50%] overflow-hidden text-ellipsis hidden lg:flex lg:justify-center">
                       Hello, {name}
                     </span>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -131,24 +145,54 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95">
                     <Menu.Items className="absolute right-0 z-10 p-1 w-48 mt-1 origin-top-right rounded-md bg-white-100 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item as={'ul'}>
-                        {({ active }) => (
-                          <li
-                            className={classNames(
-                              active ? 'bg-gray-700' : '',
-                              'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200'
+                        <Menu.Item as={'ul'} className={`md:hidden`}>
+                          {({ active }) => (
+                            <li
+                              className={classNames(
+                                active ? 'bg-gray-700' : '',
+                                'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
+                              )}
+                              onClick={() => router.replace('/')}>
+                              Home
+                            </li>
+                          )}
+                        </Menu.Item>
+                      {
+                        page==='profile' ? (
+                          <Menu.Item as={'ul'}>
+                            {({ active }) => (
+                              <li
+                                className={classNames(
+                                  active ? 'bg-gray-700' : '',
+                                  'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
+                                )}
+                                onClick={() => router.replace('/dashboard/')}>
+                                Dashboard
+                              </li>
                             )}
-                            onClick={() => router.replace('/user/' + id)}>
-                            Your Profile
-                          </li>
-                        )}
-                      </Menu.Item>
+                          </Menu.Item>
+                        ):
+                        (
+                          <Menu.Item as={'ul'}>
+                            {({ active }) => (
+                              <li
+                                className={classNames(
+                                  active ? 'bg-gray-700' : '',
+                                  'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
+                                )}
+                                onClick={() => router.replace('dashboard/profile/' + id)}>
+                                Your Profile
+                              </li>
+                            )}
+                          </Menu.Item>
+                        )
+                      }
                       <Menu.Item>
                         {({ active }) => (
                           <li
                             className={classNames(
                               active ? 'bg-gray-100' : '',
-                              'block px-4 py-2 text-sm rounded-md text-black hover:bg-white-200 '
+                              'block px-4 py-2 text-sm rounded-md text-black hover:bg-white-200 hover:cursor-pointer'
                             )}>
                             Settings
                           </li>
@@ -160,12 +204,13 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                             onClick={() => SignOut()}
                             className={classNames(
                               active ? 'bg-gray-100' : '',
-                              'block px-4 py-2 text-sm rounded-md text-black hover:bg-white-200'
+                              'block px-4 py-2 text-sm rounded-md text-black hover:bg-white-200 hover:cursor-pointer'
                             )}>
                             Sign out
                           </li>
                         )}
                       </Menu.Item>
+                      
                     </Menu.Items>
                   </Transition>
                 </Menu>

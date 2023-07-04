@@ -3,7 +3,10 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Listbox, Transition } from '@headlessui/react';
 import { Selector } from '@/components/dashboard';
-import { Country } from 'country-state-city';
+import { City, Country, State } from 'country-state-city';
+import { DashboardNavbar } from '@/components/dashboard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const owner_type = [{ type: 'Individual Owner' }, { type: 'Fleet Owner' }];
 
@@ -29,17 +32,33 @@ const Profile = () => {
   const [formData, setFormData] = useState<FormData | null>(null);
 
   const [userData, setUserData] = useState(null);
-  const [ownerType, setOwnerType] = useState(owner_type[0]);
+  const [ownerType, setOwnerType] = useState(
+    formData?.owner_type === 'Individual Owner' ? owner_type[0] : owner_type[1]
+  );
   const [stateData, setStateData] = useState<any>();
   const [cityData, setCityData] = useState<any>();
   const [country, setCountry] = useState<any>('');
   const [state, setState] = useState<any>('');
   const [city, setCity] = useState<any>('');
   const [companyName, setCompanyName] = useState('');
-  const [input, setInput] = useState({
-    firstName: '',
-    lastName: '',
-  });
+  const [FirstName, setFirstName] = useState('');
+  const [LastName, setLastName] = useState('');
+
+  useEffect(() => {
+    return setStateData(State.getStatesOfCountry(country?.isoCode));
+  }, [country]);
+
+  useEffect(() => {
+    return setCityData(City.getCitiesOfState(country?.isoCode, state?.isoCode));
+  }, [state]);
+
+  useEffect(() => {
+    stateData && setState(stateData[0]);
+  }, [stateData]);
+
+  useEffect(() => {
+    cityData && setCity(cityData[0]);
+  }, [cityData]);
 
   useEffect(() => {
     axios
@@ -53,11 +72,48 @@ const Profile = () => {
       });
   }, [id]);
 
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newFormData = {
+      firstName: FirstName,
+      lastName: LastName,
+      email: formData?.email,
+      address: {
+        country: country.name,
+        city: city.name,
+        state: state.name,
+      },
+      owner_type: ownerType,
+      company_name: companyName,
+    };
+
+    axios('http://localhost:5000/auth/users/' + id, {
+      method: 'PATCH',
+      data: newFormData,
+    })
+      .then((res) => {
+        console.log(res);
+        toast.success('User updated successfully');
+        location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error('Something went wrong');
+      });
+
+    console.log(newFormData);
+  };
+
   return (
     <>
+      <DashboardNavbar
+        page={'profile'}
+        setIsOpen={undefined}
+        isOpen={undefined}
+      />
       <form
         method="POST"
-        // onSubmit={onSubmit}
+        onSubmit={(e) => onSubmit(e)}
         className="w-full h-full mb-10 space-y-10 min-h-screen mx-auto max-w-xl sm:mt-20">
         <p className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-100">
           Welcome, {formData?.firstName + ' ' + formData?.lastName}
@@ -72,7 +128,7 @@ const Profile = () => {
             <Listbox value={ownerType} onChange={setOwnerType}>
               <div className="relative mt-2">
                 <Listbox.Button className="relative block w-full border border-[#C6DE41] px-2 py-2 text-white-100 text-left bg-transparent rounded text-sm group focus:outline-none focus:ring-0 sm:text-sm sm:leading-6">
-                  <span className="block truncate">{formData?.owner_type}</span>
+                  <span className="block truncate">{ownerType.type}</span>
                   <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +213,8 @@ const Profile = () => {
                     required={true}
                     autoComplete="given-name"
                     className="block w-full border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                    defaultValue={formData?.firstName}
+                    value={FirstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                     // onChange={onInputChange}
                   />
                 </div>
@@ -167,19 +224,19 @@ const Profile = () => {
                   htmlFor="lastName"
                   className="block text-sm font-semibold leading-6 text-white-100">
                   Last name
-                  <span className="text-red-500 pl-1">*</span>
+                  {/* <span className="text-red-500 pl-1">*</span> */}
                 </label>
                 <div className="mt-2.5">
                   <input
                     type="text"
                     name="lastName"
                     id="lastName"
-                    required={true}
+                    // required={true}
                     autoComplete="family-name"
                     className="block w-full border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
                     // value={input.lastName}
-                    defaultValue={formData?.lastName}
-                    // onChange={onInputChange}
+                    value={LastName}
+                    onChange={(e) => setLastName(e.target.value)}
                   />
                 </div>
               </div>
@@ -259,12 +316,12 @@ const Profile = () => {
               <button
                 type="submit"
                 className="flex justify-center sm:col-span-2 w-full rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                Register
+                Submit Details
               </button>
             </div>
           </div>
         </div>
-        {/* <ToastContainer /> */}
+        <ToastContainer />
       </form>
     </>
   );
