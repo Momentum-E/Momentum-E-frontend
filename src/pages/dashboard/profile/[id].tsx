@@ -4,7 +4,9 @@ import { useRouter } from 'next/router';
 import { Listbox, Transition } from '@headlessui/react';
 import { Selector } from '@/components/dashboard';
 import { City, Country, State } from 'country-state-city';
-import {DashboardNavbar} from '@/components/dashboard';
+import { DashboardNavbar } from '@/components/dashboard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const owner_type = [{ type: 'Individual Owner' }, { type: 'Fleet Owner' }];
 
@@ -30,19 +32,17 @@ const Profile = () => {
   const [formData, setFormData] = useState<FormData | null>(null);
 
   const [userData, setUserData] = useState(null);
-  const [ownerType, setOwnerType] = useState(formData?.owner_type === 'Individual Owner' ? owner_type[0] : owner_type[1]);
+  const [ownerType, setOwnerType] = useState(
+    formData?.owner_type === 'Individual Owner' ? owner_type[0] : owner_type[1]
+  );
   const [stateData, setStateData] = useState<any>();
   const [cityData, setCityData] = useState<any>();
   const [country, setCountry] = useState<any>('');
   const [state, setState] = useState<any>('');
   const [city, setCity] = useState<any>('');
   const [companyName, setCompanyName] = useState('');
-  // const [input, setInput] = useState({
-  //   firstName: formData?.firstName,
-  //   lastName: formData?.lastName,
-  // });
-  const [FirstName, setFirstName] = useState('')
-  const [LastName, setLastName] = useState('')
+  const [FirstName, setFirstName] = useState('');
+  const [LastName, setLastName] = useState('');
 
   useEffect(() => {
     return setStateData(State.getStatesOfCountry(country?.isoCode));
@@ -60,7 +60,6 @@ const Profile = () => {
     cityData && setCity(cityData[0]);
   }, [cityData]);
 
-
   useEffect(() => {
     axios
       .get('http://localhost:5000/auth/users/' + id)
@@ -73,10 +72,9 @@ const Profile = () => {
       });
   }, [id]);
 
-  function onSubmit(e:React.FormEvent){
-    e.preventDefault()
-    const newFormData =
-    {
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newFormData = {
       firstName: FirstName,
       lastName: LastName,
       email: formData?.email,
@@ -87,18 +85,35 @@ const Profile = () => {
       },
       owner_type: ownerType,
       company_name: companyName,
-    }
-    console.log(newFormData)
-    
-  }
+    };
 
+    axios('http://localhost:5000/auth/users/' + id, {
+      method: 'PATCH',
+      data: newFormData,
+    })
+      .then((res) => {
+        console.log(res);
+        toast.success('User updated successfully');
+        location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error('Something went wrong');
+      });
+
+    console.log(newFormData);
+  };
 
   return (
     <>
-      <DashboardNavbar page={'profile'}/>/
+      <DashboardNavbar
+        page={'profile'}
+        setIsOpen={undefined}
+        isOpen={undefined}
+      />
       <form
         method="POST"
-        onSubmit={(e)=>onSubmit(e)}
+        onSubmit={(e) => onSubmit(e)}
         className="w-full h-full mb-10 space-y-10 min-h-screen mx-auto max-w-xl sm:mt-20">
         <p className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-100">
           Welcome, {formData?.firstName + ' ' + formData?.lastName}
@@ -199,7 +214,7 @@ const Profile = () => {
                     autoComplete="given-name"
                     className="block w-full border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
                     value={FirstName}
-                    onChange={(e)=>setFirstName(e.target.value)}
+                    onChange={(e) => setFirstName(e.target.value)}
                     // onChange={onInputChange}
                   />
                 </div>
@@ -221,7 +236,7 @@ const Profile = () => {
                     className="block w-full border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
                     // value={input.lastName}
                     value={LastName}
-                    onChange={(e)=>setLastName(e.target.value)}
+                    onChange={(e) => setLastName(e.target.value)}
                   />
                 </div>
               </div>
@@ -306,7 +321,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        {/* <ToastContainer /> */}
+        <ToastContainer />
       </form>
     </>
   );
