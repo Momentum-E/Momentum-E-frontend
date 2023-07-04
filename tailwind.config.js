@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -17,17 +19,16 @@ module.exports = {
         200: '#C6DE41',
       },
       'red-500':'#FF0000',
-      'gray': {
-        '700': 'rgb(55 65 81)'
-      },
+      gray: colors.gray,
       transparent: 'transparent',
     },
     
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'dashboard-gradient': 'linear-gradient(157deg, #131315 0%, rgba(26, 31, 55, 0.00) 100%)',
+        'dashboard-sidebar-image':"url('../assets/images/dashboard-need-help.png')",
       },
       gridTemplateRows: {
         // Simple 8 row grid

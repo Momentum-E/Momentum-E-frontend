@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Listbox, Transition } from '@headlessui/react';
-import { Selector } from '@/components/dashboard';
+import { DashboardLayout, Selector } from '@/components/dashboard';
 import { City, Country, State } from 'country-state-city';
 import { DashboardNavbar } from '@/components/dashboard';
 import { ToastContainer, toast } from 'react-toastify';
@@ -105,12 +105,7 @@ const Profile = () => {
   };
 
   return (
-    <>
-      <DashboardNavbar
-        page={'profile'}
-        setIsOpen={undefined}
-        isOpen={undefined}
-      />
+    <DashboardLayout>
       <form
         method="POST"
         onSubmit={(e) => onSubmit(e)}
@@ -321,9 +316,9 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        <ToastContainer />
       </form>
-    </>
+        <ToastContainer />
+    </DashboardLayout>
   );
 };
 

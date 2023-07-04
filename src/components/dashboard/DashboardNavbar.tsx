@@ -3,7 +3,6 @@ import { DashboardNavbarProps } from '@/utils/props/props';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { AccountContext } from '../auth/account';
 import Image from 'next/image';
-import logo from '../../assets/logos/logo_white_nocap.png';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -15,38 +14,45 @@ function classNames(...classes: string[]) {
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   setIsOpen,
   isOpen,
-  page
+  page,
+  name,
+  id,
 }) => {
+
+
   const { getSession, logout } = useContext(AccountContext);
-  const [user, setUser] = useState(null);
-  const [name, setName] = useState<string>('');
-  const [id, setId] = useState<string>('');
+  // const [user, setUser] = useState(null);
+  // const [name, setName] = useState<string>('');
+  // const [id, setId] = useState<string>('');
 
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchuserdetails = async () => {
-      try {
-        const session = await getSession();
-        const userId = session.idToken.payload.sub;
-        const response = await axios.get(
-          `http://localhost:5000/auth/users/${userId}`
-        );
-        console.log(response.data);
-        setName(response.data.firstName);
-        setId(response.data.userId);
-        setUser(response.data);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-
-    fetchuserdetails();
-  }, []);
-
-  const SignOut = () => {
+  
+  // useEffect(() => {
+  //   const fetchuserdetails = async () => {
+    //     try {
+  //       const session = await getSession();
+  //       const userId = session.idToken.payload.sub;
+  //       const response = await axios.get(
+    //         `http://localhost:5000/auth/users/${userId}`
+    //       );
+    //       console.log(response.data);
+    //       setName(response.data.firstName);
+    //       setId(response.data.userId);
+    //       setUser(response.data);
+    //     } catch (error) {
+      //       console.error('Error:', error);
+      //     }
+      //   };
+      
+      //   fetchuserdetails();
+      // }, []);
+      
+    const router = useRouter();
+      const SignOut = () => {
     logout();
   };
+
+  // const router = useRouter();
+  const { vehicleId } = router.query;
 
   return (
     <Disclosure as="nav" className="relative w-full z-10">
@@ -92,26 +98,30 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <Image
+              <div className="flex flex-1 pt-0 md:pt-3 items-center justify-center sm:items-stretch sm:justify-start">
+                <div className="flex flex-col flex-shrink-0">
+                  <p className='text-white-100 text-sm hidden md:block'> 
+                    <span className='text-gray-400'>Dashboard</span> / {vehicleId}
+                  </p>
+                  <span className="text-xl md:text-md text-white-100 whitespace-pre flex flex-shrink-0">Dashboard</span>
+                </div>
+                  {/* <Image
                     className="block h-10 w-auto lg:hidden"
                     src={logo}
                     alt="Momentum-E"
-                  />
-                  <Image
+                  /> */}
+                  {/* <Image
                     className="hidden h-10 w-auto lg:block"
                     src={logo}
                     alt="Momentum-E"
-                  />
-                </div>
+                  /> */}
               </div>
               <div className="absolute h-full inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {/* Profile dropdown */}
                 <div className="hidden md:flex">
                   <Link
                     href="/"
-                    className="px-4 py-2 text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
+                    className="px-4 py-2 text-white-100 rounded-md shadow hover:bg-gray-700/40">
                     Home
                   </Link>
                   <Link
@@ -180,7 +190,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                                   active ? 'bg-gray-700' : '',
                                   'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
                                 )}
-                                onClick={() => router.replace('dashboard/profile/' + id)}>
+                                onClick={() => router.replace('/dashboard/profile/' + id)}>
                                 Your Profile
                               </li>
                             )}

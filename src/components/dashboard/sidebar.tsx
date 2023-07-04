@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { SidebarProps } from '@/utils/props/props';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
+import logo from '@/assets/logos/logo_white_nocap.png'
 import { useRouter } from 'next/router';
+// import { dashboard_need_help } from '../../assets/images/dashboard-need-help.png';
 
 const vehicle_data = [
   { vehicle_no: 'vehicle1' },
@@ -62,16 +65,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
   return (
     <div className="">
       <div
-        onClick={() => setIsOpen(false)}
+        onClick={() => setIsOpen(!isOpen)}
         className={`md:hidden fixed inset-0 max-h-screen z-[998] bg-black/50 
-            ${isOpen ? ` block ` : ` hidden `}`}></div>
+            ${isOpen ? ` block ` : ` hidden `}`}>
+      </div>
       <motion.div
         variants={sidebar_animation}
         animate={isOpen ? 'open' : 'close'}
-        className="bg-white space-y-4 text-gray shadow-md z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed">
+        className="bg-dashboard-gradient backdrop-blur-3xl rounded-lg space-y-4 text-gray shadow-md z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed">
         {/* logo */}
         <div className="flex gap-2.5 py-3 mx-3 mt-2 text-white-100 border-b border-white-100 items-center justify-center">
-          <span className="text-xl whitespace-pre">Dashboard</span>
+          {/* <span className="text-xl whitespace-pre">Dashboard</span> */}
+          <Image
+            className="block h-10 w-auto"
+            src={logo}
+            alt="Momentum-E"
+          /> 
         </div>
 
         {/* adding vehicle button */}
@@ -116,10 +125,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
         <span className="pl-3 text-white-100 inline-block mb-2">Vehicles</span>
         <div className="flex flex-col h-full space-y-2">
           <ul
-            className="whitespace-pre px-2.5 flex flex-col gap-1 h-[70%] md:h-[68%]
+            className="whitespace-pre px-2.5 flex flex-col gap-1 h-[70%] md:h-[40%]
                 font-medium overflow-x-hidden overflow-y-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
             {vehicle_data.map((data) => (
-              <li key={data.vehicle_no}>
+              <li 
+              key={data.vehicle_no}
+              onClick={()=>setIsOpen(!isTab && true)}
+              >
                 <Link
                   href={`/dashboard/vehicles/${data.vehicle_no}`}
                   className="link hover:bg-gray-700/25 text-white-100">
@@ -130,8 +142,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
           </ul>
         </div>
 
+        <div 
+        className=" bg-dashboard-sidebar-image bg-cover bg-center w-full h-full"
+        >
+              Hrllo Work
+        </div>
+
         {/* shrink toggle */}
-        <motion.div
+        {/* <motion.div
           className={`${
             isOpen ? `rotate-0 ` : `rotate-180 `
           } border-2 rounded-lg border-white-200 p-1 absolute w-fit h-fit z-50 right-3.5 bottom-5 cursor-pointer md:block hidden`}
@@ -149,7 +167,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
               d="M15.75 19.5L8.25 12l7.5-7.5"
             />
           </svg>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
     </div>
   );

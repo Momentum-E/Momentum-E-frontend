@@ -7,20 +7,19 @@ import {
 } from '@/components/dashboard';
 import { AccountContext } from '../auth/account';
 import { useRouter } from 'next/router';
-// import {Navbar} from '@/components/shared';
-// import DashboardContent from '@/pages/dashboard/vehicles/[dashboardContent]';
-import {VehicleDashboardContent} from '@/pages/dashboard/vehicles';
+import axios from 'axios';
 
-const DashboardLayout = ({children}: any) => {
+const DashboardLayout = ({children,...props}: any) => {
 
-  const router = useRouter()
-  const { query } = router;
-
-  // Check if a specific vehicle ID is present in the query parameters
-  const vehicleId = query.vehicleId || '';
   let isTab = useMediaQuery({ query: '(max-width:768px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
   const {isAuthenticated} = useContext(AccountContext)
+  const router = useRouter();
+  
+  const { getSession, logout } = useContext(AccountContext);
+  const [user, setUser] = useState(null);
+  const [name, setName] = useState<string>('');
+  const [id, setId] = useState<string>('');
 
   useEffect(() => {
     if (isTab) {
@@ -30,17 +29,41 @@ const DashboardLayout = ({children}: any) => {
     }
   }, [isTab,isAuthenticated]);
 
+
+
+  useEffect(() => {
+    const fetchuserdetails = async () => {
+      try {
+        const session = await getSession();
+        const userId = session.idToken.payload.sub;
+        const response = await axios.get(
+          `http://localhost:5000/auth/users/${userId}`
+        );
+        console.log(response.data);
+        setName(response.data.firstName);
+        setId(response.data.userId);
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchuserdetails();
+  }, []);
+
   return (
-    <div className="flex ">
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} isTab={isTab} />
-      {/* main had a class max-w-5xl */}
-      <main className="max-w-full flex-1 mx-auto h-screen pb-16 overflow-hidden">
-        <DashboardNavbar page='dashboard' setIsOpen={setIsOpen} isOpen={isOpen} />
-        {/*  Main Content */}
-        {children}
-        {/* <VehicleDashboardContent vehicleId={router.query.vehicleId} /> */}
-      </main>
-    </div>
+    <>
+      <div className="flex">
+        <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} isTab={isTab} />
+        {/* main had a class max-w-5xl */}
+        <main className="max-w-full flex-1 mx-auto h-screen pb-16 overflow-hidden">
+          <DashboardNavbar name={name} id={id} page='dashboard' setIsOpen={setIsOpen} isOpen={isOpen} />
+          {/*  Main Content */}
+          {children}
+          {/* <VehicleDashboardContent vehicleId={router.query.vehicleId} /> */}
+        </main>
+      </div>
+    </>
   );
 };
 
