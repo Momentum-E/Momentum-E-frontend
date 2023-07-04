@@ -6,12 +6,18 @@ import {
   // DashboardContent,
 } from '@/components/dashboard';
 import { AccountContext } from '../auth/account';
+import { useRouter } from 'next/router';
 // import {Navbar} from '@/components/shared';
-import DashboardContent from '@/pages/dashboard/vehicles/[dashboardContent]';
+// import DashboardContent from '@/pages/dashboard/vehicles/[dashboardContent]';
+import {VehicleDashboardContent} from '@/pages/dashboard/vehicles';
 
-const DashboardComponent = ({ 
-   
-}: any) => {
+const DashboardLayout = ({children}: any) => {
+
+  const router = useRouter()
+  const { query } = router;
+
+  // Check if a specific vehicle ID is present in the query parameters
+  const vehicleId = query.vehicleId || '';
   let isTab = useMediaQuery({ query: '(max-width:768px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
   const {isAuthenticated} = useContext(AccountContext)
@@ -31,10 +37,11 @@ const DashboardComponent = ({
       <main className="max-w-full flex-1 mx-auto h-screen pb-16 overflow-hidden">
         <DashboardNavbar page='dashboard' setIsOpen={setIsOpen} isOpen={isOpen} />
         {/*  Main Content */}
-        <DashboardContent />
+        {children}
+        {/* <VehicleDashboardContent vehicleId={router.query.vehicleId} /> */}
       </main>
     </div>
   );
 };
 
-export default DashboardComponent;
+export default DashboardLayout;
