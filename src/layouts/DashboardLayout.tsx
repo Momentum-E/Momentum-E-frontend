@@ -4,8 +4,8 @@ import {
   Sidebar,
   DashboardNavbar,
   // DashboardContent,
-} from '@/components/dashboard';
-import { AccountContext } from '../auth/account';
+} from '@/components/dashboard/dashboard-components';
+import { AccountContext } from '@/context/account';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 

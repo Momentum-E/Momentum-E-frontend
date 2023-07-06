@@ -33,3 +33,16 @@ export type ItemCardProps = {
   imageAlt?:any,
   imageClassname?:string,
 };
+
+export type AuthInputProps = {
+  outerDiv:string | undefined;
+  labelName:string;
+  labelFor:string;
+  isRequired:boolean;
+  inputType:string;
+  inputAutocomplete:string;
+  inputClassname:string | undefined;
+  inputValue:string | number | string[] | undefined
+  inputOnChange:React.ChangeEventHandler<HTMLInputElement> | undefined
+  children:React.JSX.Element|null;
+}

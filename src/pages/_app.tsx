@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Footer, Navbar } from '@/components/shared';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-import { Account, AccountContext } from '@/components/auth/account';
+import { Account, AccountContext } from '@/context/account';
 
 export default function App({ Component, pageProps }: AppProps) {
 

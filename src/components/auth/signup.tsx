@@ -1,12 +1,13 @@
 // @ts-nocheck
 import React, { useState } from 'react';
-import userPool from '../user-pool/user-pool';
+import userPool from '../../context/user-pool/user-pool';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Switch } from '@headlessui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import AuthInput from '../AuthInput';
 import ConfirmSignUp from '@/pages/auth/confirmSignup';
 
 function classNames(...classes: string[]) {
@@ -55,16 +56,6 @@ const Signup = () => {
   const onSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    // This is code for adding email as an attribute
-
-    // const attributeList = [];
-    // attributeList.push(
-    //   new CognitoUserAttribute({
-    //     Name: 'email',
-    //     Value: input.email,
-    //   })
-    // );
-
     userPool.signUp(input.email, input.password, [], null, (err, data) => {
       if (err) {
         // console.log(err)
@@ -99,7 +90,9 @@ const Signup = () => {
             method="POST"
             onSubmit={(event) => onSubmit(event)}
             className="mx-auto max-w-xl mt-20 md:mt-5">
+              
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+
               {/* <div className="sm:col-span-2">
                 <label
                   htmlFor="username"
@@ -120,83 +113,66 @@ const Signup = () => {
                 </div>
               </div> */}
 
+              <AuthInput
+                outerDiv='sm:col-span-2'
+                labelName='Email'
+                labelFor='email'
+                isRequired={true}
+                labelClassname=''
+                innerDiv='mt-2.5'
+                inputType='email'
+                inputAutocomplete='email'
+                inputClassname='border-me-green-200'
+                inputValue={input.email}
+                inputOnChange={(e) => onInputChange(e)}
+                children={null}
+              />
+              
+              <AuthInput
+                outerDiv=''
+                labelName='Password'
+                labelFor='password'
+                isRequired={true}
+                labelClassname='block text-sm font-semibold leading-6 text-white-100'
+                innerDiv='mt-2.5'
+                inputType='password'
+                inputAutocomplete='off'
+                inputClassname={`${
+                  input.password != input.confirmPassword
+                    ? `border-red-500`
+                    : `border-me-green-200`
+                }`}
+                inputValue={input.password}
+                inputOnChange={(e) => onInputChange(e)}
+                children={null}
+              />
+              
+              <AuthInput
+                outerDiv=''
+                labelName='Confirm Password'
+                labelFor='confirmPassword'
+                isRequired={true}
+                labelClassname='block text-sm font-semibold leading-6 text-white-100'
+                innerDiv='mt-2.5'
+                inputType='password'
+                inputAutocomplete='off'
+                inputClassname={`${
+                  input.password != input.confirmPassword
+                    ? `border-b border-red-500`
+                    : `border-me-green-200`
+                }`}
+                inputValue={input.confirmPassword}
+                inputOnChange={(e) => onInputChange(e)}
+                children={null}
+              />
+
               <div className="sm:col-span-2">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-semibold leading-6 text-white-100">
-                  Email<span className="text-red-500 pl-1">*</span>
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    required={true}
-                    autoComplete="email"
-                    className="border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                    value={input.email}
-                    onChange={(e) => onInputChange(e)}
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-semibold leading-6 text-white-100">
-                  Password<span className="text-red-500 pl-1">*</span>
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    required={true}
-                    autoComplete="password"
-                    className={`${
-                      input.password != input.confirmPassword
-                        ? `border-b border-red-500`
-                        : `border-me-green-200`
-                    } border-b  px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150`}
-                    value={input.password}
-                    onChange={(e) => onInputChange(e)}
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-semibold leading-6 text-white-100">
-                  Confirm Password<span className="text-red-500 pl-1">*</span>
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    id="confirmPassword"
-                    required={true}
-                    autoComplete="password"
-                    className={`${
-                      input.password != input.confirmPassword
-                        ? `border-b border-red-500`
-                        : `border-me-green-200`
-                    } border-b  px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150`}
-                    value={input.confirmPassword}
-                    onChange={(e) => onInputChange(e)}
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-2 space-y-2">
                 {/* Matching Password Error */}
                 {input.password != input.confirmPassword && (
                   <div className="w-full text-sm font-semibold leading-6 text-red-500 bg-red-200 opacity-100 flex items-center justify-center">
                     Passwords do not match
                   </div>
                 )}
-
-                {/* AWS Cognito Password Authentication */}
-                {/* <div className="w-full text-sm font-semibold leading-6 text-red-500 bg-red-200 opacity-100 flex items-center justify-center">
-                    {errorData}
-                  </div> */}
 
                 <div className="text-xs font-semibold text-white-100">
                   <ul>
@@ -206,11 +182,13 @@ const Signup = () => {
                     <li>Password must have symbol characters</li>
                   </ul>
                 </div>
+
               </div>
 
               <Switch.Group as="div" className="flex gap-x-4 sm:col-span-2">
                 <div className="flex h-6 items-center">
                   <Switch
+                    id={'policy_agreement'}
                     checked={agreed}
                     onChange={() => setAgreed(!agreed)}
                     className={classNames(
@@ -253,10 +231,11 @@ const Signup = () => {
                   input.password === input.confirmPassword && agreed
                     ? `hover:bg-me-green-200/90 `
                     : ` `
-                } block w-full rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}>
+                } block w-full rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm`}>
                 Register
               </button>
             </div>
+
           </form>
         </div>
       ) : (

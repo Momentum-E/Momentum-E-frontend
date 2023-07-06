@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import logo from '../../assets/logos/logo_white_nocap.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AccountContext } from '../auth/account';
+import { AccountContext } from '../../context/account';
 
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
@@ -10,7 +10,7 @@ export default function NavBar() {
   const {isAuthenticated} = useContext(AccountContext)
   
   return (
-    <nav className="w-full bg-purple-500 shadow">
+    <nav className="w-full shadow">
       <div className="justify-between px-4 mx-auto lg:max-w-6xl md:items-center md:flex md:px-8">
         <div>
           <div className="flex items-center justify-between py-3 md:py-5 md:block">
@@ -102,7 +102,7 @@ export default function NavBar() {
         <div className="hidden space-x-2 md:inline-block">
           <Link
             href="/"
-            className="px-4 py-2 text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
+            className="px-4 py-2 text-white-100 rounded-md shadow hover:bg-gray-700/40">
             Home
           </Link>
           <Link
@@ -116,7 +116,7 @@ export default function NavBar() {
               <>
                 <Link
                   href="/auth/login"
-                  className="px-4 py-2 text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
+                  className="px-4 py-2 text-white-100 rounded-md shadow hover:bg-gray-700/40">
                   Login
                 </Link>
                 <Link

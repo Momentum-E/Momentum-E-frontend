@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { AccountContext } from './account';
+import { AccountContext } from '../../context/account';
 import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import ConfirmSignup from '@/pages/auth/confirmSignup';
+import AuthInput from '../AuthInput';
 
 const SignIn = () => {
   const router = useRouter();
@@ -80,69 +81,55 @@ const SignIn = () => {
                   action="#"
                   method="POST"
                   onSubmit={(event) => handleLogin(event)}>
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium leading-6 text-white-100">
-                      Email address<span className="text-red-500 pl-1">*</span>
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required={true}
-                        autoComplete="email"
-                        className="border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                        value={input.email}
-                        onChange={(e) => onInputChange(e)}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <label
-                        htmlFor={'password'}
-                        className="block text-sm font-medium leading-6 text-white-100">
-                        Password<span className="text-red-500 pl-1">*</span>
-                      </label>
-                      <div className="text-sm">
-                        <Link
-                          href="/auth/forgot-password"
-                          className="font-semibold text-white-200 hover:text-indigo-500">
-                          Forgot password?
-                        </Link>
-                      </div>
-                    </div>
-                    <div className="mt-2">
-                      <input
-                        id={'password'}
-                        name="password"
-                        type="password"
-                        autoComplete="current-password"
-                        required={true}
-                        className="border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                        value={input.password}
-                        onChange={(e) => onInputChange(e)}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <button
-                      type="submit"
-                      className="flex justify-center w-full rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                      Log In
-                    </button>
-                  </div>
+
+                  <AuthInput
+                    outerDiv=''
+                    labelName='Email'
+                    labelFor='email'
+                    isRequired={true}
+                    inputType='email'
+                    inputAutocomplete='email'
+                    inputClassname='border-me-green-200'
+                    inputValue={input.email}
+                    inputOnChange={(e) => onInputChange(e)}
+                    children={null}
+                  />
+
+                  <AuthInput
+                    outerDiv=''
+                    labelName='Password'
+                    labelFor='password'
+                    isRequired={true}
+                    inputType='password'
+                    inputAutocomplete='password'
+                    inputClassname={`border-me-green-200`}
+                    inputValue={input.password}
+                    inputOnChange={(e) => onInputChange(e)}
+                    children={null}
+                  />
+
+                  <button
+                    type="submit"
+                    className="flex justify-center w-full rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm">
+                    Log In
+                  </button>
                 </form>
-                <p className="mt-10 text-center text-sm text-white-100">
-                  Not a member?{' '}
+                
+                <div className="flex justify-between mt-6">
                   <Link
-                    href="/auth/register"
-                    className="font-semibold leading-6 text-white-200 hover:text-indigo-500">
-                    Register
+                    href="/auth/forgot-password"
+                    className="font-base text-sm text-white-200 hover:underline">
+                    Forgot password?
                   </Link>
-                </p>
+                  <p className="text-center text-sm text-white-100">
+                    Not a member?{' '}
+                    <Link
+                      href="/auth/register"
+                      className="font-semibold leading-6 text-white-200 hover:underline">
+                      Register
+                    </Link>
+                  </p>
+                </div>
               </div>
             </div>
           </section>

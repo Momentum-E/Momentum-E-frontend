@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { DashboardNavbarProps } from '@/utils/props/props';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { AccountContext } from '../auth/account';
+import { AccountContext } from '@/context/account';
 import Image from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/router';

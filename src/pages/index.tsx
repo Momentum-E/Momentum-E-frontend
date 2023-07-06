@@ -1,14 +1,14 @@
 import { Hero } from '@/components/home';
-import {Footer, Navbar} from '@/components/shared';
+import { PagesLayout } from '@/layouts';
 
-function Landing({isAuthenticated}:any) {
+function Landing() {
   return (
     <>
-      <Navbar/>
-      <main className="px-4 lg:px-16">
-        <Hero />
-      </main>
-      <Footer/>
+      <PagesLayout>
+        <main className="px-4 lg:px-16">
+          <Hero />
+        </main>
+      </PagesLayout>
     </>
   );
 }

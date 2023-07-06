@@ -1,7 +1,7 @@
 import React, { createContext,useState,useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import { useRouter } from 'next/router';
-import Pool from '../user-pool/user-pool';
+import Pool from './user-pool/user-pool';
 
 const AccountContext = createContext();
 
