@@ -61,15 +61,13 @@ export default function NavBar() {
             className={`justify-self-center pb-3 md:hidden mt-8 md:pb-0 md:mt-0 ${
               navbar ? 'block' : 'hidden'
             }`}>
-            <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
+            <ul className="items-center justify-center space-y-5 md:flex md:space-x-6 md:space-y-0">
               <li className="text-white-100 hover:text-indigo-200">
                 <Link href="/">Home</Link>
               </li>
               <li className="text-white-100 hover:text-indigo-200">
                 <Link href="/about-us">About Us</Link>
               </li>
-            </ul>
-
             {
               !isAuthenticated ?
               (
@@ -96,6 +94,8 @@ export default function NavBar() {
                 </div>
               )
             }
+            </ul>
+
 
           </div>
         </div>

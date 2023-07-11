@@ -11,10 +11,11 @@ import axios from 'axios';
 
 const DashboardLayout = ({children,...props}: any) => {
 
-  let isTab = useMediaQuery({ query: '(max-width:768px)' });
+  let isTab = useMediaQuery({ query: '(max-width:640px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
   const {isAuthenticated} = useContext(AccountContext)
   const router = useRouter();
+  const {vehicle_Id} = router.query
   
   const { getSession, logout } = useContext(AccountContext);
   const [user, setUser] = useState(null);
@@ -27,7 +28,7 @@ const DashboardLayout = ({children,...props}: any) => {
     } else {
       setIsOpen(true);
     }
-  }, [isTab,isAuthenticated]);
+  }, [isTab]);
 
 
 
@@ -52,18 +53,13 @@ const DashboardLayout = ({children,...props}: any) => {
   }, []);
 
   return (
-    <>
-      <div className="flex">
-        <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} isTab={isTab} />
-        {/* main had a class max-w-5xl */}
-        <main className="max-w-full flex-1 mx-auto h-screen pb-16 overflow-hidden">
-          <DashboardNavbar name={name} id={id} page='dashboard' setIsOpen={setIsOpen} isOpen={isOpen} />
-          {/*  Main Content */}
-          {children}
-          {/* <VehicleDashboardContent vehicleId={router.query.vehicleId} /> */}
-        </main>
+    <div className='flex '>
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} isTab={isTab} />
+      <div className="max-w-full flex-1 h-screen overflow-hidden">
+        <DashboardNavbar name={name} id={id} page='dashboard' isTab={isTab} setIsOpen={setIsOpen} isOpen={isOpen} />
+        {children}
       </div>
-    </>
+    </div>
   );
 };
 

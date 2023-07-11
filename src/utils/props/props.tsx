@@ -7,17 +7,18 @@ export type SelectorProps = {
 };
 
 export type SidebarProps = {
-  isTab: any;
-  isOpen: any;
+  isTab: boolean;
+  isOpen: boolean;
   setIsOpen: any;
 };
 
 export type DashboardNavbarProps = {
   setIsOpen: any;
-  isOpen: any;
+  isOpen: boolean;
   page:string;
   name:string;
   id:string;
+  isTab:boolean;
 };
 
 export type HeadingProps = {

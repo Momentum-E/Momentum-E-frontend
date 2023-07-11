@@ -14,6 +14,7 @@ function classNames(...classes: string[]) {
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   setIsOpen,
   isOpen,
+  isTab,
   page,
   name,
   id,
@@ -60,7 +61,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
         <>
           <div className="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+              <div className={`absolute inset-y-0 left-0 flex items-center md:hidden`}>
                 <Disclosure.Button
                   className="inline-flex items-center justify-center rounded-md p-2 text-white-100 hover:bg-gray-700 hover:text-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                   onClick={() => setIsOpen(true)}>
@@ -98,7 +99,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 pt-0 md:pt-3 items-center justify-center sm:items-stretch sm:justify-start">
+              <div className="flex flex-1 pt-0 md:pt-3 items-center justify-center md:items-stretch md:justify-start">
                 <div className="flex flex-col flex-shrink-0">
                   <p className='text-white-100 text-sm hidden md:block'> 
                     <span className='text-gray-400'>Dashboard</span> / {vehicleId}
@@ -117,19 +118,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                   /> */}
               </div>
               <div className="absolute h-full inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* Profile dropdown */}
-                <div className="hidden md:flex">
-                  <Link
-                    href="/"
-                    className="px-4 py-2 text-white-100 rounded-md shadow hover:bg-gray-700/40">
-                    Home
-                  </Link>
-                  <Link
-                    href="/#aboutus"
-                    className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
-                    About Us
-                  </Link>
-                </div>
+                {/* Profile dropdown */}       
                 <Menu as="div" className="relative ml-3">
                   <div className="flex justify-center items-center p-1 overflow-hidden text-ellipsis">
                     <span className="text-white-100 mr-2 h-[50%] overflow-hidden text-ellipsis hidden lg:flex lg:justify-center">
@@ -155,7 +144,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95">
                     <Menu.Items className="absolute right-0 z-10 p-1 w-48 mt-1 origin-top-right rounded-md bg-white-100 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Menu.Item as={'ul'} className={`md:hidden`}>
+                        <Menu.Item as={'ul'}>
                           {({ active }) => (
                             <li
                               className={classNames(
