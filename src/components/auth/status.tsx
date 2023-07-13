@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { AccountContext } from './account';
+import { AccountContext } from '../../context/account';
 import Link from 'next/link';
 
 interface Status_props{

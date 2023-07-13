@@ -7,18 +7,25 @@ export type SelectorProps = {
 };
 
 export type SidebarProps = {
-  isTab: any;
-  isOpen: any;
+  isTab: boolean;
+  isOpen: boolean;
   setIsOpen: any;
 };
 
 export type DashboardNavbarProps = {
   setIsOpen: any;
-  isOpen: any;
+  isOpen: boolean;
   page:string;
   name:string;
   id:string;
+  isTab:boolean;
 };
+
+export type UserSideMenuProps = {
+  name:string;
+  page:string;
+  id:string;
+}
 
 export type HeadingProps = {
   primaryHeading?: string;
@@ -33,3 +40,16 @@ export type ItemCardProps = {
   imageAlt?:any,
   imageClassname?:string,
 };
+
+export type AuthInputProps = {
+  outerDiv:string | undefined;
+  labelName:string;
+  labelFor:string;
+  isRequired:boolean;
+  inputType:string;
+  inputAutocomplete:string;
+  inputClassname:string | undefined;
+  inputValue:string | number | string[] | undefined
+  inputOnChange:React.ChangeEventHandler<HTMLInputElement> | undefined
+  children:React.JSX.Element|null;
+}

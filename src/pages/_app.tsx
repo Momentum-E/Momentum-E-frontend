@@ -1,22 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Footer, Navbar } from '@/components/shared';
+import React from 'react';
 import '@/styles/globals.css';
+import { ThemeProvider, useTheme } from 'next-themes';
 import type { AppProps } from 'next/app';
-import { Account, AccountContext } from '@/components/auth/account';
+import { Account, AccountContext } from '@/context/account';
 
 export default function App({ Component, pageProps }: AppProps) {
-
-  // need to remove navbar and footer conditonally
+  
   return (
     <Account>
       <AccountContext.Consumer>
         {(accountContext) => {
           return (
-            <>
-              {/* <Navbar setIsOpen={setIsOpen} isOpen={isOpen} isAuthenticated={accountContext.isAuthenticated}/> */}
-              <Component {...pageProps} accountContext={accountContext}/>
-              {/* <Footer isAuthenticated={accountContext.isAuthenticated}/> */}
-            </>
+            <ThemeProvider attribute='class'>
+                {/* <Navbar setIsOpen={setIsOpen} isOpen={isOpen} isAuthenticated={accountContext.isAuthenticated}/> */}
+                <Component {...pageProps} accountContext={accountContext}/>
+                {/* <Footer isAuthenticated={accountContext.isAuthenticated}/> */}
+            </ThemeProvider>
           );
         }}
       </AccountContext.Consumer>

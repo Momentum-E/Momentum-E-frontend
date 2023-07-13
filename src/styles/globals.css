@@ -6,10 +6,10 @@
     background-color: #060e02;
   }
   .link {
-    @apply p-2 flex rounded-md font-normal gap-6 items-center md:cursor-pointer cursor-default duration-200;
+    @apply py-2 px-1 rounded-md font-normal hover:bg-gray-700/25 flex items-center md:cursor-pointer cursor-default duration-200;
   }
   .active {
-    @apply font-medium;
+    @apply font-medium bg-gray-700/40;
   }
 }
 @tailwind components;

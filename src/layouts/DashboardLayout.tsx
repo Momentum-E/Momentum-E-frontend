@@ -4,22 +4,25 @@ import {
   Sidebar,
   DashboardNavbar,
   // DashboardContent,
-} from '@/components/dashboard';
-import { AccountContext } from '../auth/account';
+} from '@/components/dashboard/dashboard-components';
+import { AccountContext } from '@/context/account';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-const DashboardLayout = ({children,...props}: any) => {
 
-  let isTab = useMediaQuery({ query: '(max-width:768px)' });
+const DashboardLayout = ({children}: any) => {
+
+  let isTab = useMediaQuery({ query: '(max-width:640px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
   const {isAuthenticated} = useContext(AccountContext)
   const router = useRouter();
+  const {vehicle_Id} = router.query
   
   const { getSession, logout } = useContext(AccountContext);
   const [user, setUser] = useState(null);
   const [name, setName] = useState<string>('');
   const [id, setId] = useState<string>('');
+
 
   useEffect(() => {
     if (isTab) {
@@ -27,7 +30,7 @@ const DashboardLayout = ({children,...props}: any) => {
     } else {
       setIsOpen(true);
     }
-  }, [isTab,isAuthenticated]);
+  }, [isTab]);
 
 
 
@@ -52,18 +55,15 @@ const DashboardLayout = ({children,...props}: any) => {
   }, []);
 
   return (
-    <>
-      <div className="flex">
+    <div className='relative'>
+      <div className='flex'>
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} isTab={isTab} />
-        {/* main had a class max-w-5xl */}
-        <main className="max-w-full flex-1 mx-auto h-screen pb-16 overflow-hidden">
-          <DashboardNavbar name={name} id={id} page='dashboard' setIsOpen={setIsOpen} isOpen={isOpen} />
-          {/*  Main Content */}
+        <div className="max-w-full flex-1 h-screen overflow-hidden">
+          <DashboardNavbar name={name} id={id} page='dashboard' isTab={isTab} setIsOpen={setIsOpen} isOpen={isOpen} />
           {children}
-          {/* <VehicleDashboardContent vehicleId={router.query.vehicleId} /> */}
-        </main>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

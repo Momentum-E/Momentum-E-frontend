@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import Pool from '../user-pool/user-pool';
+import Pool from '../../context/user-pool/user-pool';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { useRouter } from 'next/router';
+import {PagesLayout} from '@/layouts/'
+import AuthInput from '../AuthInput';
 
 const ForgotPassword = () => {
   // AWS.config.update({ region: 'ap-south-1' });
@@ -52,98 +54,106 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="relative w-full h-full py-20 min-h-screen">
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        {step === 'request' && (
-          <div>
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-              <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-white-100">
-                Confirm OTP sent on your email to Register
-              </h2>
-            </div>
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-white-100">
-                Enter your email:
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="text"
-                  required={true}
-                  autoComplete="email"
-                  className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
-              <button
-                type="submit"
-                onClick={initiateForgotPassword}
-                className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                Confirm OTP
-              </button>
-            </div>
-          </div>
-        )}
-        {step === 'confirm' && (
-          <div>
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-              <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-white-100">
-                Confirm OTP sent on your email to Register
-              </h2>
-            </div>
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-              <label
-                htmlFor="token"
-                className="block text-sm font-medium leading-6 text-white-100">
-                Confirmation Code:
-              </label>
-              <div className="">
-                <input
-                  type="number"
-                  name="token"
-                  id="token"
-                  required={true}
-                  autoComplete="email"
-                  className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                  value={confirmationCode}
-                  onChange={(e) => setConfirmationCode(e.target.value)}
-                />
+    <PagesLayout>
+      <section className="relative w-full h-full py-20 min-h-screen">
+        <div className="flex min-h-full max-w-lg mx-auto px-6 flex-1 flex-col justify-center py-12 lg:px-8">
+          
+          {step === 'request' && (
+            <>
+              <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-white-100">
+                  Confirm OTP sent on your email to Register
+                </h2>
               </div>
 
-              <label
-                htmlFor="password"
-                className="block text-sm mt-3 font-medium leading-6 text-white-100">
-                New Password:
-              </label>
-              <div className="">
-                <input
-                  id="password"
-                  name="password"
-                  type="text"
-                  required={true}
-                  autoComplete="email"
-                  className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+              {/* <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium leading-6 text-white-100">
+                  Enter your email:
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="email"  
+                    name="email"
+                    type="text"
+                    required={true}
+                    autoComplete="email"
+                    className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+              </div> */}
+              <AuthInput
+                  outerDiv='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'
+                  labelName='Enter your email:'
+                  labelFor='email'
+                  isRequired={true}
+                  inputType='email'
+                  inputAutocomplete='email'
+                  inputClassname='border-me-green-200'
+                  inputValue={username}
+                  inputOnChange={(e) => setUsername(e.target.value)}
+                  children={<button
+                    type="submit"
+                    onClick={initiateForgotPassword}
+                    className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black py-2.5 text-center text-sm font-semibold shadow-sm">
+                    Confirm OTP
+                  </button>}
                 />
-              </div>
 
-              <button
-                type="submit"
-                onClick={confirmForgotPassword}
-                className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                Confirm OTP
-              </button>
+            </>
+          )}
+          {step === 'confirm' && (
+            <div>
+              <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-white-100">
+                  Confirm OTP sent on your email to Register
+                </h2>
+              </div>
+              
+              <div className="mt-10 space-y-7 sm:mx-auto sm:w-full sm:max-w-sm">
+                
+                <AuthInput
+                    outerDiv=''
+                    labelName='Confirmation Code:'
+                    labelFor='token'
+                    isRequired={true}
+                    inputType='number'
+                    inputAutocomplete='one-time-code'
+                    inputClassname={`border-me-green-200`}
+                    inputValue={confirmationCode}
+                    inputOnChange={(e) => setConfirmationCode(e.target.value)}
+                    children={null}
+                  />
+
+                <AuthInput
+                    outerDiv=''
+                    labelName='New Password:'
+                    labelFor='password'
+                    isRequired={true}
+                    inputType='password'
+                    inputAutocomplete='new-password'
+                    inputClassname={`border-me-green-200`}
+                    inputValue={newPassword}
+                    inputOnChange={(e) => setNewPassword(e.target.value)}
+                    children={null}
+                  />
+
+                <button
+                  type="submit"
+                  onClick={confirmForgotPassword}
+                  className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                  Confirm OTP
+                </button>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </section>
       <ToastContainer />
-    </div>
+    </PagesLayout>
   );
 };
 

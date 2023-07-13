@@ -1,7 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 const colors = require('tailwindcss/colors')
+require('tailwind-scrollbar')
 
 module.exports = {
+  darkMode:'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -9,18 +11,20 @@ module.exports = {
   ],
   theme: {
     colors: {
+      transparent: 'transparent',
       'white': {
         100: '#ffffff',
         200: '#C1C3C0',
       },
-      'black': '#000000',
+      'black': colors.black,
       'me-green': {
         100: '#83952B',
         200: '#C6DE41',
+        300: '#060E02',
       },
-      'red-500':'#FF0000',
+      'red':colors.red,
+      'green':colors.green,
       gray: colors.gray,
-      transparent: 'transparent',
     },
     
     extend: {

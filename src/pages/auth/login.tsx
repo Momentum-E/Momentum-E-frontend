@@ -1,15 +1,15 @@
 import { SignIn, Status } from '@/components/auth';
-import { Navbar, Footer } from '@/components/shared';
-import { Account } from '@/components/auth/account';
+import { Account } from '@/context/account';
 import React from 'react';
+import { PagesLayout } from '@/layouts';
 
 const Login = ({isAuthenticated}:any) => {
   return (
     <Account>
       {/* <Status /> */}
-      <Navbar/>
-      <SignIn />
-      <Footer/>
+      <PagesLayout>
+        <SignIn />
+      </PagesLayout>
     </Account>
   );
 };
