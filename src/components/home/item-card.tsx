@@ -21,7 +21,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
       <div className="text-me-green-200 font-bold text-2xl text-center py-2 flex justify-center">
         {heading}
       </div>
-      <div className="text-white-200 font-bold text-xl flex justify-center text-center">
+      <div className="text-white-200 font-normal text-xl flex justify-center text-center">
         {description}
       </div>
     </div>

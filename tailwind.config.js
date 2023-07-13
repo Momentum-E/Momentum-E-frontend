@@ -10,6 +10,7 @@ module.exports = {
   ],
   theme: {
     colors: {
+      transparent: 'transparent',
       'white': {
         100: '#ffffff',
         200: '#C1C3C0',
@@ -23,7 +24,6 @@ module.exports = {
       'red':colors.red,
       'green':colors.green,
       gray: colors.gray,
-      transparent: 'transparent',
     },
     
     extend: {

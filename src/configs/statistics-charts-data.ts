@@ -2,7 +2,7 @@ import { chartsConfig } from "@/configs";
 
 const AvgDailyMiles = {
     type: "bar",
-    height:'90%',
+    height:'100%',
     width:'100%',
     series: [
       {
@@ -16,7 +16,7 @@ const AvgDailyMiles = {
       plotOptions: {
         bar: {
           columnWidth: "16%",
-          borderRadius: 10,
+          borderRadius: 5,
         },
       },
       xaxis: {
@@ -33,22 +33,29 @@ const AvgDailyMiles = {
     series: [
       {
         name: "Health %",
-        data: [50, 40, 30, 32, 50, 135, 20, 23, 50,20, 23, 50,20, 23, 50],
+        data: [50, 40, 30, 32, 50, 95, 20, 23, 50,20, 23, 50,20, 23, 50],
       },
     ],
     options: {
       ...chartsConfig,
-      colors: ["#C6DE41"],
+      colors: ["#fff"],
       stroke: {
         lineCap: "round",
         curve: 'smooth',
         width:2,
       },
       markers: {
-        size: 0,
+        size: -1,
+        colors:['#C6DE41'],
+        strokeWidth:0,
       },
       fill:{
+        colors:['#C6DE41'],
         type:'gradient',
+        gradient:{
+          shade:'#C6DE41',
+          shadeIntensity:0,
+        },
       },
       animations: {
         enabled: true,
@@ -68,9 +75,11 @@ const AvgDailyMiles = {
           "Sep",
           "Oct",
           "Nov",
-          "Dec","Oct",
+          "Dec",
+          "Oct",
           "Nov",
-          "Dec","Oct",
+          "Dec",
+          "Oct",
           "Nov",
           "Dec",
         ],

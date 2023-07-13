@@ -2,9 +2,9 @@ import React, { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Listbox, Transition } from '@headlessui/react';
-import { DashboardLayout, Selector } from '@/components/dashboard';
+import { DashboardLayout } from '@/layouts';
 import { City, Country, State } from 'country-state-city';
-import { DashboardNavbar } from '@/components/dashboard';
+import { Selector } from '@/components/dashboard/dashboard-components/';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -30,7 +30,6 @@ const Profile = () => {
   const countryData = Country.getAllCountries();
 
   const [formData, setFormData] = useState<FormData | null>(null);
-
   const [userData, setUserData] = useState(null);
   const [ownerType, setOwnerType] = useState(
     formData?.owner_type === 'Individual Owner' ? owner_type[0] : owner_type[1]

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react'
 import { DashboardLayout } from '@/layouts/';
 // import { BasicCarData } from '@/components/dashboard/vehicle-components';
-import { VehicleData } from '@/components/dashboard/vehicle-components';
+import VehicleData from '@/components/dashboard/vehicle-components/VehicleData';
 
 function VehicleDashboardContent() {
     const router = useRouter();
@@ -18,7 +18,7 @@ function VehicleDashboardContent() {
         {vehicleId ? (
           <VehicleData/>
         ) : (
-          <h1 className='text-white-100'>No vehicle selected.</h1>
+          router.push('/dashboard/profile ')
         )}
         {/* Add your specific dashboard content for the vehicle */}
       </>
