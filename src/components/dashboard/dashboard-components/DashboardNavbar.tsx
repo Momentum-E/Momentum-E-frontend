@@ -1,11 +1,12 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DashboardNavbarProps } from '@/utils/props/props';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Disclosure,} from '@headlessui/react';
 import { AccountContext } from '@/context/account';
 import Image from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { UserSideMenu } from './navbar-component';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -14,14 +15,12 @@ function classNames(...classes: string[]) {
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   setIsOpen,
   isOpen,
-  isTab,
   page,
   name,
   id,
 }) => {
 
-
-  const { getSession, logout } = useContext(AccountContext);
+  // const { getSession } = useContext(AccountContext);
   // const [user, setUser] = useState(null);
   // const [name, setName] = useState<string>('');
   // const [id, setId] = useState<string>('');
@@ -46,13 +45,8 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
       
       //   fetchuserdetails();
       // }, []);
-      
-    const router = useRouter();
-      const SignOut = () => {
-    logout();
-  };
 
-  // const router = useRouter();
+  const router = useRouter();
   const { vehicleId } = router.query;
 
   return (
@@ -61,159 +55,56 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
         <>
           <div className="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
-              <div className={`absolute inset-y-0 left-0 flex items-center md:hidden`}>
-                <Disclosure.Button
-                  className="inline-flex items-center justify-center rounded-md p-2 text-white-100 hover:bg-gray-700 hover:text-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                  onClick={() => setIsOpen(true)}>
-                  <span className="sr-only">Open main menu</span>
-                  {isOpen ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="block h-6 w-6">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      aria-hidden="true"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="block w-6 h-6">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                      />
-                    </svg>
-                  )}
-                </Disclosure.Button>
-              </div>
-              <div className="flex flex-1 pt-0 md:pt-3 items-center justify-center md:items-stretch md:justify-start">
-                <div className="flex flex-col flex-shrink-0">
-                  <p className='text-white-100 text-sm hidden md:block'> 
-                    <span className='text-gray-400'>Dashboard</span> / {vehicleId}
-                  </p>
-                  <span className="text-xl md:text-md text-white-100 whitespace-pre flex flex-shrink-0">Dashboard</span>
+              <div className="w-full md:w-3/4">
+                <div className={`absolute inset-y-0 left-0 flex items-center md:hidden`}>
+                  <Disclosure.Button
+                    className="inline-flex items-center justify-center rounded-md p-2 text-white-100 hover:bg-gray-700 hover:text-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    onClick={() => setIsOpen(true)}>
+                    <span className="sr-only">Open main menu</span>
+                    {isOpen ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="block h-6 w-6">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        aria-hidden="true"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="block w-6 h-6">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                        />
+                      </svg>
+                    )}
+                  </Disclosure.Button>
                 </div>
-                  {/* <Image
-                    className="block h-10 w-auto lg:hidden"
-                    src={logo}
-                    alt="Momentum-E"
-                  /> */}
-                  {/* <Image
-                    className="hidden h-10 w-auto lg:block"
-                    src={logo}
-                    alt="Momentum-E"
-                  /> */}
-              </div>
-              <div className="absolute h-full inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* Profile dropdown */}       
-                <Menu as="div" className="relative ml-3">
-                  <div className="flex justify-center items-center p-1 overflow-hidden text-ellipsis">
-                    <span className="text-white-100 mr-2 h-[50%] overflow-hidden text-ellipsis hidden lg:flex lg:justify-center">
-                      Hello, {name}
-                    </span>
-                    <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="sr-only">Open user menu</span>
-                      <Image
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt="Image of the person"
-                        width={100}
-                        height={100}
-                      />
-                    </Menu.Button>
+                <div className="flex flex-1 pt-0 md:pt-3 items-center justify-center md:items-stretch md:justify-start">
+                  <div className="flex flex-col flex-shrink-0">
+                    <p className='text-white-100 text-sm hidden md:block'> 
+                      <span className='text-gray-400'>Dashboard</span> / {vehicleId||page}
+                    </p>
+                    <span className="text-xl md:text-md text-white-100 whitespace-pre flex flex-shrink-0">Dashboard</span>
                   </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95">
-                    <Menu.Items className="absolute right-0 z-10 p-1 w-48 mt-1 origin-top-right rounded-md bg-white-100 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Menu.Item as={'ul'}>
-                          {({ active }) => (
-                            <li
-                              className={classNames(
-                                active ? 'bg-gray-700' : '',
-                                'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
-                              )}
-                              onClick={() => router.replace('/')}>
-                              Home
-                            </li>
-                          )}
-                        </Menu.Item>
-                      {
-                        page==='profile' ? (
-                          <Menu.Item as={'ul'}>
-                            {({ active }) => (
-                              <li
-                                className={classNames(
-                                  active ? 'bg-gray-700' : '',
-                                  'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
-                                )}
-                                onClick={() => router.replace('/dashboard/')}>
-                                Dashboard
-                              </li>
-                            )}
-                          </Menu.Item>
-                        ):
-                        (
-                          <Menu.Item as={'ul'}>
-                            {({ active }) => (
-                              <li
-                                className={classNames(
-                                  active ? 'bg-gray-700' : '',
-                                  'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
-                                )}
-                                onClick={() => router.replace('/dashboard/profile/' + id)}>
-                                Your Profile
-                              </li>
-                            )}
-                          </Menu.Item>
-                        )
-                      }
-                      <Menu.Item>
-                        {({ active }) => (
-                          <li
-                            className={classNames(
-                              active ? 'bg-gray-100' : '',
-                              'block px-4 py-2 text-sm rounded-md text-black hover:bg-white-200 hover:cursor-pointer'
-                            )}>
-                            Settings
-                          </li>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <li
-                            onClick={() => SignOut()}
-                            className={classNames(
-                              active ? 'bg-gray-100' : '',
-                              'block px-4 py-2 text-sm rounded-md text-black hover:bg-white-200 hover:cursor-pointer'
-                            )}>
-                            Sign out
-                          </li>
-                        )}
-                      </Menu.Item>
-                      
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
+                </div>
               </div>
+              <UserSideMenu name={name} page={page} id={id}/>
+
             </div>
           </div>
         </>

@@ -45,7 +45,7 @@ const ConfirmSignup = ({ username }: any) => {
   }
 
   return (
-    <PagesLayout>
+    <>
       <div>
         {
           getUserDataProcess === false ?
@@ -111,7 +111,7 @@ const ConfirmSignup = ({ username }: any) => {
         }
         <ToastContainer />
       </div>
-    </PagesLayout>
+    </>
     );
 };
 export default ConfirmSignup;

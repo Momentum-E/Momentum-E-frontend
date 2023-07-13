@@ -21,6 +21,12 @@ export type DashboardNavbarProps = {
   isTab:boolean;
 };
 
+export type UserSideMenuProps = {
+  name:string;
+  page:string;
+  id:string;
+}
+
 export type HeadingProps = {
   primaryHeading?: string;
   secondaryHeading?: string;

@@ -16,6 +16,9 @@ const vehicle_data = [
   { vehicle_no: 'vehicle6' },
   { vehicle_no: 'vehicle7' },
   { vehicle_no: 'vehicle8' },
+  { vehicle_no: 'vehicle9' },
+  { vehicle_no: 'vehicle10' },
+  { vehicle_no: 'vehicle11' },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {

@@ -18,7 +18,7 @@ function VehicleDashboardContent() {
         {vehicleId ? (
           <VehicleData/>
         ) : (
-          router.push('/dashboard/profile ')
+          <h1 className='text-white-100'>Welcome User</h1>
         )}
         {/* Add your specific dashboard content for the vehicle */}
       </>

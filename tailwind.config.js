@@ -3,6 +3,7 @@ const colors = require('tailwindcss/colors')
 require('tailwind-scrollbar')
 
 module.exports = {
+  darkMode:'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',

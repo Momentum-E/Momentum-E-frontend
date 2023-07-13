@@ -9,7 +9,8 @@ import { AccountContext } from '@/context/account';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-const DashboardLayout = ({children,...props}: any) => {
+
+const DashboardLayout = ({children}: any) => {
 
   let isTab = useMediaQuery({ query: '(max-width:640px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
@@ -21,6 +22,7 @@ const DashboardLayout = ({children,...props}: any) => {
   const [user, setUser] = useState(null);
   const [name, setName] = useState<string>('');
   const [id, setId] = useState<string>('');
+
 
   useEffect(() => {
     if (isTab) {
@@ -53,11 +55,13 @@ const DashboardLayout = ({children,...props}: any) => {
   }, []);
 
   return (
-    <div className='flex '>
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} isTab={isTab} />
-      <div className="max-w-full flex-1 h-screen overflow-hidden">
-        <DashboardNavbar name={name} id={id} page='dashboard' isTab={isTab} setIsOpen={setIsOpen} isOpen={isOpen} />
-        {children}
+    <div className='relative'>
+      <div className='flex'>
+        <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} isTab={isTab} />
+        <div className="max-w-full flex-1 h-screen overflow-hidden">
+          <DashboardNavbar name={name} id={id} page='dashboard' isTab={isTab} setIsOpen={setIsOpen} isOpen={isOpen} />
+          {children}
+        </div>
       </div>
     </div>
   );

@@ -20,54 +20,54 @@ const VehicleUsage = () => {
             series={statisticsChartsData[0].chart.series}/>
           </div>  
         </div>
-        <div className="flex h-2/3 md:1/3 flex-col md:flex-row justify-between">
+        <div className="flex h-2/3 flex-col space-x-1 md:flex-row justify-between">
           <div className="flex h-full flex-row md:flex-col justify-around">
-            <div className='flex w-full flex-col text-sm font-medium text-gray-400'>
+            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-400'>
               Avg Daily Miles Driven
               <span className='text-white-100 text-sm'>
                 {102} Miles
               </span>
-            </div>
+            </p>
             
-            <div className='flex w-full flex-col text-sm font-medium text-gray-400'>
+            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-400'>
               Temperature High/Low
               <span className='text-white-100 text-sm'>
                 {35}C / {28}C
               </span>
-            </div>
+            </p>
           </div>
           
           <div className="flex h-full flex-row md:flex-col justify-around">
-            <div className='flex w-full flex-col text-sm font-medium text-gray-400'>
+            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-400'>
               SoC Range
               <span className='text-white-100 text-sm'>
                 45%
               </span>
-            </div>
+            </p>
             
-            <div className='flex w-full flex-col text-sm font-medium text-gray-400'>
+            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-400'>
               Range Observed Max/Min
               <span className='text-white-100 text-sm'>
                 {15} Miles/{11} Miles
               </span>
-            </div>
+            </p>
           </div>
             
           <div className="flex h-full flex-row md:flex-col justify-around">
-            <div className='flex w-full flex-col text-sm font-medium text-gray-400'>
+            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-400'>
               Avg Real Range Observed
               <span className='text-white-100 text-sm'>
                 25%
               </span>
-            </div>
+            </p>
 
-            <div className='flex w-full flex-col text-sm font-medium text-gray-400'>
+            <p className='flex flex-col w-full md:justify-between flex-col text-sm font-medium text-gray-400'>
               Observed v/s OEM provided
-              <p className='flex justify-between text-left text-white-100 text-sm'>
-                <span className='w-full'>{12} Miles</span>
-                <span className='w-full'>{17} Miles</span> 
-              </p>
-            </div>
+              <span className="flex w-full justify-between">
+                <span className='w-full text-left text-white-100 text-sm'>{12} Miles</span>
+                <span className='w-full text-left text-white-100 text-sm'>{17} Miles</span> 
+              </span>
+            </p>
           </div>
         </div>    
     </>

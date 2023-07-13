@@ -90,7 +90,7 @@ const GetUserData = () => {
   };
 
   return (
-    <PagesLayout>
+    <>
       <form
         method="POST"
         onSubmit={onSubmit}
@@ -301,7 +301,7 @@ const GetUserData = () => {
         </div>
         {/* <ToastContainer /> */}
       </form>
-    </PagesLayout>
+    </>
   );
 };
 
