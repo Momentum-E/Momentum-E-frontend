@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTheme } from 'next-themes';
 import {
   BasicCarData,
   BatteryHealth,
@@ -8,8 +9,11 @@ import {
 } from './vehicle-card-components';
 
 function VehicleData() {
+
+  const { theme, setTheme } = useTheme()
+
   return (
-    <div className="max-h-full overflow-auto pb-16 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
+    <div className="max-h-full overflow-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
       <div className="p-2 dark:border-gray-700 space-y-4">
         {/* Vehicle Content block 1*/}
         <div className="lg:grid lg:grid-cols-3 md:grid-cols-2 flex flex-col gap-4">
@@ -42,13 +46,13 @@ function VehicleData() {
 
         {/* Vehicle Content block 2*/}
         <div className="flex-row  space-y-4 lg:flex md:flex-row lg:space-y-0 gap-4">
-          <div className="lg:w-[50%] h-80 flex flex-col justify-between p-3 space-y-3 rounded-2xl border border-me-green-200 bg-dashboard-gradient backdrop-blur-3xl dark:bg-gray-800">
+          <div className="lg:w-[50%] h-80 flex flex-col justify-between p-3 space-y-3 rounded-2xl border border-me-green-200 dark:bg-dashboard-gradient dark:backdrop-blur-3xl">
             <p className='flex flex-col text-lg text-gray-400'>Vehicle Info</p>
             <VehicleInfo/>
           </div>
 
-          <div className="lg:w-[50%] flex flex-0 flex-col justify-between p-3 h-80 text-xl text-white-100 font-medium border border-me-green-200 rounded-2xl bg-dashboard-gradient backdrop-blur-3xl dark:bg-gray-800">
-            <p className='text-lg text-gray-400'>Charging Pattern</p>
+          <div className="lg:w-[50%] flex flex-0 flex-col justify-between p-3 h-80 text-xl text-gray-400 font-medium border border-me-green-200 rounded-2xl dark:bg-dashboard-gradient dark:backdrop-blur-3xl">
+            <p className="flex flex-col text-lg text-gray-400">Charging Pattern</p>
             <ChargingPattern/>
           </div>
         </div>
@@ -57,16 +61,40 @@ function VehicleData() {
         <div className="lg:grid lg:grid-cols-2 lg:space-y-0 grid-col-1 space-y-4 gap-4">
 
           {/* Usage */}
-          <div className=" h-[600px] md:h-[445px] flex flex-col p-3 text-xl space-y-3 text-white-100 rounded-2xl border border-me-green-200 bg-dashboard-gradient backdrop-blur-3xl dark:bg-gray-800">
-            <p>Usage</p>
+          <div className=" h-[600px] md:h-[445px] flex flex-col p-3 space-y-3 text-gray-400 text-lg font-medium rounded-2xl border border-me-green-200 dark:bg-dashboard-gradient dark:backdrop-blur-3xl">
+            <p className="flex flex-col text-lg text-gray-400">Usage</p>  
             <VehicleUsage/>
           </div>
 
             {/* Avg Daily Miles */}
-          <div className="h-[445px] space-y-5 flex flex-col items-end p-3 rounded-2xl  bg-dashboard-gradient backdrop-blur-3xl border border-me-green-200 dark:bg-gray-800">
+          <div className="h-[445px] space-y-5 flex flex-col items-end p-3 rounded-2xl dark:bg-dashboard-gradient dark:backdrop-blur-3xl border border-me-green-200">
+          <div className="w-full flex justify-between text-lg font-medium text-gray-400">
+            <p className='flex flex-col text-lg text-gray-400'>Battery Health</p>
+            <div className="flex flex-col items-center text-xs p-1 rounded-lg border border-white-100  bg-dashboard-gradient backdrop-blur-3xl">
+              Avg Battery Health
+              <span className='text-me-green-200'>{`75%`}</span>
+            </div>
+          </div>
             <BatteryHealth/>
           </div>
         </div>
+      </div>
+      <div className="flex absolute right-6 bottom-2 bg-white-100 dark:bg-gray-900 rounded-full  md:order-2">
+          <ul className="flex flex-row p-2 md:space-x-8 md:mt-0 md:text-sm md:font-medium">            
+          <li>
+              <button className="block rounded md:p-0" onClick={()=> setTheme( theme === "dark"? "light": "dark" )}>
+              { theme==="dark"? 
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white-100">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+              </svg>
+              : 
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+              </svg>
+              }
+              </button>
+          </li>
+          </ul>
       </div>
     </div>
   )

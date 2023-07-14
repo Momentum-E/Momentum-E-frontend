@@ -14,14 +14,14 @@ function VehicleDashboardContent() {
  
   return (
     <DashboardLayout >
-      <>
+      <div className='h-screen overflow-auto pb-16 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300'>
         {vehicleId ? (
           <VehicleData/>
         ) : (
           <h1 className='text-white-100'>Welcome User</h1>
         )}
         {/* Add your specific dashboard content for the vehicle */}
-      </>
+      </div>
     </DashboardLayout>
   )
 }

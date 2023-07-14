@@ -7,14 +7,7 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 const BatteryHealth = () => {
   return (
     <>
-      <div className="w-full flex justify-between text-lg font-medium text-white-100">
-          {statisticsChartsData[1].title}
-          <div className="flex flex-col items-center text-xs p-1 rounded-lg border border-white-100  bg-dashboard-gradient backdrop-blur-3xl">
-              Avg Battery Health
-              <span className='text-me-green-200'>{`75%`}</span>
-          </div>
-      </div>
-      <div className=" rounded-2xl w-full h-2/3 border border-me-green-100 bg-me-green-300">
+      <div className=" rounded-2xl w-full h-2/3 border text-black border-me-green-100 bg-me-green-300">
           <Chart {...statisticsChartsData[1].chart}/>
       </div>
       <div className="flex justify-around pt-1 w-full h-1/3">
