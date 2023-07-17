@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import YourVehicles from './sidebar-components/YourVehicles';
 import axios from 'axios';
 
-// We are going to use vehicle Id
 const vehicle_data = [
   { vehicle_no: 'vehicle1' },
   { vehicle_no: 'vehicle2' },
@@ -20,19 +19,11 @@ const vehicle_data = [
   { vehicle_no: 'vehicle10' },
   { vehicle_no: 'vehicle11' },
 ];
-
 const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
   const [userId, setUserId] = useState<string | any>('');
+  const [vehicleData, setVehicleData] = useState();
   const router = useRouter();
   const { pathname } = router;
-
-  useEffect(() => {
-    isTab && setIsOpen(false);
-    const _id = localStorage.getItem(
-      'CognitoIdentityServiceProvider.5anhoi3gpfgvnqsd609smuh0qi.LastAuthUser'
-    );
-    setUserId(_id);
-  }, [pathname]);
 
   const addVehicle = () => {
     axios
@@ -44,6 +35,28 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
       })
       .catch((err) => console.error(err));
   };
+
+  useEffect(() => {
+    isTab && setIsOpen(false);
+    const _id = localStorage.getItem(
+      'CognitoIdentityServiceProvider.5anhoi3gpfgvnqsd609smuh0qi.LastAuthUser'
+    );
+    setUserId(_id);
+
+    //! Get all vehicle details
+    axios
+      .get('http://localhost:5000/vehicles/get-vehicles', {
+        headers: {
+          'user-id': _id,
+        },
+      })
+      .then((res) => {
+        setVehicleData(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [pathname]);
 
   return (
     <div className="">
