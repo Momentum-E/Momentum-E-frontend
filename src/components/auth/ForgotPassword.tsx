@@ -42,7 +42,6 @@ const ForgotPassword = () => {
   const confirmForgotPassword = async () => {
     user.confirmPassword(confirmationCode, newPassword, {
       onSuccess() {
-        console.log('Password reset confirmed!');
         toast.success('Password reset confirmed!');
         router.push('/auth/login/');
       },
