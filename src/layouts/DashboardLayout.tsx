@@ -18,7 +18,6 @@ const DashboardLayout = ({children,page}: any) => {
   const [vehicleData, setVehicleData] = useState([]);
   const [user, setUser] = useState(null);
   const [name, setName] = useState<string>('');
-  // const [id, setId] = useState<string>('');
   const [userId, setUserId] = useState<string | any>('');
   const [isLoading, setIsLoading] = useState(true)
   
@@ -39,7 +38,7 @@ const DashboardLayout = ({children,page}: any) => {
         setUserId(userid);
         console.log(userId)
         const response = await axios.get(
-          `http://localhost:5000/auth/users/${userId}`
+          `http://localhost:5000/auth/users/${userid}`
         );
         console.log(response.data);
         setIsLoading(false)
