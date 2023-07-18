@@ -6,28 +6,36 @@ import { useRouter } from 'next/router';
 import YourVehicles from './sidebar-components/YourVehicles';
 import axios from 'axios';
 
-const vehicle_data = [
-  { vehicle_no: 'vehicle1' },
-  { vehicle_no: 'vehicle2' },
-  { vehicle_no: 'vehicle3' },
-  { vehicle_no: 'vehicle4' },
-  { vehicle_no: 'vehicle5' },
-  { vehicle_no: 'vehicle6' },
-  { vehicle_no: 'vehicle7' },
-  { vehicle_no: 'vehicle8' },
-  { vehicle_no: 'vehicle9' },
-  { vehicle_no: 'vehicle10' },
-  { vehicle_no: 'vehicle11' },
-];
-const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
-  const [userId, setUserId] = useState<string | any>('');
-  const [vehicleData, setVehicleData] = useState();
+type vehicleDataProps = {
+  id:string;
+  vendor:string;
+  isReachable:boolean;
+  information:{
+      vin:string;
+      brand:string;
+      model:string;
+      year:number;
+  },
+}[];
+
+const Sidebar: React.FC<SidebarProps> = ({
+  id,
+  isLoading,
+  vehicle_data, 
+  isTab, 
+  isOpen, 
+  setIsOpen }) => {
+
   const router = useRouter();
   const { pathname } = router;
 
+  useEffect(() => {
+    isTab && setIsOpen(false);
+  }, [pathname]);
+
   const addVehicle = () => {
     axios
-      .get(`http://localhost:5000/vehicles/users/${userId}/link`)
+      .get(`http://localhost:5000/vehicles/users/${id}/link`)
       .then((res) => {
         console.log(res.data);
         const linkUrl = res.data.linkUrl;
@@ -35,28 +43,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
       })
       .catch((err) => console.error(err));
   };
-
-  useEffect(() => {
-    isTab && setIsOpen(false);
-    const _id = localStorage.getItem(
-      'CognitoIdentityServiceProvider.5anhoi3gpfgvnqsd609smuh0qi.LastAuthUser'
-    );
-    setUserId(_id);
-
-    //! Get all vehicle details
-    axios
-      .get('http://localhost:5000/vehicles/get-vehicles', {
-        headers: {
-          'user-id': _id,
-        },
-      })
-      .then((res) => {
-        setVehicleData(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, [pathname]);
 
   return (
     <div className="">
@@ -96,7 +82,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
 
         <div
           className="flex px-4 p-2 text-white-100 bg-gray-700/20 rounded-lg items-center justify-center hover:bg-gray-700/40 cursor-pointer focus:bg-blue-200"
-          onClick={() => addVehicle()}>
+          onClick={addVehicle}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -114,7 +100,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isTab, isOpen, setIsOpen }) => {
         </div>
 
         <YourVehicles
-          vehicle_data={vehicle_data}
+          isLoading={isLoading}
+          vehicleData={vehicle_data}
           setIsOpen={setIsOpen}
           isTab={isTab}
         />

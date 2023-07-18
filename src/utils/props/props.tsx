@@ -7,6 +7,9 @@ export type SelectorProps = {
 };
 
 export type SidebarProps = {
+  id:string;
+  isLoading:boolean;
+  vehicle_data:any;
   isTab: boolean;
   isOpen: boolean;
   setIsOpen: any;

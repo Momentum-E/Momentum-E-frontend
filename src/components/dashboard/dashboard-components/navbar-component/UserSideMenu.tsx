@@ -26,20 +26,23 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
         {/* Profile dropdown */}  
         
         <Menu as="div" className="relative w-full ml-3">
-            <div className="flex justify-end items-center p-1 overflow-hidden text-ellipsis">
-            <span className="text-white-100 mr-2 h-[50%] overflow-hidden text-ellipsis hidden lg:flex lg:justify-center">
-                Hello, {name}
-            </span>
-            <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                <span className="sr-only">Open user menu</span>
-                <Image
-                className="h-8 w-8 rounded-full"
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                alt="Image of the person"
-                width={100}
-                height={100}
-                />
-            </Menu.Button>
+            <div className="flex items-center justify-end">
+                <p className="text-white-100 mr-2 w-[80%] text-sm hidden lg:flex lg:justify-center">
+                    <span className='overflow-hidden overflow-ellipsis'>
+                        Hello, {name}
+                    </span>
+                </p>
+                <div className="w-[20%]">
+                    <Menu.Button className="flex justify-end rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <Image
+                        className="h-8 w-8 rounded-full"
+                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        alt="Image of the person"
+                        width={32}
+                        height={32}
+                        />
+                    </Menu.Button>
+                </div>
             </div>
             <Transition
             as={Fragment}
