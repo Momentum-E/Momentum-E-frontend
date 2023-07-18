@@ -13,7 +13,7 @@ function VehicleDashboardContent() {
     },[])
  
   return (
-    <DashboardLayout >
+    <DashboardLayout page={vehicleId}>
       <div className='h-screen overflow-auto pb-16 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300'>
         {vehicleId ? (
           <VehicleData/>

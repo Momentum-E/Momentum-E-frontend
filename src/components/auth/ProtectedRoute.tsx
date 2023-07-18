@@ -1,8 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { AccountContext } from '../../context/account';
+import { Login } from '@/pages/auth';
 
-const ProtectedRoute = ({ Component, accountContext }: any) => {
+const ProtectedRoute = ({ children }: any) => {
   const { getSession } = useContext(AccountContext);
   const router = useRouter();
 
@@ -14,13 +15,17 @@ const ProtectedRoute = ({ Component, accountContext }: any) => {
         // router.replace('/dashboard')
       } catch (error) {
         // If there is no active session, redirect to the login page
-        router.replace('/auth/login');
+
       }
     };
     checkAuthentication();
   }, [getSession, router]);
 
-  return <Component accountContext={accountContext} />;
+  return (
+    <>
+      {children}
+    </>
+  )
 };
 
 export default ProtectedRoute;

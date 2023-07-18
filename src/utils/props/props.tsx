@@ -15,7 +15,7 @@ export type SidebarProps = {
 export type DashboardNavbarProps = {
   setIsOpen: any;
   isOpen: boolean;
-  page:string;
+  page:string | string[] | undefined;
   name:string;
   id:string;
   isTab:boolean;

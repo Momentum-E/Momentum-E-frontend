@@ -3,22 +3,19 @@ import { useMediaQuery } from 'react-responsive';
 import {
   Sidebar,
   DashboardNavbar,
-  // DashboardContent,
 } from '@/components/dashboard/dashboard-components';
 import { AccountContext } from '@/context/account';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { useTheme } from 'next-themes';
 
 
-const DashboardLayout = ({children}: any) => {
+const DashboardLayout = ({children,page}: any) => {
 
   let isTab = useMediaQuery({ query: '(max-width:640px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
   const {isAuthenticated} = useContext(AccountContext)
   const router = useRouter();
-
-  const {vehicle_Id} = router.query
+  
   const { getSession } = useContext(AccountContext);
   const [user, setUser] = useState(null);
   const [name, setName] = useState<string>('');
@@ -59,8 +56,8 @@ const DashboardLayout = ({children}: any) => {
         <div className="max-w-full flex-1 h-screen overflow-hidden">
           <DashboardNavbar 
             name={name} 
-            id={id} 
-            page={`profile/${id}`||'settings'} 
+            id={id}
+            page={page}
             isTab={isTab} 
             setIsOpen={setIsOpen} 
             isOpen={isOpen} 

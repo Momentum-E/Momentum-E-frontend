@@ -4,10 +4,9 @@ import { DashboardLayout } from '@/layouts';
 
 const Dashboard = ({ accountContext }: any) => {
   return (
-    <ProtectedRoute
-      Component={DashboardLayout}
-      accountContext={accountContext}
-    />
+    <ProtectedRoute>
+      <DashboardLayout/>
+    </ProtectedRoute>
   );
 };
 

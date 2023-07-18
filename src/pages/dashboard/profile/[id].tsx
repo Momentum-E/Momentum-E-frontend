@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { DashboardLayout } from '@/layouts';
 import { Selector } from '@/components/dashboard/dashboard-components/';
 import AuthListBox from '@/components/AuthListBox';
+import { profile } from 'console';
 
 const owner_type = [{ type: 'Individual Owner' }, { type: 'Fleet Owner' }];
 
@@ -106,7 +107,7 @@ const Profile = () => {
   };
 
   return (
-    <DashboardLayout>
+    <DashboardLayout page={` Profile / ${id     }`}>
       <div className="max-h-full overflow-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
         <form
           method="POST"
