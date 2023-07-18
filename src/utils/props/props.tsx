@@ -23,7 +23,6 @@ export type DashboardNavbarProps = {
 
 export type UserSideMenuProps = {
   name:string;
-  page:string;
   id:string;
 }
 
@@ -52,4 +51,13 @@ export type AuthInputProps = {
   inputValue:string | number | string[] | undefined
   inputOnChange:React.ChangeEventHandler<HTMLInputElement> | undefined
   children:React.JSX.Element|null;
+}
+
+export type AuthListBoxProps = {
+  labelFor:string;
+  isRequired:boolean;
+  labelName:string;
+  data:{ type: string; }[];
+  value:any;
+  OnChange:React.ChangeEventHandler<HTMLInputElement> | undefined;
 }

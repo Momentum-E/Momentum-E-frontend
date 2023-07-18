@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import { audi_e_tron_9_black } from '@/assets/images'
 
-const VehicleInfo = () => {
+const  VehicleInfo = () => {
   return (
     <div className='h-full flex justify-between pt-5'> 
         <div className="">

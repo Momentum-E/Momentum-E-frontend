@@ -7,11 +7,11 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 const VehicleUsage = () => {
   return (
     <>  
-        <div className="flex h-1/3 md:h-2/3  justify-between p-2 rounded-xl border border-me-green-100 bg-me-green-300">
-          <div className=" text-base text-gray-400">
+        <div className="flex h-1/3 md:h-2/3 justify-between p-2 rounded-xl border border-me-green-100 bg-me-green-300">
+          <div className=" text-sm text-gray-400">
           {statisticsChartsData[0].title} (3 months)
           </div>
-          <div className="">
+          <div className="text-black">
             <Chart 
             height={statisticsChartsData[0].chart.height} 
             width={statisticsChartsData[0].chart.width} 
@@ -61,7 +61,7 @@ const VehicleUsage = () => {
               </span>
             </p>
 
-            <p className='flex flex-col w-full md:justify-between flex-col text-sm font-medium text-gray-400'>
+            <p className='flex flex-col w-full md:justify-between text-sm font-medium text-gray-400'>
               Observed v/s OEM provided
               <span className="flex w-full justify-between">
                 <span className='w-full text-left text-white-100 text-sm'>{12} Miles</span>

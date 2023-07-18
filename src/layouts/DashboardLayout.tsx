@@ -8,6 +8,7 @@ import {
 import { AccountContext } from '@/context/account';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { useTheme } from 'next-themes';
 
 
 const DashboardLayout = ({children}: any) => {
@@ -16,14 +17,13 @@ const DashboardLayout = ({children}: any) => {
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
   const {isAuthenticated} = useContext(AccountContext)
   const router = useRouter();
+
   const {vehicle_Id} = router.query
-  
-  const { getSession, logout } = useContext(AccountContext);
+  const { getSession } = useContext(AccountContext);
   const [user, setUser] = useState(null);
   const [name, setName] = useState<string>('');
   const [id, setId] = useState<string>('');
-
-
+  
   useEffect(() => {
     if (isTab) {
       setIsOpen(false);
@@ -31,8 +31,6 @@ const DashboardLayout = ({children}: any) => {
       setIsOpen(true);
     }
   }, [isTab]);
-
-
 
   useEffect(() => {
     const fetchuserdetails = async () => {
@@ -59,7 +57,14 @@ const DashboardLayout = ({children}: any) => {
       <div className='flex'>
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} isTab={isTab} />
         <div className="max-w-full flex-1 h-screen overflow-hidden">
-          <DashboardNavbar name={name} id={id} page='dashboard' isTab={isTab} setIsOpen={setIsOpen} isOpen={isOpen} />
+          <DashboardNavbar 
+            name={name} 
+            id={id} 
+            page={`profile/${id}`||'settings'} 
+            isTab={isTab} 
+            setIsOpen={setIsOpen} 
+            isOpen={isOpen} 
+          />
           {children}
         </div>
       </div>

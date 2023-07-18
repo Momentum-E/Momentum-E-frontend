@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import { Switch } from '@headlessui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import AuthInput from '../AuthInput';
 import ConfirmSignUp from '@/pages/auth/confirmSignup';
 
@@ -89,8 +88,8 @@ const Signup = () => {
             action="#"
             method="POST"
             onSubmit={(event) => onSubmit(event)}
-            className="mx-auto max-w-xl mt-20 md:mt-5">
-              
+            className="mx-auto max-w-xl mt-20 md:mt-5"
+          >    
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
 
               {/* <div className="sm:col-span-2">
@@ -118,8 +117,6 @@ const Signup = () => {
                 labelName='Email'
                 labelFor='email'
                 isRequired={true}
-                labelClassname=''
-                innerDiv='mt-2.5'
                 inputType='email'
                 inputAutocomplete='email'
                 inputClassname='border-me-green-200'
@@ -133,8 +130,6 @@ const Signup = () => {
                 labelName='Password'
                 labelFor='password'
                 isRequired={true}
-                labelClassname='block text-sm font-semibold leading-6 text-white-100'
-                innerDiv='mt-2.5'
                 inputType='password'
                 inputAutocomplete='off'
                 inputClassname={`${
@@ -152,8 +147,8 @@ const Signup = () => {
                 labelName='Confirm Password'
                 labelFor='confirmPassword'
                 isRequired={true}
-                labelClassname='block text-sm font-semibold leading-6 text-white-100'
-                innerDiv='mt-2.5'
+                // labelClassname='block text-sm font-semibold leading-6 text-white-100'
+                // innerDiv='mt-2.5'
                 inputType='password'
                 inputAutocomplete='off'
                 inputClassname={`${

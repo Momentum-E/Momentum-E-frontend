@@ -20,32 +20,6 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   id,
 }) => {
 
-  // const { getSession } = useContext(AccountContext);
-  // const [user, setUser] = useState(null);
-  // const [name, setName] = useState<string>('');
-  // const [id, setId] = useState<string>('');
-
-  
-  // useEffect(() => {
-  //   const fetchuserdetails = async () => {
-    //     try {
-  //       const session = await getSession();
-  //       const userId = session.idToken.payload.sub;
-  //       const response = await axios.get(
-    //         `http://localhost:5000/auth/users/${userId}`
-    //       );
-    //       console.log(response.data);
-    //       setName(response.data.firstName);
-    //       setId(response.data.userId);
-    //       setUser(response.data);
-    //     } catch (error) {
-      //       console.error('Error:', error);
-      //     }
-      //   };
-      
-      //   fetchuserdetails();
-      // }, []);
-
   const router = useRouter();
   const { vehicleId } = router.query;
 
@@ -103,7 +77,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                   </div>
                 </div>
               </div>
-              <UserSideMenu name={name} page={page} id={id}/>
+              <UserSideMenu name={name} id={id}/>
 
             </div>
           </div>
