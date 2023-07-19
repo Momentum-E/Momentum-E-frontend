@@ -5,7 +5,6 @@ import {
   DashboardNavbar,
 } from '@/components/dashboard/dashboard-components';
 import { AccountContext } from '@/context/account';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 
 
@@ -18,7 +17,7 @@ const DashboardLayout = ({children,page}: any) => {
   const [vehicleData, setVehicleData] = useState([]);
   const [user, setUser] = useState(null);
   const [name, setName] = useState<string>('');
-  const [userId, setUserId] = useState<string | any>('');
+  const [userId, setUserId] = useState<string|null>('');
   const [isLoading, setIsLoading] = useState(true)
   
   useEffect(() => {
@@ -32,45 +31,52 @@ const DashboardLayout = ({children,page}: any) => {
   useEffect(() => {
     const fetchuserdetails = async () => {
       try {
-        setIsLoading(true)
         const session = await getSession();
         const userid = session.idToken.payload.sub;
         setUserId(userid);
-        console.log(userId)
         const response = await axios.get(
           `http://localhost:5000/auth/users/${userid}`
         );
-        console.log(response.data);
-        setIsLoading(false)
         setName(response.data.firstName+" "+(response.data.lastName||""));
         setUser(response.data);
-      } catch (error) {
+        console.log(response.data);
+      } 
+      catch (error) {
         console.error('Error:', error);
       }
     };
-    fetchuserdetails();   
-    
-    // ! Get all vehicle details
-    const _id = localStorage.getItem(
-      'CognitoIdentityServiceProvider.5anhoi3gpfgvnqsd609smuh0qi.LastAuthUser'
-      );
-      setUserId(_id);
-      axios
-      .get('http://localhost:5000/vehicles/get-vehicles', {
-        headers: {
-          // this only accepts _id as the header and not userId from the state
-          'user-id': _id,
-      },
-    })
-    .then((res) => {
-    setVehicleData(res.data);
-    console.log(userId)
-    console.log(vehicleData)
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+    fetchuserdetails();
   }, []);
+
+
+  useEffect(()=>{
+    if(userId){
+      const getUserVehicleData = async () => {
+          // ! Get all vehicle details
+          // const _id = localStorage.getItem(
+          // 'CognitoIdentityServiceProvider.5anhoi3gpfgvnqsd609smuh0qi.LastAuthUser'
+          // );
+          // setUserId(_id);
+          axios
+          .get('http://localhost:5000/vehicles/get-vehicles', {
+            headers: {
+              // this only accepts _id as the header and not userId from the state
+              'user-id': userId,
+          },
+        })
+        .then((res) => {
+        setVehicleData(res.data);
+        console.log(userId)
+        setIsLoading(false)
+        // console.log(vehicleData)
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      }
+      getUserVehicleData();
+    }
+  },[userId])
 
   return (
     <div className='relative'>

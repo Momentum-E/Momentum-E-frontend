@@ -1,26 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import { Disclosure } from '@headlessui/react';
+import { YourVehicleProps } from '@/utils/props/props';
 import { VehicleInfo } from '../../vehicle-components/vehicle-card-components';
-
-type YourVehicleProps = {
-    isLoading:boolean;
-    vehicleData:vehicleDataProps;
-    isTab:boolean;
-    setIsOpen:any;
-}
-
-type vehicleDataProps = {
-    id:string;
-    vendor:string;
-    isReachable:boolean;
-    information:{
-        vin:string;
-        brand:string;
-        model:string;
-        year:number;
-    },
-}[];
 
 function YourVehicles({isLoading,vehicleData, setIsOpen, isTab}:YourVehicleProps) {
 

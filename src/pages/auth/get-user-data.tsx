@@ -73,19 +73,19 @@ const GetUserData = () => {
       method: 'POST',
       data: formData,
     })
-      .then((res) => {
-        console.log(res.data, formData);
-        toast.success('User successfully created');
-        router.push('/auth/login')
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error(err, );
-      });
-
-    // console.log(formData);
-    localStorage.removeItem('email');
-    localStorage.removeItem('userId');
+    .then((res) => {
+      console.log(res.data, formData);
+      toast.success('User successfully created');
+      router.replace('/auth/login')
+      
+      localStorage.removeItem('email');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('password')
+    })
+    .catch((err) => {
+      console.error(err);
+      toast.error(err, );
+    });
     // router.replace('/auth/login');
   };
 
@@ -96,7 +96,7 @@ const GetUserData = () => {
         onSubmit={onSubmit}
         className="w-full h-full mb-10 space-y-10 min-h-screen mx-auto max-w-xl sm:mt-20">
         <p className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-100">
-          This is the last step! Please enter a few more information
+          This is the last step!
         </p>
         <div className="grid grid-cols-1 px-5 gap-x-8 gap-y-6 sm:grid-cols-2">
           <AuthListBox 
@@ -118,7 +118,7 @@ const GetUserData = () => {
                 inputAutocomplete='given-name'
                 inputClassname='border-me-green-200'
                 inputValue={input.firstName}
-                inputOnChange={onInputChange}
+                inputOnChange={(e)=>onInputChange(e)}
                 children={null}
               />
               <AuthInput
@@ -130,7 +130,7 @@ const GetUserData = () => {
                 inputAutocomplete='last-name'
                 inputClassname='border-me-green-200'
                 inputValue={input.lastName}
-                inputOnChange={onInputChange}
+                inputOnChange={(e)=>onInputChange(e)}
                 children={null}
               />
             </>

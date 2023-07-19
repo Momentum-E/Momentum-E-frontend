@@ -6,12 +6,11 @@ import Pool from './user-pool/user-pool';
 const AccountContext = createContext();
 
 const Account = ({ children }) => {
-  const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     checkAuthentication();
-  }, []);
+  }, [isAuthenticated]);
 
   const checkAuthentication = async () => {
     try {
@@ -73,7 +72,6 @@ const Account = ({ children }) => {
     const user = Pool.getCurrentUser();
     if (user) {
       user.signOut();
-      router.replace('/')
       setIsAuthenticated(false);
     }
   };

@@ -18,7 +18,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
     const {logout} = useContext(AccountContext);
 
     const SignOut = () => {
-    logout();
+        logout();
     };
     
     return (
@@ -27,9 +27,9 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
         
         <Menu as="div" className="relative w-full ml-3">
             <div className="flex items-center justify-end">
-                <p className="text-white-100 mr-2 w-[80%] text-sm hidden lg:flex lg:justify-center">
+                <p className="text-white-100 mr-2 w-[80%] text-sm hidden lg:flex lg:justify-end">
                     <span className='overflow-hidden overflow-ellipsis'>
-                        Hello, {name}
+                        Hello, {name===""?'User':name}
                     </span>
                 </p>
                 <div className="w-[20%]">

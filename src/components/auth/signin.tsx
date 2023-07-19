@@ -49,7 +49,6 @@ const SignIn = () => {
     
     authenticate(input.email, input.password)
     .then((data: any) => {
-
       // check is the email is verified
         console.log(data)
         router.replace('/dashboard')

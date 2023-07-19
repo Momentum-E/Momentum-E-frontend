@@ -7,25 +7,44 @@ export type SelectorProps = {
 };
 
 export type SidebarProps = {
-  id:string;
+  id:string|any;
   isLoading:boolean;
-  vehicle_data:any;
+  vehicle_data:vehicleDataProps;
   isTab: boolean;
   isOpen: boolean;
   setIsOpen: any;
 };
 
+export type YourVehicleProps = {
+    isLoading:boolean;
+    vehicleData:vehicleDataProps;
+    isTab:boolean;
+    setIsOpen:any;
+}
+
+export type vehicleDataProps = {
+  id:string;
+  vendor:string;
+  isReachable:boolean;
+  information:{
+      vin:string;
+      brand:string;
+      model:string;
+      year:number;
+  },
+}[];
+
 export type DashboardNavbarProps = {
   setIsOpen: any;
   isOpen: boolean;
   page:string | string[] | undefined;
-  name:string;
-  id:string;
+  name:string|any;
+  id:string|any;
   isTab:boolean;
 };
 
 export type UserSideMenuProps = {
-  name:string;
+  name:string|any;
   id:string;
 }
 

@@ -1,16 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DashboardNavbarProps } from '@/utils/props/props';
 import { Disclosure,} from '@headlessui/react';
-import { AccountContext } from '@/context/account';
-import Image from 'next/image';
-import axios from 'axios';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { UserSideMenu } from './navbar-component';
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
 
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   setIsOpen,
@@ -78,7 +70,6 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                 </div>
               </div>
               <UserSideMenu name={name} id={id}/>
-
             </div>
           </div>
         </>
