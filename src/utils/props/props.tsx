@@ -25,13 +25,27 @@ export type YourVehicleProps = {
 export type vehicleDataProps = {
   id:string;
   vendor:string;
-  isReachable:boolean;
+  isReachable:boolean|null;
+  lastSeen:string;
+  chargeState:{
+    batteryCapacity:number;
+    batteryLevel:number;
+    chargeRate:number;
+    isFullyCharged:boolean;
+    isCharging:boolean;
+    lastUpdated:string;
+    range:number;
+  }
   information:{
-      vin:string;
-      brand:string;
-      model:string;
-      year:number;
+      vin:string|null;
+      brand:string|null;
+      model:string|null;
+      year: number|null;
   },
+  odometer:{
+    distance:number|null;
+    lastUpdated:string|null;
+  }
 }[];
 
 export type DashboardNavbarProps = {

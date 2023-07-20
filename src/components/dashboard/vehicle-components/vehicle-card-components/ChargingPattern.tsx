@@ -11,7 +11,7 @@ const ChargingPattern = () => {
                 </span>
             </p>
             <p className='flex flex-col text-sm font-medium text-gray-400'>
-                Connection Type
+                Connector Type
                 <span className='text-white-100 text-base'>
                 {`NACS`}
                 </span>
@@ -46,7 +46,7 @@ const ChargingPattern = () => {
             <p className='flex flex-col text-sm font-medium text-gray-400'>
                 Total Charging Sessions
                 <span className='text-white-100 text-xl'>
-                {`8`}hrs
+                {`8`}
                 </span>
             </p>
             <p className='flex flex-col text-sm font-medium text-gray-400'>

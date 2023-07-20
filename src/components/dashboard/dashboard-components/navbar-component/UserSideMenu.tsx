@@ -19,6 +19,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
 
     const SignOut = () => {
         logout();
+        router.push('/auth/login')
     };
     
     return (
@@ -32,7 +33,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
                         Hello, {name===""?'User':name}
                     </span>
                 </p>
-                <div className="w-[20%]">
+                <div className="md:w-[20%]">
                     <Menu.Button className="flex justify-end rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <Image
                         className="h-8 w-8 rounded-full"

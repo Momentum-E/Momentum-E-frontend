@@ -11,7 +11,7 @@ inputClassname,
 inputValue,
 inputOnChange,
 outerDiv,
-children
+children,
 }:AuthInputProps) {
   return (
      <div className={outerDiv}>

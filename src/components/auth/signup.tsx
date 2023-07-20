@@ -126,8 +126,6 @@ const Signup = () => {
                 labelName='Confirm Password'
                 labelFor='confirmPassword'
                 isRequired={true}
-                // labelClassname='block text-sm font-semibold leading-6 text-white-100'
-                // innerDiv='mt-2.5'
                 inputType='password'
                 inputAutocomplete='off'
                 inputClassname={`${
@@ -143,7 +141,7 @@ const Signup = () => {
               <div className="sm:col-span-2">
                 {/* Matching Password Error */}
                 {input.password != input.confirmPassword && (
-                  <div className="w-full text-sm font-semibold leading-6 text-red-500 bg-red-200 opacity-100 flex items-center justify-center">
+                  <div className="w-full text-sm font-semibold leading-6 text-red-500 flex items-center justify-center">
                     Passwords do not match
                   </div>
                 )}

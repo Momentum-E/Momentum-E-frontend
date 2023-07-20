@@ -4,10 +4,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import userPool from '../../context/user-pool/user-pool';
 import GetUserData from './get-user-data';
-import { PagesLayout } from '@/layouts';
 
 const ConfirmSignup = ({ username }: any) => {
-  // const router = useRouter();
+  
   const [OTP, setOTP] = useState('');
   const [getUserDataProcess, setGetUserDataProcess] = useState(false)
 
@@ -22,7 +21,7 @@ const ConfirmSignup = ({ username }: any) => {
     user.confirmRegistration(OTP, true, (err, data) => {
       if (err) {
         console.log(err);
-        toast.error("Couldn't verify account");
+        toast.error(err.message);
       } else {
         console.log(data);
         toast.success('Account verified successfully');

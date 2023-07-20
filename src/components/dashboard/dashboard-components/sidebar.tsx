@@ -6,18 +6,6 @@ import { useRouter } from 'next/router';
 import YourVehicles from './sidebar-components/YourVehicles';
 import axios from 'axios';
 
-type vehicleDataProps = {
-  id:string;
-  vendor:string;
-  isReachable:boolean;
-  information:{
-      vin:string;
-      brand:string;
-      model:string;
-      year:number;
-  },
-}[];
-
 const Sidebar: React.FC<SidebarProps> = ({
   id,
   isLoading,

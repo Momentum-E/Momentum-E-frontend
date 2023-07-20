@@ -21,10 +21,12 @@ const GetUserData = () => {
   const [city, setCity] = useState<any>();
   const [ownerType, setOwnerType] = useState(owner_type[0]);
   const [companyName, setCompanyName] = useState('');
-  const [input, setInput] = useState({
-    firstName: '',
-    lastName: '',
-  });
+  // const [input, setInput] = useState({
+  //   firstName: '',
+  //   lastName: '',
+  // });
+  const [firstName,setFirstName] = useState('')
+  const [lastName,setLastName] = useState('')
 
   const router = useRouter();
 
@@ -44,13 +46,13 @@ const GetUserData = () => {
     cityData && setCity(cityData[0]);
   }, [cityData]);
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setInput((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  // const onInputChange = (e:any) => {
+  //   const { name, value } = e.target;
+  //   setInput((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,8 +60,8 @@ const GetUserData = () => {
     const formData = {
       userId: localStorage.getItem('userId'),
       email: localStorage.getItem('email'),
-      firstName: input.firstName,
-      lastName: input.lastName,
+      firstName: firstName,
+      lastName: lastName,
       owner_type: ownerType.type,
       address: {
         country: country?.name,
@@ -67,6 +69,7 @@ const GetUserData = () => {
         city: city?.name,
       },
       company_name: companyName,
+      vehicles:[],
     };
 
     axios('http://localhost:5000/auth/signup', {
@@ -86,7 +89,6 @@ const GetUserData = () => {
       console.error(err);
       toast.error(err, );
     });
-    // router.replace('/auth/login');
   };
 
   return (
@@ -107,9 +109,9 @@ const GetUserData = () => {
             value={ownerType}
             OnChange={setOwnerType}
           />
-          {ownerType.type === 'Individual Owner' ? (
+          {ownerType.type === owner_type[0].type ? (
             <>
-              <AuthInput
+              {/* <AuthInput
                 outerDiv=''
                 labelName='First Name'
                 labelFor='firstname'
@@ -118,10 +120,30 @@ const GetUserData = () => {
                 inputAutocomplete='given-name'
                 inputClassname='border-me-green-200'
                 inputValue={input.firstName}
-                inputOnChange={(e)=>onInputChange(e)}
+                inputOnChange={(e) => onInputChange(e)}
                 children={null}
-              />
-              <AuthInput
+          />*/}
+              <div>
+                <label
+                  htmlFor='firstname'
+                  className={'block text-sm font-medium leading-6 text-white-100'}>
+                  First Name
+                  <span className="text-red-500 pl-1">*</span>  
+                </label>
+                <div className={'pt-2'}>
+                  <input
+                    className={'border-me-green-200 border-b px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 active:outline-none w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6'}
+                    type='text'
+                    name='firstname'
+                    id='firstname'
+                    required={true}
+                    autoComplete='given-name'
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </div>
+              </div>
+              {/*<AuthInput
                 outerDiv=''
                 labelName='Last Name'
                 labelFor='lastname'
@@ -130,9 +152,29 @@ const GetUserData = () => {
                 inputAutocomplete='last-name'
                 inputClassname='border-me-green-200'
                 inputValue={input.lastName}
-                inputOnChange={(e)=>onInputChange(e)}
+                inputOnChange={(e) => onInputChange(e)}
                 children={null}
-              />
+              /> */}
+              <div>
+                <label
+                  htmlFor='lastname'
+                  className={'block text-sm font-medium leading-6 text-white-100'}>
+                  Last Name
+                  <span className="text-red-500 pl-1">*</span>  
+                </label>
+                <div className={'pt-2'}>
+                  <input
+                    className={'border-me-green-200 border-b px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 active:outline-none w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6 '}
+                    type='text'
+                    name='lastname'
+                    id='lastname'
+                    required={true}
+                    autoComplete='last-name'
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </div>
+              </div>
             </>
           ) : (
           <AuthInput

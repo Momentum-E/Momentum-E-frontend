@@ -1,22 +1,49 @@
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DashboardLayout } from '@/layouts/';
 import VehicleData from '@/components/dashboard/vehicle-components/VehicleData';
+import axios from 'axios';
+import { vehicleDataProps } from '@/utils/props/props';
+import { useAppContext } from '@/context/userContext';
 
 function VehicleDashboardContent() {
   const router = useRouter();
   const { vehicleId } = router.query;
+  // const [userId, setUserId] = useState<string|null>()
+  const [vehicleData, setVehicleData] = useState<vehicleDataProps|any>()
 
-  useEffect(() => {
-    console.log(vehicleId)
-  }, [vehicleId])
+  const {userId}:any = useAppContext()
+  // useEffect(()=>{
+  //   const _id = localStorage.getItem(
+  //     'CognitoIdentityServiceProvider.5anhoi3gpfgvnqsd609smuh0qi.LastAuthUser'
+  //     );
+  //     setUserId(_id);
+  // },[])
+
+  useEffect(()=>{
+    axios.get(`http://localhost:5000/vehicles/get-vehicles/${vehicleId}`,{
+      headers:{
+        "user-id":userId,
+      },
+    }).then((res)=>{
+      setVehicleData(res.data)
+    }).catch((err)=>{
+      console.log(err)
+    })
+  },[vehicleId])
   
+  
+  useEffect(() => {
+    // console.log("Id: "+userId)
+    // console.log("vId: "+vehicleId)
+    console.log(userId)
+    console.log("vehicleIdData: "+ vehicleData)
+  }, [vehicleId])
 
   return (
     <DashboardLayout page={vehicleId}>
       <div className='h-screen overflow-auto pb-16 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300'>
-          <VehicleData vehicleId={vehicleId}/>
-        {/* Add your specific dashboard content for the vehicle */}
+          <VehicleData vehicleData={vehicleData}/>
       </div>
     </DashboardLayout>
   )

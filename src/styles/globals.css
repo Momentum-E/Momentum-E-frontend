@@ -3,7 +3,8 @@
 @layer base {
   html {
     font-family: 'Orbitron', sans-serif;
-    background-color: #060e02;
+    /* background-color: #060e02; */
+    /* @apply bg-gray-[#060e02;] */
   }
   .link {
     @apply py-2 px-1 rounded-md font-normal hover:bg-gray-700/25 flex items-center md:cursor-pointer cursor-default duration-200;
