@@ -28,7 +28,7 @@ export const chartsConfig = {
       },
       labels: {
         style: {
-          colors: "#CBD5E0",
+          colors: "#848484",
           fontSize: "13px",
           fontFamily: "inherit",
           fontWeight: 300,
@@ -38,7 +38,7 @@ export const chartsConfig = {
     yaxis: {
       labels: {
         style: {
-          colors: "#CBD5E0",
+          colors: "#848484",
           fontSize: "13px",
           fontFamily: "inherit",
           fontWeight: 300,
@@ -47,7 +47,7 @@ export const chartsConfig = {
     },
     grid: {
       show: true,
-      borderColor: "#CBD5E0",
+      borderColor: "#848484",
       strokeDashArray: 5,
       yaxis: {
         lines: {

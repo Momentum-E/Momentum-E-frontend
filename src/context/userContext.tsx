@@ -17,7 +17,6 @@ const AppProvider = ({ children }) => {
     const [vehicleData, setVehicleData] = useState<vehicleDataProps>([]);
 
     useEffect(() => {
-        return ()=>{
         const fetchuserdetails = async () => {
             try {
             const session = await getSession();
@@ -26,15 +25,14 @@ const AppProvider = ({ children }) => {
             const response = await axios.get(
                 `http://localhost:5000/auth/users/${userid}`
             );
-                setName(response.data.firstName+" "+(response.data.lastName||""));
-                setUserLocation(`${response.data.address.city}, ${response.data.address.state}, ${response.data.address.country}`);
+                setName(response.data.firstName+" "+response.data.lastName);
+                setUserLocation(`${response.data.address.city}, ${response.data.address.country}`);
             } 
             catch (error) {
                 console.error('Error:', error);
             }
         };
         fetchuserdetails();
-        }
   }, [userId]);
   
   useEffect(()=>{
@@ -60,14 +58,26 @@ const AppProvider = ({ children }) => {
    },[userId])
 
    const router = useRouter()
+   const addVehicle = () => {
+    axios
+      .get(`http://localhost:5000/vehicles/users/${userId}/link`)
+      .then((res) => {
+        console.log(res.data);
+        const linkUrl = res.data.linkUrl;
+        router.push(linkUrl);
+      })
+      .catch((err) => console.error(err));
+  };
+
+
    useEffect(()=>{
         console.log(userId)
         console.log(vehicleData)  
         console.log(router.pathname)
-   },[userId, vehicleData,router.pathname])
+   },[userId])
 
   return (
-    <AppContext.Provider value={{ vehicleData,userLocation,userId,isLoading,name }}>
+    <AppContext.Provider value={{addVehicle, vehicleData,userLocation,userId,isLoading,name }}>
         {children}
     </AppContext.Provider>
   );

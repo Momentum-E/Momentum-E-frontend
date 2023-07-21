@@ -9,16 +9,9 @@ import { useAppContext } from '@/context/userContext';
 function VehicleDashboardContent() {
   const router = useRouter();
   const { vehicleId } = router.query;
-  // const [userId, setUserId] = useState<string|null>()
   const [vehicleData, setVehicleData] = useState<vehicleDataProps|any>()
-
+  
   const {userId}:any = useAppContext()
-  // useEffect(()=>{
-  //   const _id = localStorage.getItem(
-  //     'CognitoIdentityServiceProvider.5anhoi3gpfgvnqsd609smuh0qi.LastAuthUser'
-  //     );
-  //     setUserId(_id);
-  // },[])
 
   useEffect(()=>{
     axios.get(`http://localhost:5000/vehicles/get-vehicles/${vehicleId}`,{

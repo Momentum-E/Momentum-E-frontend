@@ -9,17 +9,24 @@ export type SelectorProps = {
 export type SidebarProps = {
   id:string|any;
   isLoading:boolean;
-  vehicle_data:vehicleDataProps;
+  vehicle_data:vehicleDataProps[];
   isTab: boolean;
   isOpen: boolean;
   setIsOpen: any;
+  page:string;
+  theme:string|any;
 };
 
 export type YourVehicleProps = {
     isLoading:boolean;
-    vehicleData:vehicleDataProps;
+    vehicleData:vehicleDataProps[];
     isTab:boolean;
     setIsOpen:any;
+    page:string;
+}
+
+export type vehicleDataComponentProps = {
+  vehicleData:vehicleDataProps;
 }
 
 export type vehicleDataProps = {
@@ -46,7 +53,7 @@ export type vehicleDataProps = {
     distance:number|null;
     lastUpdated:string|null;
   }
-}[];
+};
 
 export type DashboardNavbarProps = {
   setIsOpen: any;
