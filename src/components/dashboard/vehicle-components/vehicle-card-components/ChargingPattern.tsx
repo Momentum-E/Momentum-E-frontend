@@ -6,13 +6,13 @@ const ChargingPattern = () => {
         <div className="w-[20%] flex flex-col justify-around">
             <p className='flex flex-col text-sm font-medium text-gray-400'>
                 Average SoC
-                <span className='text-white-100 text-base'>
+                <span className='text-black dark:text-white-100 text-base'>
                 {94}%
                 </span>
             </p>
             <p className='flex flex-col text-sm font-medium text-gray-400'>
                 Connector Type
-                <span className='text-white-100 text-base'>
+                <span className='text-black dark:text-white-100 text-base'>
                 {`NACS`}
                 </span>
             </p>
@@ -32,11 +32,11 @@ const ChargingPattern = () => {
                 </g>
                 </svg>
             </div>
-            <div className="w-full bg-me-green-200/10 rounded-3xl">
-                <div className="w-full bg-dashboard-gradient flex justify-between text-xs border-[0.5px] border-solid border-gray-400 p-4  rounded-3xl text-gray-400 font-normal h-20">
+            <div className="w-full me-green-200/10 rounded-3xl">
+                <div className="w-full bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient flex justify-between text-xs border-[0.5px] border-me-green-200 dark:border-gray-400 p-4  rounded-3xl text-gray-400 font-normal h-20">
                     {/* <span className='w-[0%] bg-me-green-100/5'> */}
                         <span>0%</span>
-                        <p className='text-white-100 text-3xl pl-3'>95%</p>
+                        <p className='text-black dark:text-white-100 text-3xl pl-3'>95%</p>
                         <span>100%</span>
                     {/* </span> */}
                 </div>
@@ -45,13 +45,13 @@ const ChargingPattern = () => {
         <div className="w-[20%] flex flex-col justify-around">
             <p className='flex flex-col text-sm font-medium text-gray-400'>
                 Total Charging Sessions
-                <span className='text-white-100 text-xl'>
+                <span className='text-black dark:text-white-100 text-xl'>
                 {`8`}
                 </span>
             </p>
             <p className='flex flex-col text-sm font-medium text-gray-400'>
                 Average Charging Rate
-                <span className='text-white-100 text-base'>
+                <span className='text-black dark:text-white-100 text-base'>
                 {`15`}KW
                 </span>
             </p>

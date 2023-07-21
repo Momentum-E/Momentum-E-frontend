@@ -19,7 +19,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
 
     const SignOut = () => {
         logout();
-        router.push('/auth/login')
+        router.replace('/auth/login')  
     };
     
     return (
@@ -28,7 +28,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
         
         <Menu as="div" className="relative w-full ml-3">
             <div className="flex items-center justify-end">
-                <p className="text-white-100 mr-2 w-[80%] text-sm hidden lg:flex lg:justify-end">
+                <p className="dark:text-white-100 mr-2 w-[80%] text-sm hidden lg:flex lg:justify-end">
                     <span className='overflow-hidden overflow-ellipsis'>
                         Hello, {name===""?'User':name}
                     </span>
