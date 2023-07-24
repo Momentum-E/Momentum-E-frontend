@@ -8,6 +8,7 @@ import axios from 'axios';
 import AuthListBox from '@/components/AuthListBox'; 
 import { Selector } from '@/components/dashboard/dashboard-components';
 import AuthInput from '@/components/AuthInput';
+import { useTheme } from 'next-themes';
 
 const owner_type = [{ type: 'Individual Owner' }, { type: 'Fleet Owner' }];
 
@@ -21,10 +22,6 @@ const GetUserData = () => {
   const [city, setCity] = useState<any>();
   const [ownerType, setOwnerType] = useState(owner_type[0]);
   const [companyName, setCompanyName] = useState('');
-  // const [input, setInput] = useState({
-  //   firstName: '',
-  //   lastName: '',
-  // });
   const [firstName,setFirstName] = useState('')
   const [lastName,setLastName] = useState('')
 
@@ -45,6 +42,12 @@ const GetUserData = () => {
   useEffect(() => {
     cityData && setCity(cityData[0]);
   }, [cityData]);
+
+  const { theme, setTheme } = useTheme()
+  useEffect(()=>{
+    setTheme('dark')
+  })
+
 
   // const onInputChange = (e:any) => {
   //   const { name, value } = e.target;
@@ -111,18 +114,6 @@ const GetUserData = () => {
           />
           {ownerType.type === owner_type[0].type ? (
             <>
-              {/* <AuthInput
-                outerDiv=''
-                labelName='First Name'
-                labelFor='firstname'
-                isRequired={true}
-                inputType='text'
-                inputAutocomplete='given-name'
-                inputClassname='border-me-green-200'
-                inputValue={input.firstName}
-                inputOnChange={(e) => onInputChange(e)}
-                children={null}
-          />*/}
               <div>
                 <label
                   htmlFor='firstname'
@@ -143,18 +134,7 @@ const GetUserData = () => {
                   />
                 </div>
               </div>
-              {/*<AuthInput
-                outerDiv=''
-                labelName='Last Name'
-                labelFor='lastname'
-                isRequired={true}
-                inputType='text'
-                inputAutocomplete='last-name'
-                inputClassname='border-me-green-200'
-                inputValue={input.lastName}
-                inputOnChange={(e) => onInputChange(e)}
-                children={null}
-              /> */}
+
               <div>
                 <label
                   htmlFor='lastname'

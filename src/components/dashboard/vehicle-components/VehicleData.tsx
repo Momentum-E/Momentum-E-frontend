@@ -40,7 +40,12 @@ function VehicleData({vehicleData}:vehicleDataComponentProps) {
           <BasicCarData 
           heading='Connected on'
           // Get the current date and also pass it into DB
-          data={!isLoading ? '23 June 2023': 'loading'}
+          data={
+            !isLoading ?
+            (
+              <span>23<sup>th</sup> June 2023</span>
+            ) 
+            : 'loading'}
           icon={
           <svg xmlns="http://www.w3.org/2000/svg" className='w-9 h-10' viewBox="0 0 44 48" fill="none">
             <path d="M3.14286 33C2.30932 33 1.50992 33.3161 0.920522 33.8787C0.331122 34.4413 0 35.2043 0 36V45C0 45.7957 0.331122 46.5587 0.920522 47.1213C1.50992 47.6839 2.30932 48 3.14286 48C3.97639 48 4.77579 47.6839 5.36519 47.1213C5.95459 46.5587 6.28571 45.7957 6.28571 45V36C6.28571 35.2043 5.95459 34.4413 5.36519 33.8787C4.77579 33.3161 3.97639 33 3.14286 33ZM15.7143 24C14.8807 24 14.0814 24.3161 13.492 24.8787C12.9026 25.4413 12.5714 26.2044 12.5714 27V45C12.5714 45.7957 12.9026 46.5587 13.492 47.1213C14.0814 47.6839 14.8807 48 15.7143 48C16.5478 48 17.3472 47.6839 17.9366 47.1213C18.526 46.5587 18.8571 45.7957 18.8571 45V27C18.8571 26.2044 18.526 25.4413 17.9366 24.8787C17.3472 24.3161 16.5478 24 15.7143 24ZM40.8571 0C40.0236 0 39.2242 0.316071 38.6348 0.87868C38.0454 1.44129 37.7143 2.20435 37.7143 3V45C37.7143 45.7957 38.0454 46.5587 38.6348 47.1213C39.2242 47.6839 40.0236 48 40.8571 48C41.6907 48 42.4901 47.6839 43.0795 47.1213C43.6689 46.5587 44 45.7957 44 45V3C44 2.20435 43.6689 1.44129 43.0795 0.87868C42.4901 0.316071 41.6907 0 40.8571 0ZM28.2857 12C27.4522 12 26.6528 12.3161 26.0634 12.8787C25.474 13.4413 25.1429 14.2044 25.1429 15V45C25.1429 45.7957 25.474 46.5587 26.0634 47.1213C26.6528 47.6839 27.4522 48 28.2857 48C29.1193 48 29.9186 47.6839 30.508 47.1213C31.0974 46.5587 31.4286 45.7957 31.4286 45V15C31.4286 14.2044 31.0974 13.4413 30.508 12.8787C29.9186 12.3161 29.1193 12 28.2857 12Z" fill="#C6DE41"/>
@@ -50,7 +55,7 @@ function VehicleData({vehicleData}:vehicleDataComponentProps) {
         {/* Vehicle Content block 2*/}
         <div className="flex-row  space-y-4 lg:flex md:flex-row lg:space-y-0 gap-4">
           <div className="lg:w-[50%] h-80 flex flex-col justify-between p-3 space-y-3 rounded-2xl border border-me-green-200 bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient ">
-            <p className='flex flex-col text-lg text-gray-400'>Vehicle Info</p>
+            <p className='flex flex-col text-lg text-gray-500'>Vehicle Info</p>
             <VehicleInfo 
               Odometer={vehicleData?.odometer?.distance}
               Brand={vehicleData?.information?.brand}
@@ -60,8 +65,8 @@ function VehicleData({vehicleData}:vehicleDataComponentProps) {
             />
           </div>
 
-          <div className="lg:w-[50%] flex flex-0 flex-col justify-between p-3 h-80 text-xl text-gray-400 font-medium border border-me-green-200 rounded-2xl bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
-            <p className="flex flex-col text-lg text-gray-400">Charging Pattern</p>
+          <div className="lg:w-[50%] flex flex-0 flex-col justify-between p-3 h-80 text-xl text-gray-500 font-medium border border-me-green-200 rounded-2xl bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
+            <p className="flex flex-col text-lg text-gray-500">Charging Pattern</p>
             <ChargingPattern/>
           </div>
         </div>
@@ -70,20 +75,20 @@ function VehicleData({vehicleData}:vehicleDataComponentProps) {
         <div className="lg:grid lg:grid-cols-2 lg:space-y-0 grid-col-1 space-y-4 gap-4">
 
           {/* Usage */}
-          <div className=" h-[600px] md:h-[445px] flex flex-col p-3 space-y-3 text-gray-400 text-lg font-medium rounded-2xl border border-me-green-200 bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
-            <p className="flex flex-col text-lg text-gray-400">Usage</p>  
+          <div className=" h-[600px] md:h-[445px] flex flex-col p-3 space-y-3 text-gray-500 text-lg font-medium rounded-2xl border border-me-green-200 bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
+            <p className="flex flex-col text-lg text-gray-500">Usage</p>  
             <VehicleUsage/>
           </div>
 
             {/* Avg Daily Miles */}
           <div className="h-[445px] space-y-5 flex flex-col items-end p-3 rounded-2xl bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient border border-me-green-200">
-          <div className="w-full flex justify-between text-lg font-medium text-gray-400">
-            <p className='flex flex-col text-lg text-gray-400'>Battery Health</p>
-            <div className="flex flex-col items-center text-xs p-1 rounded-lg border border-me-green-200 dark:border-white-100 bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient">
-              Avg Battery Health
-              <span className='text-me-green-100 dark:text-me-green-200'>{`${75}%`}</span>
+            <div className="w-full flex justify-between text-lg font-medium">
+              <p className='flex flex-col text-lg text-gray-500'>Battery Health</p>
+              <div className="flex flex-col items-center text-xs p-1 rounded-lg border border-me-green-200 dark:border-white-100 bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient">
+                Avg Battery Health
+                <span className='text-me-green-100 dark:text-me-green-200'>{`${92}%`}</span>
+              </div>
             </div>
-          </div>
             <BatteryHealth/>
           </div>
         </div>

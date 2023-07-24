@@ -15,6 +15,9 @@ const AppProvider = ({ children }) => {
     const [userId, setUserId] = useState<string|null>('');
     const [isLoading, setIsLoading] = useState(true)
     const [vehicleData, setVehicleData] = useState<vehicleDataProps>([]);
+    const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
+
+   const router = useRouter()
 
     useEffect(() => {
         const fetchuserdetails = async () => {
@@ -57,7 +60,18 @@ const AppProvider = ({ children }) => {
     }
    },[userId])
 
-   const router = useRouter()
+   const filteredVehicleData = (v_id) =>{
+    axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`,{
+      headers:{
+        "user-id":userId,
+      },
+    }).then((res)=>{
+      setVehicleIdData(res.data)
+    }).catch((err)=>{
+      console.log(err)
+    })
+   }
+
    const addVehicle = () => {
     axios
       .get(`http://localhost:5000/vehicles/users/${userId}/link`)
@@ -70,14 +84,31 @@ const AppProvider = ({ children }) => {
   };
 
 
-   useEffect(()=>{
-        console.log(userId)
-        console.log(vehicleData)  
-        console.log(router.pathname)
-   },[userId])
+  //  useEffect(()=>{
+  //       console.log(userId)
+  //       console.log(vehicleData)
+  //       console.log(router.pathname)
+  //  },[userId])
+  
+  // useEffect(() => {
+  //   console.log("Id: "+userId)
+  //   console.log("vId: "+vehicleId)
+  //   console.log(userId)
+  //   console.log("vehicleIdData: "+ vehicleIdData)
+  // }, [])
+
 
   return (
-    <AppContext.Provider value={{addVehicle, vehicleData,userLocation,userId,isLoading,name }}>
+    <AppContext.Provider value={{
+      addVehicle, 
+      vehicleData,
+      vehicleIdData,
+      filteredVehicleData,
+      userLocation,
+      userId,
+      isLoading,
+      name 
+      }}>
         {children}
     </AppContext.Provider>
   );

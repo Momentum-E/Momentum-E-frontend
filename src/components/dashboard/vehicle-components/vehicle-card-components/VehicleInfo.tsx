@@ -31,29 +31,29 @@ const  VehicleInfo = ({
       <div className='h-full flex justify-between pt-2'> 
         <div className="">
           <p className='dark:text-white-100 text-black text-lg'> 
-            <span className='text-gray-400 text-base xl:text-lg'>
-              Odometer: 
+            <span className='text-gray-500 text-base xl:text-lg'>
+              Odometer : 
             </span>
             {` ${Odometer} Kms `}
           </p>
 
           <p className='dark:text-white-100 text-black text-lg'> 
-            <span className='text-gray-400 text-base xl:text-lg'>
-              Car Model: 
+            <span className='text-gray-500 text-base xl:text-lg'>
+              Car Model : 
             </span>
             { " "+Brand +" "+ Model }
           </p>
           
           <p className='dark:text-white-100 text-black text-lg'> 
-            <span className='text-gray-400 text-base xl:text-lg'>
-              Model Year: 
+            <span className='text-gray-500 text-base xl:text-lg'>
+              Model Year : 
             </span>
             { " "+ Year }
           </p>
 
           <p className='dark:text-white-100 text-black text-lg'> 
-            <span className='text-gray-400 text-base xl:text-lg'>
-              VIN:
+            <span className='text-gray-500 text-base xl:text-lg'>
+              VIN :
             </span>
             { " "+ Vin }
           </p>

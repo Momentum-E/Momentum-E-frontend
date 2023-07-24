@@ -11,19 +11,19 @@ const BatteryHealth = () => {
           <Chart {...statisticsChartsData[1].chart}/>
       </div>
       <div className="flex justify-around pt-1 w-full h-1/3">
-        <p className='flex flex-col text-sm font-medium text-gray-400'>
+        <p className='flex flex-col text-sm font-medium text-gray-500'>
           Avg SoH
           <span className='text-black dark:text-white-100 text-sm'>
             92%
           </span>
         </p>
-        <p className='flex flex-col text-sm font-medium text-gray-400'>
+        <p className='flex flex-col text-sm font-medium text-gray-500'>
           EST Degradation
           <span className='text-black dark:text-white-100 text-sm'>
             8%
           </span>
         </p>
-        <p className='flex flex-col text-sm font-medium text-gray-400'>
+        <p className='flex flex-col text-sm font-medium text-gray-500'>
           Battery Chemistry
           <span className='text-black dark:text-white-100 text-sm'>
             li-ion

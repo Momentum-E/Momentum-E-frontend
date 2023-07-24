@@ -1,16 +1,17 @@
 import React from 'react'
+import { Progress } from 'antd';
 
 const ChargingPattern = () => {
   return (
     <div className='xl:space-x-2 h-full w-full flex justify-between'>
         <div className="w-[20%] flex flex-col justify-around">
-            <p className='flex flex-col text-sm font-medium text-gray-400'>
+            <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Average SoC
                 <span className='text-black dark:text-white-100 text-base'>
-                {94}%
+                {90}%
                 </span>
             </p>
-            <p className='flex flex-col text-sm font-medium text-gray-400'>
+            <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Connector Type
                 <span className='text-black dark:text-white-100 text-base'>
                 {`NACS`}
@@ -18,10 +19,16 @@ const ChargingPattern = () => {
             </p>
         </div>
         <div className="w-[60%] px-2 relative flex justify-center items-end">
-            {/* <div className="absolute p-4 w-full h-full bg-me-green-200 -z-10 rounded-full">
-                <div className=" bg-transparent rounded-full w-full h-full"></div>
-            </div> */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-me-green-200 rounded-full p-2">
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <Progress 
+                    type="dashboard" 
+                    percent={90}
+                    status='exception' 
+                    size={200}
+                    strokeColor={{ '0%': 'rgba(198, 222, 65, 0.00)', '100%': '#C6DE41' }} 
+                />
+             </div>
+            <div className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-me-green-200 rounded-full p-2">
                 <svg width="30" height="29" viewBox="0 0 30 29" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <g id="Group 1000001474">
                     <path id="Vector" d="M20.3279 12.0155H16.2947L17.3417 6.54652C17.3693 6.40808 17.3507 6.26396 17.2891 6.13805C17.2274 6.01215 17.1264 5.91203 17.0028 5.8543C16.8792 5.79658 16.7404 5.78472 16.6094 5.82068C16.4785 5.85665 16.3632 5.93829 16.2828 6.05205L9.14436 15.9912C9.07808 16.0835 9.03772 16.1932 9.02779 16.3081C9.01787 16.423 9.03879 16.5385 9.08819 16.6417C9.1376 16.7449 9.21354 16.8316 9.30752 16.8923C9.4015 16.9529 9.50979 16.9851 9.62026 16.9851H13.6535L12.6065 22.4541C12.5789 22.5925 12.5975 22.7366 12.6591 22.8625C12.7208 22.9884 12.8218 23.0886 12.9454 23.1463C13.069 23.204 13.2078 23.2159 13.3388 23.1799C13.4697 23.1439 13.585 23.0623 13.6654 22.9485L20.8038 13.0094C20.8701 12.9171 20.9105 12.8074 20.9204 12.6925C20.9303 12.5776 20.9094 12.4621 20.86 12.3589C20.8106 12.2557 20.7347 12.1689 20.6407 12.1083C20.5467 12.0476 20.4384 12.0155 20.3279 12.0155ZM24.492 14.5003C24.4939 13.9221 24.3661 13.3514 24.1188 12.834C23.8715 12.3167 23.5116 11.867 23.0679 11.521C22.9416 11.4259 22.7847 11.3863 22.6307 11.4107C22.4768 11.435 22.3381 11.5215 22.2445 11.6514C22.1509 11.7814 22.1098 11.9445 22.1301 12.1057C22.1503 12.2669 22.2303 12.4134 22.3529 12.5137C22.9561 12.9883 23.3023 13.7126 23.3023 14.5003C23.3023 15.2892 22.9549 16.0148 22.3505 16.4894C22.2489 16.5664 22.1735 16.6753 22.1351 16.8001C22.0967 16.925 22.0974 17.0593 22.137 17.1837C22.1767 17.3081 22.2532 17.4162 22.3555 17.4921C22.4579 17.5681 22.5807 17.6081 22.7062 17.6063C22.83 17.6063 22.9561 17.5665 23.0632 17.4808C23.506 17.1333 23.8655 16.6833 24.1134 16.1661C24.3614 15.6489 24.491 15.0787 24.492 14.5003Z" fill="white"/>
@@ -32,27 +39,27 @@ const ChargingPattern = () => {
                 </g>
                 </svg>
             </div>
-            <div className="w-full me-green-200/10 rounded-3xl">
-                <div className="w-full bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient flex justify-between text-xs border-[0.5px] border-me-green-200 dark:border-gray-400 p-4  rounded-3xl text-gray-400 font-normal h-20">
-                    {/* <span className='w-[0%] bg-me-green-100/5'> */}
-                        <span>0%</span>
-                        <p className='text-black dark:text-white-100 text-3xl pl-3'>95%</p>
-                        <span>100%</span>
-                    {/* </span> */}
+            <div className="absolute z-20 w-full me-green-200/10 opacity-90 rounded-3xl">
+                <div className="w-full bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient flex justify-between text-xs border-[0.5px] border-me-green-200 dark:border-gray-400 p-4  rounded-3xl text-gray-500 font-normal h-20">
+                    <span>0%</span>
+                    <p className='text-black dark:text-white-100 text-3xl pl-3'>
+                        {90}%
+                    </p>
+                    <span>100%</span>
                 </div>
             </div>
         </div>
-        <div className="w-[20%] flex flex-col justify-around">
-            <p className='flex flex-col text-sm font-medium text-gray-400'>
+        <div className="w-[20%] pl-1 flex flex-col justify-around">
+            <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Total Charging Sessions
                 <span className='text-black dark:text-white-100 text-xl'>
-                {`8`}
+                {20}
                 </span>
             </p>
-            <p className='flex flex-col text-sm font-medium text-gray-400'>
+            <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Average Charging Rate
                 <span className='text-black dark:text-white-100 text-base'>
-                {`15`}KW
+                {`${15} KW`}
                 </span>
             </p>
         </div>

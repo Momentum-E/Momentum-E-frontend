@@ -3,25 +3,23 @@ import { SidebarProps } from '@/utils/props/props';
 import Image from 'next/image';
 import light_logo from '@/assets/logos/logo_white_nocap.png';
 import dark_logo from '@/assets/logos/logo_black_nocap.png'
-// import { useTheme } from 'next-themes';
+import { useTheme } from 'next-themes';
 import { useRouter } from 'next/router';
 import YourVehicles from './sidebar-components/YourVehicles';
 import { useAppContext } from '@/context/userContext';
 
 const Sidebar: React.FC<SidebarProps> = ({
-  id,
   isLoading,
   vehicle_data, 
   isTab, 
   isOpen, 
   setIsOpen,
   page,
-  theme
  }) => {
 
   const router = useRouter();
   const { pathname } = router;
-  // const {theme, setTheme} = useTheme()
+  const {theme, setTheme} = useTheme()
 
   useEffect(() => {
     isTab && setIsOpen(false);
@@ -47,6 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               <>
                 <Image 
                 className="block h-10 w-auto" 
+                width={577}
                 src={dark_logo} 
                 alt="Momentum-E" />
                 <svg

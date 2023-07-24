@@ -14,7 +14,7 @@ export type SidebarProps = {
   isOpen: boolean;
   setIsOpen: any;
   page:string;
-  theme:string|any;
+  // theme:string|any;
 };
 
 export type YourVehicleProps = {
