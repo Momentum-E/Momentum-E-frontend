@@ -54,74 +54,68 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95">
                 <Menu.Items className="absolute right-0 z-50 p-1 w-48 mt-1 origin-top-right rounded-md bg-white-100 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <Menu.Item>
+                    <Menu.Item>
                     {({ active }) => (
                     <li
                         className={classNames(
-                        active ? 'bg-gray-700' : '',
-                        'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
+                        active ? 'active ' : ' ',
+                        'block link px-4 py-2 rounded-md text-sm text-black hover:cursor-pointer'
                         )}
-                        onClick={() => router.push('/')}>
+                        onClick={() => router.replace('/')}>
                         Home
                     </li>
                     )}
-                </Menu.Item>
-                {/* {
-                page==='profile' ? ( */}
-                <Menu.Item>
-                {({ active }) => (
-                    <li
-                    className={classNames(
-                        active ? 'bg-gray-700' : '',
-                        'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
+                    </Menu.Item>
+                    <Menu.Item>
+                    {({ active }) => (
+                        <li
+                        className={classNames(
+                            active ? 'active ' : '',
+                            'block link px-4 py-2 rounded-md text-sm text-black hover:cursor-pointer'
+                        )}
+                        onClick={() => router.replace('/dashboard/')}>
+                        Dashboard
+                        </li>
                     )}
-                    onClick={() => router.replace('/dashboard/')}>
-                    Dashboard
-                    </li>
-                )}
-                </Menu.Item>
-                {/* ):
-                ( */}
-                <Menu.Item>
-                {({ active }) => (
-                    <li
-                    className={classNames(
-                        active ? 'bg-gray-700' : '',
-                        'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
+                    </Menu.Item>
+                    <Menu.Item>
+                    {({ active }) => (
+                        <li
+                        className={classNames(
+                            active ? 'active ' : '',
+                            'block link px-4 py-2 rounded-md text-sm text-black hover:cursor-pointer'
+                        )}
+                        onClick={() => router.replace(`/dashboard/profile/${id}`)}
+                        >
+                        Your Profile
+                        </li>
                     )}
-                    onClick={() => router.replace(`/dashboard/profile/${id}`)}
-                    >
-                    Your Profile
-                    </li>
-                )}
-                </Menu.Item>
-                {/* )
-                } */}
-                <Menu.Item>
-                {({ active }) => (
-                    <li
-                    className={classNames(
-                        active ? 'bg-gray-100' : '',
-                        'block px-4 py-2 text-sm rounded-md text-black hover:bg-white-200 hover:cursor-pointer'
+                    </Menu.Item>
+                    <Menu.Item>
+                    {({ active }) => (
+                        <li
+                        className={classNames(
+                            active ? 'active ' : '',
+                            'block link px-4 py-2 text-sm rounded-md text-black hover:cursor-pointer'
+                        )}
+                        onClick={()=>router.replace(`/dashboard/settings/${id}`)}
+                        >
+                        Settings
+                        </li>
                     )}
-                    onClick={()=>router.replace(`/dashboard/settings/${id}`)}
-                    >
-                    Settings
-                    </li>
-                )}
-                </Menu.Item>
-                <Menu.Item>
-                {({ active }) => (
-                    <li
-                    onClick={() => SignOut()}
-                    className={classNames(
-                        active ? 'bg-gray-100' : '',
-                        'block px-4 py-2 text-sm rounded-md text-black hover:bg-white-200 hover:cursor-pointer'
-                    )}>
-                    Sign out
-                    </li>
-                )}
-                </Menu.Item>
+                    </Menu.Item>
+                    <Menu.Item>
+                    {({ active }) => (
+                        <li
+                        onClick={() => SignOut()}
+                        className={classNames( 
+                            active ? 'active ' : '',
+                            'block link px-4 py-2 text-sm rounded-md text-black hover:cursor-pointer'
+                        )}>
+                        Sign out
+                        </li>
+                    )}
+                    </Menu.Item>
                 </Menu.Items>
             </Transition>
         </Menu>

@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const BatteryHealth = () => {
+  let avgSoH=98 
   return (
     <>
       <div className=" rounded-2xl w-full h-2/3 border text-black border-me-green-100 bg-[#F6F6F6] dark:bg-me-green-300">
@@ -14,13 +15,13 @@ const BatteryHealth = () => {
         <p className='flex flex-col text-sm font-medium text-gray-500'>
           Avg SoH
           <span className='text-black dark:text-white-100 text-sm'>
-            92%
+            {avgSoH}%
           </span>
         </p>
         <p className='flex flex-col text-sm font-medium text-gray-500'>
           EST Degradation
           <span className='text-black dark:text-white-100 text-sm'>
-            8%
+            {100-avgSoH}%
           </span>
         </p>
         <p className='flex flex-col text-sm font-medium text-gray-500'>

@@ -12,19 +12,19 @@ const ProtectedRoute = ({ children }: any) => {
       try {
         // Check if the user has an active session
         await getSession();
-        router.replace('/dashboard')
+        router.push('/dashboard/')
       } catch (error) {
         // If there is no active session, redirect to the login page
-        router.replace('/auth/login')
+        router.push('/auth/login')
       }
     };
     checkAuthentication();
   }, [getSession, router]);
 
   return (
-    <>
+    <div>
       {children}
-    </>
+    </div>
   )
 };
 

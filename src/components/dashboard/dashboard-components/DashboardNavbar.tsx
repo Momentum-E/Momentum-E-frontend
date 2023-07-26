@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import { DashboardNavbarProps } from '@/utils/props/props';
 import { Disclosure,} from '@headlessui/react';
-import { useRouter } from 'next/router';
 import { UserSideMenu } from './navbar-component';
 
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
@@ -11,9 +10,6 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   name,
   id,
 }) => {
-
-  const router = useRouter();
-  const { vehicleId } = router.query;
 
   return (
     <Disclosure as="nav" className="relative w-full z-10">

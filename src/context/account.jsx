@@ -1,4 +1,4 @@
-import React, { createContext,useState,useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import Pool from './user-pool/user-pool';
 
@@ -25,6 +25,7 @@ const Account = ({ children }) => {
     }
   };
 
+
   const getSession = async () => {
     return await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser();
@@ -36,11 +37,13 @@ const Account = ({ children }) => {
             resolve(session);
           }
         });
-      } else {
+      } 
+      else {
         reject();
       }
     });
   };
+
 
   const authenticate = async (Username, Password) => {
     await new Promise((resolve, reject) => {

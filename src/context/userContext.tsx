@@ -10,12 +10,13 @@ const AppContext = createContext();
 const AppProvider = ({ children }) => {
     const { getSession } = useContext(AccountContext);
 
+    const [userId, setUserId] = useState<string|null>('');
     const [userLocation, setUserLocation] = useState<string>();
     const [name, setName] = useState<string>('');
-    const [userId, setUserId] = useState<string|null>('');
     const [isLoading, setIsLoading] = useState(true)
     const [vehicleData, setVehicleData] = useState<vehicleDataProps>([]);
     const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
+    const [unit, setUnit] = useState<string>('Km')
 
    const router = useRouter()
 
@@ -61,15 +62,20 @@ const AppProvider = ({ children }) => {
    },[userId])
 
    const filteredVehicleData = (v_id) =>{
-    axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`,{
-      headers:{
-        "user-id":userId,
-      },
-    }).then((res)=>{
-      setVehicleIdData(res.data)
-    }).catch((err)=>{
-      console.log(err)
-    })
+   if(userId){
+      axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`,{
+        headers:{
+          "user-id":userId,
+        },
+      }).then((res)=>{
+        setVehicleIdData(res.data)
+      }).catch((err)=>{
+        console.log(err)
+      })
+     }
+     else{
+      console.log('userId not present')
+     }
    }
 
    const addVehicle = () => {
@@ -83,19 +89,22 @@ const AppProvider = ({ children }) => {
       .catch((err) => console.error(err));
   };
 
-
-  //  useEffect(()=>{
-  //       console.log(userId)
-  //       console.log(vehicleData)
-  //       console.log(router.pathname)
-  //  },[userId])
+  // const setDistanceUnit = () => {
+  //   if(unit===''){
+  //     setUnit('km')
+  //   }
+  // }
   
-  // useEffect(() => {
-  //   console.log("Id: "+userId)
-  //   console.log("vId: "+vehicleId)
-  //   console.log(userId)
-  //   console.log("vehicleIdData: "+ vehicleIdData)
-  // }, [])
+  useEffect(() => {
+    console.log("Id: "+userId)
+    console.log("vId: "+vehicleIdData)
+    console.log(userId)
+    console.log("vehicleIdData: "+ vehicleIdData)
+  }, [])
+
+  useEffect(()=>{
+    console.log(unit)
+  },[unit])
 
 
   return (
@@ -107,7 +116,9 @@ const AppProvider = ({ children }) => {
       userLocation,
       userId,
       isLoading,
-      name 
+      name,
+      unit,
+      setUnit 
       }}>
         {children}
     </AppContext.Provider>

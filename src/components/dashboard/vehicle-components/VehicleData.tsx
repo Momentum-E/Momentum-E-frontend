@@ -12,7 +12,7 @@ import { useAppContext } from '@/context/userContext';
 
 function VehicleData({vehicleData}:vehicleDataComponentProps) {
 
-  const {userLocation,isLoading}:any = useAppContext()
+  const {userLocation,isLoading,unit}:any = useAppContext()
 
   return (
     <div className="max-h-full overflow-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
@@ -62,6 +62,7 @@ function VehicleData({vehicleData}:vehicleDataComponentProps) {
               Model={vehicleData?.information?.model}
               Year={vehicleData?.information?.year}
               Vin={vehicleData?.information?.vin}
+              unit={unit}
             />
           </div>
 
@@ -77,7 +78,7 @@ function VehicleData({vehicleData}:vehicleDataComponentProps) {
           {/* Usage */}
           <div className=" h-[600px] md:h-[445px] flex flex-col p-3 space-y-3 text-gray-500 text-lg font-medium rounded-2xl border border-me-green-200 bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
             <p className="flex flex-col text-lg text-gray-500">Usage</p>  
-            <VehicleUsage/>
+            <VehicleUsage unit={unit}/>
           </div>
 
             {/* Avg Daily Miles */}

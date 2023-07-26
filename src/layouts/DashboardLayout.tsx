@@ -6,7 +6,6 @@ import {
 } from '@/components/dashboard/dashboard-components';
 import { useAppContext } from '@/context/userContext';
 
-
 const DashboardLayout = ({
   children,
   page,
@@ -24,7 +23,6 @@ const DashboardLayout = ({
     }
   }, [isTab]);
 
-
   return (
     <div className='relative'>
       <div className='flex'>
@@ -36,7 +34,6 @@ const DashboardLayout = ({
         setIsOpen={setIsOpen} 
         isTab={isTab}
         page={page===undefined?'':page}
-        // theme={theme}
         />
         <div className="max-w-full flex-1 h-screen overflow-hidden">
           <DashboardNavbar 
@@ -47,9 +44,7 @@ const DashboardLayout = ({
             setIsOpen={setIsOpen} 
             isOpen={isOpen} 
           />
-          <>
             {children}
-          </>
         </div>
       </div>
     </div>
