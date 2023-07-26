@@ -2,13 +2,18 @@
 import React from 'react'
 import { statisticsChartsData } from '@/configs';
 import dynamic from 'next/dynamic'
+import { useAppContext } from '@/context/userContext';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 type VehicleUsageProps ={
   unit:string;
+  // setDistanceValue:any;
 } 
 
 const VehicleUsage = ({unit}:VehicleUsageProps ) => {
+
+  const {setDistanceValue} = useAppContext()
+
   return (
     <>  
         <div className="flex h-1/3 md:h-2/3 justify-between p-2 rounded-xl border border-me-green-100 bg-[#F6F6F6] dark:bg-me-green-300">
@@ -29,13 +34,7 @@ const VehicleUsage = ({unit}:VehicleUsageProps ) => {
             <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               Avg Daily {unit} Driven
               <span className='text-black dark:text-white-100 text-sm'>
-                {` 
-                ${
-                unit==='Mi' ?
-                (102/1.609).toFixed(2)
-                :
-                102} 
-                `}
+                {` ${setDistanceValue(102)} `}
               </span>
             </p>
             
@@ -56,9 +55,9 @@ const VehicleUsage = ({unit}:VehicleUsageProps ) => {
             </p>
             
             <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
-              Range Observed Max/Min
+              Range Observed Max/Min ( {unit} )
               <span className='text-black dark:text-white-100 text-sm'>
-                {`${300} Miles / ${220} Miles`}
+                {`${setDistanceValue(300)} / ${setDistanceValue(290)}`}
               </span>
             </p>
           </div>
@@ -67,7 +66,7 @@ const VehicleUsage = ({unit}:VehicleUsageProps ) => {
             <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               Avg Real Range Observed
               <span className='text-black dark:text-white-100 text-sm'>
-                {`${260} Miles`}
+                {`${setDistanceValue(260)} Miles`}
               </span>
             </p>
 
@@ -75,10 +74,10 @@ const VehicleUsage = ({unit}:VehicleUsageProps ) => {
               Observed v/s OEM provided
               <span className="flex w-full justify-between">
                 <span className='w-full text-left text-black dark:text-white-100 text-sm'>
-                  {280} Miles
+                  {setDistanceValue(280)} {unit}
                 </span>
                 <span className='w-full text-left text-black dark:text-white-100 text-sm'>
-                  {295} Miles
+                  {setDistanceValue(295)} {unit}
                 </span> 
               </span>
             </p>

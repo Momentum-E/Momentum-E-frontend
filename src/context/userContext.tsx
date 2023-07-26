@@ -89,22 +89,20 @@ const AppProvider = ({ children }) => {
       .catch((err) => console.error(err));
   };
 
-  // const setDistanceUnit = () => {
-  //   if(unit===''){
-  //     setUnit('km')
-  //   }
-  // }
   
+  const setDistanceValue = (val:number) => {
+    if(unit==='Mi') 
+    return (val/1.609).toFixed(2)
+    else
+    return val
+  }
+
   useEffect(() => {
     console.log("Id: "+userId)
     console.log("vId: "+vehicleIdData)
     console.log(userId)
     console.log("vehicleIdData: "+ vehicleIdData)
   }, [])
-
-  useEffect(()=>{
-    console.log(unit)
-  },[unit])
 
 
   return (
@@ -118,7 +116,8 @@ const AppProvider = ({ children }) => {
       isLoading,
       name,
       unit,
-      setUnit 
+      setUnit,
+      setDistanceValue,
       }}>
         {children}
     </AppContext.Provider>
