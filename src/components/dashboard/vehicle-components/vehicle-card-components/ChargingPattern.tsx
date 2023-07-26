@@ -1,16 +1,17 @@
 import React from 'react'
+import { Progress } from 'antd';
 
 const ChargingPattern = () => {
   return (
     <div className='xl:space-x-2 h-full w-full flex justify-between'>
         <div className="w-[20%] flex flex-col justify-around">
-            <p className='flex flex-col text-sm font-medium text-gray-400'>
+            <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Average SoC
                 <span className='text-black dark:text-white-100 text-base'>
-                {94}%
+                {90}%
                 </span>
             </p>
-            <p className='flex flex-col text-sm font-medium text-gray-400'>
+            <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Connector Type
                 <span className='text-black dark:text-white-100 text-base'>
                 {`NACS`}
@@ -18,9 +19,15 @@ const ChargingPattern = () => {
             </p>
         </div>
         <div className="w-[60%] px-2 relative flex justify-center items-end">
-            {/* <div className="absolute p-4 w-full h-full bg-me-green-200 -z-10 rounded-full">
-                <div className=" bg-transparent rounded-full w-full h-full"></div>
-            </div> */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <Progress 
+                    type="dashboard" 
+                    percent={90}
+                    status='exception' 
+                    size={200}
+                    strokeColor={{ '0%': 'rgba(198, 222, 65, 0.00)', '100%': '#C6DE41' }} 
+                />
+            </div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-me-green-200 rounded-full p-2">
                 <svg width="30" height="29" viewBox="0 0 30 29" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <g id="Group 1000001474">
@@ -32,27 +39,27 @@ const ChargingPattern = () => {
                 </g>
                 </svg>
             </div>
-            <div className="w-full me-green-200/10 rounded-3xl">
-                <div className="w-full bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient flex justify-between text-xs border-[0.5px] border-me-green-200 dark:border-gray-400 p-4  rounded-3xl text-gray-400 font-normal h-20">
-                    {/* <span className='w-[0%] bg-me-green-100/5'> */}
-                        <span>0%</span>
-                        <p className='text-black dark:text-white-100 text-3xl pl-3'>95%</p>
-                        <span>100%</span>
-                    {/* </span> */}
+            <div className="absolute w-full me-green-200/10 opacity-90 rounded-3xl">
+                <div className="w-full bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient flex justify-between text-xs border-[0.5px] border-me-green-200 dark:border-gray-400 p-4  rounded-3xl text-gray-500 font-normal h-20">
+                    <span>0%</span>
+                    <p className='text-black dark:text-white-100 text-3xl pl-3'>
+                        {90}%
+                    </p>
+                    <span>100%</span>
                 </div>
             </div>
         </div>
-        <div className="w-[20%] flex flex-col justify-around">
-            <p className='flex flex-col text-sm font-medium text-gray-400'>
+        <div className="w-[20%] pl-1 flex flex-col justify-around">
+            <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Total Charging Sessions
                 <span className='text-black dark:text-white-100 text-xl'>
-                {`8`}
+                {20}
                 </span>
             </p>
-            <p className='flex flex-col text-sm font-medium text-gray-400'>
+            <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Average Charging Rate
                 <span className='text-black dark:text-white-100 text-base'>
-                {`15`}KW
+                {`${15} KW`}
                 </span>
             </p>
         </div>

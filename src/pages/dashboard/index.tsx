@@ -2,7 +2,7 @@ import React from 'react';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { DashboardLayout } from '@/layouts';
 
-const Dashboard = ({ accountContext }: any) => {
+const Dashboard = () => {
   return (
     <ProtectedRoute>
       <DashboardLayout/>

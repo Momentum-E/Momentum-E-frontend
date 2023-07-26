@@ -2,14 +2,23 @@
 import React from 'react'
 import { statisticsChartsData } from '@/configs';
 import dynamic from 'next/dynamic'
+import { useAppContext } from '@/context/userContext';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-const VehicleUsage = () => {
+type VehicleUsageProps ={
+  unit:string;
+  // setDistanceValue:any;
+} 
+
+const VehicleUsage = ({unit}:VehicleUsageProps ) => {
+
+  const {setDistanceValue} = useAppContext()
+
   return (
     <>  
         <div className="flex h-1/3 md:h-2/3 justify-between p-2 rounded-xl border border-me-green-100 bg-[#F6F6F6] dark:bg-me-green-300">
-          <div className=" text-sm text-gray-400">
-          {statisticsChartsData[0].title} (3 months)
+          <div className=" text-sm text-gray-500">
+            {statisticsChartsData[0].title} 
           </div>
           <div className="text-black">
             <Chart 
@@ -22,53 +31,53 @@ const VehicleUsage = () => {
         </div>
         <div className="flex h-2/3 flex-col space-x-1 md:flex-row justify-between">
           <div className="flex h-full flex-row md:flex-col justify-around">
-            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-400'>
-              Avg Daily Miles Driven
+            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
+              Avg Daily {unit} Driven
               <span className='text-black dark:text-white-100 text-sm'>
-                {102} Miles
+                {` ${setDistanceValue(102)} `}
               </span>
             </p>
             
-            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-400'>
+            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               Temperature High/Low
               <span className='text-black dark:text-white-100 text-sm'>
-                {35}C / {28}C
+                {35}&deg;C / {28}&deg;C
               </span>
             </p>
           </div>
           
           <div className="flex h-full flex-row md:flex-col justify-around">
-            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-400'>
+            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               SoC Range
               <span className='text-black dark:text-white-100 text-sm'>
-                45%
+                {`${20}% - ${80}%`}
               </span>
             </p>
             
-            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-400'>
-              Range Observed Max/Min
+            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
+              Range Observed Max/Min ( {unit} )
               <span className='text-black dark:text-white-100 text-sm'>
-                {15} Miles/{11} Miles
+                {`${setDistanceValue(300)} / ${setDistanceValue(290)}`}
               </span>
             </p>
           </div>
             
           <div className="flex h-full flex-row md:flex-col justify-around">
-            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-400'>
+            <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               Avg Real Range Observed
               <span className='text-black dark:text-white-100 text-sm'>
-                25%
+                {`${setDistanceValue(260)} Miles`}
               </span>
             </p>
 
-            <p className='flex flex-col w-full md:justify-between text-sm font-medium text-gray-400'>
+            <p className='flex flex-col w-full md:justify-between text-sm font-medium text-gray-500'>
               Observed v/s OEM provided
               <span className="flex w-full justify-between">
                 <span className='w-full text-left text-black dark:text-white-100 text-sm'>
-                  {12} Miles
+                  {setDistanceValue(280)} {unit}
                 </span>
                 <span className='w-full text-left text-black dark:text-white-100 text-sm'>
-                  {17} Miles
+                  {setDistanceValue(295)} {unit}
                 </span> 
               </span>
             </p>

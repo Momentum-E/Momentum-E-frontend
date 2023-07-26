@@ -12,8 +12,9 @@ import { useAppContext } from '@/context/userContext';
 
 function VehicleData({vehicleData}:vehicleDataComponentProps) {
 
-  const {userLocation,isLoading}:any = useAppContext()
+  const {userLocation,isLoading,unit,setDistanceValue}:any = useAppContext()
 
+  let avgSoH=98
   return (
     <div className="max-h-full overflow-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
       <div className="p-2 dark:border-gray-700 space-y-4">
@@ -57,6 +58,8 @@ function VehicleData({vehicleData}:vehicleDataComponentProps) {
               Model={vehicleData?.information?.model}
               Year={vehicleData?.information?.year}
               Vin={vehicleData?.information?.vin}
+              unit={unit}
+              // setDistanceValue={setDistanceValue}
             />
           </div>
 
@@ -72,7 +75,7 @@ function VehicleData({vehicleData}:vehicleDataComponentProps) {
           {/* Usage */}
           <div className=" h-[600px] md:h-[445px] flex flex-col p-3 space-y-3 text-gray-400 text-lg font-medium rounded-2xl border border-me-green-200 bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
             <p className="flex flex-col text-lg text-gray-400">Usage</p>  
-            <VehicleUsage/>
+            <VehicleUsage unit={unit}/>
           </div>
 
             {/* Avg Daily Miles */}
@@ -81,10 +84,12 @@ function VehicleData({vehicleData}:vehicleDataComponentProps) {
             <p className='flex flex-col text-lg text-gray-400'>Battery Health</p>
             <div className="flex flex-col items-center text-xs p-1 rounded-lg border border-me-green-200 dark:border-white-100 bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient">
               Avg Battery Health
-              <span className='text-me-green-100 dark:text-me-green-200'>{`${75}%`}</span>
+              <span className='text-me-green-100 dark:text-me-green-200'>
+                {`${avgSoH}%`}
+              </span>
             </div>
           </div>
-            <BatteryHealth/>
+            <BatteryHealth avgSoH={avgSoH}/>
           </div>
         </div>
       </div>

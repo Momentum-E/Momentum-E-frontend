@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import { City, Country, State } from 'country-state-city';
 import AuthInput from '@/components/AuthInput';
 import { ToastContainer, toast } from 'react-toastify';
+import { useAppContext } from '@/context/userContext';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { DashboardLayout } from '@/layouts';
 import { Selector } from '@/components/dashboard/dashboard-components/';
 import AuthListBox from '@/components/AuthListBox';
-import { profile } from 'console';
 
 const owner_type = [{ type: 'Individual Owner' }, { type: 'Fleet Owner' }];
 
@@ -28,23 +28,24 @@ interface FormData {
 
 const Profile = () => {
   const router = useRouter();
-  const { id } = router.query;
+  // const { id } = router.query;
+  const {userId}:any = useAppContext()
 
   const countryData = Country.getAllCountries();
 
   const [formData, setFormData] = useState<FormData | null>(null);
-  const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null);
   const [ownerType, setOwnerType] = useState(
-    formData?.owner_type === 'Individual Owner' ? owner_type[0] : owner_type[1]
-  );
+    formData?.owner_type === "Individual Owner" ? owner_type[1] : owner_type[0]
+    );
   const [stateData, setStateData] = useState<any>();
   const [cityData, setCityData] = useState<any>();
   const [country, setCountry] = useState<any>('');
   const [state, setState] = useState<any>('');
   const [city, setCity] = useState<any>('');
-  const [companyName, setCompanyName] = useState('');
-  const [FirstName, setFirstName] = useState('');
-  const [LastName, setLastName] = useState('');
+  // const [companyName, setCompanyName] = useState<string>();
+  const [FirstName, setFirstName] = useState<string>();
+  const [LastName, setLastName] = useState<string>();
 
   useEffect(() => {
     return setStateData(State.getStatesOfCountry(country?.isoCode));
@@ -64,7 +65,7 @@ const Profile = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/auth/users/' + id)
+      .get(`http://localhost:5000/auth/users/${userId}`)
       .then((res) => {
         console.log(res.data);
         setFormData(res.data);
@@ -72,7 +73,7 @@ const Profile = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, [id]);
+  }, [userId]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,10 +87,10 @@ const Profile = () => {
         state: state.name,
       },
       owner_type: ownerType,
-      company_name: companyName,
+      // company_name: companyName,
     };
 
-    axios('http://localhost:5000/auth/users/' + id, {
+    axios(`http://localhost:5000/auth/users/${userId}`, {
       method: 'PATCH',
       data: newFormData,
     })
@@ -107,14 +108,14 @@ const Profile = () => {
   };
 
   return (
-    <DashboardLayout page={` Profile / ${id     }`}>
+    <DashboardLayout page={` Profile / ${userId}`}>
       <div className="max-h-full overflow-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
         <form
           method="POST"
           onSubmit={(e) => onSubmit(e)}
           className="w-full space-y-10 min-h-screen mx-auto max-w-xl">
-          <p className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-100">
-            Welcome, {formData?.firstName + ' ' + formData?.lastName}
+          <p className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight dark:text-white-100">
+            Welcome {formData?.firstName + ' ' + formData?.lastName}
           </p>
           <div className="grid grid-cols-1 px-5 gap-x-8 gap-y-6 sm:grid-cols-2">
             <AuthListBox 
@@ -161,8 +162,8 @@ const Profile = () => {
               inputType='text'
               inputAutocomplete='company'
               inputClassname='border-me-green-200'
-              inputValue={companyName}
-              inputOnChange={(e)=>setCompanyName(e.target.value)}
+              inputValue={FirstName}
+              inputOnChange={(e)=>setFirstName(e.target.value)}
               children={null}
             />
             )}
@@ -171,7 +172,7 @@ const Profile = () => {
               <div>
                 <label
                   htmlFor="country"
-                  className="block text-sm mb-2.5 font-semibold leading-6 text-white-100">
+                  className="block text-sm mb-2.5 leading-6 dark:text-white-100">
                   Country
                   <span className="text-red-500 pl-1">*</span>
                 </label>
@@ -188,7 +189,7 @@ const Profile = () => {
                   <div>
                     <label
                       htmlFor="state"
-                      className="block text-sm font-semibold leading-6 text-white-100">
+                      className="block text-sm font-semibold leading-6 dark:text-white-100">
                       State
                       <span className="text-red-500 pl-1">*</span>
                     </label>
@@ -207,7 +208,7 @@ const Profile = () => {
                   <div>
                     <label
                       htmlFor="city"
-                      className="block text-sm font-semibold leading-6 text-white-100">
+                      className="block text-sm font-semibold leading-6 dark:text-white-100">
                       City<span className="text-red-500 pl-1">*</span>
                     </label>
                     <Selector

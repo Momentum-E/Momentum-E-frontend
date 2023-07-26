@@ -1,7 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
 import { audi_e_tron_9_black } from '@/assets/images'
-import { vehicleDataProps } from '@/utils/props/props';
 
 type vehicleInfoProps = {
   Odometer:number|null;
@@ -9,6 +8,7 @@ type vehicleInfoProps = {
   Model:string|null;
   Year:number|null;
   Vin:string|null;
+  unit:string;
 }
 
 const  VehicleInfo = ({
@@ -17,6 +17,7 @@ const  VehicleInfo = ({
   Brand,
   Model,
   Year,
+  unit,
 }:vehicleInfoProps) => {
   
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -31,29 +32,35 @@ const  VehicleInfo = ({
       <div className='h-full flex justify-between pt-2'> 
         <div className="">
           <p className='dark:text-white-100 text-black text-lg'> 
-            <span className='text-gray-400 text-base xl:text-lg'>
-              Odometer: 
+            <span className='text-gray-500 text-base xl:text-lg'>
+              Odometer : 
             </span>
-            {` ${Odometer} Kms `}
+            {` 
+            ${
+            unit==='Mi'&&Odometer ?
+            (Odometer/1.609).toFixed(2)
+            :
+            Odometer} ${unit} 
+            `}
           </p>
 
           <p className='dark:text-white-100 text-black text-lg'> 
-            <span className='text-gray-400 text-base xl:text-lg'>
-              Car Model: 
+            <span className='text-gray-500 text-base xl:text-lg'>
+              Car Model : 
             </span>
-            { " "+Brand +" "+ Model }
+            { " "+Brand+" "+Model }
           </p>
           
           <p className='dark:text-white-100 text-black text-lg'> 
-            <span className='text-gray-400 text-base xl:text-lg'>
-              Model Year: 
+            <span className='text-gray-500 text-base xl:text-lg'>
+              Model Year : 
             </span>
             { " "+ Year }
           </p>
 
           <p className='dark:text-white-100 text-black text-lg'> 
-            <span className='text-gray-400 text-base xl:text-lg'>
-              VIN:
+            <span className='text-gray-500 text-base xl:text-lg'>
+              VIN :
             </span>
             { " "+ Vin }
           </p>

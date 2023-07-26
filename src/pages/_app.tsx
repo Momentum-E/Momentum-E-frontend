@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <ThemeProvider attribute='class'>
               <AppProvider>
                 <Component {...pageProps} accountContext={accountContext}/>
-              </AppProvider>
+              </AppProvider> 
             </ThemeProvider>
           );
         }}

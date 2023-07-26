@@ -10,11 +10,15 @@ const AppContext = createContext();
 const AppProvider = ({ children }) => {
     const { getSession } = useContext(AccountContext);
 
+    const [userId, setUserId] = useState<string|null>('');
     const [userLocation, setUserLocation] = useState<string>();
     const [name, setName] = useState<string>('');
-    const [userId, setUserId] = useState<string|null>('');
     const [isLoading, setIsLoading] = useState(true)
     const [vehicleData, setVehicleData] = useState<vehicleDataProps>([]);
+    const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
+    const [unit, setUnit] = useState<string>('Km')
+
+   const router = useRouter()
 
     useEffect(() => {
         const fetchuserdetails = async () => {
@@ -57,7 +61,23 @@ const AppProvider = ({ children }) => {
     }
    },[userId])
 
-   const router = useRouter()
+   const filteredVehicleData = (v_id) =>{
+   if(userId){
+      axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`,{
+        headers:{
+          "user-id":userId,
+        },
+      }).then((res)=>{
+        setVehicleIdData(res.data)
+      }).catch((err)=>{
+        console.log(err)
+      })
+     }
+     else{
+      console.log('userId not present')
+     }
+   }
+
    const addVehicle = () => {
     axios
       .get(`http://localhost:5000/vehicles/users/${userId}/link`)
@@ -69,15 +89,36 @@ const AppProvider = ({ children }) => {
       .catch((err) => console.error(err));
   };
 
+  
+  const setDistanceValue = (val:number) => {
+    if(unit==='Mi') 
+    return (val/1.609).toFixed(2)
+    else
+    return val
+  }
 
-   useEffect(()=>{
-        console.log(userId)
-        console.log(vehicleData)  
-        console.log(router.pathname)
-   },[userId])
+  useEffect(() => {
+    console.log("Id: "+userId)
+    console.log("vId: "+vehicleIdData)
+    console.log(userId)
+    console.log("vehicleIdData: "+ vehicleIdData)
+  }, [])
+
 
   return (
-    <AppContext.Provider value={{addVehicle, vehicleData,userLocation,userId,isLoading,name }}>
+    <AppContext.Provider value={{
+      addVehicle, 
+      vehicleData,
+      vehicleIdData,
+      filteredVehicleData,
+      userLocation,
+      userId,
+      isLoading,
+      name,
+      unit,
+      setUnit,
+      setDistanceValue,
+      }}>
         {children}
     </AppContext.Provider>
   );
