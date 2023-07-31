@@ -48,15 +48,6 @@ const GetUserData = () => {
     setTheme('dark')
   })
 
-
-  // const onInputChange = (e:any) => {
-  //   const { name, value } = e.target;
-  //   setInput((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
-
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 

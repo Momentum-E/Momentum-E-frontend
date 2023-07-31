@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { useTheme } from 'next-themes';
+import { useAppContext } from '@/context/userContext';
+
 import {
   Sidebar,
   DashboardNavbar,
 } from '@/components/dashboard/dashboard-components';
-import { useAppContext } from '@/context/userContext';
 
 const DashboardLayout = ({
   children,
@@ -14,6 +16,7 @@ const DashboardLayout = ({
   let isTab = useMediaQuery({ query: '(max-width:640px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
   const {isLoading, userId, vehicleData, name}:any = useAppContext()
+  const {theme, setTheme} = useTheme()
   
   useEffect(() => {
     if (isTab) {
@@ -21,7 +24,8 @@ const DashboardLayout = ({
     } else {
       setIsOpen(true);
     }
-  }, [isTab]);
+    setTheme(theme||'dark')
+  }, [isTab,theme]);
 
   return (
     <div className='relative'>
@@ -33,7 +37,9 @@ const DashboardLayout = ({
         isOpen={isOpen} 
         setIsOpen={setIsOpen} 
         isTab={isTab}
-        page={page===undefined?'':page}
+        // page={page===undefined?'':page}
+        page={page}
+        theme={theme}
         />
         <div className="max-w-full flex-1 h-screen overflow-hidden">
           <DashboardNavbar 
@@ -44,7 +50,9 @@ const DashboardLayout = ({
             setIsOpen={setIsOpen} 
             isOpen={isOpen} 
           />
+          <div className="overflow-auto max-h-full">
             {children}
+          </div>
         </div>
       </div>
     </div>

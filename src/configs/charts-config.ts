@@ -55,9 +55,9 @@ export const chartsConfig = {
         },
       },
     },
-    fill: {
-      opacity: 0.8,
-    },
+    // fill: {
+    //   opacity: 0.8,
+    // },
     tooltip: {
       theme: "dark",
     },

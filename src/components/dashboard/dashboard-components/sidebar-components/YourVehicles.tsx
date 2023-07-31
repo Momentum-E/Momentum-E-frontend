@@ -1,11 +1,16 @@
 import React from 'react'
-// import Link from 'next/link';
-// import { Disclosure } from '@headlessui/react';
 import { YourVehicleProps } from '@/utils/props/props';
 import { useRouter } from 'next/router';
 import { useAppContext } from '@/context/userContext';
 
-function YourVehicles({isLoading,vehicleData, setIsOpen, isTab,page}:YourVehicleProps) {
+const YourVehicles = ({
+    isLoading,
+    vehicleData, 
+    setIsOpen, 
+    isTab,
+    page,
+}:YourVehicleProps) => {
+    
     const router = useRouter()
     const DeleteVehicle = (v_no:string) => {
         const delete_vehicle = v_no

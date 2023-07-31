@@ -39,16 +39,6 @@ const AvgDailyMiles = {
     ],
     options: {
       ...chartsConfig,
-      theme:{
-        mode:'light',
-        palette:'',
-        monochrome:{
-          enable:true,
-          color:['#C6DE41'],
-          shadeTo:'light',
-          shadeIntensity:0,
-        },
-      },
       colors: ["#C6DE41"],
       stroke: {
         lineCap: "round",
@@ -98,7 +88,7 @@ const AvgDailyMiles = {
   
 export const statisticsChartsData = [
     {
-      title: "Avg Daily Miles Driven (3 months)",
+      title: "Avg Distance Driven (3 months)",
       chart: AvgDailyMiles,
     },
     {

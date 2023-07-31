@@ -1,13 +1,14 @@
 import React from 'react'
 import Image from 'next/image'
 import { audi_e_tron_9_black } from '@/assets/images'
+import { useAppContext } from '@/context/userContext';
 
 type vehicleInfoProps = {
-  Odometer:number|null;
-  Brand:string|null;
-  Model:string|null;
-  Year:number|null;
-  Vin:string|null;
+  Odometer:number;
+  Brand:string;
+  Model:string;
+  Year:number;
+  Vin:string;
   unit:string;
 }
 
@@ -23,6 +24,7 @@ const  VehicleInfo = ({
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   let monthIndex = (new Date().getMonth());
   let monthYear = (new Date().getFullYear())
+  const {setDistanceValue} =useAppContext()
 
   return (
     <>
@@ -35,13 +37,7 @@ const  VehicleInfo = ({
             <span className='text-gray-500 text-base xl:text-lg'>
               Odometer : 
             </span>
-            {` 
-            ${
-            unit==='Mi'&&Odometer ?
-            (Odometer/1.609).toFixed(2)
-            :
-            Odometer} ${unit} 
-            `}
+            {` ${setDistanceValue(Odometer)} ${unit}`}
           </p>
 
           <p className='dark:text-white-100 text-black text-lg'> 

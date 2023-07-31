@@ -12,21 +12,26 @@ export type SidebarProps = {
   vehicle_data:vehicleDataProps[];
   isTab: boolean;
   isOpen: boolean;
-  setIsOpen: any;
+  setIsOpen: (value: React.SetStateAction<boolean>) => void;
   page:string;
-  // theme:string|any;
+  theme:string|any;
 };
 
 export type YourVehicleProps = {
     isLoading:boolean;
     vehicleData:vehicleDataProps[];
     isTab:boolean;
-    setIsOpen:any;
+    setIsOpen:(value: React.SetStateAction<boolean>) => void;
     page:string;
 }
 
-export type vehicleDataComponentProps = {
-  vehicleData:vehicleDataProps;
+export type VehicleUsageProps ={
+  unit:string;
+} 
+
+export type CharginPatternProps ={
+    avgSoC:number|null;
+    chargeRate:number|null;
 }
 
 export type vehicleDataProps = {
