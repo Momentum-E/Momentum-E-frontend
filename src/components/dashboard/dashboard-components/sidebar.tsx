@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { SidebarProps } from '@/utils/props/props';
 import Image from 'next/image';
 import { useAppContext } from '@/context/userContext';
-import { useTheme } from 'next-themes';
 import { useRouter } from 'next/router';
 
 import YourVehicles from './sidebar-components/YourVehicles';
@@ -16,17 +15,14 @@ const Sidebar: React.FC<SidebarProps> = ({
   isOpen, 
   setIsOpen,
   page,
+  theme,
  }) => {
 
   const router = useRouter();
   const { pathname } = router;
-  const {theme, setTheme} = useTheme()
 
   useEffect(() => {
     isTab && setIsOpen(false);
-    // const theme_color=localStorage.getItem('theme')
-    // console.log(theme_color)
-    // setTheme(theme_color)
   }, [pathname]);
 
   const {addVehicle}:any = useAppContext()
@@ -35,8 +31,9 @@ const Sidebar: React.FC<SidebarProps> = ({
     <div className="">
       <div
         onClick={() => setIsOpen(false)}
-        className={`md:hidden fixed inset-0 max-h-screen z-[999] bg-black/50 
-            ${isOpen ? ` block ` : ` hidden `}`}></div>
+        className={`${isOpen ? ` block ` : ` hidden `} fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50 `}
+      >      
+      </div>
       <div
         className={`${
           isOpen ? ` ` : `transform -translate-x-full `
@@ -45,25 +42,28 @@ const Sidebar: React.FC<SidebarProps> = ({
           {/* logo */}
           {
             theme!=='dark'?
-            (
-              <>
-                <Image 
-                className="block h-11 w-auto" 
-                // width={577}
-                // height={165}
-                src={logo_black_nocap} 
-                alt="Momentum-E" />
-                <DarkLine/>
-              </>
+            ( 
+              <Image 
+              className="block h-11 w-auto" 
+              // width={577}
+              // height={165}
+              src={logo_black_nocap} 
+              alt="Momentum-E" />
             ):
             (
-              <>
-                <Image 
-                className="block h-11 w-auto" 
-                src={logo_white_nocap} 
-                alt="Momentum-E" />
-                <LightLine/>
-              </>
+              <Image 
+              className="block h-11 w-auto" 
+              src={logo_white_nocap} 
+              alt="Momentum-E" />
+            )
+          }
+          {
+            theme !=='dark' ?
+            (
+              <DarkLine/>
+            ):
+            (
+              <LightLine/>
             )
           }
         </div>

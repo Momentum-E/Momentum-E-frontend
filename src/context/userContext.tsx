@@ -5,9 +5,24 @@ import { AccountContext } from './account';
 import { useRouter } from 'next/router';
 import { vehicleDataProps } from '@/utils/props/props';
 
-const AppContext = createContext();
+type UserContextProps = {
+  addVehicle:() => void;
+  vehicleData:vehicleDataProps[];
+  vehicleIdData:vehicleDataProps|undefined;
+  filteredVehicleData:(v_id: string) => void;
+  userEmail:string;
+  userLocation:string|undefined;
+  userId:string|null;
+  isLoading:boolean;
+  name:string;
+  unit:string;
+  setUnit:React.Dispatch<React.SetStateAction<string>>;
+  setDistanceValue:(val: number) => string | number;
+}
 
-const AppProvider = ({ children }) => {
+const AppContext = createContext<UserContextProps>();
+
+const AppProvider = ({ children }:any) => {
     const { getSession } = useContext(AccountContext);
 
     const [userId, setUserId] = useState<string|null>('');
@@ -17,6 +32,7 @@ const AppProvider = ({ children }) => {
     const [vehicleData, setVehicleData] = useState<vehicleDataProps>([]);
     const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
     const [unit, setUnit] = useState<string>('Km')
+    const [userEmail,setuserEmail] = useState<string>('')
 
    const router = useRouter()
 
@@ -31,7 +47,8 @@ const AppProvider = ({ children }) => {
             );
                 setName(response.data.firstName+" "+response.data.lastName);
                 setUserLocation(`${response.data.address.city}, ${response.data.address.country}`);
-            } 
+                setuserEmail(response.data.email)
+              } 
             catch (error) {
                 console.error('Error:', error);
             }
@@ -61,7 +78,7 @@ const AppProvider = ({ children }) => {
     }
    },[userId])
 
-   const filteredVehicleData = (v_id) =>{
+   const filteredVehicleData = (v_id:string) =>{
    if(userId){
       axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`,{
         headers:{
@@ -69,6 +86,7 @@ const AppProvider = ({ children }) => {
         },
       }).then((res)=>{
         setVehicleIdData(res.data)
+        // console.log(res.data)
       }).catch((err)=>{
         console.log(err)
       })
@@ -90,19 +108,22 @@ const AppProvider = ({ children }) => {
   };
 
   
-  const setDistanceValue = (val:number) => {
-    if(unit==='Mi') 
-    return (val/1.609).toFixed(2)
-    else
-    return val
+  const setDistanceValue = (val:number|null) => {
+    if (val!==null)
+    {
+      if(unit==='Mi') 
+      return (val/1.609).toFixed(2)
+      else
+      return val
+    }
   }
 
-  useEffect(() => {
-    console.log("Id: "+userId)
-    console.log("vId: "+vehicleIdData)
-    console.log(userId)
-    console.log("vehicleIdData: "+ vehicleIdData)
-  }, [])
+  // useEffect(() => {
+  //   console.log("Id: "+userId)
+  //   console.log("vId: "+vehicleIdData)
+  //   console.log(userId)
+  //   console.log("vehicleIdData: "+ vehicleIdData)
+  // }, [vehicleIdData])
 
 
   return (
@@ -111,6 +132,7 @@ const AppProvider = ({ children }) => {
       vehicleData,
       vehicleIdData,
       filteredVehicleData,
+      userEmail,
       userLocation,
       userId,
       isLoading,

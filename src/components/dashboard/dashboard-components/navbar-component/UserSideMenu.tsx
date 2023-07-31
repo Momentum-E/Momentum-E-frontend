@@ -94,19 +94,6 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
                     <Menu.Item>
                     {({ active }) => (
                         <li
-                        className={classNames(
-                            active ? 'active ' : '',
-                            'block link px-4 py-2 text-sm rounded-md text-black hover:cursor-pointer'
-                        )}
-                        onClick={()=>router.replace(`/dashboard/settings/${id}`)}
-                        >
-                        Settings
-                        </li>
-                    )}
-                    </Menu.Item>
-                    <Menu.Item>
-                    {({ active }) => (
-                        <li
                         onClick={() => SignOut()}
                         className={classNames( 
                             active ? 'active ' : '',
