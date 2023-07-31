@@ -30,8 +30,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <div className="">
       <div
+        className={`${!isOpen&&isTab ? `hidden ` : `block `} fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50 `}
         onClick={() => setIsOpen(false)}
-        className={`${isOpen ? ` block ` : ` hidden `} fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50 `}
       >      
       </div>
       <div
