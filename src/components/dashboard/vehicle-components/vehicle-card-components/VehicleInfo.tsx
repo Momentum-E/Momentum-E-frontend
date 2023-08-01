@@ -61,13 +61,13 @@ const  VehicleInfo = ({
             { " "+ Vin }
           </p>
         </div>
-        <div className="md:hidden xl:block">
+        {/* <div className="md:hidden xl:block">
             <Image
                 src={audi_e_tron_9_black}
                 className='w-auto h-auto'
                 alt='Car'
             />
-        </div>
+        </div> */}
       </div>
     </>
   )
