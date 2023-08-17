@@ -3,3 +3,4 @@ export { default as SignIn } from './signin';
 export { default as Status } from './status';
 export {default as ProtectedRoute} from './ProtectedRoute'
 export { default as ForgotPassword } from './ForgotPassword'
+export {default as GetUserDataComponent} from './GetUserDataComponent'

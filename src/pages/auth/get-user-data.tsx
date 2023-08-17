@@ -62,7 +62,7 @@ const GetUserData = () => {
         state: state?.name,
         city: city?.name,
       },
-      company_name: companyName,
+      companyName: companyName,
       vehicles:[],
     };
 
@@ -89,7 +89,7 @@ const GetUserData = () => {
     <>
       <form
         method="POST"
-        onSubmit={onSubmit}
+        onSubmit={(e) => onSubmit(e)}
         className="w-full h-full mb-10 space-y-10 min-h-screen mx-auto max-w-xl sm:mt-20">
         <p className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-100">
           This is the last step!

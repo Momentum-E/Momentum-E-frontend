@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { YourVehicleProps } from '@/utils/props/props';
 import { useRouter } from 'next/router';
 import { useAppContext } from '@/context/userContext';
@@ -10,20 +10,26 @@ const YourVehicles = ({
     isTab,
     page,
 }:YourVehicleProps) => {
-    
+    let [vehicleId,setvehicleId]=useState<string>() 
     const router = useRouter()
+    
     const DeleteVehicle = (v_no:string) => {
         const delete_vehicle = v_no
         console.log(delete_vehicle)
     }
 
-    const {filteredVehicleData}:any = useAppContext()
+    const {filteredVehicleData} = useAppContext()
 
-    const onVehicleClick = (v_id:string) => {
-        filteredVehicleData(v_id)
-        setIsOpen(!isTab)
-        router.replace(`/dashboard/vehicles/${v_id}`)
-    }
+    
+    useEffect(()=>{
+        const onVehicleClick = () => {
+            if(vehicleId){
+                filteredVehicleData(vehicleId)
+                setIsOpen(!isTab)
+            }
+        }
+        onVehicleClick()
+    },[vehicleId])
 
     return (
       <div className='h-full'>
@@ -46,7 +52,7 @@ const YourVehicles = ({
                                 className={`${page===data.id ? `active `:` `} 
                                 group dark:text-white-100 link flex justify-between md:justify-start`}>
                                     <button
-                                    onClick={()=>onVehicleClick(data.id)}
+                                    onClick={()=>setvehicleId(data.id)}
                                     className="px-2 h-full w-full overflow-hidden text-left overflow-ellipsis group-hover:mr-2"
                                     >
                                         {/* <span className=''> */}

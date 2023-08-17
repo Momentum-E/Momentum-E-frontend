@@ -1,12 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { SidebarProps } from '@/utils/props/props';
-import Image from 'next/image';
+
 import { useAppContext } from '@/context/userContext';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
 import YourVehicles from './sidebar-components/YourVehicles';
-import {logo_black_nocap, logo_white_nocap} from '@/assets/logos/';
-import { DarkLine,LightLine } from '@/utils/sidebar_icons';
+const DarkLine = dynamic (() => import('@/utils/sidebar_icons/DarkLine'), {
+  ssr: false,
+});
+const LightLine = dynamic (() => import('@/utils/sidebar_icons/LightLine'), {
+  ssr: false,
+});
+const SidebarLightLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarLightLogo'),{
+  ssr:false,
+})
+const SidebarDarkLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarDarkLogo'),{
+  ssr:false,
+})
 
 const Sidebar: React.FC<SidebarProps> = ({
   isLoading,
@@ -30,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <div className="">
       <div
-        className={`${!isOpen&&isTab ? `hidden ` : `block `} fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50 `}
+        className={`${!isOpen ? `hidden ` : `block `} fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50 `}
         onClick={() => setIsOpen(false)}
       >      
       </div>
@@ -41,29 +52,21 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className="flex flex-col gap-2.5 py-2 text-white-100 items-center justify-center">
           {/* logo */}
           {
-            theme!=='dark'?
+            theme === 'dark'?
             ( 
-              <Image 
-              className="block h-11 w-auto" 
-              // width={577}
-              // height={165}
-              src={logo_black_nocap} 
-              alt="Momentum-E" />
+              <SidebarLightLogo/>
             ):
             (
-              <Image 
-              className="block h-11 w-auto" 
-              src={logo_white_nocap} 
-              alt="Momentum-E" />
+              <SidebarDarkLogo/>
             )
           }
           {
-            theme !=='dark' ?
-            (
-              <DarkLine/>
-            ):
+            theme === 'dark' ?
             (
               <LightLine/>
+            ):
+            (
+              <DarkLine/>
             )
           }
         </div>

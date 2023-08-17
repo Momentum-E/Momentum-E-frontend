@@ -7,9 +7,10 @@ import { vehicleDataProps } from '@/utils/props/props';
 
 type UserContextProps = {
   addVehicle:() => void;
-  vehicleData:vehicleDataProps[];
+  vehicleData:vehicleDataProps;
   vehicleIdData:vehicleDataProps|undefined;
-  filteredVehicleData:(v_id: string) => void;
+  setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
+  filteredVehicleData:(v_id: string|undefined) => void;
   userEmail:string;
   userLocation:string|undefined;
   userId:string|null;
@@ -17,22 +18,23 @@ type UserContextProps = {
   name:string;
   unit:string;
   setUnit:React.Dispatch<React.SetStateAction<string>>;
-  setDistanceValue:(val: number) => string | number;
+  setDistanceValue:(val: number|null) => string | number | undefined;
 }
 
 const AppContext = createContext<UserContextProps>();
 
 const AppProvider = ({ children }:any) => {
-    const { getSession } = useContext(AccountContext);
+    const { getSession }:any = useContext(AccountContext);
 
     const [userId, setUserId] = useState<string|null>('');
     const [userLocation, setUserLocation] = useState<string>();
     const [name, setName] = useState<string>('');
     const [isLoading, setIsLoading] = useState(true)
-    const [vehicleData, setVehicleData] = useState<vehicleDataProps>([]);
+    const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
     const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
     const [unit, setUnit] = useState<string>('Km')
     const [userEmail,setuserEmail] = useState<string>('')
+    const [isVehicleDataLoading,setVehicleDataLoading]=useState(true)
 
    const router = useRouter()
 
@@ -68,6 +70,7 @@ const AppProvider = ({ children }:any) => {
         .then((res) => {
             setVehicleData(res.data);
             setIsLoading(false)
+            setVehicleIdData(res.data[0])
         })
         .catch((err) => {
             console.error(err);
@@ -78,15 +81,17 @@ const AppProvider = ({ children }:any) => {
     }
    },[userId])
 
-   const filteredVehicleData = (v_id:string) =>{
-   if(userId){
+   const filteredVehicleData = (v_id:string|undefined) =>{
+    if(userId){
       axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`,{
         headers:{
           "user-id":userId,
         },
       }).then((res)=>{
         setVehicleIdData(res.data)
-        // console.log(res.data)
+        setVehicleDataLoading(false)
+        router.replace(`/dashboard/vehicles/${res.data.id}`)
+        console.log('userId present')
       }).catch((err)=>{
         console.log(err)
       })
@@ -131,6 +136,7 @@ const AppProvider = ({ children }:any) => {
       addVehicle, 
       vehicleData,
       vehicleIdData,
+      setVehicleIdData,
       filteredVehicleData,
       userEmail,
       userLocation,

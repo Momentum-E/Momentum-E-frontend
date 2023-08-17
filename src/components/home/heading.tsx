@@ -17,11 +17,11 @@ const Heading: React.FC<HeadingProps> = ({
           <h1>{primaryHeading}</h1>
           <h1>{secondaryHeading}</h1>
         </div>
-        <figure className="translate-y-7 md:first-letter:px-6">
+        <figure className="translate-y-9 md:first-letter:px-6">
           <DottedIcon />
         </figure>
       </div>
-      <h1 className="flex text-center justify-center items-center text-lg text-me-green-100">
+      <h1 className="flex text-center justify-center items-center text-lg pt-5 text-me-green-100">
         {tertiaryHeading}
       </h1>
     </>
