@@ -4,7 +4,7 @@ import logo from '../../assets/logos/logo_white_nocap.png';
 
 const Footer = ({isAuthenticated}:any) => {
   return !isAuthenticated ? (
-    <div className="text-white-100">
+    <div className="text-white-100 mt-10">
       <div className="max-w-7xl m-auto text-gray-100 flex flex-wrap justify-between pt-5 border-t">
         <div className="p-5 w-48 ">
           <figure>

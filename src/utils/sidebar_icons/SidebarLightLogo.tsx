@@ -8,6 +8,7 @@ const SidebarLightLogo = () => {
       className="block h-11 w-auto" 
       // width={579}
       // height={164}
+      priority
       src={logo_white_nocap} 
       alt="Momentum-E" 
     />

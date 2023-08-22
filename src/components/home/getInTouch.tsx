@@ -8,13 +8,15 @@ const getInTouch = () => {
     const [email, setEmail] = useState("")
     const [message, setMessage] = useState("")
     
-    const onMessageSubmit = () => {
-        setIsOpen(false)
+    const onMessageSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      setIsOpen(false)
+
     }
 
     return (
     <>
-      <div className="flex flex-row mx-auto space-x-5 rounded-lg  py-4 px-4 max-w-xl bg-white-100">
+      <div className=" flex flex-row mx-auto space-x-5 rounded-lg py-4 px-4 max-w-xl bg-white-100">
           <div className="flex flex-1 flex-col space-y-5 justify-between h-full w-full text-sm text-[#060E02]">
           <h2 className='text-black text-xl font-bold text-left'>GET IN TOUCH WITH US</h2>
           <p className='h-full'>
@@ -68,15 +70,16 @@ const getInTouch = () => {
                                 {/* <p className="leading-relaxed mt-1 mb-4 text-blueGray-500">
                                 Complete this form and we will get back to you in 24 hours.
                                 </p> */}
-                                <form action="" method="post" onSubmit={()=>onMessageSubmit()}>
-                                  <div className="space-y-4">
+                                <form action="" method="post" onSubmit={(e)=>onMessageSubmit(e)}>
+                                  <div className="space-y-4 text-black">
                                     <div className="relative w-full">
-                                          <label
+                                        <label
                                           className="block uppercase text-xs font-bold pb-2"
                                           htmlFor="full-name">
-                                          Full Name<span className="text-red-500 pl-1">*</span>
-                                          </label>
-                                          <input
+                                          Full Name
+                                          <span className="text-red-500 pl-1">*</span>
+                                        </label>
+                                        <input
                                           id='full-name'
                                           type="text"
                                           required={true}
@@ -84,49 +87,51 @@ const getInTouch = () => {
                                           value={name}
                                           onChange={(e)=>setName(e.target.value)}
                                           className="border-b border-[#C6DE41] px-3 py-2 text-white bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150"
-                                          />
+                                        />
                                     </div>
 
                                     <div className="relative w-full mb-3">
                                       <label
-                                      className="block uppercase text-xs font-bold pb-2"
-                                      htmlFor="email">
+                                        className="block uppercase text-xs font-bold pb-2"
+                                        htmlFor="email"
+                                      >
                                         Email
                                         <span className="text-red-500 pl-1">*</span>
                                       </label>
                                       <input
-                                      id='email'
-                                      type="email"
-                                      required={true}
-                                      value={email}
-                                      onChange={(e)=>setEmail(e.target.value)}
-                                      autoComplete='email'
-                                      className="border-b border-[#C6DE41] px-3 py-2 text-white bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150"
+                                        id='email'
+                                        type="email"
+                                        required={true}
+                                        value={email}
+                                        onChange={(e)=>setEmail(e.target.value)}
+                                        autoComplete='email'
+                                        className="border-b border-[#C6DE41] px-3 py-2 text-white bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150"
                                       />
                                     </div>
 
                                     <div className="relative w-full mb-3">
                                       <label
-                                      className="block uppercase text-xs font-bold pb-4"
-                                      htmlFor="message"
+                                        className="block uppercase text-xs font-bold pb-4"
+                                        htmlFor="message"
                                       >
-                                      Message<span className="text-red-500 pl-1">*</span>
+                                        Message
+                                        <span className="text-red-500 pl-1">*</span>
                                       </label>
                                       <textarea
-                                      id='message'
-                                      rows={4}
-                                      cols={80}
-                                      required={true}
-                                      className="border border-[#C6DE41] px-3 py-3 bg-transparent rounded text-sm focus:outline-none focus:ring-0 w-full"
-                                      placeholder="Type a message..."
-                                      value={message}
-                                      onChange={(e)=>setMessage(e.target.value)}
+                                        id='message'
+                                        rows={4}
+                                        cols={80}
+                                        required={true}
+                                        className="border border-[#C6DE41] px-3 py-3 bg-transparent rounded text-sm focus:outline-none focus:ring-0 w-full"
+                                        placeholder="Type a message..."
+                                        value={message}
+                                        onChange={(e)=>setMessage(e.target.value)}
                                       />    
                                     </div>
 
                                     <div className="text-right mt-6">
                                       <button
-                                      className=" hover:bg-white bg-[#C6DE41] text-black active:bg-[#C6DE4180] text-xs font-normal uppercase px-2 py-2 rounded-lg hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+                                      className=" hover:bg-white bg-[#C6DE41] text-black active:bg-[#C6DE4180] text-xs font-semibold uppercase px-2 py-2 rounded-lg hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
                                       type="submit"
                                       >
                                         Send Message

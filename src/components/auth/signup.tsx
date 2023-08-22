@@ -35,22 +35,22 @@ const Signup = () => {
     }));
   };
 
-  const handleAWSError = (err: any) => {
-    if (err.code === 'InvalidPasswordException') {
-      const errorMessage = err.message || 'An unknown error occurred.';
-      setErrorData(errorMessage);
-      //AWS error message with a toast message
-      toast.error(errorData);
-    }
-    if (err.code === 'UsernameExistsException') {
-      const errorMessage = err.message || 'User already present.';
-      setErrorData(errorMessage);
-      //AWS error message with a toast message
-      toast.success(errorData);
-    } else {
-      console.error(err);
-    }
-  };
+  // const handleAWSError = (err: any) => {
+  //   if (err.code === 'InvalidPasswordException') {
+  //     const errorMessage = err.message || 'An unknown error occurred.';
+  //     // setErrorData(errorMessage);
+  //     //AWS error message with a toast message
+  //     toast.error(errorMessage);
+  //   }
+  //   if (err.code === 'UsernameExistsException') {
+  //     const errorMessage = err.message || 'User already present.';
+  //     // setErrorData(errorMessage);
+  //     //AWS error message with a toast message
+  //     toast.success(errorMessage);
+  //   } else {
+  //     console.error(err);
+  //   }
+  // };
 
   const onSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -58,13 +58,27 @@ const Signup = () => {
     userPool.signUp(input.email, input.password, [], null, (err, data) => {
       if (err) {
         // console.log(err)
-        handleAWSError(err);
+        // handleAWSError(err);
+        if (err.code === 'InvalidPasswordException') {
+          const errorMessage = err.message || 'An unknown error occurred.';
+          toast.error(errorMessage);
+          setErrorData(errorMessage);
+          //AWS error message with a toast message
+        }
+        if (err.code === 'UsernameExistsException') {
+          const errorMessage = err.message || 'User already present.';
+          toast.success(errorMessage);
+          setErrorData(errorMessage);
+          //AWS error message with a toast message
+        } else {
+          console.error(err);
+        }
       } else {
         // router.replace('/auth/confirmSignup');
         console.log(data);
         localStorage.setItem('userId', data?.userSub);
-        setVerifyProcess(true);
         toast.success('Please confirm your email to continue');
+        setVerifyProcess(true);
       }
     });
     localStorage.setItem('email', input.email);
@@ -73,7 +87,7 @@ const Signup = () => {
   return (
     <div>
       {verifyProcess === false ? (
-        <div className="isolate px-6 py-24 sm:py-32 lg:px-8">
+        <div className="isolate px-6 py-24 sm:py-24 lg:px-8">
           <div className="mx-auto max-w-2xl pb-10 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-white-100 sm:text-4xl">
               Sign Up
