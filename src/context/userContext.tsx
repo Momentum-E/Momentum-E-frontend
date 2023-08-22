@@ -39,23 +39,28 @@ const AppProvider = ({ children }:any) => {
    const router = useRouter()
 
     useEffect(() => {
+      // if(userId){
         const fetchuserdetails = async () => {
-            try {
+          try {
             const session = await getSession();
             const userid = session.idToken.payload.sub;
-            setUserId(userid);
+            setUserId(userid); 
+            console.log('userid(fetch statement):',userid)
             const response = await axios.get(
                 `http://localhost:5000/auth/users/${userid}`
             );
-                setName(response.data.firstName+" "+response.data.lastName);
-                setUserLocation(`${response.data.address.city}, ${response.data.address.country}`);
+                // setName(response.data.firstName+" "+response.data.lastName);
+                setName(response.data.name)
+                console.log('name:',name)
+                setUserLocation(`${response.data.city}, ${response.data.country}`);
                 setuserEmail(response.data.email)
               } 
             catch (error) {
-                console.error('Error:', error);
+                console.error('Error, no user (userContext):', error);
             }
         };
         fetchuserdetails();
+      // }
   }, [userId]);
   
   useEffect(()=>{
@@ -68,7 +73,7 @@ const AppProvider = ({ children }:any) => {
           },
         })
         .then((res) => {
-            setVehicleData(res.data);
+            setVehicleData(res.data.data)
             setIsLoading(false)
             setVehicleIdData(res.data[0])
         })
@@ -83,11 +88,11 @@ const AppProvider = ({ children }:any) => {
 
    const filteredVehicleData = (v_id:string|undefined) =>{
     if(userId){
-      axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`,{
-        headers:{
-          "user-id":userId,
-        },
-      }).then((res)=>{
+      axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`)
+        // headers:{
+        //   "user-id":userId,
+        // },
+      .then((res)=>{
         setVehicleIdData(res.data)
         setVehicleDataLoading(false)
         router.replace(`/dashboard/vehicles/${res.data.id}`)
@@ -123,12 +128,14 @@ const AppProvider = ({ children }:any) => {
     }
   }
 
-  // useEffect(() => {
-  //   console.log("Id: "+userId)
-  //   console.log("vId: "+vehicleIdData)
-  //   console.log(userId)
-  //   console.log("vehicleIdData: "+ vehicleIdData)
-  // }, [vehicleIdData])
+  useEffect(() => {
+    if(userId){
+      console.log("userId: "+userId)
+      // console.log("vId: "+vehicleIdData)
+      console.log("vehicleIdData: "+ vehicleIdData)
+      console.log("name,email: ", name,userEmail)
+    }
+  }, [vehicleIdData,userId])
 
 
   return (

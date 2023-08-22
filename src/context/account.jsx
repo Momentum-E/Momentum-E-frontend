@@ -74,7 +74,7 @@ const Account = ({ children }) => {
     const user = Pool.getCurrentUser();
     if (user) {
       user.signOut();
-      setIsAuthenticated(false);
+      setIsAuthenticated(false)
     }
   };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import '@/styles/globals.css';
-import { ThemeProvider, useTheme } from 'next-themes';
+import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
 import { Account, AccountContext } from '@/context/account';
 import { AppProvider } from '@/context/userContext';
