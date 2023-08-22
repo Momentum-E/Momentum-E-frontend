@@ -1,17 +1,15 @@
-import React, { createContext,useState,useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
-import { useRouter } from 'next/router';
 import Pool from './user-pool/user-pool';
 
 const AccountContext = createContext();
 
 const Account = ({ children }) => {
-  const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     checkAuthentication();
-  }, []);
+  }, [isAuthenticated]);
 
   const checkAuthentication = async () => {
     try {
@@ -27,6 +25,7 @@ const Account = ({ children }) => {
     }
   };
 
+
   const getSession = async () => {
     return await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser();
@@ -38,11 +37,13 @@ const Account = ({ children }) => {
             resolve(session);
           }
         });
-      } else {
+      } 
+      else {
         reject();
       }
     });
   };
+
 
   const authenticate = async (Username, Password) => {
     await new Promise((resolve, reject) => {
@@ -73,7 +74,6 @@ const Account = ({ children }) => {
     const user = Pool.getCurrentUser();
     if (user) {
       user.signOut();
-      router.replace('/')
       setIsAuthenticated(false);
     }
   };

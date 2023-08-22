@@ -33,6 +33,7 @@ module.exports = {
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         'dashboard-gradient': 'linear-gradient(157deg, #131315 0%, rgba(26, 31, 55, 0.00) 100%)',
         'dashboard-sidebar-image':"url('../assets/images/dashboard-need-help.png')",
+        'logo_whitw_nocap':"url('../assets/logos/src/assets/logos/logos/logo_white_nocap.png')"
       },
       gridTemplateRows: {
         // Simple 8 row grid

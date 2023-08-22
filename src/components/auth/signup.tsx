@@ -91,27 +91,6 @@ const Signup = () => {
             className="mx-auto max-w-xl mt-20 md:mt-5"
           >    
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-
-              {/* <div className="sm:col-span-2">
-                <label
-                  htmlFor="username"
-                  className="block text-sm font-semibold leading-6 text-white-100">
-                  Username<span className="text-red-500 pl-1">*</span>
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    required={true}
-                    autoComplete="username"
-                    className="border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                    value={input.username}
-                    onChange={(e) => onInputChange(e)}
-                  />
-                </div>
-              </div> */}
-
               <AuthInput
                 outerDiv='sm:col-span-2'
                 labelName='Email'
@@ -147,8 +126,6 @@ const Signup = () => {
                 labelName='Confirm Password'
                 labelFor='confirmPassword'
                 isRequired={true}
-                // labelClassname='block text-sm font-semibold leading-6 text-white-100'
-                // innerDiv='mt-2.5'
                 inputType='password'
                 inputAutocomplete='off'
                 inputClassname={`${
@@ -164,7 +141,7 @@ const Signup = () => {
               <div className="sm:col-span-2">
                 {/* Matching Password Error */}
                 {input.password != input.confirmPassword && (
-                  <div className="w-full text-sm font-semibold leading-6 text-red-500 bg-red-200 opacity-100 flex items-center justify-center">
+                  <div className="w-full text-sm font-semibold leading-6 text-red-500 flex items-center justify-center">
                     Passwords do not match
                   </div>
                 )}

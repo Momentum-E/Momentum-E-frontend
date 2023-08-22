@@ -7,25 +7,70 @@ export type SelectorProps = {
 };
 
 export type SidebarProps = {
-  id:string;
+  id:string|any;
   isLoading:boolean;
-  vehicle_data:any;
+  vehicle_data:vehicleDataProps[];
   isTab: boolean;
   isOpen: boolean;
-  setIsOpen: any;
+  setIsOpen: (value: React.SetStateAction<boolean>) => void;
+  page:string;
+  theme:string|any;
+};
+
+export type YourVehicleProps = {
+    isLoading:boolean;
+    vehicleData:vehicleDataProps[];
+    isTab:boolean;
+    setIsOpen:(value: React.SetStateAction<boolean>) => void;
+    page:string;
+}
+
+export type VehicleUsageProps ={
+  unit:string;
+} 
+
+export type CharginPatternProps ={
+    avgSoC:number|null;
+    chargeRate:number|null;
+}
+
+export type vehicleDataProps = {
+  id:string;
+  vendor:string;
+  isReachable:boolean|null;
+  lastSeen:string;
+  chargeState:{
+    batteryCapacity:number;
+    batteryLevel:number;
+    chargeRate:number;
+    isFullyCharged:boolean;
+    isCharging:boolean;
+    lastUpdated:string;
+    range:number;
+  }
+  information:{
+      vin:string|null;
+      brand:string|null;
+      model:string|null;
+      year: number|null;
+  },
+  odometer:{
+    distance:number|null;
+    lastUpdated:string|null;
+  }
 };
 
 export type DashboardNavbarProps = {
   setIsOpen: any;
   isOpen: boolean;
   page:string | string[] | undefined;
-  name:string;
-  id:string;
+  name:string|any;
+  id:string|any;
   isTab:boolean;
 };
 
 export type UserSideMenuProps = {
-  name:string;
+  name:string|any;
   id:string;
 }
 

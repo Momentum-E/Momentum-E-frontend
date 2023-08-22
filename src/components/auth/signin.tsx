@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import ConfirmSignup from '@/pages/auth/confirmSignup';
-import AuthInput from '../AuthInput';
+import AuthInput from '@/components/AuthInput'
 
 const SignIn = () => {
   const router = useRouter();
@@ -49,7 +49,6 @@ const SignIn = () => {
     
     authenticate(input.email, input.password)
     .then((data: any) => {
-
       // check is the email is verified
         console.log(data)
         router.replace('/dashboard')

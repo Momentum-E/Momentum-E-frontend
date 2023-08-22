@@ -1,9 +1,16 @@
-import { SignIn, Status } from '@/components/auth';
+import React,{useEffect} from 'react';
+import { SignIn } from '@/components/auth';
 import { Account } from '@/context/account';
-import React from 'react';
 import { PagesLayout } from '@/layouts';
+import { useTheme } from 'next-themes';
 
-const Login = ({isAuthenticated}:any) => {
+const Login = () => {
+
+  const { theme, setTheme } = useTheme()
+  useEffect(()=>{
+    setTheme('dark')
+  })
+
   return (
     <Account>
       {/* <Status /> */}

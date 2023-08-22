@@ -18,7 +18,8 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
     const {logout} = useContext(AccountContext);
 
     const SignOut = () => {
-    logout();
+        logout();
+        router.replace('/auth/login')  
     };
     
     return (
@@ -27,12 +28,12 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
         
         <Menu as="div" className="relative w-full ml-3">
             <div className="flex items-center justify-end">
-                <p className="text-white-100 mr-2 w-[80%] text-sm hidden lg:flex lg:justify-center">
+                <p className="dark:text-white-100 mr-2 w-[80%] text-sm hidden lg:flex lg:justify-end">
                     <span className='overflow-hidden overflow-ellipsis'>
-                        Hello, {name}
+                        Hello, {name===""?'User':name}
                     </span>
                 </p>
-                <div className="w-[20%]">
+                <div className="md:w-[20%]">
                     <Menu.Button className="flex justify-end rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <Image
                         className="h-8 w-8 rounded-full"
@@ -52,75 +53,56 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
             leave="transition ease-in duration-75"
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95">
-                <Menu.Items className="absolute right-0 z-10 p-1 w-48 mt-1 origin-top-right rounded-md bg-white-100 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <Menu.Item>
+                <Menu.Items className="absolute right-0 z-50 p-1 w-48 mt-1 origin-top-right rounded-md bg-white-100 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Item>
                     {({ active }) => (
                     <li
                         className={classNames(
-                        active ? 'bg-gray-700' : '',
-                        'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
+                        active ? 'active ' : ' ',
+                        'block link px-4 py-2 rounded-md text-sm text-black hover:cursor-pointer'
                         )}
-                        onClick={() => router.push('/')}>
+                        onClick={() => router.replace('/')}>
                         Home
                     </li>
                     )}
-                </Menu.Item>
-                {/* {
-                page==='profile' ? ( */}
-                <Menu.Item>
-                {({ active }) => (
-                    <li
-                    className={classNames(
-                        active ? 'bg-gray-700' : '',
-                        'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
+                    </Menu.Item>
+                    <Menu.Item>
+                    {({ active }) => (
+                        <li
+                        className={classNames(
+                            active ? 'active ' : '',
+                            'block link px-4 py-2 rounded-md text-sm text-black hover:cursor-pointer'
+                        )}
+                        onClick={() => router.replace('/dashboard/')}>
+                        Dashboard
+                        </li>
                     )}
-                    onClick={() => router.replace('/dashboard/')}>
-                    Dashboard
-                    </li>
-                )}
-                </Menu.Item>
-                {/* ):
-                ( */}
-                <Menu.Item>
-                {({ active }) => (
-                    <li
-                    className={classNames(
-                        active ? 'bg-gray-700' : '',
-                        'block px-4 py-2 rounded-md text-sm text-black hover:bg-white-200 hover:cursor-pointer'
+                    </Menu.Item>
+                    <Menu.Item>
+                    {({ active }) => (
+                        <li
+                        className={classNames(
+                            active ? 'active ' : '',
+                            'block link px-4 py-2 rounded-md text-sm text-black hover:cursor-pointer'
+                        )}
+                        onClick={() => router.replace(`/dashboard/profile/${id}`)}
+                        >
+                        Your Profile
+                        </li>
                     )}
-                    onClick={() => router.replace(`/dashboard/profile/${id}`)}
-                    >
-                    Your Profile
-                    </li>
-                )}
-                </Menu.Item>
-                {/* )
-                } */}
-                <Menu.Item>
-                {({ active }) => (
-                    <li
-                    className={classNames(
-                        active ? 'bg-gray-100' : '',
-                        'block px-4 py-2 text-sm rounded-md text-black hover:bg-white-200 hover:cursor-pointer'
+                    </Menu.Item>
+                    <Menu.Item>
+                    {({ active }) => (
+                        <li
+                        onClick={() => SignOut()}
+                        className={classNames( 
+                            active ? 'active ' : '',
+                            'block link px-4 py-2 text-sm rounded-md text-black hover:cursor-pointer'
+                        )}>
+                        Sign out
+                        </li>
                     )}
-                    onClick={()=>router.replace(`/dashboard/settings/${id}`)}
-                    >
-                    Settings
-                    </li>
-                )}
-                </Menu.Item>
-                <Menu.Item>
-                {({ active }) => (
-                    <li
-                    onClick={() => SignOut()}
-                    className={classNames(
-                        active ? 'bg-gray-100' : '',
-                        'block px-4 py-2 text-sm rounded-md text-black hover:bg-white-200 hover:cursor-pointer'
-                    )}>
-                    Sign out
-                    </li>
-                )}
-                </Menu.Item>
+                    </Menu.Item>
                 </Menu.Items>
             </Transition>
         </Menu>

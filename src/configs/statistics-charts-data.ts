@@ -33,12 +33,13 @@ const AvgDailyMiles = {
     series: [
       {
         name: "Health %",
-        data: [50, 40, 30, 32, 50, 95, 20, 23, 50,20, 23, 50,20, 23, 50],
+        data: [99.85, 99.82, 99.78, 99.67, 99.71, 99.65, 99.60,],
+        //  99.45, 99.30, 99.29, 99.21, 98
       },
     ],
     options: {
       ...chartsConfig,
-      colors: ["#fff"],
+      colors: ["#C6DE41"],
       stroke: {
         lineCap: "round",
         curve: 'smooth',
@@ -67,21 +68,18 @@ const AvgDailyMiles = {
       xaxis: {
         ...chartsConfig.xaxis,
         categories: [
+          "Jan",
+          "Feb",
+          "Mar",
           "Apr",
           "May",
           "Jun",
           "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-          "Oct",
-          "Nov",
-          "Dec",
-          "Oct",
-          "Nov",
-          "Dec",
+          // "Aug",
+          // "Sep",
+          // "Oct",
+          // "Nov",
+          // "Dec",
         ],
       },
     },
@@ -90,7 +88,7 @@ const AvgDailyMiles = {
   
 export const statisticsChartsData = [
     {
-      title: "Avg Daily Miles Driven",
+      title: "Avg Distance Driven (3 months)",
       chart: AvgDailyMiles,
     },
     {

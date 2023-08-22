@@ -11,13 +11,13 @@ inputClassname,
 inputValue,
 inputOnChange,
 outerDiv,
-children
+children,
 }:AuthInputProps) {
   return (
      <div className={outerDiv}>
         <label
           htmlFor={labelFor}
-          className={'block text-sm font-medium leading-6 text-white-100'}>
+          className='block text-sm font-medium leading-6 text-black dark:text-white-100'>
           {labelName}
           {
             isRequired ? 
@@ -28,7 +28,7 @@ children
       </label>
       <div className={'pt-2'}>
         <input
-          className={'border-b px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 active:outline-none w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6 '+ inputClassname}
+          className={'border-b px-3 py-2 text-black dark:text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 active:outline-none w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6 '+ inputClassname}
           type={inputType}
           name={labelFor}
           id={labelFor}

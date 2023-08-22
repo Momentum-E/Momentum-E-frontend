@@ -1,16 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import { DashboardNavbarProps } from '@/utils/props/props';
 import { Disclosure,} from '@headlessui/react';
-import { AccountContext } from '@/context/account';
-import Image from 'next/image';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { UserSideMenu } from './navbar-component';
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
 
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   setIsOpen,
@@ -19,9 +10,6 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   name,
   id,
 }) => {
-
-  const router = useRouter();
-  const { vehicleId } = router.query;
 
   return (
     <Disclosure as="nav" className="relative w-full z-10">
@@ -32,7 +20,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
               <div className="w-full md:w-3/4">
                 <div className={`absolute inset-y-0 left-0 flex items-center md:hidden`}>
                   <Disclosure.Button
-                    className="inline-flex items-center justify-center rounded-md p-2 text-white-100 hover:bg-gray-700 hover:text-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    className="inline-flex items-center justify-center rounded-md p-2 border border-black dark:border-white-100 text-black dark:text-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                     onClick={() => setIsOpen(true)}>
                     <span className="sr-only">Open main menu</span>
                     {isOpen ? (
@@ -70,15 +58,20 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                 </div>
                 <div className="flex flex-1 pt-0 md:pt-3 items-center justify-center md:items-stretch md:justify-start">
                   <div className="flex flex-col flex-shrink-0">
-                    <p className='text-white-100 text-sm hidden md:block'> 
-                      <span className='text-gray-400'>Dashboard</span> / {vehicleId||page}
+                    <p className='dark:text-white-100 text-sm hidden md:block'> 
+                      <span className='text-gray-400'>
+                        Dashboard
+                      </span> 
+                      {/* {" / " + vehicleId||page} */}
+                      {" / " + page}
                     </p>
-                    <span className="text-xl md:text-md text-white-100 whitespace-pre flex flex-shrink-0">Dashboard</span>
+                    <span className="text-xl md:text-md dark:text-white-100 whitespace-pre flex flex-shrink-0">
+                      Dashboard
+                    </span>
                   </div>
                 </div>
               </div>
               <UserSideMenu name={name} id={id}/>
-
             </div>
           </div>
         </>
