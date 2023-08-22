@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react'
-import SetValue from '@/components/dashboard/set-values-component/SetValue';
+// import SetValue from '@/components/dashboard/set-values-component/SetValue';
 
 import VehicleData from '@/components/dashboard/vehicle-components/VehicleData';
 import { DashboardLayout } from '@/layouts/';
@@ -13,7 +13,7 @@ const VehicleDashboardContent = () => {
     <DashboardLayout page={vehicleId}>
       <div className='h-screen overflow-y-auto overflow-x-hidden pb-16 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300'>
         <VehicleData/>  
-        <SetValue/>
+        {/* <SetValue/> */}
       </div>
     </DashboardLayout>
   )

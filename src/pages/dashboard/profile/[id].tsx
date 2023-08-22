@@ -99,9 +99,6 @@ const Profile = () => {
           method="POST"
           onSubmit={(e) => onSubmit(e)}
           className="">
-          {/* <p className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight dark:text-white-100">
-            Welcome {formData?.firstName + ' ' + formData?.lastName}
-          </p> */}
           <div className="grid grid-cols-1 px-5 gap-x-8 gap-y-6 sm:grid-cols-2">
             <AuthListBox 
               labelFor={'owner_type'}
@@ -112,7 +109,7 @@ const Profile = () => {
               OnChange={setOwnerType}
             />
             {
-            ownerType.type === 'Individual Owner' ? (
+            ownerType.type === owner_type[0].type ? (
               <>
                 <AuthInput
                 outerDiv=''

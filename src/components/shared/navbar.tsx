@@ -17,7 +17,11 @@ export default function NavBar() {
             <Link href="/">
               <h2 className="text-2xl font-bold text-white-100">
                 <figure>
-                  <Image src={logo} alt="Logo" className=" w-32 h-auto" />
+                  <Image 
+                    src={logo} 
+                    alt="Logo" 
+                    className=" w-32 h-auto" 
+                  />
                 </figure>
               </h2>
             </Link>

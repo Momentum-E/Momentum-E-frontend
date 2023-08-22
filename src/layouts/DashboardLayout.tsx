@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useTheme } from 'next-themes';
 import { useAppContext } from '@/context/userContext';
+import SetValue from '@/components/dashboard/set-values-component/SetValue';
 
 import {
   Sidebar,
@@ -38,7 +39,7 @@ const DashboardLayout = ({
         setIsOpen={setIsOpen} 
         isTab={isTab}
         // page={page===undefined?'':page}
-        page={page}
+        page={page||vehicleData[0]}
         theme={theme}
         />
         <div className="max-w-full flex-1 h-screen overflow-hidden">
@@ -52,6 +53,7 @@ const DashboardLayout = ({
           />
           <div className="overflow-auto max-h-full">
             {children}
+            <SetValue/> 
           </div>
         </div>
       </div>
