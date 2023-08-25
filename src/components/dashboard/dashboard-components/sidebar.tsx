@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { SidebarProps } from '@/utils/props/props';
+import axios from 'axios';
 
-import { useAppContext } from '@/context/userContext';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
@@ -20,6 +20,7 @@ const SidebarDarkLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarDarkLo
 })
 
 const Sidebar: React.FC<SidebarProps> = ({
+  id,
   isLoading,
   vehicle_data, 
   isTab, 
@@ -36,7 +37,17 @@ const Sidebar: React.FC<SidebarProps> = ({
     isTab && setIsOpen(false);
   }, [pathname]);
 
-  const {addVehicle}:any = useAppContext()
+  const addVehicle = (page:string) => {
+    let newPage = page.split(" ").join('')
+    axios
+      .get(`http://localhost:5000/vehicles/users/${id}/link/${newPage}/`)
+      .then((res) => {
+        console.log(res.data);
+        const linkUrl = res.data.linkUrl;
+        router.push(linkUrl);
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <div className="">
@@ -73,7 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         <div
           className="flex px-4 p-2 dark:text-white-100 bg-me-green-200 dark:bg-gray-700/50 rounded-lg items-center justify-center hover:bg-me-green-200/90 dark:hover:bg-gray-700/40 cursor-pointer focus:bg-blue-200"
-          onClick={addVehicle}>
+          onClick={()=>addVehicle(page)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

@@ -5,12 +5,18 @@ import { AccountContext } from './account';
 import { useRouter } from 'next/router';
 import { vehicleDataProps } from '@/utils/props/props';
 
+type VendorCountProp = {
+  vendor:string;
+  count:number;
+}[]
+
 type UserContextProps = {
   addVehicle:() => void;
-  vehicleData:vehicleDataProps;
+  vehicleData:vehicleDataProps[];
   vehicleIdData:vehicleDataProps|undefined;
   setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
   filteredVehicleData:(v_id: string|undefined) => void;
+  VendorCounts:VendorCountProp;
   userEmail:string;
   userLocation:string|undefined;
   userId:string|null;
@@ -31,6 +37,7 @@ const AppProvider = ({ children }:any) => {
     const [name, setName] = useState<string>('');
     const [isLoading, setIsLoading] = useState(true)
     const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
+    const [VendorCounts, setVendorCounts] = useState<VendorCountProp[]>([])
     const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
     const [unit, setUnit] = useState<string>('Km')
     const [userEmail,setuserEmail] = useState<string>('')
@@ -38,29 +45,28 @@ const AppProvider = ({ children }:any) => {
 
    const router = useRouter()
 
-    useEffect(() => {
-      // if(userId){
-        const fetchuserdetails = async () => {
-          try {
-            const session = await getSession();
-            const userid = session.idToken.payload.sub;
-            setUserId(userid); 
-            console.log('userid(fetch statement):',userid)
-            const response = await axios.get(
-                `http://localhost:5000/auth/users/${userid}`
-            );
-                // setName(response.data.firstName+" "+response.data.lastName);
-                setName(response.data.name)
-                console.log('name:',name)
-                setUserLocation(`${response.data.city}, ${response.data.country}`);
-                setuserEmail(response.data.email)
-              } 
-            catch (error) {
-                console.error('Error, no user (userContext):', error);
-            }
-        };
-        fetchuserdetails();
-      // }
+  useEffect(() => {
+    // if(userId){
+    const fetchuserdetails = async () => {
+      try {
+        const session = await getSession();
+        const userid = session.idToken.payload.sub;
+        setUserId(userid); 
+        console.log('userid(fetch statement):',userid)
+        const response = await axios.get(
+            `http://localhost:5000/auth/users/${userid}`
+        );
+            // setName(response.data.firstName+" "+response.data.lastName);
+            setName(response.data.name)
+            setUserLocation(`${response.data.city}, ${response.data.country}`);
+            setuserEmail(response.data.email)
+          } 
+        catch (error) {
+            console.error('Error, no user (userContext):', error);
+        }
+    };
+    fetchuserdetails();
+    // }
   }, [userId]);
   
   useEffect(()=>{
@@ -86,6 +92,29 @@ const AppProvider = ({ children }:any) => {
     }
    },[userId])
 
+   useEffect(() => {
+    const counts = [];
+     // Create an array of vendor counts
+     vehicleData.forEach((vehicle) => {
+       const vendor = vehicle.vendor;
+
+       // Check if the vendor already exists in the array
+       const existingVendor = counts.find((item) => item.vendor === vendor);
+
+       if (existingVendor) {
+         // Increment the count if the vendor exists
+         existingVendor.count++;
+       } else {
+         // Add a new entry for the vendor
+         counts.push({ vendor, count: 1 });
+       }
+     });
+    //  return ()=>{
+      // setVendorCounts(VendorCounts)
+    //  }
+    setVendorCounts(counts);
+   }, [vehicleData])
+
    const filteredVehicleData = (v_id:string|undefined) =>{
     if(userId){
       axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`)
@@ -100,24 +129,12 @@ const AppProvider = ({ children }:any) => {
       }).catch((err)=>{
         console.log(err)
       })
-     }
-     else{
-      console.log('userId not present')
-     }
-   }
+    }
+    else{
+    console.log('userId not present')
+    }
+  }
 
-   const addVehicle = () => {
-    axios
-      .get(`http://localhost:5000/vehicles/users/${userId}/link`)
-      .then((res) => {
-        console.log(res.data);
-        const linkUrl = res.data.linkUrl;
-        router.push(linkUrl);
-      })
-      .catch((err) => console.error(err));
-  };
-
-  
   const setDistanceValue = (val:number|null) => {
     if (val!==null)
     {
@@ -130,21 +147,22 @@ const AppProvider = ({ children }:any) => {
 
   useEffect(() => {
     if(userId){
-      console.log("userId: "+userId)
+      // console.log("userId: "+userId)
       // console.log("vId: "+vehicleIdData)
-      console.log("vehicleIdData: "+ vehicleIdData)
-      console.log("name,email: ", name,userEmail)
+      console.log("vehicleData: "+ JSON.stringify(vehicleData))
+      console.log(VendorCounts)
+      // console.log("name,email: ", name,userEmail)
     }
-  }, [vehicleIdData,userId])
+  }, [vehicleData,userId])
 
 
   return (
     <AppContext.Provider value={{
-      addVehicle, 
       vehicleData,
       vehicleIdData,
       setVehicleIdData,
       filteredVehicleData,
+      VendorCounts,
       userEmail,
       userLocation,
       userId,

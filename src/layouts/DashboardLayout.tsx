@@ -42,7 +42,8 @@ const DashboardLayout = ({
           setIsOpen={setIsOpen} 
           isTab={isTab}
           // page={page===undefined?'':page}
-          page={page||vehicleData[0]}
+          // page={page||vehicleData[0]}
+          page={page}
           theme={theme}
           />
           <div className="max-w-full flex-1 h-screen overflow-hidden">

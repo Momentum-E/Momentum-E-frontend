@@ -3,7 +3,7 @@ import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import Pool from '@/context/user-pool/user-pool';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AuthInput from '../AuthInput';
+import AuthInput from '../../AuthInput';
 
 type ChangeUserPasswordProps ={
     userId:string;
@@ -51,7 +51,7 @@ const ChangeUserPassword = ({
 
     return (
         <div className="space-y-4 border border-me-green-200 p-4 rounded-xl">
-            <p className='text-black dark:text-white-100'>Change Password</p>
+            <p className='text-center text-xl  leading-9  text-black dark:text-white-100'>Change Password</p>
             <AuthInput
             outerDiv=''
             labelName='Old Password'

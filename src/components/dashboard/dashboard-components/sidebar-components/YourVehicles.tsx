@@ -11,7 +11,6 @@ const YourVehicles = ({
     page,
 }:YourVehicleProps) => {
     let [vehicleId,setvehicleId]=useState<string>() 
-    const router = useRouter()
     
     const DeleteVehicle = (v_no:string) => {
         const delete_vehicle = v_no
@@ -20,7 +19,6 @@ const YourVehicles = ({
 
     const {filteredVehicleData} = useAppContext()
 
-    
     useEffect(()=>{
         const onVehicleClick = () => {
             if(vehicleId){
@@ -49,7 +47,7 @@ const YourVehicles = ({
                             (
                                 <div
                                 key={data.id}
-                                className={`${page===data.id ? `active `:` `} 
+                                className={`${page===`vehicles / ${data.id}` ? `active `:` `} 
                                 group dark:text-white-100 link flex justify-between md:justify-start`}>
                                     <button
                                     onClick={()=>setvehicleId(data.id)}

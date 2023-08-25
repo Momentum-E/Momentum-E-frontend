@@ -30,7 +30,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
             <div className="flex items-center justify-end">
                 <p className="dark:text-white-100 mr-2 w-[80%] text-sm hidden lg:flex lg:justify-end">
                     <span className='overflow-hidden overflow-ellipsis'>
-                        Hello, {name===""?'User':name}
+                        Welcome, {name===""?'User':name}
                     </span>
                 </p>
                 <div className="md:w-[20%]">
