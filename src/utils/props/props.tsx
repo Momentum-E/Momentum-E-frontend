@@ -60,6 +60,11 @@ export type vehicleDataProps = {
   }
 };
 
+export type VendorCountProp = {
+  vendor:string;
+  count:number;
+}[]
+
 export type DashboardNavbarProps = {
   setIsOpen: any;
   isOpen: boolean;

@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AuthInput from '../../AuthInput';
 
 type ChangeUserPasswordProps ={
-    userId:string;
+    userId:string|any;
 }
 
 const ChangeUserPassword = ({

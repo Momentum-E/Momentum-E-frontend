@@ -38,8 +38,6 @@ const GetUserDataComponent = ({
   const [state, setState] = useState<any>();
   const [city, setCity] = useState<any>();
   const [Name, setName] = useState('');
-  // const [FirstName,setFirstName] = useState('')
-  // const [LastName,setLastName] = useState('')
 
   useEffect(() => {
     return setStateData(State.getStatesOfCountry(country?.isoCode));
@@ -61,14 +59,10 @@ const GetUserDataComponent = ({
     e.preventDefault();
     if(page==='profile'){
       const newFormData = {
-        // firstName: FirstName,
-        // lastName: LastName,
         email: userEmail,
-        // address: {
         country: country.name,
         city: city.name,
         state: state.name,
-        // },
         owner_type: ownerType,
         name: Name,
       };
@@ -80,27 +74,19 @@ const GetUserDataComponent = ({
         .then((res) => {
           console.log(res);
           toast.success('User updated successfully');
-          location.reload();
+          window.location.reload()
         })
         .catch((err) => {
           console.error(err);
           toast.error('Something went wrong');
         });
-  
       console.log(newFormData);
     }
     else{
       const formData = {
         userId: localStorage.getItem('userId'),
         email: localStorage.getItem('email'),
-        // firstName: FirstName,
-        // lastName: LastName,
         owner_type: ownerType.type,
-        // address: {
-        //   country: country?.name,
-        //   state: state?.name,
-        //   city: city?.name,
-        // },
         country: country?.name,
         state: state?.name,
         city: city?.name,
@@ -160,18 +146,6 @@ const GetUserDataComponent = ({
               inputOnChange={(e)=>setName(e.target.value)}
               children={null}
             />
-            {/* <AuthInput
-              outerDiv=''
-              labelName='Last Name'
-              labelFor='lastname'
-              isRequired={true}
-              inputType='text'
-              inputAutocomplete='last-name'
-              inputClassname='border-me-green-200'
-              inputValue={LastName}
-              inputOnChange={(e)=>setLastName(e.target.value)}
-              children={null}
-            /> */}
           </>
         ) : 
         (

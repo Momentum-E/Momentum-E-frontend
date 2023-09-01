@@ -1,10 +1,20 @@
-import React from 'react'
-import { useAppContext } from '@/context/userContext'
+import React,{useState} from 'react'
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { VendorCountProp } from '@/utils/props/props';
+import { Modal } from '@/components/shared';
 
-const DeleteVehicle = () => {
-    const {VendorCounts,userId} = useAppContext()
+type DeleteVehicleProps = {
+    userId:string|any;
+    VendorCounts: VendorCountProp;
+}
+
+const DeleteVehicle = ({
+    userId,
+    VendorCounts,
+}:DeleteVehicleProps) => {
+    const [isOpen, setIsOpen] = useState(false)
+    const [deleteVendor,setDeleteVendor] = useState('')
 
     function DeleteEntireVendor(vendorName:string){
         axios
@@ -22,6 +32,12 @@ const DeleteVehicle = () => {
         .catch((err) => {
             toast.error(err);
         });
+    }
+
+    function DeleteButton(vendorName:string){
+        setIsOpen(true)
+        // DeleteEntireVendor(vendorName)
+        setDeleteVendor(vendorName)
     }
 
      return (
@@ -42,9 +58,6 @@ const DeleteVehicle = () => {
                         {
                             VendorCounts.map((vendors,idx) => (
                                 <tr className="text-center border-t-[1px] border-t-me-green-200 dark:border-t-white-200/30" key={idx}>
-                                    {/* <td className='hidden lg:block  border-r-[1px] border-r-me-green-200 dark:border-r-white-200/30'>
-                                        <span>{idx}</span>
-                                    </td> */}
                                     <td className='border-r-[1px] p-2 border-r-me-green-200 dark:border-r-white-200/30'>
                                         {vendors.vendor}
                                     </td>
@@ -54,7 +67,7 @@ const DeleteVehicle = () => {
                                     <td className='flex '>
                                         <button
                                         type="button" 
-                                        onClick={()=>DeleteEntireVendor(vendors.vendor)}
+                                        onClick={()=>DeleteButton(vendors.vendor)}
                                         className='flex ml-3 mt-1 items-center justify-center hover:bg-me-green-100/70 dark:hover:bg-gray-700/40 rounded-md'>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 p-1 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
@@ -67,6 +80,14 @@ const DeleteVehicle = () => {
                     </tbody>
                 </table>
             </div>
+            <Modal
+                isOpen={isOpen} 
+                setIsOpen={setIsOpen} 
+                title={`Confirm delete all ${deleteVendor} `}
+                content={'This will delete your particular vendor data.'}
+                buttonClass={`p-1 rounded-lg border border-red-600 text-red-600`} 
+                modalFunction={()=>DeleteEntireVendor(deleteVendor)} 
+            />
         </div>
   )
 }

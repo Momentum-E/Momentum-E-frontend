@@ -14,6 +14,7 @@ const AuthListBox = ({
     <div className="sm:col-span-2">
               <label
                 htmlFor={labelFor}
+                id={labelFor}
                 className="block text-sm font-medium leading-6 dark:text-white-100">
                 {labelName}
                 {
@@ -24,8 +25,8 @@ const AuthListBox = ({
                 }
               </label>
               <Listbox value={value} onChange={OnChange}>
-                <div className="relative mt-2">
-                    <Listbox.Button className="relative block w-full border border-[#C6DE41] px-2 py-2 dark:text-white-100 text-left bg-transparent rounded text-sm group focus:outline-none focus:ring-0 sm:text-sm sm:leading-6">
+                <div id={labelFor} className="relative mt-2">
+                    <Listbox.Button  className="relative block w-full border border-[#C6DE41] px-2 py-2 dark:text-white-100 text-left bg-transparent rounded text-sm group focus:outline-none focus:ring-0 sm:text-sm sm:leading-6">
                     <span className="block truncate">{value.type}</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                       <svg

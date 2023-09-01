@@ -18,7 +18,7 @@ const GetUserData = () => {
         formDiv={`w-full h-full mb-10 space-y-10 min-h-screen mx-auto max-w-xl sm:mt-20`}
         userId={null}
         userEmail={null}
-        buttonName={'Update Credentials'}
+        buttonName={'Submit Credentials'}
       />
     </>
   );

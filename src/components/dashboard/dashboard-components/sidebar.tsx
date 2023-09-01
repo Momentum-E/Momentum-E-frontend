@@ -39,6 +39,9 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const addVehicle = (page:string) => {
     let newPage = page.split(" ").join('')
+    if(newPage === ''){
+      newPage = 'redirect/dashboard' 
+    }
     axios
       .get(`http://localhost:5000/vehicles/users/${id}/link/${newPage}/`)
       .then((res) => {

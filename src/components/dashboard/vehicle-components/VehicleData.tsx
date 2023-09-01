@@ -66,6 +66,7 @@ function VehicleData() {
                 Year={vehicleIdData?.information?.year}
                 Vin={vehicleIdData?.information?.vin}
                 unit={unit}
+                batterCapacity={vehicleIdData?.chargeState?.batteryCapacity}
               />
             </div>
   

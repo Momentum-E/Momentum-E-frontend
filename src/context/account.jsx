@@ -1,11 +1,13 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import Pool from './user-pool/user-pool';
+import { useRouter } from 'next/router';
 
 const AccountContext = createContext();
 
 const Account = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const router = useRouter()
 
   useEffect(() => {
     checkAuthentication();
@@ -25,7 +27,6 @@ const Account = ({ children }) => {
     }
   };
 
-
   const getSession = async () => {
     return await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser();
@@ -44,7 +45,6 @@ const Account = ({ children }) => {
     });
   };
 
-
   const authenticate = async (Username, Password) => {
     await new Promise((resolve, reject) => {
       const user = new CognitoUser({ Username, Pool });
@@ -56,6 +56,10 @@ const Account = ({ children }) => {
           console.log('onSuccess: ', data);
           resolve(data);
           setIsAuthenticated(true);
+          window.history.replaceState({
+            fromHashChange: true
+          }, null,'/dashboard');
+          window.location.reload()
         },
         onFailure: (err) => {
           console.error('onFailure: ', err);
@@ -70,6 +74,30 @@ const Account = ({ children }) => {
     });
   };
 
+  const DeleteUserAccount = async (username,password) => {
+    const user = new CognitoUser({ Username: username, Pool });
+    const authDetails = new AuthenticationDetails({ Username: username, Password: password });
+
+    user.authenticateUser(authDetails, {
+      onSuccess: (session) => {
+        user.deleteUser((err, data) => {
+          if (err) {
+            console.error('Error deleting user: ', err);
+          } else {
+            console.log('User deleted successfully',data);
+            user.signOut();
+            setIsAuthenticated(false)
+            // Deleting the user from enode
+            // Delete user from DynamoDb
+          }
+        });
+      },
+      onFailure: (err) => {
+        console.error('Error authenticating user for deletion: ', err);
+      },
+    });
+  } 
+
   const logout = async () => {
     const user = Pool.getCurrentUser();
     if (user) {
@@ -83,7 +111,9 @@ const Account = ({ children }) => {
       isAuthenticated,
       authenticate,
       getSession,
-      logout }}>
+      DeleteUserAccount,
+      logout 
+      }}>
       {children}
     </AccountContext.Provider>
   );

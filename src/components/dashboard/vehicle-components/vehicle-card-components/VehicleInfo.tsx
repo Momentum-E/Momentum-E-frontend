@@ -10,6 +10,7 @@ type vehicleInfoProps = {
   Year:number;
   Vin:string;
   unit:string;
+  batterCapacity:number;
 }
 
 const  VehicleInfo = ({
@@ -19,6 +20,7 @@ const  VehicleInfo = ({
   Model,
   Year,
   unit,
+  batterCapacity,
 }:vehicleInfoProps) => {
   
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -59,6 +61,12 @@ const  VehicleInfo = ({
               VIN :
             </span>
             { " "+ Vin }
+          </p>
+          <p className='dark:text-white-100 text-black text-lg'> 
+            <span className='text-gray-500 text-base xl:text-lg'>
+              Battery Capacity :
+            </span>
+            { " "+ batterCapacity+" "+ "kWh" }
           </p>
         </div>
         {/* <div className="md:hidden xl:block">

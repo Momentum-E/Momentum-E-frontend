@@ -24,9 +24,10 @@ const ChargingPattern = ({
         </div>
         <div className="w-[60%] px-2 relative flex justify-center items-end">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                {/* Battery level of the car */}
                 <Progress 
                     type="dashboard" 
-                    percent={(avgSoC!==null) ? avgSoC : undefined}
+                    percent={(avgSoC!==null) ? avgSoC : undefined} 
                     status='exception' 
                     size={200}
                     strokeColor={{ '0%': 'rgba(198, 222, 65, 0.00)', '100%': '#C6DE41' }} 

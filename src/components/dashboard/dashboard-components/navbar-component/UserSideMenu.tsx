@@ -3,6 +3,8 @@ import  {Menu, Transition} from '@headlessui/react'
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 import { AccountContext } from '@/context/account';
+import { useAppContext } from '@/context/userContext';
+
 import { UserSideMenuProps } from '@/utils/props/props';
 
 function classNames(...classes: string[]) {
@@ -16,10 +18,15 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
 
     const router = useRouter()
     const {logout} = useContext(AccountContext);
+    const {setName,setVehicleData,setUserLocation,setuserEmail} = useAppContext()
 
     const SignOut = () => {
         logout();
         router.replace('/auth/login')  
+        setName("")  
+        setVehicleData([])
+        setUserLocation('')
+        setuserEmail('')
     };
     
     return (
