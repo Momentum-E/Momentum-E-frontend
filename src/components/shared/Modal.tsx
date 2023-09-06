@@ -18,6 +18,12 @@ const Modal = ({
     buttonClass,
     modalFunction,
 }:ModalProps) => {
+
+    function onClickFunction(){
+        modalFunction()
+        setIsOpen(false)
+    }
+
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-[99999]" onClose={()=>setIsOpen(false)}>
@@ -66,7 +72,7 @@ const Modal = ({
                                 <button
                                     type="button"
                                     className={`w-24 `+ buttonClass}
-                                    onClick={modalFunction}
+                                    onClick={()=>onClickFunction()}
                                 >
                                     Yes
                                 </button>

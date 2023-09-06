@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import Pool from './user-pool/user-pool';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 const AccountContext = createContext();
 
@@ -12,7 +13,7 @@ const Account = ({ children }) => {
   useEffect(() => {
     checkAuthentication();
   }, [isAuthenticated]);
-
+  
   const checkAuthentication = async () => {
     try {
       const user = Pool.getCurrentUser();
@@ -83,12 +84,28 @@ const Account = ({ children }) => {
         user.deleteUser((err, data) => {
           if (err) {
             console.error('Error deleting user: ', err);
-          } else {
-            console.log('User deleted successfully',data);
+          } 
+          else {
             user.signOut();
             setIsAuthenticated(false)
+
             // Deleting the user from enode
+            axios.get(`http://localhost:5000/vehicles/delete-user/${username}`)
+            .then((res)=>{
+              console.log('Deleted user from enode: '+res.data)
+            }).catch((err)=>{
+              console.log('Error deleting user from enode: '+err)
+            })
+
             // Delete user from DynamoDb
+            axios.get(`http://localhost:5000/auth/users/delete/${username}`)
+            .then((res)=>{
+              console.log('Deleted user from dynamoDB: '+res.data)
+            }).catch((err)=>{
+              console.log('Error deleting user from dynamoDB: '+err)
+            })
+
+            console.log('User deleted successfully',data);
           }
         });
       },

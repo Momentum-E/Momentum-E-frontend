@@ -3,7 +3,7 @@ import { AccountContext } from '@/context/account';
 
 import { Modal } from '@/components/shared';
 
-const DeleteUser = ({name,userId}:string|any) => {
+const DeleteUser = ({userId}:string|any) => {
     const {DeleteUserAccount} = useContext(AccountContext);
     const [Password,setPassword] = useState('')
     let [isOpen, setIsOpen] = useState(false)
