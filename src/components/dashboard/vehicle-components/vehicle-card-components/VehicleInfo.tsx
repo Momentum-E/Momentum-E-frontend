@@ -4,13 +4,13 @@ import { audi_e_tron_9_black } from '@/assets/images'
 import { useAppContext } from '@/context/userContext';
 
 type vehicleInfoProps = {
-  Odometer:number;
-  Brand:string;
-  Model:string;
-  Year:number;
-  Vin:string;
+  Odometer:number|undefined;
+  Brand:string|null|undefined;
+  Model:string|null|undefined;
+  Year:number|null|undefined;
+  Vin:string|null|undefined;
   unit:string;
-  batterCapacity:number;
+  batterCapacity:number|null|undefined;
 }
 
 const  VehicleInfo = ({

@@ -7,10 +7,9 @@ import { vehicleDataProps,VendorCountProp } from '@/utils/props/props';
 
 type UserContextProps = {
   addVehicle:() => void;
-  filteredVehicleData:(v_id: string|undefined) => void;
+  filteredVehicleData:(v_id: string | string[] | undefined) => void;
   vehicleData:vehicleDataProps[];
   vehicleIdData:vehicleDataProps|undefined;
-  VendorCounts:VendorCountProp;
   userEmail:string;
   userLocation:string|undefined;
   userId:string|null;
@@ -19,7 +18,7 @@ type UserContextProps = {
   unit:string;
   setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
   setUnit:React.Dispatch<React.SetStateAction<string>>;
-  setDistanceValue:(val: number|null) => string | number | undefined;
+  setDistanceValue:(val: number|undefined) => string | number | undefined;
   setName:React.Dispatch<React.SetStateAction<string>>;
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[] | undefined>>
   setUserLocation:React.Dispatch<React.SetStateAction<string>>;
@@ -36,7 +35,6 @@ const AppProvider = ({ children }:any) => {
   const [name, setName] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true)
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
-  const [VendorCounts, setVendorCounts] = useState<VendorCountProp[]>([])
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
   const [unit, setUnit] = useState<string>('Km')
   const [userEmail,setuserEmail] = useState<string>('')
@@ -44,35 +42,33 @@ const AppProvider = ({ children }:any) => {
 
   const router = useRouter()
 
+  // Hook for fetching the user details (name, location, email)
   useEffect(() => {
-    // if(userId){
     const fetchuserdetails = async () => {
       try {
-        const session = await getSession();
-        const userid = session.idToken.payload.sub;
-        setUserId(userid); 
-        console.log('userid(fetch statement):',userid)
-        const response = await axios.get(
-            `http://localhost:5000/auth/users/${userid}`
-        );
-            // setName(response.data.firstName+" "+response.data.lastName);
-            setName(response.data.name)
-            setUserLocation(`${response.data.city}, ${response.data.country}`);
-            setuserEmail(response.data.email)
-          } 
-        catch (error) {
-            console.error('Error, no user (userContext):', error);
-        }
+          const session = await getSession();
+          const userid = session.idToken.payload.sub;
+          setUserId(userid); 
+          // console.log('userid(fetch statement):',userid)
+          const response = await axios.get(
+              `http://localhost:5000/auth/users/${userid}`
+          );
+          setName(response.data.name)
+          setUserLocation(`${response.data.city}, ${response.data.country}`);
+          setuserEmail(response.data.email)
+      } 
+      catch (error) {
+        console.error('Error, no user (userContext):', error);
+      }
     };
     fetchuserdetails();
-    // }
   }, [userId]);
   
+  // Hook for getting all the vehicle Data for a particular user
   useEffect(()=>{
     if(userId){
       const getUserVehicleData = async () => {
-          axios
-          .get('http://localhost:5000/vehicles/get-vehicles', {
+          axios.get('http://localhost:5000/vehicles/get-vehicles', {
             headers: {
               'user-id': userId,
           },
@@ -91,30 +87,8 @@ const AppProvider = ({ children }:any) => {
     }
   },[userId])
 
-  useEffect(() => {
-  const counts = [];
-    // Create an array of vendor counts
-    vehicleData.forEach((vehicle) => {
-      const vendor = vehicle.vendor;
-
-      // Check if the vendor already exists in the array
-      const existingVendor = counts.find((item) => item.vendor === vendor);
-
-      if (existingVendor) {
-        // Increment the count if the vendor exists
-        existingVendor.count++;
-      } else {
-        // Add a new entry for the vendor
-        counts.push({ vendor, count: 1 });
-      }
-    });
-  //  return ()=>{
-    // setVendorCounts(VendorCounts)
-  //  }
-  setVendorCounts(counts);
-  }, [vehicleData])
-
-  const filteredVehicleData = (v_id:string|undefined) =>{
+  // Function for getting data of a particular vehicle_Id
+  const filteredVehicleData = (v_id) =>{
     if(userId){
       axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`)
         // headers:{
@@ -123,7 +97,7 @@ const AppProvider = ({ children }:any) => {
       .then((res)=>{
         setVehicleIdData(res.data)
         setVehicleDataLoading(false)
-        router.replace(`/dashboard/vehicles/${res.data.id}`)
+        // router.replace(`/dashboard/vehicles/${res.data.id}`)
         console.log('userId present')
       }).catch((err)=>{
         console.log(err)
@@ -134,6 +108,7 @@ const AppProvider = ({ children }:any) => {
     }
   }
 
+  // Function for convertion of distance between Miles and KiloMeters
   const setDistanceValue = (val:number|null) => {
     if (val!==null)
     {
@@ -146,27 +121,31 @@ const AppProvider = ({ children }:any) => {
 
   useEffect(() => {
     if(userId){
-      // console.log("userId: "+userId)
-      // console.log("vId: "+vehicleIdData)
-      console.log("vehicleData: "+ JSON.stringify(vehicleData))
-      console.log(VendorCounts)
+      console.log("userId: "+userId)
+      // console.log("vehicleData: "+ vehicleData)
+      console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
       // console.log("name,email: ", name,userEmail)
     }
-  }, [vehicleData,userId])
+  }, [userId])
 
 
   return (
     <AppContext.Provider value={{
+      // Functions
       filteredVehicleData,
+
+      // State Variables
       vehicleData,
       vehicleIdData,
-      VendorCounts,
       userEmail,
       userLocation,
       userId,
       isLoading,
       name,
       unit,
+      isVehicleDataLoading,
+
+      // State Functions
       setVehicleIdData,
       setUnit,
       setDistanceValue,

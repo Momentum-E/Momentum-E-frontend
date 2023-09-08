@@ -6,7 +6,7 @@ import { Modal } from '@/components/shared';
 
 type DeleteVehicleProps = {
     userId:string|any;
-    VendorCounts: VendorCountProp;
+    VendorCounts: VendorCountProp[];
 }
 
 const DeleteVehicle = ({
@@ -16,6 +16,7 @@ const DeleteVehicle = ({
     const [isOpen, setIsOpen] = useState(false)
     const [deleteVendor,setDeleteVendor] = useState('')
 
+    // This deletes all the vehicles for a particular vendor_type (eg: Tesla, BMW) 
     function DeleteEntireVendor(vendorName:string){
         axios
         .get(`http://localhost:5000/vehicles/delete-entire-vendor/${userId}/${vendorName}`)
@@ -36,7 +37,6 @@ const DeleteVehicle = ({
 
     function DeleteButton(vendorName:string){
         setIsOpen(true)
-        // DeleteEntireVendor(vendorName)
         setDeleteVendor(vendorName)
     }
 

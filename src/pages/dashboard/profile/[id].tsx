@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppContext } from '@/context/userContext';
@@ -10,6 +10,7 @@ import {
   DeleteUser
 } from '@/components/dashboard/profile-components/';
 import GetUserDataComponent from '@/components/auth/GetUserDataComponent';
+import { VendorCountProp } from '@/utils/props/props';
 
 // interface FormData {
 //   firstName: string;
@@ -25,7 +26,27 @@ import GetUserDataComponent from '@/components/auth/GetUserDataComponent';
 // }
 
 const Profile = () => {
-  const {userId,name,userEmail,VendorCounts} = useAppContext()
+  const {userId,name,userEmail,vehicleData} = useAppContext()
+  const [VendorCounts, setVendorCounts] = useState<VendorCountProp[]>([])
+
+  useEffect(() => {
+    const counts:VendorCountProp[] = [];
+    // Create an array of vendor counts
+    vehicleData.forEach((vehicle) => {
+      const vendor = vehicle.vendor;
+
+      // Check if the vendor already exists in the array
+      const existingVendor = counts.find((item) => item.vendor === vendor);
+
+      if (existingVendor) {
+        existingVendor.count++;
+      } else {
+        // Add a new entry for the vendor
+        counts.push({ vendor, count: 1 });
+      }
+    });
+    setVendorCounts(counts);
+  }, [vehicleData])
 
   return (
     <DashboardLayout page={` profile / ${name}`}>

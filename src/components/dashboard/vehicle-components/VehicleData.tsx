@@ -1,4 +1,3 @@
-// @ts-nochec
 import React from 'react'
 import {
   BasicCarData,
@@ -11,7 +10,7 @@ import { useAppContext } from '@/context/userContext';
 
 function VehicleData() {
   
-  const {userLocation,isLoading,unit,vehicleIdData}:any = useAppContext()
+  const {userLocation,isLoading,unit,vehicleIdData} = useAppContext()
   let avgSoH=98
 
   return (
@@ -85,16 +84,17 @@ function VehicleData() {
             {/* Usage */}
             <div className=" h-[600px] md:h-[445px] flex flex-col p-3 space-y-3 text-gray-400 text-lg font-medium rounded-2xl border border-me-green-200 bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
               <p className="flex flex-col text-lg text-gray-400">Usage</p>  
-              <VehicleUsage 
-                unit={unit}
-                
+                <VehicleUsage 
+                  unit={unit}
                 />
             </div>
   
               {/* Avg Daily Miles */}
             <div className="h-[445px] space-y-5 flex flex-col items-end p-3 rounded-2xl bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient border border-me-green-200">
             <div className="w-full flex justify-between text-lg font-medium text-gray-400">
-              <p className='flex flex-col text-lg text-gray-400'>Battery Health</p>
+              <p className='flex flex-col text-lg text-gray-400'>
+                Battery Health
+              </p>
               <div className="flex flex-col items-center text-xs p-1 rounded-lg border border-me-green-200 dark:border-white-100 bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient">
                 Avg Battery Health
                 <span className='text-me-green-100 dark:text-me-green-200'>

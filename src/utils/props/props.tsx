@@ -30,8 +30,8 @@ export type VehicleUsageProps ={
 } 
 
 export type CharginPatternProps ={
-    avgSoC:number|null;
-    chargeRate:number|null;
+    avgSoC:number|null|undefined;
+    chargeRate:number|null|undefined;
 }
 
 export type vehicleDataProps = {
@@ -55,15 +55,15 @@ export type vehicleDataProps = {
       year: number|null;
   },
   odometer:{
-    distance:number|null;
-    lastUpdated:string|null;
+    distance:number|undefined;
+    lastUpdated:string|undefined;
   }
 };
 
 export type VendorCountProp = {
   vendor:string;
   count:number;
-}[]
+}
 
 export type DashboardNavbarProps = {
   setIsOpen: any;

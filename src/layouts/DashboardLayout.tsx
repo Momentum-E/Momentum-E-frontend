@@ -18,7 +18,7 @@ const DashboardLayout = ({
 
   let isTab = useMediaQuery({ query: '(max-width:640px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
-  const {isLoading, userId, vehicleData, name}:any = useAppContext()
+  const {isLoading, userId, vehicleData, name} = useAppContext()
   const {theme, setTheme} = useTheme()
   
   useEffect(() => {
@@ -37,12 +37,10 @@ const DashboardLayout = ({
           <Sidebar 
           id={userId}
           isLoading={isLoading}
-          vehicle_data={vehicleData} 
+          vehicle_data={vehicleData||[]} 
           isOpen={isOpen} 
           setIsOpen={setIsOpen} 
           isTab={isTab}
-          // page={page===undefined?'':page}
-          // page={page||vehicleData[0]}
           page={page}
           theme={theme}
           />
