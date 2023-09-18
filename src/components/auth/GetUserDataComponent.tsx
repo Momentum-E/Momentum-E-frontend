@@ -31,13 +31,13 @@ const GetUserDataComponent = ({
   const countryData = Country.getAllCountries();
   const router = useRouter();
   
+  const [Name, setName] = useState('');
   const [ownerType, setOwnerType] = useState(owner_type[0]);
   const [stateData, setStateData] = useState<any>();
   const [cityData, setCityData] = useState<any>();
   const [country, setCountry] = useState<any>();
   const [state, setState] = useState<any>();
   const [city, setCity] = useState<any>();
-  const [Name, setName] = useState('');
 
   useEffect(() => {
     return setStateData(State.getStatesOfCountry(country?.isoCode));
@@ -61,7 +61,7 @@ const GetUserDataComponent = ({
       const newFormData = {
         email: userEmail,
         country: country.name,
-        city: city.name,
+        city: city?.name===undefined?'':city.name,
         state: state.name,
         owner_type: ownerType,
         name: Name,
@@ -89,7 +89,7 @@ const GetUserDataComponent = ({
         owner_type: ownerType.type,
         country: country?.name,
         state: state?.name,
-        city: city?.name,
+        city: city?.name===undefined?'':city.name,
         name: Name,
         vehicles:[],
       };

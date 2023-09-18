@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import React, { createContext, useState, useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import Pool from './user-pool/user-pool';
@@ -9,6 +10,7 @@ const AccountContext = createContext();
 const Account = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter()
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     checkAuthentication();
@@ -88,15 +90,7 @@ const Account = ({ children }) => {
           else {
             user.signOut();
             setIsAuthenticated(false)
-
-            // Deleting the user from enode
-            axios.get(`http://localhost:5000/vehicles/delete-user/${username}`)
-            .then((res)=>{
-              console.log('Deleted user from enode: '+res.data)
-            }).catch((err)=>{
-              console.log('Error deleting user from enode: '+err)
-            })
-
+            
             // Delete user from DynamoDb
             axios.get(`http://localhost:5000/auth/users/delete/${username}`)
             .then((res)=>{
@@ -105,12 +99,50 @@ const Account = ({ children }) => {
               console.log('Error deleting user from dynamoDB: '+err)
             })
 
+            // Geting token
+            axios.get('http://localhost:5000/auth/token')
+            .then((res)=>{
+              setToken(res.data.Access_Token)
+            })
+            .catch((err)=>{
+              console.log('Error getting token: '+err)
+            })
+
+            // Deleting the user from enode
+            // axios.get(`http://localhost:5000/vehicles/delete-user/${username}`)
+            // .then((res)=>{
+            //   console.log('Deleted user from enode: '+res.data)
+            // }).catch((err)=>{
+            //   console.log('Error deleting user from enode: '+err)
+            // })
+
+            // Deleting the user from enode
+            let config = {
+              method: 'delete',
+              maxBodyLength: Infinity,
+              url: `https://enode-api.sandbox.enode.io/users/${username}`,
+              headers: { 
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json'
+              }
+            };
+            
+            axios.request(config)
+            .then((response) => {
+              console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+
             console.log('User deleted successfully',data);
+            toast.success('User deleted successfully');
           }
         });
       },
       onFailure: (err) => {
         console.error('Error authenticating user for deletion: ', err);
+        toast.error(err.message);
       },
     });
   } 

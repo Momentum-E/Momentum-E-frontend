@@ -54,7 +54,7 @@ const AppProvider = ({ children }:any) => {
               `http://localhost:5000/auth/users/${userid}`
           );
           setName(response.data.name)
-          setUserLocation(`${response.data.city}, ${response.data.country}`);
+          setUserLocation(`${response.data.city===''?response.data.state:response.data.city}, ${response.data.country}`);
           setuserEmail(response.data.email)
       } 
       catch (error) {

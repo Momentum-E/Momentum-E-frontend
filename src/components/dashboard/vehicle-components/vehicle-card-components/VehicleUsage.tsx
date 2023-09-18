@@ -68,7 +68,7 @@ const VehicleUsage = ({
             <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               Range Observed Max/Min ( {unit} )
               <span className='text-black dark:text-white-100 text-sm'>
-                {`${setDistanceValue(300)} / ${setDistanceValue(290)}`}
+                {`${setDistanceValue(300)} / ${setDistanceValue(220)}`}
               </span>
             </p>
           </div>
@@ -77,18 +77,18 @@ const VehicleUsage = ({
             <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               Avg Real Range Observed
               <span className='text-black dark:text-white-100 text-sm'>
-                {`${setDistanceValue(260)} Miles`}
+                {`${setDistanceValue(260)} ${unit}`}
               </span>
             </p>
 
             <p className='flex flex-col w-full md:justify-between text-sm font-medium text-gray-500'>
-              Observed v/s OEM provided
+              Observed v/s EPA/WLTP provided
               <span className="flex w-full justify-between">
                 <span className='w-full text-left text-black dark:text-white-100 text-sm'>
-                  {setDistanceValue(280)} {unit}
+                  {setDistanceValue(260)} {unit}
                 </span>
                 <span className='w-full text-left text-black dark:text-white-100 text-sm'>
-                  {setDistanceValue(295)} {unit}
+                  {setDistanceValue(275)} {unit}
                 </span> 
               </span>
             </p>

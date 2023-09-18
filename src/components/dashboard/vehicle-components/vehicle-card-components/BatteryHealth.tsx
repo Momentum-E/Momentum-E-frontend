@@ -30,7 +30,7 @@ const BatteryHealth = ({avgSoH}:BatteryHealthProps) => {
         <p className='flex flex-col text-sm font-medium text-gray-500'>
           Battery Chemistry
           <span className='text-black dark:text-white-100 text-sm'>
-            li-ion
+            {`NMC`}
           </span>
         </p>
       </div>

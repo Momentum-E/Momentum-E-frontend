@@ -85,9 +85,9 @@ const VehicleDashboardContent = () => {
         
                   <div className="lg:w-[50%] flex flex-0 flex-col justify-between p-3 h-80 text-xl text-gray-400 font-medium border border-me-green-200 rounded-2xl bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
                     <p className="flex flex-col text-lg text-gray-400">Charging Pattern</p>
-                    <ChargingPattern
-                      avgSoC={vehicleIdData?.chargeState?.batteryLevel}
-                      chargeRate={vehicleIdData?.chargeState?.chargeRate}
+                      <ChargingPattern
+                        avgSoC={vehicleIdData?.chargeState?.batteryLevel}
+                        chargeRate={vehicleIdData?.chargeState?.chargeRate}
                       />
                   </div>
                 </div>

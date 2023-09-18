@@ -37,8 +37,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     isTab && setIsOpen(false);
   }, [pathname]);
 
-  const addVehicle = (page:string) => {
-    let newPage = page.split(" ").join('')
+  const addVehicle = (getPage:string) => {
+    let newPage = getPage.split(" ").join('')
     if(newPage === ''){
       newPage = 'redirect/dashboard' 
     }
@@ -49,7 +49,10 @@ const Sidebar: React.FC<SidebarProps> = ({
         const linkUrl = res.data.linkUrl;
         router.push(linkUrl);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err)
+        addVehicle(page)
+      });
   };
 
   return (
