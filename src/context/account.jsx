@@ -2,15 +2,12 @@ import { toast } from 'react-toastify';
 import React, { createContext, useState, useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import Pool from './user-pool/user-pool';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 
 const AccountContext = createContext();
 
 const Account = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const router = useRouter()
-  const [token, setToken] = useState('');
 
   useEffect(() => {
     checkAuthentication();
@@ -99,41 +96,13 @@ const Account = ({ children }) => {
               console.log('Error deleting user from dynamoDB: '+err)
             })
 
-            // Geting token
-            axios.get('http://localhost:5000/auth/token')
+            // Deleting the user from enode
+            axios.get(`http://localhost:5000/vehicles/delete-user/${username}`)
             .then((res)=>{
-              setToken(res.data.Access_Token)
+              console.log('Deleted user from enode: '+res.data)
+            }).catch((err)=>{
+              console.log('Error deleting user from enode: '+err)
             })
-            .catch((err)=>{
-              console.log('Error getting token: '+err)
-            })
-
-            // Deleting the user from enode
-            // axios.get(`http://localhost:5000/vehicles/delete-user/${username}`)
-            // .then((res)=>{
-            //   console.log('Deleted user from enode: '+res.data)
-            // }).catch((err)=>{
-            //   console.log('Error deleting user from enode: '+err)
-            // })
-
-            // Deleting the user from enode
-            let config = {
-              method: 'delete',
-              maxBodyLength: Infinity,
-              url: `https://enode-api.sandbox.enode.io/users/${username}`,
-              headers: { 
-                'Authorization': `Bearer ${token}`, 
-                'Content-Type': 'application/json'
-              }
-            };
-            
-            axios.request(config)
-            .then((response) => {
-              console.log(JSON.stringify(response.data));
-            })
-            .catch((error) => {
-              console.log(error);
-            });
 
             console.log('User deleted successfully',data);
             toast.success('User deleted successfully');

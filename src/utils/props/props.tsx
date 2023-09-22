@@ -1,8 +1,8 @@
 //! TODO: Change to proper datatypes
 export type SelectorProps = {
   data: any;
-  selected: any;
-  setSelected: any;
+  selected: string;
+  setSelected: React.Dispatch<string|any>;
   id: any;
 };
 
@@ -17,6 +17,16 @@ export type SidebarProps = {
   theme:string|any;
 };
 
+export type GetUserDataComponentProps = {
+  heading:string;
+  page:string;
+  isRequired:boolean;
+  userId:string|null;
+  userEmail:string|null;
+  formDiv:string;
+  buttonName:string;
+}
+
 export type YourVehicleProps = {
     isLoading:boolean;
     vehicleData:vehicleDataProps[];
@@ -27,6 +37,9 @@ export type YourVehicleProps = {
 
 export type VehicleUsageProps ={
   unit:string;
+  userCity:string|undefined;
+  userState:string|undefined;
+  userCountry:string|undefined;
 } 
 
 export type CharginPatternProps ={

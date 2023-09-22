@@ -18,14 +18,17 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
 
     const router = useRouter()
     const {logout} = useContext(AccountContext);
-    const {setName,setVehicleData,setUserLocation,setuserEmail} = useAppContext()
+    const {setName,setVehicleData,setUserCity,setUserState,setUserCountry,setuserEmail,} = useAppContext()
 
     const SignOut = () => {
         logout();
         router.replace('/auth/login')  
         setName("")  
         setVehicleData([])
-        setUserLocation('')
+        // setUserLocation('')
+        setUserCity("")
+        setUserState("")
+        setUserCountry("")
         setuserEmail('')
     };
     

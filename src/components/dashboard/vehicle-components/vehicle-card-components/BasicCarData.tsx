@@ -2,7 +2,7 @@ import React from 'react'
 
 type BasicCarData ={
     heading: string;
-    data:string|any;
+    data:string;
     icon:any;
 }
 

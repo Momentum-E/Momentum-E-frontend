@@ -53,6 +53,7 @@ const Profile = () => {
       <div className="max-h-full max-w-xl w-full mx-auto space-y-20 pt-10 pb-20 overflow-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
         <div className=" border border-me-green-200 p-4 rounded-xl">
           <GetUserDataComponent
+            isRequired={false}
             heading={'Update Data'}
             page={'profile'}
             userId={userId}

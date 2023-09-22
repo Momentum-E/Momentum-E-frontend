@@ -9,8 +9,8 @@ import {
 import { useAppContext } from '@/context/userContext';
 
 function VehicleData() {
-  
-  const {userLocation,isLoading,unit,vehicleIdData} = useAppContext()
+
+  const {userCity,userState,userCountry,userLocation,isLoading,unit,vehicleIdData} = useAppContext()
   let avgSoH=98
 
   return (
@@ -86,6 +86,9 @@ function VehicleData() {
               <p className="flex flex-col text-lg text-gray-400">Usage</p>  
                 <VehicleUsage 
                   unit={unit}
+                  userCity={userCity}
+                  userState={userState}
+                  userCountry={userCountry}
                 />
             </div>
   

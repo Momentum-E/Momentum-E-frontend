@@ -42,7 +42,8 @@ const DeleteUser = ({userId}:string|any) => {
                 id="password"
                 value={Password}
                 required={true}
-                onChange={(e)=>setPassword(e.target.value)} />
+                onChange={(e)=>setPassword(e.target.value)} 
+            />
             <button
             // onClick={DeleteUserAccount(userId,Password)}
             type='submit'

@@ -13,6 +13,7 @@ const GetUserData = () => {
   return (
     <>
       <GetUserDataComponent
+        isRequired={true}
         heading={'This is the last step'}
         page={'get-user-data'}
         formDiv={`w-full h-full mb-10 space-y-10 min-h-screen mx-auto max-w-xl sm:mt-20`}
