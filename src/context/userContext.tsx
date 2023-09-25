@@ -144,10 +144,7 @@ const AppProvider = ({ children }:any) => {
   useEffect(() => {
     if(userId){
       console.log("userId: "+userId)
-      // console.log("vehicleData: "+ vehicleData)
       console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
-      // console.log(userCountry,userCity,userState)
-      // console.log("name,email: ", name,userEmail)
       console.log(vehicleData)
       console.log(userOwnerType)
     } 
