@@ -9,9 +9,6 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const VehicleUsage = ({
   unit,
-  userCity,
-  userState,
-  userCountry,
 }:VehicleUsageProps ) => {
 
   const {setDistanceValue,userLocation} = useAppContext()

@@ -73,11 +73,10 @@ const AppProvider = ({ children }:any) => {
           }`)
           setuserEmail(response.data.email)
           if(userId){
-          setVehicleData(response.data.vehicles)
-          setVehicleIdData(response.data.vehicles[0])
-          setIsLoading(false)
-          setVehicleDataLoading(false)
-          
+            setVehicleData(response.data.vehicles)
+            setVehicleIdData(response.data.vehicles[0])
+            setIsLoading(false)
+            setVehicleDataLoading(false)
           }
       } 
       catch (error) {

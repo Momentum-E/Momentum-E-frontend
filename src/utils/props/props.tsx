@@ -37,9 +37,9 @@ export type YourVehicleProps = {
 
 export type VehicleUsageProps ={
   unit:string;
-  userCity:string|undefined;
-  userState:string|undefined;
-  userCountry:string|undefined;
+  // userCity:string|undefined;
+  // userState:string|undefined;
+  // userCountry:string|undefined;
 } 
 
 export type CharginPatternProps ={
