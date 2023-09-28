@@ -66,7 +66,7 @@ const ChargingPattern = ({
                 Average Charging Rate
                 <span className='text-black dark:text-white-100 text-base'>
                     {/* {`${chargeRate!==null ? chargeRate+' Kw' : 'NA'}`} */}
-                    45 Kw
+                    45 kW
                 </span>
             </p>
         </div>

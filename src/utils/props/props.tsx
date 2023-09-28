@@ -73,9 +73,45 @@ export type vehicleDataProps = {
   }
 };
 
+export interface vehicleCalcultedDataProps {
+  avgDailyMiles: {
+    avgValue: number;
+    currentOdometerReading: number;
+    prevMonthOdometerReading: number | null;
+  };
+  certifiedRange: number;
+  chargeRateData: {
+    avgChargingRate: number;
+    currentChargeRate: number | null;
+  };
+  connectorType: string;
+  rangeData: {
+    avgRealRange: number;
+    currentRange: number;
+    maxRange: number;
+    minRange: number | null;
+  };
+  socData: {
+    avgValue: number;
+    max: number;
+    min: number;
+  };
+  soh: number;
+  temperatureRange: {
+    max: number;
+    min: number;
+  };
+  totalChargingSessions: number;
+}
+
 export type VendorCountProp = {
   vendor:string;
   count:number;
+}
+
+export type DashboardLayoutProps = {
+  children:any;
+  page:string;
 }
 
 export type DashboardNavbarProps = {
@@ -85,11 +121,13 @@ export type DashboardNavbarProps = {
   name:string|any;
   id:string|any;
   isTab:boolean;
+  userImage:string;
 };
 
 export type UserSideMenuProps = {
   name:string|any;
   id:string;
+  userImage:string;
 }
 
 export type HeadingProps = {

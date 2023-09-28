@@ -4,11 +4,13 @@ import axios from 'axios';
 import { City, Country, State } from 'country-state-city';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+ 
+import {
+  AuthInput,
+  AuthListBox,
+  AuthSelector
+} from '@/components/auth/AuthComponents';
 import { GetUserDataComponentProps } from '@/utils/props/props';
-import AuthListBox from '@/components/AuthListBox'; 
-import { Selector } from '@/components/dashboard/dashboard-components';
-import AuthInput from '@/components/AuthInput';
 import { useAppContext } from '@/context/userContext';
 
 const owner_type = [{ type: 'Individual Owner' }, { type: 'Fleet Owner' }];
@@ -135,7 +137,7 @@ const GetUserDataComponent = ({
       method="POST"
       onSubmit={(e) => onSubmit(e)}
       className={formDiv}>
-      <p className="mt-10 text-center text-2xl  leading-9  text-black dark:text-white-100">
+      <p className="mt-5 text-center text-2xl  leading-9  text-black dark:text-white-100">
         {heading}
       </p>
       <div className="grid grid-cols-1 px-5 gap-x-8 gap-y-6 sm:grid-cols-2">
@@ -186,7 +188,7 @@ const GetUserDataComponent = ({
               Country
               {isRequired&&<span className="text-red-500 pl-1">*</span>}
             </label>
-            <Selector
+            <AuthSelector
               id={'country'}
               data={countryData}
               selected={country}
@@ -203,7 +205,7 @@ const GetUserDataComponent = ({
                   State
                   <span className="text-red-500 pl-1">*</span>
                 </label>
-                <Selector
+                <AuthSelector
                   id={'state'}
                   data={stateData}
                   selected={state}
@@ -222,7 +224,7 @@ const GetUserDataComponent = ({
                   City
                   <span className="text-red-500 pl-1">*</span>
                 </label>
-                <Selector
+                <AuthSelector
                   id={'city'}
                   data={cityData}
                   selected={city}

@@ -2,8 +2,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AccountContext } from './account';
-// import { useRouter } from 'next/router';
-import { vehicleDataProps } from '@/utils/props/props';
+import { vehicleDataProps, vehicleCalcultedDataProps } from '@/utils/props/props';
+import { useRouter } from 'next/router';
 
 type UserContextProps = {
   filteredVehicleData:(v_id: string | string[] | undefined) => void;
@@ -15,11 +15,14 @@ type UserContextProps = {
   userState:string|undefined;
   userCountry:string|undefined;
   userLocation:string;
-  userId:string|null;
+  userId:string;
+  userImage:string;
   isLoading:boolean;
+  vehicleCalcultedData: Record<string,vehicleCalcultedDataProps>;
+  vehicleCalcultedIdData: Record<string,vehicleCalcultedDataProps>;
   name:string;
   unit:string;
-  vehicleDataLoading:boolean;
+  // vehicleDataLoading:boolean;
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
   setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
   setUnit:React.Dispatch<React.SetStateAction<string>>;
@@ -34,50 +37,56 @@ type UserContextProps = {
 const AppContext = createContext({} as UserContextProps);
 
 const AppProvider = ({ children }:any) => {
+  const router = useRouter();
   const { getSession }:any = useContext(AccountContext);
 
-  const [userId, setUserId] = useState<string|null>("");
+  const [userId, setUserId] = useState<string>("");
+  const [name, setName] = useState<string>('');
   const [userOwnerType, setOwnerType] = useState<string>("");
   const [userCity, setUserCity] = useState<string>("");
   const [userState, setUserState] = useState<string>("");
   const [userCountry, setUserCountry] = useState<string>("");
   const [userLocation, setUserLocation] = useState<string>("");
-  const [name, setName] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(true)
+  const [userImage, setUserImage] = useState<string>('')
+  const [userEmail,setuserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
+  const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
+  const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [unit, setUnit] = useState<string>('Km')
-  const [userEmail,setuserEmail] = useState<string>("")
-  const [vehicleDataLoading,setVehicleDataLoading]=useState<boolean>(true)
+  // const [vehicleDataLoading,setVehicleDataLoading]=useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState(true)
 
   // Hook for fetching the user details (name, location, email)
   useEffect(() => {
     const fetchuserdetails = async () => {
       try {
-          const session = await getSession();
-          const userid = session.idToken.payload.sub;
-          setUserId(userid); 
-          // console.log('userid(fetch statement):',userid)
-          const response = await axios.get(
-              `http://localhost:5000/auth/users/${userid}`
-          );
-          setName(response.data.name)
-          setOwnerType(response.data.owner_type)
-          setUserCity(response.data.city)
-          setUserState(response.data.state)
-          setUserCountry(response.data.country)
-          setUserLocation(`${
-            response.data.state === ""||undefined ? response.data.country
-            :response.data.city === "" ? response.data.state + ", " + response.data.country 
-            :response.data.city + ", " + response.data.country
-          }`)
-          setuserEmail(response.data.email)
-          if(userId){
-            setVehicleData(response.data.vehicles)
-            setVehicleIdData(response.data.vehicles[0])
-            setIsLoading(false)
-            setVehicleDataLoading(false)
-          }
+        const session = await getSession();
+        const userid = session.idToken.payload.sub;
+        setUserId(userid); 
+        const response = await axios.get(
+            `http://localhost:5000/auth/users/${userid}`
+        );
+
+        setName(response.data.name)
+        setOwnerType(response.data.owner_type)
+        setUserCity(response.data.city)
+        setUserState(response.data.state)
+        setUserCountry(response.data.country)
+        setUserLocation(`${
+          response.data.state === ""||undefined ? response.data.country
+          :response.data.city === "" ? response.data.state + ", " + response.data.country 
+          :response.data.city + ", " + response.data.country
+        }`)
+        setuserEmail(response.data.email)
+        if(userId){
+          setVehicleData(response.data.vehicles)
+          setVehicleCalcultedData(response.data.vehicles_processed_data)
+          setVehicleIdData(response.data.vehicles[0])
+          // setVehicleCalcultedIdData(response.data.vehicles_processed_data[vehicleIdData.id])
+          setIsLoading(false)
+          // setVehicleDataLoading(false)
+        }
       } 
       catch (error) {
         console.error('Error, no user (userContext):', error);
@@ -85,7 +94,22 @@ const AppProvider = ({ children }:any) => {
     };
     fetchuserdetails();
   }, [userId]);
+
+  useEffect(()=>{
+    if(userId){
+      if(name===""||userOwnerType===""||userCountry===""){
+        router.replace(`dashboard/profile/${userId}`)
+      }
+    }
+  },[userId])
   
+  // useEffect(() => {
+  //   const fetchUserImage = async () => {
+      
+  //   }
+  //   fetchUserImage()
+  // },[userId])
+
   // Hook for getting all the vehicle Data for a particular user
   // useEffect(()=>{
   //   if(userId){
@@ -110,24 +134,23 @@ const AppProvider = ({ children }:any) => {
   // },[userId])
 
   // Function for getting data of a particular vehicle_Id
-  const filteredVehicleData = (v_id:any) =>{
-    if(userId){
-      axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`)
-        // headers:{
-        //   "user-id":userId,
-        // },
-      .then((res)=>{
-        setVehicleIdData(res.data)
-        setVehicleDataLoading(false)
-        // router.replace(`/dashboard/vehicles/${res.data.id}`)
-        console.log('userId present')
-      }).catch((err)=>{
-        console.log(err)
-      })
-    }
-    else{
-    console.log('userId not present')
-    }
+
+  const filteredVehicleData = (v_id:string) =>{
+    // if(userId){
+    //   axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`)
+    //   .then((res)=>{
+    //     setVehicleIdData(res.data)
+    //     // setVehicleDataLoading(false)
+    //     console.log('userId present')
+    //   }).catch((err)=>{
+    //     console.log(err)
+    //   })
+    // }
+    // else{
+    // console.log('userId not present')
+    // }
+    setVehicleIdData(vehicleData.filter((item:any)=>item.id===v_id)[0])
+    setVehicleCalcultedIdData(vehicleCalcultedData[v_id])
   }
 
   // Function for convertion of distance between Miles and KiloMeters
@@ -146,9 +169,9 @@ const AppProvider = ({ children }:any) => {
       console.log("userId: "+userId)
       console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
       console.log(vehicleData)
-      console.log(userOwnerType)
+      console.log(JSON.stringify(vehicleCalcultedIdData))
     } 
-  }, [userId])
+  }, [userId,vehicleCalcultedIdData])
 
 
   return (
@@ -159,17 +182,20 @@ const AppProvider = ({ children }:any) => {
       // State Variables
       vehicleData,
       vehicleIdData,
+      userId,
+      userLocation,
       userEmail,
       userOwnerType,
       userCity,
       userState,
       userCountry,
-      userId,
+      userImage,
       isLoading,
       name,
       unit,
-      vehicleDataLoading,
-      userLocation,
+      vehicleCalcultedData,
+      // vehicleDataLoading,
+      
 
       // State Functions
       setVehicleIdData,

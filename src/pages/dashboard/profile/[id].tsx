@@ -7,26 +7,14 @@ import { DashboardLayout } from '@/layouts';
 import {
   ChangeUserPassword,
   DeleteVehicle,
-  DeleteUser
+  DeleteUser,
+  UploadUserImage
 } from '@/components/dashboard/profile-components/';
 import GetUserDataComponent from '@/components/auth/GetUserDataComponent';
 import { VendorCountProp } from '@/utils/props/props';
 
-// interface FormData {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   address: {
-//     country: string;
-//     city: string;
-//     state: string;
-//   };
-//   owner_type: string;
-//   company_name: string;
-// }
-
 const Profile = () => {
-  const {userId,name,userEmail,vehicleData} = useAppContext()
+  const {userId,name,userEmail,vehicleData,userImage} = useAppContext()
   const [VendorCounts, setVendorCounts] = useState<VendorCountProp[]>([])
 
   useEffect(() => {
@@ -50,8 +38,13 @@ const Profile = () => {
 
   return (
     <DashboardLayout page={` profile / ${name}`}>
-      <div className="max-h-full max-w-xl w-full mx-auto space-y-20 pt-10 pb-20 overflow-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
-        <div className=" border border-me-green-200 p-4 rounded-xl">
+      <div className="max-h-full flex flex-col items-center max-w-xl w-full mx-auto space-y-10 px-2 md:px-0 pt-10 pb-20 overflow-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
+        <UploadUserImage
+          userId={userId}
+          userImage={userImage}
+        />
+        <DeleteVehicle userId={userId} VendorCounts={VendorCounts}/> 
+        <div className=" border border-me-green-200 p-4 rounded-xl w-full">
           <GetUserDataComponent
             isRequired={false}
             heading={'Update Data'}
@@ -61,9 +54,8 @@ const Profile = () => {
             formDiv=''
             buttonName={'Update Details'}
           />
-        </div>
-        <ChangeUserPassword userId={userId} />
-        <DeleteVehicle userId={userId} VendorCounts={VendorCounts}/>        
+        </div>   
+        <ChangeUserPassword userId={userId} />    
         <DeleteUser name={name} userId={userId}/>     
       </div>
       <ToastContainer />

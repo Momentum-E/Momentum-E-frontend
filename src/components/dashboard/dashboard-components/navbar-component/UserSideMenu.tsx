@@ -13,7 +13,8 @@ function classNames(...classes: string[]) {
 
 const UserSideMenu:React.FC<UserSideMenuProps> = ({
     name,
-    id
+    id,
+    userImage
 }) => {
 
     const router = useRouter()
@@ -44,14 +45,30 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
                     </span>
                 </p>
                 <div className="md:w-[20%]">
-                    <Menu.Button className="flex justify-end rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        <Image
+                    <Menu.Button className="flex justify-end rounded-full h-8 w-8 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        {/* <Image
                         className="h-8 w-8 rounded-full"
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                         alt="Image of the person"
                         width={32}
                         height={32}
-                        />
+                        /> */}
+                        {
+                            userImage ?
+                                <Image  
+                                    className="h-8 w-8rounded-full"
+                                    src={userImage}
+                                    alt="User Image"
+                                    width={32}
+                                    height={32}
+                                />
+                            :
+                                <div className="flex items-center justify-center w-full h-full rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-20 h-20">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                    </svg>
+                                </div>
+                        }
                     </Menu.Button>
                 </div>
             </div>

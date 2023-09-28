@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { useRouter } from 'next/router';
 import {PagesLayout} from '@/layouts/'
-import AuthInput from '../AuthInput';
+import AuthInput from './AuthComponents/AuthInput/AuthInput';
 
 const ForgotPassword = () => {
   // AWS.config.update({ region: 'ap-south-1' });

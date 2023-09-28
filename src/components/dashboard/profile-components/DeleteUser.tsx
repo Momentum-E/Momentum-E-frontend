@@ -25,7 +25,7 @@ const DeleteUser = ({userId}:string|any) => {
     }
 
     return (
-        <div className="space-y-2 border border-me-green-200 p-4 rounded-xl">
+        <div className="space-y-2 border border-me-green-200 p-4 rounded-xl w-full">
             <p className='mt-2 text-center text-xl leading-9 text-black dark:text-white-100'>
                 Delete Your Account 
                 {/* <span className='text-base text-gray-400'>{" ( "+ name +" )"}</span> */}

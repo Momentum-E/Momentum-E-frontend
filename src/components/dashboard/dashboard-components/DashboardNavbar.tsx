@@ -9,6 +9,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   page,
   name,
   id,
+  userImage
 }) => {
 
   return (
@@ -71,7 +72,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                   </div>
                 </div>
               </div>
-              <UserSideMenu name={name} id={id}/>
+              <UserSideMenu userImage={userImage} name={name} id={id}/>
             </div>
           </div>
         </>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { DashboardLayoutProps } from '@/utils/props/props';
 import { useMediaQuery } from 'react-responsive';
 import { useTheme } from 'next-themes';
 import { useAppContext } from '@/context/userContext';
@@ -14,11 +15,10 @@ import {
 const DashboardLayout = ({
   children,
   page,
-}: any) => {
-
+}:DashboardLayoutProps) => {
   let isTab = useMediaQuery({ query: '(max-width:640px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
-  const {isLoading, userId, vehicleData, name} = useAppContext()
+  const {isLoading, userId, vehicleData, name, userImage} = useAppContext()
   const {theme, setTheme} = useTheme()
   
   useEffect(() => {
@@ -52,6 +52,7 @@ const DashboardLayout = ({
               isTab={isTab} 
               setIsOpen={setIsOpen} 
               isOpen={isOpen} 
+              userImage={userImage}
             />
             <div className="overflow-auto max-h-full">
               {children}

@@ -5,10 +5,12 @@ import dynamic from 'next/dynamic'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 type BatteryHealthProps = {
-  avgSoH:number|null;
+  SoH:number|undefined;
 }
 
-const BatteryHealth = ({avgSoH}:BatteryHealthProps) => {
+const BatteryHealth = ({
+  SoH,
+}:BatteryHealthProps) => {
   return (
     <>
       <div className=" rounded-2xl w-full h-2/3 border text-black border-me-green-100 bg-[#F6F6F6] dark:bg-me-green-300">
@@ -16,15 +18,16 @@ const BatteryHealth = ({avgSoH}:BatteryHealthProps) => {
       </div>
       <div className="flex justify-around pt-1 w-full h-1/3">
         <p className='flex flex-col text-sm font-medium text-gray-500'>
-          Avg SoH
+          SoH
           <span className='text-black dark:text-white-100 text-sm'>
-            {avgSoH && avgSoH}%
+            {parseFloat(SoH).toFixed(2)+" %"}
           </span>
         </p>
         <p className='flex flex-col text-sm font-medium text-gray-500'>
-          EST Degradation
+          Estimated Degradation
           <span className='text-black dark:text-white-100 text-sm'>
-            {avgSoH &&(100-avgSoH)}%
+            {parseFloat(100-SoH).toFixed(2)+" %"}
+            {/* 0.40 % */}
           </span>
         </p>
         <p className='flex flex-col text-sm font-medium text-gray-500'>

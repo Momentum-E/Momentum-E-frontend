@@ -7,7 +7,7 @@ const AvgDailyMiles = {
     series: [
       {
         name: "Miles",
-        data: [40, 10, 22],
+        data: [106, 95, 102],
       },
     ],
     options: {
@@ -34,7 +34,6 @@ const AvgDailyMiles = {
       {
         name: "Health %",
         data: [99.85, 99.82, 99.78, 99.67, 99.71, 99.65, 99.60,],
-        //  99.45, 99.30, 99.29, 99.21, 98
       },
     ],
     options: {

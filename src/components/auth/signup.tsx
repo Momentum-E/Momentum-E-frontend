@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { Switch } from '@headlessui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AuthInput from '../AuthInput';
+import AuthInput from './AuthComponents/AuthInput/AuthInput';
 import ConfirmSignUp from '@/pages/auth/confirmSignup';
 
 function classNames(...classes: string[]) {
