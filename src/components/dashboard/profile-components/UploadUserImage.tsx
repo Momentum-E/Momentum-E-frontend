@@ -33,71 +33,58 @@ const UploadUserImage = ({
     const [image, setImage] = useState("")
 
     const onSelectFile = async (event:any) => {
+        // user image 
         const image_file = event.target.files[0]
         const fileType = ['image/jpg','image/jpeg','image/png']
-        const image_file_type = image_file?.type
+        const image_file_type = image_file.type
+
         if(!fileType.includes(image_file_type)){
             setError('Please select a valid file type')
             toast.error(error)
             toast.error('Please select a valid file type')
             return
         }
-        else{
-            // const image_file = event.target.files[0]
-		    setFile(image_file)
-            // console.log(file)
-            const result = await postImage({image: file, image_file_type, userId})
-            console.log(result)
-        }
-        // const type = file.type
-        // const extension = type.split('/')[1]
-        // Request will be sent from here to server
-        // const response = await axios.post('http://localhost:5000/auth/users/image',
-        //     {
-        //         // image: file,
-        //         imageName: `${userId}.${extension}`,
-        //         type: type
-        //     }
-        // );
-        // console.log(response)
-        // if(response){
-        //     const form = new FormData()
-        //     form.append(userId,file)
-            
-        //     axios.put(response, form,
-        //         {
-        //             headers: {
-        //                 'Content-Type': 'multipart/form-data',
-        //             },
-        //         })
-        //         .then(response => {
-        //             console.log("Image uploaded successfully"+response.data);
-        //         })
-        //         .catch(error => {
-        //             console.error(error);
-        //         });
-        // } 
-        // else {
-        //     toast.error('Please select an image to upload.');
-        // }
 
-        // let config = {
-        //     method: 'put',
-        //     maxBodyLength: Infinity,
-        //     url: s3URL,
-        //     headers: { 
-        //       'Content-Type': file.type
-        //     },
-        //     data : file
-        //   };
-          
-        //   axios.request(config)
-        //   .then((response) => {
-        //     console.log(JSON.stringify(response.data));
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
+        setFile(image_file)
+        // console.log(file)
+        // const result = await postImage({image: file, image_file_type, userId})
+        // console.log(result)
+
+        const extension = image_file_type.split('/')[1]
+        // Request will be sent from here to server
+        const response:string= await axios.post('http://localhost:5000/auth/users/image',
+            {
+                // image: file,
+                imageName: `${userId}.${extension}`,
+                type: image_file_type
+            }
+        );
+        console.log(response)
+
+        if(response){
+            const form = new FormData()
+            form.append(userId,image_file)
+            
+            let config = {
+                method: 'put',
+                url: response,
+                // headers: { 
+                //   'Content-Type': image_file_type,
+                // },
+                data : image_file
+              };
+              
+              axios.request(config)
+              .then((response) => {
+                console.log(JSON.stringify(response.data));
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+        } 
+        else {
+            toast.error('Could not upload image.');
+        }
     }
     // const convertToBase64 = (file:Blob) => {
     //     return new Promise(resolve => {

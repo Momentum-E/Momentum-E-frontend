@@ -47,7 +47,7 @@ const AppProvider = ({ children }:any) => {
   const [userState, setUserState] = useState<string>("");
   const [userCountry, setUserCountry] = useState<string>("");
   const [userLocation, setUserLocation] = useState<string>("");
-  const [userImage, setUserImage] = useState<string>('')
+  // const [userImage, setUserImage] = useState<string>('')
   const [userEmail,setuserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
@@ -149,6 +149,8 @@ const AppProvider = ({ children }:any) => {
     // else{
     // console.log('userId not present')
     // }
+
+    // Getting vehicle from db instead of enode
     setVehicleIdData(vehicleData.filter((item:any)=>item.id===v_id)[0])
     setVehicleCalcultedIdData(vehicleCalcultedData[v_id])
   }
@@ -189,7 +191,7 @@ const AppProvider = ({ children }:any) => {
       userCity,
       userState,
       userCountry,
-      userImage,
+      // userImage,
       isLoading,
       name,
       unit,
@@ -206,6 +208,7 @@ const AppProvider = ({ children }:any) => {
       setUserCity,
       setUserState,
       setUserCountry,
+      // setUserImage,
       setuserEmail
       }}>
         {children}
