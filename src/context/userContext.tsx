@@ -4,9 +4,11 @@ import axios from 'axios';
 import { AccountContext } from './account';
 import { vehicleDataProps, vehicleCalcultedDataProps } from '@/utils/props/props';
 import { useRouter } from 'next/router';
+import { error } from 'console';
 
 type UserContextProps = {
-  filteredVehicleData:(v_id: string | string[] | undefined) => void;
+  filteredVehicleData:(v_id: string | string[]) => void;
+  fetchUserImage:() => Promise<void>;
   vehicleData:vehicleDataProps[];
   vehicleIdData:vehicleDataProps|undefined;
   userEmail:string;
@@ -18,7 +20,7 @@ type UserContextProps = {
   userId:string;
   userImage:string;
   isLoading:boolean;
-  vehicleCalcultedData: Record<string,vehicleCalcultedDataProps>;
+  vehicleCalcultedData: Record<string,vehicleCalcultedDataProps>|undefined;
   vehicleCalcultedIdData: Record<string,vehicleCalcultedDataProps>;
   name:string;
   unit:string;
@@ -32,6 +34,7 @@ type UserContextProps = {
   setUserState:React.Dispatch<React.SetStateAction<string>>;
   setUserCountry:React.Dispatch<React.SetStateAction<string>>;
   setuserEmail:React.Dispatch<React.SetStateAction<string>>;
+  setUserImage:React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AppContext = createContext({} as UserContextProps);
@@ -47,14 +50,13 @@ const AppProvider = ({ children }:any) => {
   const [userState, setUserState] = useState<string>("");
   const [userCountry, setUserCountry] = useState<string>("");
   const [userLocation, setUserLocation] = useState<string>("");
-  // const [userImage, setUserImage] = useState<string>('')
+  const [userImage, setUserImage] = useState<string>('')
   const [userEmail,setuserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
   const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [unit, setUnit] = useState<string>('Km')
-  // const [vehicleDataLoading,setVehicleDataLoading]=useState<boolean>(true)
   const [isLoading, setIsLoading] = useState(true)
 
   // Hook for fetching the user details (name, location, email)
@@ -98,17 +100,29 @@ const AppProvider = ({ children }:any) => {
   useEffect(()=>{
     if(userId){
       if(name===""||userOwnerType===""||userCountry===""){
-        router.replace(`dashboard/profile/${userId}`)
+        router.replace(`/dashboard/profile/${userId}`)
+        // toast.info('Please fill your details first.')
       }
     }
   },[userId])
   
-  // useEffect(() => {
-  //   const fetchUserImage = async () => {
-      
-  //   }
-  //   fetchUserImage()
-  // },[userId])
+  useEffect(() => {
+    if(userId){
+      fetchUserImage()
+    }
+  },[userId])
+
+  const fetchUserImage = async () => {
+    axios.get(`http://localhost:5000/auth/users/image/${userId}`)
+    .then((response) => {
+      setUserImage(response)
+      console.log(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
+      setUserImage('')
+    })
+  }
 
   // Hook for getting all the vehicle Data for a particular user
   // useEffect(()=>{
@@ -172,6 +186,7 @@ const AppProvider = ({ children }:any) => {
       console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
       console.log(vehicleData)
       console.log(JSON.stringify(vehicleCalcultedIdData))
+      console.log(userImage)
     } 
   }, [userId,vehicleCalcultedIdData])
 
@@ -180,6 +195,7 @@ const AppProvider = ({ children }:any) => {
     <AppContext.Provider value={{
       // Functions
       filteredVehicleData,
+      fetchUserImage,
 
       // State Variables
       vehicleData,
@@ -191,7 +207,7 @@ const AppProvider = ({ children }:any) => {
       userCity,
       userState,
       userCountry,
-      // userImage,
+      userImage,
       isLoading,
       name,
       unit,
@@ -208,7 +224,7 @@ const AppProvider = ({ children }:any) => {
       setUserCity,
       setUserState,
       setUserCountry,
-      // setUserImage,
+      setUserImage,
       setuserEmail
       }}>
         {children}

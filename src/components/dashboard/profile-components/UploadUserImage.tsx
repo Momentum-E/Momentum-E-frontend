@@ -1,91 +1,69 @@
 import React,{useEffect, useState} from 'react'
-import Image from 'next/image'
 import axios from 'axios'
+import { UserImage } from './UserImage';
+import { useAppContext } from '@/context/userContext';
 import { toast } from 'react-toastify';
 
 type UploadUserImageProps ={
     userId:string;
-    userImage:string|null;
-}
-
-const postImage = async ({image, imageType, userId}:any)  => {
-    const formData = new FormData();
-    formData.append("image", image)
-    formData.append("type", imageType)
-    formData.append("imageName", userId)
-  
-    const result = await axios.post('http://localhost:5000/auth/users/image', formData,
-    { headers: 
-        {
-            'Content-Type': 'multipart/form-data'
-        }
-    })
-    return result.data
+    // userImage:string;
+    // setUserImage:React.Dispatch<React.SetStateAction<string>>;
 }
 
 const UploadUserImage = ({
     userId,
-    userImage,
 }:UploadUserImageProps) => {
-
-    const [error, setError] = useState('')
-    const [file, setFile] = useState()
-    const [image, setImage] = useState("")
+    const {userImage,setUserImage,fetchUserImage} = useAppContext()
 
     const onSelectFile = async (event:any) => {
-        // user image 
-        const image_file = event.target.files[0]
+        
+        const imageFile = event.target.files[0]
         const fileType = ['image/jpg','image/jpeg','image/png']
-        const image_file_type = image_file.type
+        const imageFileType = imageFile.type
+        
+        if(!imageFile){
+            toast.info('please select an image.')
+        }
 
-        if(!fileType.includes(image_file_type)){
-            setError('Please select a valid file type')
-            toast.error(error)
-            toast.error('Please select a valid file type')
+        if(!fileType.includes(imageFileType)){
+            toast.error('Please select a valid file type (jpg, jpeg, or png).')
             return
         }
 
-        setFile(image_file)
-        // console.log(file)
-        // const result = await postImage({image: file, image_file_type, userId})
-        // console.log(result)
-
-        const extension = image_file_type.split('/')[1]
-        // Request will be sent from here to server
-        const response:string= await axios.post('http://localhost:5000/auth/users/image',
+        const response = await axios.post('http://localhost:5000/auth/users/image',
             {
-                // image: file,
-                imageName: `${userId}.${extension}`,
-                type: image_file_type
+                imageName: `${userId}`,
+                type: "image/"+imageFileType
             }
         );
-        console.log(response)
+        const put_url = response.data
+        console.log(put_url)
 
-        if(response){
-            const form = new FormData()
-            form.append(userId,image_file)
-            
-            let config = {
-                method: 'put',
-                url: response,
-                // headers: { 
-                //   'Content-Type': image_file_type,
-                // },
-                data : image_file
+        if(put_url)
+        {
+            const config = {
+                headers: {
+                  'Content-Type': imageFile,
+                },
               };
-              
-              axios.request(config)
+      
+              // Send the PUT request with the selected image file
+              await axios.put(put_url, imageFile, config)
               .then((response) => {
-                console.log(JSON.stringify(response.data));
+                console.log(response);
+                toast.success('PUT request successful. ' + response.data);
+                // setSelectedFile(null)
+                fetchUserImage()
               })
-              .catch((error) => {
+              .catch((error) => { 
                 console.log(error);
-              });
+              })
         } 
         else {
             toast.error('Could not upload image.');
         }
     }
+
     // const convertToBase64 = (file:Blob) => {
     //     return new Promise(resolve => {
     //         const reader = new FileReader();
@@ -98,11 +76,11 @@ const UploadUserImage = ({
  
     return (
         <div className="group relative flex items-center justify-center rounded-full border-2 border-black dark:border-white-100 w-40 h-40">
-            {
+            {/* {
                 userImage ?
                     <Image  
                         className="rounded-full"
-                        src={image}
+                        src={userImage}
                         alt="User Image"
                         width={160}
                         height={160}
@@ -113,7 +91,13 @@ const UploadUserImage = ({
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                         </svg>
                     </div>
-            }
+            } */}
+            <UserImage 
+                userImage={userImage}
+                imageWidth={160}
+                imageHeight={160}
+                svgClassName={''}
+            />
             <div className="absolute hidden group-hover:flex items-center justify-center group-hover:bg-black/20 rounded-full w-40 h-40">
                 <label className='border-2 dark:border-white-100 border-black bg-me-green-200 w-14 h-14 rounded-full cursor-pointer flex items-center justify-center'>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-black dark:text-white-100 w-8 h-8">

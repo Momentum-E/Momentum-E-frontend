@@ -14,7 +14,7 @@ import GetUserDataComponent from '@/components/auth/GetUserDataComponent';
 import { VendorCountProp } from '@/utils/props/props';
 
 const Profile = () => {
-  const {userId,name,userEmail,vehicleData,userImage} = useAppContext()
+  const {userId,name,userEmail,vehicleData,userImage,setUserImage} = useAppContext()
   const [VendorCounts, setVendorCounts] = useState<VendorCountProp[]>([])
 
   useEffect(() => {
@@ -41,7 +41,8 @@ const Profile = () => {
       <div className="max-h-full flex flex-col items-center max-w-xl w-full mx-auto space-y-10 px-2 md:px-0 pt-10 pb-20 overflow-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
         <UploadUserImage
           userId={userId}
-          userImage={userImage}
+          // userImage={userImage}
+          // setUserImage={setUserImage}
         />
         <DeleteVehicle userId={userId} VendorCounts={VendorCounts}/> 
         <div className=" border border-me-green-200 p-4 rounded-xl w-full">
