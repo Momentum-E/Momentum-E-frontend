@@ -96,7 +96,7 @@ const UploadUserImage = ({
                 userImage={userImage}
                 imageWidth={160}
                 imageHeight={160}
-                svgClassName={''}
+                svgClassName={'w-20 h-20'}
             />
             <div className="absolute hidden group-hover:flex items-center justify-center group-hover:bg-black/20 rounded-full w-40 h-40">
                 <label className='border-2 dark:border-white-100 border-black bg-me-green-200 w-14 h-14 rounded-full cursor-pointer flex items-center justify-center'>

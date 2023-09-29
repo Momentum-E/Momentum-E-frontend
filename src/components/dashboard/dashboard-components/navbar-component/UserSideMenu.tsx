@@ -67,7 +67,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
                             userImage={userImage}
                             imageWidth={32}
                             imageHeight={32}
-                            svgClassName='w-20 h-20'    
+                            svgClassName='w-8 h-8'    
                         />
                     </Menu.Button>
                 </div>

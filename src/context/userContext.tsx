@@ -4,7 +4,6 @@ import axios from 'axios';
 import { AccountContext } from './account';
 import { vehicleDataProps, vehicleCalcultedDataProps } from '@/utils/props/props';
 import { useRouter } from 'next/router';
-import { error } from 'console';
 
 type UserContextProps = {
   filteredVehicleData:(v_id: string | string[]) => void;
@@ -50,7 +49,7 @@ const AppProvider = ({ children }:any) => {
   const [userState, setUserState] = useState<string>("");
   const [userCountry, setUserCountry] = useState<string>("");
   const [userLocation, setUserLocation] = useState<string>("");
-  const [userImage, setUserImage] = useState<string>('')
+  const [userImage, setUserImage] = useState<string>("")
   const [userEmail,setuserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
