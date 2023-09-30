@@ -114,8 +114,8 @@ const AppProvider = ({ children }:any) => {
   const fetchUserImage = async () => {
     axios.get(`http://localhost:5000/auth/users/image/${userId}`)
     .then((response) => {
-      setUserImage(response)
-      console.log(response.data)
+      setUserImage(response.data);
+      console.log("fetchUserImageResponse",response);
     })
     .catch((error) => {
       console.log(error)
