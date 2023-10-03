@@ -27,7 +27,6 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
         router.replace('/auth/login')  
         setName("")  
         setVehicleData([])
-        // setUserLocation('')
         setUserCity("")
         setUserState("")
         setUserCountry("")
@@ -46,7 +45,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
                     </span>
                 </p>
                 <div className="md:w-[20%]">
-                    <Menu.Button className="flex justify-end rounded-full h-8 w-8 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <Menu.Button className="flex justify-end rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         {/* {
                             userImage ?
                                 <Image  

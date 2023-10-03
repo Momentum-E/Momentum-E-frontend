@@ -57,9 +57,7 @@ const YourVehicles = ({
                                     onClick={()=>setvehicleId(data.id)}
                                     className="px-2 h-full w-full overflow-hidden text-left overflow-ellipsis group-hover:mr-2"
                                     >
-                                        {/* <span className=''> */}
                                         {data.information.vin}
-                                        {/* </span> */}
                                     </button>
 
                                     {/* Future feature for deleting a single vehicle*/}

@@ -6,14 +6,14 @@ import { toast } from 'react-toastify';
 
 type UploadUserImageProps ={
     userId:string;
-    // userImage:string;
-    // setUserImage:React.Dispatch<React.SetStateAction<string>>;
+    userImage:string
 }
 
 const UploadUserImage = ({
     userId,
+    userImage
 }:UploadUserImageProps) => {
-    const {userImage,setUserImage,fetchUserImage} = useAppContext()
+    const {fetchUserImage} = useAppContext()
 
     const onSelectFile = async (event:any) => {
         
@@ -30,7 +30,7 @@ const UploadUserImage = ({
             return
         }
 
-        const response = await axios.post('http://localhost:5000/auth/users/image',
+        const response = await axios.post('http://localhost:5000/user-data/users/image',
             {
                 imageName: `${userId}`,
                 type: "image/"+imageFileType
@@ -64,34 +64,8 @@ const UploadUserImage = ({
         }
     }
 
-    // const convertToBase64 = (file:Blob) => {
-    //     return new Promise(resolve => {
-    //         const reader = new FileReader();
-    //         reader.readAsDataURL(file);
-    //         reader.onload = () => {
-    //             resolve(reader.result);
-    //         }
-    //     })
-    // }
- 
     return (
         <div className="group relative flex items-center justify-center rounded-full border-2 border-black dark:border-white-100 w-40 h-40">
-            {/* {
-                userImage ?
-                    <Image  
-                        className="rounded-full"
-                        src={userImage}
-                        alt="User Image"
-                        width={160}
-                        height={160}
-                    />
-                :
-                    <div className="flex items-center justify-center w-full h-full rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-20 h-20">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                        </svg>
-                    </div>
-            } */}
             <UserImage 
                 userImage={userImage}
                 imageWidth={160}
