@@ -42,7 +42,6 @@ const Profile = () => {
         <UploadUserImage
           userId={userId}
           userImage={userImage}
-          // setUserImage={setUserImage}
         />
         <DeleteVehicle userId={userId} VendorCounts={VendorCounts}/> 
         <div className=" border border-me-green-200 p-4 rounded-xl w-full">

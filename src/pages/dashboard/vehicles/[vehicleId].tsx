@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useAppContext } from '@/context/userContext';
 
 // import VehicleData from '@/components/dashboard/vehicle-components/VehicleData';
@@ -16,7 +16,14 @@ const VehicleDashboardContent = () => {
   const router = useRouter();
   const { vehicleId } = router.query;
 
-  const {userLocation,isLoading,unit,vehicleIdData,filteredVehicleData} = useAppContext()
+  const {
+    userLocation,
+    isLoading,
+    unit,
+    vehicleIdData,
+    filteredVehicleData
+  } = useAppContext()
+  
   let SoH=99.6
 
   useEffect(()=>{
@@ -26,7 +33,6 @@ const VehicleDashboardContent = () => {
   return (
     <DashboardLayout page={'vehicles / '+ vehicleIdData?.information?.vin}>
       <div className='h-screen overflow-y-auto overflow-x-hidden pb-16 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300'>
-        {/* <VehicleData/>   */}
         {
           isLoading?
           (

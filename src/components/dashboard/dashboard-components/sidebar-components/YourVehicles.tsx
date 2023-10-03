@@ -34,7 +34,6 @@ const YourVehicles = ({
 
     return (
       <div className='h-full'>
-
         {/* vehice items */}  
         <span className="dark:text-white-100 inline-block ">Your Vehicles</span>
         <div className="flex flex-col items-center h-full space-y-2">

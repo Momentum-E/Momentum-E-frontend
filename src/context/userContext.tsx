@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 type UserContextProps = {
   // Functions
-  filteredVehicleData:(v_id: string) => void;
+  filteredVehicleData:(v_id: string|string|string[] | undefined) => void;
   fetchUserImage:() => Promise<void>;
 
   // State Variables 
@@ -152,8 +152,8 @@ const AppProvider = ({ children }:any) => {
 
   // Function for getting data of a particular vehicle_Id
 
-  const filteredVehicleData = (v_id:string) => {
-    if(userId){
+  const filteredVehicleData = (v_id:string|string[] | undefined) => {
+    // if(userId){
       axios.get(`http://localhost:5000/user-data/${userId}/${v_id}`)
       .then((res) => {
         console.log(res.data)
@@ -163,10 +163,10 @@ const AppProvider = ({ children }:any) => {
       }).catch((err)=>{
         console.log("Error in filteredVehicleData: "+err)
       })
-    }
-    else{
-    console.log('userId not present')
-    }
+    // }
+    // else{
+    // console.log('userId not present')
+    // }
   }
 
   // Function for convertion of distance between Miles and KiloMeters
@@ -223,7 +223,6 @@ const AppProvider = ({ children }:any) => {
       setUserCity,
       setUserState,
       setUserCountry,
-      // setUserImage
       setuserEmail
       }}>
         {children}
