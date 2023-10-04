@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AccountContext } from './account';
-import { vehicleDataProps, vehicleCalcultedDataProps } from '@/utils/props/props';
+import { vehicleDataProps, vehicleCalcultedDataProps } from '@/utils/props';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
@@ -27,6 +27,7 @@ type UserContextProps = {
   vehicleCalcultedIdData: Record<string,vehicleCalcultedDataProps>|undefined;
   name:string;
   unit:string;
+  isImageLoading:boolean;
 
   // State Functions
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
@@ -38,7 +39,7 @@ type UserContextProps = {
   setUserState:React.Dispatch<React.SetStateAction<string>>;
   setUserCountry:React.Dispatch<React.SetStateAction<string>>;
   setuserEmail:React.Dispatch<React.SetStateAction<string>>;
-  // setUserImage:React.Dispatch<React.SetStateAction<string>>;
+  setUserImage:React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AppContext = createContext({} as UserContextProps);
@@ -62,6 +63,7 @@ const AppProvider = ({ children }:any) => {
   const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [unit, setUnit] = useState<string>('Km')
   const [isLoading, setIsLoading] = useState(true)
+  const [isImageLoading, setIsImageLoading] = useState(true)
 
   // Hook for fetching the user details (name, location, email)
   useEffect(() => {
@@ -87,8 +89,8 @@ const AppProvider = ({ children }:any) => {
         setuserEmail(response.data.email)
         if(userId){
           setVehicleData(response.data.vehicles)
-          // setVehicleIdData(response.data.vehicles[0])
-          // setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
+          setVehicleIdData(response.data.vehicles[0])
+          setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
           setIsLoading(false)
         }
       } 
@@ -119,11 +121,13 @@ const AppProvider = ({ children }:any) => {
     .then((response) => {
       setUserImage(response.data);
       console.log("fetchUserImageResponse",response);
+      setIsImageLoading(false)
     })
     .catch((error) => {
-      console.log(error)
+      console.log('fetchUserImage Error: \n'+error)
       setUserImage('')
       toast.error('Could not fetch image.')
+      setIsImageLoading(false)
     })
   }
 
@@ -153,8 +157,8 @@ const AppProvider = ({ children }:any) => {
   // Function for getting data of a particular vehicle_Id
 
   const filteredVehicleData = (v_id:string|string[] | undefined) => {
-    // if(userId){
-      axios.get(`http://localhost:5000/user-data/${userId}/${v_id}`)
+    if(vehicleData.length > 0){
+      axios.get(`http://localhost:5000/user-data/users/${userId}/${v_id}`)
       .then((res) => {
         console.log(res.data)
         // setVehicleIdData(vehicleData.filter((item:any)=>item.id===v_id)[0])
@@ -163,10 +167,10 @@ const AppProvider = ({ children }:any) => {
       }).catch((err)=>{
         console.log("Error in filteredVehicleData: "+err)
       })
-    // }
-    // else{
-    // console.log('userId not present')
-    // }
+    }
+    else{
+      console.log('No vehicles added.')
+    }
   }
 
   // Function for convertion of distance between Miles and KiloMeters
@@ -186,7 +190,6 @@ const AppProvider = ({ children }:any) => {
       console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
       console.log(vehicleData)
       console.log(JSON.stringify(vehicleCalcultedIdData))
-      console.log(userImage)
     } 
   }, [userId,vehicleCalcultedIdData])
 
@@ -212,6 +215,7 @@ const AppProvider = ({ children }:any) => {
       vehicleCalcultedIdData,
       name,
       unit,
+      isImageLoading,
       // vehicleCalcultedData,
 
       // State Functions
@@ -223,7 +227,8 @@ const AppProvider = ({ children }:any) => {
       setUserCity,
       setUserState,
       setUserCountry,
-      setuserEmail
+      setuserEmail,
+      setUserImage
       }}>
         {children}
     </AppContext.Provider>

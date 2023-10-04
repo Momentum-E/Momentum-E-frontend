@@ -1,5 +1,5 @@
 import { DottedIcon } from '@/utils/icons';
-import { HeadingProps } from '@/utils/props/props';
+import { HeadingProps } from '@/utils/props';
 import React from 'react';
 
 const Heading: React.FC<HeadingProps> = ({

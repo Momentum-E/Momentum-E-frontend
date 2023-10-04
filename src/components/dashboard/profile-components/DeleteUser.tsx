@@ -58,7 +58,7 @@ const DeleteUser = ({userId}:string|any) => {
                 setIsOpen={setIsOpen} 
                 title={`Confirm delete Momentum-e account`}
                 content={'By clicking yes all including your account all your vehicles data will also be deleted '}
-                buttonClass={`p-1 rounded-lg border border-red-600 text-red-600`} 
+                buttonClass={`p-1 rounded-lg border border-red-600 text-red-600 hover:bg-red-600 hover:text-white-100`} 
                 modalFunction={DeleteUser} 
             />
         </div>

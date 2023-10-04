@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SidebarProps } from '@/utils/props/props';
+import { SidebarProps } from '@/utils/props';
 import axios from 'axios';
 
 import { useRouter } from 'next/router';
@@ -66,8 +66,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         className={`${
           isOpen ? ` ` : `transform -translate-x-full `
         } ease-in-out duration-200 bg-gradient-to-br from-white-100 to-me-green-200/50 dark:bg-dashboard-gradient inset-0 backdrop-blur-3xl rounded-lg p-2 space-y-4 text-gray shadow-md z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed`}>
+        {/* logo */}
         <div className="flex flex-col gap-2.5 py-2 text-white-100 items-center justify-center">
-          {/* logo */}
           {
             theme === 'dark'?
             ( 

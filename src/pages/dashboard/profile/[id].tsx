@@ -11,28 +11,31 @@ import {
   UploadUserImage
 } from '@/components/dashboard/profile-components/';
 import GetUserDataComponent from '@/components/auth/GetUserDataComponent';
-import { VendorCountProp } from '@/utils/props/props';
+import { VendorCountProp } from '@/utils/props';
 
 const Profile = () => {
-  const {userId,name,userEmail,vehicleData,userImage} = useAppContext()
+  const {userId,name,userEmail,vehicleData,userImage,isImageLoading} = useAppContext()
   const [VendorCounts, setVendorCounts] = useState<VendorCountProp[]>([])
 
+  // Getting the vehicle Data count
   useEffect(() => {
     const counts:VendorCountProp[] = [];
     // Create an array of vendor counts
-    vehicleData.forEach((vehicle) => {
-      const vendor = vehicle.vendor;
-
-      // Check if the vendor already exists in the array
-      const existingVendor = counts.find((item) => item.vendor === vendor);
-
-      if (existingVendor) {
-        existingVendor.count++;
-      } else {
-        // Add a new entry for the vendor
-        counts.push({ vendor, count: 1 });
-      }
-    });
+    if(vehicleData){
+      vehicleData.forEach((vehicle) => {
+        const vendor = vehicle.vendor;
+  
+        // Check if the vendor already exists in the array
+        const existingVendor = counts.find((item) => item.vendor === vendor);
+  
+        if (existingVendor) {
+          existingVendor.count++;
+        } else {
+          // Add a new entry for the vendor
+          counts.push({ vendor, count: 1 });
+        }
+      });
+    }
     setVendorCounts(counts);
   }, [vehicleData])
 
@@ -42,8 +45,12 @@ const Profile = () => {
         <UploadUserImage
           userId={userId}
           userImage={userImage}
+          isImageLoading={isImageLoading}
         />
-        <DeleteVehicle userId={userId} VendorCounts={VendorCounts}/> 
+        <DeleteVehicle 
+          userId={userId} 
+          VendorCounts={VendorCounts}
+        /> 
         <div className=" border border-me-green-200 p-4 rounded-xl w-full">
           <GetUserDataComponent
             isRequired={false}

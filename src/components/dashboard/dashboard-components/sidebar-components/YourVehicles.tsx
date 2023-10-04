@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { YourVehicleProps } from '@/utils/props/props';
+import { YourVehicleProps } from '@/utils/props';
 // import { useAppContext } from '@/context/userContext';
 import {useRouter} from 'next/router';
 

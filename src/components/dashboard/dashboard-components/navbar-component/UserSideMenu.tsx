@@ -6,7 +6,7 @@ import { UserImage } from '@/components/dashboard/profile-components/UserImage';
 import { AccountContext } from '@/context/account';
 import { useAppContext } from '@/context/userContext';
 
-import { UserSideMenuProps } from '@/utils/props/props';
+import { UserSideMenuProps } from '@/utils/props';
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');
@@ -15,7 +15,8 @@ function classNames(...classes: string[]) {
 const UserSideMenu:React.FC<UserSideMenuProps> = ({
     name,
     id,
-    userImage
+    userImage,
+    isImageLoading,
 }) => {
 
     const router = useRouter()
@@ -46,27 +47,14 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
                 </p>
                 <div className="md:w-[20%]">
                     <Menu.Button className="flex justify-end rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        {/* {
-                            userImage ?
-                                <Image  
-                                    className="rounded-full"
-                                    src={userImage}
-                                    alt="User Image"
-                                    width={32}
-                                    height={32}
-                                />
-                            :
-                                <div className="flex items-center justify-center w-full h-full rounded-full">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-20 h-20">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                    </svg>
-                                </div>
-                        } */}
                         <UserImage 
                             userImage={userImage}
                             imageWidth={32}
                             imageHeight={32}
-                            svgClassName='w-8 h-8'    
+                            imageSize='h-8 w-8'
+                            svgClassName='w-8 h-8'
+                            fontSize={12}    
+                            isLoading={isImageLoading}
                         />
                     </Menu.Button>
                 </div>

@@ -1,4 +1,4 @@
-import { ItemCardProps } from '@/utils/props/props';
+import { ItemCardProps } from '@/utils/props';
 import React from 'react';
 import Image from 'next/image';
 
