@@ -1,7 +1,7 @@
 //@ts-nocheck
 import React, { Fragment, useState } from 'react';
 import { Combobox, Transition } from '@headlessui/react';
-import { SelectorProps } from '@/utils/props/props';
+import { SelectorProps } from '@/utils/props';
 
 const Selector: React.FC<SelectorProps> = ({
   data,

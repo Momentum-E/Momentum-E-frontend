@@ -104,6 +104,13 @@ const Account = ({ children }) => {
               console.log('Error deleting user from enode: '+err)
             })
 
+            axios.delete(`http://localhost:5000/user-data/users/image/${username}`)
+            .then((res)=>{
+              console.log('User image from s3: '+res.data)
+            }).catch((err)=>{
+              console.log('Error deleting user image from s3: '+err)
+            })
+
             console.log('User deleted successfully',data);
             toast.success('User deleted successfully');
           }

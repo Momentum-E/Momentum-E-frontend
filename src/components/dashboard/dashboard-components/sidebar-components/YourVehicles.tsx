@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { YourVehicleProps } from '@/utils/props/props';
+import { YourVehicleProps } from '@/utils/props';
 // import { useAppContext } from '@/context/userContext';
 import {useRouter} from 'next/router';
 
@@ -34,7 +34,6 @@ const YourVehicles = ({
 
     return (
       <div className='h-full'>
-
         {/* vehice items */}  
         <span className="dark:text-white-100 inline-block ">Your Vehicles</span>
         <div className="flex flex-col items-center h-full space-y-2">
@@ -57,9 +56,7 @@ const YourVehicles = ({
                                     onClick={()=>setvehicleId(data.id)}
                                     className="px-2 h-full w-full overflow-hidden text-left overflow-ellipsis group-hover:mr-2"
                                     >
-                                        {/* <span className=''> */}
                                         {data.information.vin}
-                                        {/* </span> */}
                                     </button>
 
                                     {/* Future feature for deleting a single vehicle*/}

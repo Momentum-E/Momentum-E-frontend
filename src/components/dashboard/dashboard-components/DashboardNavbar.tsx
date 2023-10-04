@@ -1,5 +1,5 @@
 import React from 'react';
-import { DashboardNavbarProps } from '@/utils/props/props';
+import { DashboardNavbarProps } from '@/utils/props';
 import { Disclosure,} from '@headlessui/react';
 import { UserSideMenu } from './navbar-component';
 
@@ -9,7 +9,8 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   page,
   name,
   id,
-  userImage
+  userImage,
+  isImageLoading,
 }) => {
 
   return (
@@ -63,7 +64,6 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                       <span className='text-gray-400'>
                         Dashboard
                       </span> 
-                      {/* {" / " + vehicleId||page} */}
                       {" / " + page}
                     </p>
                     <span className="text-xl md:text-md dark:text-white-100 whitespace-pre flex flex-shrink-0">
@@ -72,7 +72,12 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                   </div>
                 </div>
               </div>
-              <UserSideMenu userImage={userImage} name={name} id={id}/>
+              <UserSideMenu 
+                userImage={userImage} 
+                name={name} 
+                id={id}
+                isImageLoading={isImageLoading}
+              />
             </div>
           </div>
         </>
