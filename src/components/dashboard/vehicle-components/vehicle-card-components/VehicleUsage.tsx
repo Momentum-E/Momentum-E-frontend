@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { statisticsChartsData } from '@/configs';
 import dynamic from 'next/dynamic'
 import { useAppContext } from '@/context/userContext';
-import { VehicleUsageProps } from '@/utils/props/props';
+import { VehicleUsageProps } from '@/utils/props';
 import axios from 'axios';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 

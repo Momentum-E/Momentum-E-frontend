@@ -1,6 +1,6 @@
 import React,{ Fragment } from 'react'
 import { Listbox, Transition } from '@headlessui/react';
-import { AuthListBoxProps } from '@/utils/props/props';
+import { AuthListBoxProps } from '@/utils/props';
 
 const AuthListBox = ({
     labelFor,

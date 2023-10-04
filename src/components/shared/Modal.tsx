@@ -26,7 +26,7 @@ const Modal = ({
 
     return (
         <Transition appear show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-[99999]" onClose={()=>setIsOpen(false)}>
+            <Dialog as="div" className="relative z-[9999]" onClose={()=>setIsOpen(false)}>
             <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -64,17 +64,17 @@ const Modal = ({
                             <div className="mt-4 w-full flex justify-around">
                                 <button
                                     type="button"
-                                    className={`w-24 px-2 border text-black bg-me-green-200 hover:bg-me-green-100 p-1 rounded-lg`}
-                                    onClick={()=>setIsOpen(false)}
-                                >
-                                    No
-                                </button>
-                                <button
-                                    type="button"
                                     className={`w-24 `+ buttonClass}
                                     onClick={()=>onClickFunction()}
                                 >
                                     Yes
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`w-24 px-2 border text-black bg-me-green-200 hover:bg-me-green-100 p-1 rounded-lg`}
+                                    onClick={()=>setIsOpen(false)}
+                                >
+                                    No
                                 </button>
                             </div>
                         </Dialog.Panel>

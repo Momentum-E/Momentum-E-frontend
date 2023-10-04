@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { VendorCountProp } from '@/utils/props/props';
+import { VendorCountProp } from '@/utils/props';
 import { Modal } from '@/components/shared';
 
 type DeleteVehicleProps = {

@@ -2,11 +2,16 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AccountContext } from './account';
-import { vehicleDataProps, vehicleCalcultedDataProps } from '@/utils/props/props';
+import { vehicleDataProps, vehicleCalcultedDataProps } from '@/utils/props';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 type UserContextProps = {
-  filteredVehicleData:(v_id: string | string[] | undefined) => void;
+  // Functions
+  filteredVehicleData:(v_id: string|string|string[] | undefined) => void;
+  fetchUserImage:() => Promise<void>;
+
+  // State Variables 
   vehicleData:vehicleDataProps[];
   vehicleIdData:vehicleDataProps|undefined;
   userEmail:string;
@@ -18,11 +23,13 @@ type UserContextProps = {
   userId:string;
   userImage:string;
   isLoading:boolean;
-  vehicleCalcultedData: Record<string,vehicleCalcultedDataProps>;
-  vehicleCalcultedIdData: Record<string,vehicleCalcultedDataProps>;
+  // vehicleCalcultedData: Record<string,vehicleCalcultedDataProps>|undefined;
+  vehicleCalcultedIdData: Record<string,vehicleCalcultedDataProps>|undefined;
   name:string;
   unit:string;
-  // vehicleDataLoading:boolean;
+  isImageLoading:boolean;
+
+  // State Functions
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
   setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
   setUnit:React.Dispatch<React.SetStateAction<string>>;
@@ -32,6 +39,7 @@ type UserContextProps = {
   setUserState:React.Dispatch<React.SetStateAction<string>>;
   setUserCountry:React.Dispatch<React.SetStateAction<string>>;
   setuserEmail:React.Dispatch<React.SetStateAction<string>>;
+  setUserImage:React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AppContext = createContext({} as UserContextProps);
@@ -47,15 +55,15 @@ const AppProvider = ({ children }:any) => {
   const [userState, setUserState] = useState<string>("");
   const [userCountry, setUserCountry] = useState<string>("");
   const [userLocation, setUserLocation] = useState<string>("");
-  // const [userImage, setUserImage] = useState<string>('')
+  const [userImage, setUserImage] = useState<string>("")
   const [userEmail,setuserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
-  const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
+  // const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [unit, setUnit] = useState<string>('Km')
-  // const [vehicleDataLoading,setVehicleDataLoading]=useState<boolean>(true)
   const [isLoading, setIsLoading] = useState(true)
+  const [isImageLoading, setIsImageLoading] = useState(true)
 
   // Hook for fetching the user details (name, location, email)
   useEffect(() => {
@@ -81,11 +89,9 @@ const AppProvider = ({ children }:any) => {
         setuserEmail(response.data.email)
         if(userId){
           setVehicleData(response.data.vehicles)
-          setVehicleCalcultedData(response.data.vehicles_processed_data)
           setVehicleIdData(response.data.vehicles[0])
-          // setVehicleCalcultedIdData(response.data.vehicles_processed_data[vehicleIdData.id])
+          setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
           setIsLoading(false)
-          // setVehicleDataLoading(false)
         }
       } 
       catch (error) {
@@ -95,20 +101,35 @@ const AppProvider = ({ children }:any) => {
     fetchuserdetails();
   }, [userId]);
 
-  useEffect(()=>{
+  // useEffect(()=>{
+  //   if(userId){
+  //     if(name===""||userOwnerType===""||userCountry===""){
+  //       router.replace(`/dashboard/profile/${userId}`)
+  //       // toast.info('Please fill your details first.')
+  //     }
+  //   }
+  // },[userId])
+  
+  useEffect(() => {
     if(userId){
-      if(name===""||userOwnerType===""||userCountry===""){
-        router.replace(`dashboard/profile/${userId}`)
-      }
+      fetchUserImage()
     }
   },[userId])
-  
-  // useEffect(() => {
-  //   const fetchUserImage = async () => {
-      
-  //   }
-  //   fetchUserImage()
-  // },[userId])
+
+  const fetchUserImage = async () => {
+    axios.get(`http://localhost:5000/user-data/users/image/${userId}`)
+    .then((response) => {
+      setUserImage(response.data);
+      console.log("fetchUserImageResponse",response);
+      setIsImageLoading(false)
+    })
+    .catch((error) => {
+      console.log('fetchUserImage Error: \n'+error)
+      setUserImage('')
+      toast.error('Could not fetch image.')
+      setIsImageLoading(false)
+    })
+  }
 
   // Hook for getting all the vehicle Data for a particular user
   // useEffect(()=>{
@@ -135,24 +156,21 @@ const AppProvider = ({ children }:any) => {
 
   // Function for getting data of a particular vehicle_Id
 
-  const filteredVehicleData = (v_id:string) =>{
-    // if(userId){
-    //   axios.get(`http://localhost:5000/vehicles/get-vehicles/${v_id}`)
-    //   .then((res)=>{
-    //     setVehicleIdData(res.data)
-    //     // setVehicleDataLoading(false)
-    //     console.log('userId present')
-    //   }).catch((err)=>{
-    //     console.log(err)
-    //   })
-    // }
-    // else{
-    // console.log('userId not present')
-    // }
-
-    // Getting vehicle from db instead of enode
-    setVehicleIdData(vehicleData.filter((item:any)=>item.id===v_id)[0])
-    setVehicleCalcultedIdData(vehicleCalcultedData[v_id])
+  const filteredVehicleData = (v_id:string|string[] | undefined) => {
+    if(vehicleData.length > 0){
+      axios.get(`http://localhost:5000/user-data/users/${userId}/${v_id}`)
+      .then((res) => {
+        console.log(res.data)
+        // setVehicleIdData(vehicleData.filter((item:any)=>item.id===v_id)[0])
+        setVehicleIdData(res.data.vehicleData)
+        setVehicleCalcultedIdData(res.data.processedData)
+      }).catch((err)=>{
+        console.log("Error in filteredVehicleData: "+err)
+      })
+    }
+    else{
+      console.log('No vehicles added.')
+    }
   }
 
   // Function for convertion of distance between Miles and KiloMeters
@@ -180,6 +198,7 @@ const AppProvider = ({ children }:any) => {
     <AppContext.Provider value={{
       // Functions
       filteredVehicleData,
+      fetchUserImage,
 
       // State Variables
       vehicleData,
@@ -191,13 +210,13 @@ const AppProvider = ({ children }:any) => {
       userCity,
       userState,
       userCountry,
-      // userImage,
+      userImage,
       isLoading,
+      vehicleCalcultedIdData,
       name,
       unit,
-      vehicleCalcultedData,
-      // vehicleDataLoading,
-      
+      isImageLoading,
+      // vehicleCalcultedData,
 
       // State Functions
       setVehicleIdData,
@@ -208,8 +227,8 @@ const AppProvider = ({ children }:any) => {
       setUserCity,
       setUserState,
       setUserCountry,
-      // setUserImage,
-      setuserEmail
+      setuserEmail,
+      setUserImage
       }}>
         {children}
     </AppContext.Provider>

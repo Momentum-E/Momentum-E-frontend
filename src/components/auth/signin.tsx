@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import ConfirmSignup from '@/pages/auth/confirmSignup';
-import AuthInput from '@/components/auth/AuthComponents/AuthInput/AuthInput'
+import AuthInput from '@/components/auth/AuthComponents/AuthInput';
 
 const SignIn = () => {
   const router = useRouter();

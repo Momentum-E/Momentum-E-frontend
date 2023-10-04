@@ -122,13 +122,26 @@ export type DashboardNavbarProps = {
   id:string|any;
   isTab:boolean;
   userImage:string;
+  isImageLoading:boolean;
 };
 
 export type UserSideMenuProps = {
   name:string|any;
   id:string;
   userImage:string;
+  isImageLoading:boolean;
 }
+
+export type UserImageProps ={
+  userImage:string;
+  imageWidth:number;
+  imageHeight:number;
+  imageSize?:string;
+  svgClassName:string;
+  isLoading:boolean;
+  fontSize:number;
+  setUserImage:React.Dispatch<React.SetStateAction<string>>;
+}   
 
 export type HeadingProps = {
   primaryHeading?: string;

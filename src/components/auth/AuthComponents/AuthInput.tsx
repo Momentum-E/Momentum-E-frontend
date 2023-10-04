@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {AuthInputProps} from '@/utils/props/props'
+import {AuthInputProps} from '@/utils/props'
 
 function AuthInput({
 labelName,

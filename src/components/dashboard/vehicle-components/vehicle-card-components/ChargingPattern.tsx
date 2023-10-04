@@ -1,6 +1,6 @@
 import React from 'react'
 import { Progress } from 'antd';
-import { CharginPatternProps } from '@/utils/props/props';
+import { CharginPatternProps } from '@/utils/props';
 
 const ChargingPattern = ({
     avgSoC,

@@ -10,7 +10,7 @@ import {
   AuthListBox,
   AuthSelector
 } from '@/components/auth/AuthComponents';
-import { GetUserDataComponentProps } from '@/utils/props/props';
+import { GetUserDataComponentProps } from '@/utils/props';
 import { useAppContext } from '@/context/userContext';
 
 const owner_type = [{ type: 'Individual Owner' }, { type: 'Fleet Owner' }];
