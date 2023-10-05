@@ -15,12 +15,22 @@ const VehicleDashboardContent = () => {
   const router = useRouter();
   const { vehicleId } = router.query;
 
-  const { userLocation, isLoading, unit, vehicleIdData, filteredVehicleData } = useAppContext()
+  const {
+    userLocation, 
+    isLoading,
+    unit, 
+    vehicleIdData,
+    MaxTemp,
+    MinTemp,
+    setDistanceValue, 
+    filteredVehicleData,
+  } = useAppContext()
   let SoH=99.6
 
   useEffect(()=>{
       filteredVehicleData(vehicleId)
   },[vehicleId])
+
 
   return (
     <DashboardLayout page={'vehicles / '+ vehicleIdData?.information?.vin}>
@@ -81,11 +91,11 @@ const VehicleDashboardContent = () => {
                       Vin={vehicleIdData?.information?.vin}
                       unit={unit}
                       batterCapacity={vehicleIdData?.chargeState?.batteryCapacity}
+                      setDistanceValue={setDistanceValue}
                     />
                   </div>
         
                   <div className="lg:w-[50%] flex flex-0 flex-col justify-between p-3 h-80 text-xl text-gray-400 font-medium border border-me-green-200 rounded-2xl bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
-                    {/* <p className="flex flex-col text-lg text-gray-400">Charging Pattern</p> */}
                     <div className="w-full flex justify-between text-lg font-medium text-gray-400">
                       <p className='flex flex-col text-lg text-gray-400'>
                         Charging Pattern
@@ -111,6 +121,9 @@ const VehicleDashboardContent = () => {
                   <div className=" h-[600px] md:h-[445px] flex flex-col p-3 space-y-3 text-gray-400 text-lg font-medium rounded-2xl border border-me-green-200 bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
                     <p className="flex flex-col text-lg text-gray-400">Usage</p>  
                       <VehicleUsage 
+                        MaxTemp={MaxTemp}
+                        MinTemp={MinTemp}
+                        setDistanceValue={setDistanceValue}
                         unit={unit}
                       />
                   </div>
@@ -124,7 +137,7 @@ const VehicleDashboardContent = () => {
                       <div className="w-24 flex flex-col items-center text-xs p-1 rounded-lg border border-me-green-200 dark:border-white-100 bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient">
                         SoH
                         <span className='text-me-green-100 dark:text-me-green-200'>
-                          {`${SoH} %`}
+                          {SoH}%
                         </span>
                       </div>
                     </div>

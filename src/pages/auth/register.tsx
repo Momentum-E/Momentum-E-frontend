@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes';
 
 const Register = () => {
   
-  const { theme, setTheme } = useTheme()
+  const { setTheme } = useTheme()
   useEffect(()=>{
     setTheme('dark')
   })

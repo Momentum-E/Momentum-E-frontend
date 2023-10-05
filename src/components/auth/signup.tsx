@@ -18,7 +18,6 @@ const Signup = () => {
   const [agreed, setAgreed] = useState(false);
   const [inputType,setInputType] = useState('password')
   const [confirmInputType,setConfirmInputType] = useState('password')
-  const [errorData, setErrorData] = useState<undefined | any>();
   const [verifyProcess, setVerifyProcess] = useState(false);
   const [input, setInput] = useState({
     username: '',
@@ -44,12 +43,10 @@ const Signup = () => {
         if (err.code === 'InvalidPasswordException') {
           const errorMessage = err.message || 'An unknown error occurred.';
           toast.error(errorMessage);
-          setErrorData(errorMessage);
         }
         if (err.code === 'UsernameExistsException') {
           const errorMessage = err.message || 'User already present.';
           toast.success(errorMessage);
-          setErrorData(errorMessage);
         } else {
           console.error(err);
         }

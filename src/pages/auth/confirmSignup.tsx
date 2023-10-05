@@ -9,7 +9,7 @@ import { useTheme } from 'next-themes';
 const ConfirmSignup = ({ username }: any) => {
 
   
-  const { theme, setTheme } = useTheme()
+  const { setTheme } = useTheme()
   useEffect(()=>{
       setTheme('dark')
   })

@@ -1,4 +1,3 @@
-//! TODO: Change to proper datatypes
 export type SelectorProps = {
   data: any;
   selected: string;
@@ -36,11 +35,32 @@ export type YourVehicleProps = {
 }
 
 export type VehicleUsageProps ={
+  MaxTemp:string | null | undefined;
+  MinTemp:string | null | undefined;
   unit:string;
-  // userCity:string|undefined;
-  // userState:string|undefined;
-  // userCountry:string|undefined;
+  setDistanceValue:(val: number | undefined) => string | number | undefined
 } 
+
+export type BatteryHealthProps = {
+  SoH:number|undefined;
+}
+
+export type BasicCarDataProps = {
+  heading: string;
+  data:string;
+  icon:React.ReactNode;
+}
+
+export type vehicleInfoProps = {
+  Odometer:number|undefined;
+  Brand:string|null|undefined;
+  Model:string|null|undefined;
+  Year:number|null|undefined;
+  Vin:string|null|undefined;
+  unit:string;
+  batterCapacity:number|null|undefined;
+  setDistanceValue:(val: number | undefined) => string | number | undefined
+}
 
 export type CharginPatternProps ={
     avgSoC:number|null|undefined;
@@ -140,7 +160,7 @@ export type UserImageProps ={
   svgClassName:string;
   isLoading:boolean;
   fontSize:number;
-  setUserImage:React.Dispatch<React.SetStateAction<string>>;
+  // setUserImage:React.Dispatch<React.SetStateAction<string>>;
 }   
 
 export type HeadingProps = {

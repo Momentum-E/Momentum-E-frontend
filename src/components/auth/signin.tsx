@@ -26,13 +26,10 @@ const SignIn = () => {
   const handleAWSError = (err:any) => {
     if (err.code === 'NotAuthorizedException') {
       const errorMessage = err.message || 'An unknown error occurred.';
-      // setErrorData(errorMessage);
-      //AWS error message with a toast message
       toast.error(errorMessage);
     }
     if (err.code === 'UserNotConfirmedException') {
       const errorMessage = err.message + 'Please verify your email.';
-      // setErrorData(errorMessage);
       //AWS error message with a toast message
       toast.error(errorMessage);
       setUserConfirmed(false)
@@ -51,11 +48,8 @@ const SignIn = () => {
     .then((data: any) => {
       // check is the email is verified
         console.log(data)
-        // window.location.reload()
-        // router.replace('/dashboard')
       })
       .catch((err: any) => {
-        // console.error('error', err);
         handleAWSError(err);
       });
   };
