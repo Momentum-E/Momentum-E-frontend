@@ -5,7 +5,7 @@ import GetUserDataComponent from '@/components/auth/GetUserDataComponent';
 
 const GetUserData = () => {
 
-  const { theme, setTheme } = useTheme()
+  const { setTheme } = useTheme()
   useEffect(()=>{
     setTheme('dark')
   })

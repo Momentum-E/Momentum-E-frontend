@@ -5,13 +5,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {AuthInput} from '@/components/auth/AuthComponents';
 
-type ChangeUserPasswordProps ={
-    userId:string|any;
-}
-
-const ChangeUserPassword = ({
-    userId,
-}:ChangeUserPasswordProps) => {
+const ChangeUserPassword = ({userId}:string|any) => {
 
     const [OldPassword, setOldPassword] = useState<string>('')
     const [NewPassword, setNewPassword] = useState<string>('')

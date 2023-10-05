@@ -19,7 +19,7 @@ const SidebarDarkLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarDarkLo
   ssr:false,
 })
 
-const Sidebar: React.FC<SidebarProps> = ({
+const Sidebar = ({
   id,
   isLoading,
   vehicle_data, 
@@ -28,14 +28,18 @@ const Sidebar: React.FC<SidebarProps> = ({
   setIsOpen,
   page,
   theme,
- }) => {
-
+ }: SidebarProps) => {
+  
   const router = useRouter();
   const { pathname } = router;
 
   useEffect(() => {
     isTab && setIsOpen(false);
   }, [pathname]);
+
+  useEffect(()=>{ 
+    !isTab && setIsOpen(true)
+  },[isTab])
 
   const addVehicle = (getPage:string) => {
     let newPage = getPage.split(" ").join('')

@@ -14,7 +14,15 @@ import GetUserDataComponent from '@/components/auth/GetUserDataComponent';
 import { VendorCountProp } from '@/utils/props';
 
 const Profile = () => {
-  const {userId,name,userEmail,vehicleData,userImage,isImageLoading} = useAppContext()
+  const {
+    userId,
+    name,
+    userEmail,
+    vehicleData,
+    userImage,
+    isImageLoading,
+    fetchUserImage
+  } = useAppContext()
   const [VendorCounts, setVendorCounts] = useState<VendorCountProp[]>([])
 
   // Getting the vehicle Data count
@@ -46,6 +54,7 @@ const Profile = () => {
           userId={userId}
           userImage={userImage}
           isImageLoading={isImageLoading}
+          fetchUserImage={fetchUserImage}
         />
         <DeleteVehicle 
           userId={userId} 

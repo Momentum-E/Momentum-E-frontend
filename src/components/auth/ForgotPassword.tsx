@@ -8,13 +8,10 @@ import {PagesLayout} from '@/layouts/'
 import AuthInput from './AuthComponents/AuthInput';
 
 const ForgotPassword = () => {
-  // AWS.config.update({ region: 'ap-south-1' });
   const [username, setUsername] = useState('');
   const [confirmationCode, setConfirmationCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [step, setStep] = useState('request');
-  // const [errorMessage, setErrorMessage] = useState('');
-  // const [success, setSuccess] = useState('');
   const router = useRouter();
 
   var userData = {
@@ -64,26 +61,6 @@ const ForgotPassword = () => {
                   Confirm OTP sent on your email to Register
                 </h2>
               </div>
-
-              {/* <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-white-100">
-                  Enter your email:
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"  
-                    name="email"
-                    type="text"
-                    required={true}
-                    autoComplete="email"
-                    className="block border-b border-[#C6DE41] px-3 py-2 text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
-              </div> */}
               <AuthInput
                   outerDiv='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'
                   labelName='Enter your email:'

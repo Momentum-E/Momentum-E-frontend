@@ -6,7 +6,7 @@ import { useTheme } from 'next-themes';
 
 const Login = () => {
 
-  const { theme, setTheme } = useTheme()
+  const { setTheme } = useTheme()
   useEffect(()=>{
     setTheme('dark')
   })

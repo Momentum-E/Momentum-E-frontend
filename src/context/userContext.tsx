@@ -23,11 +23,12 @@ type UserContextProps = {
   userId:string;
   userImage:string;
   isLoading:boolean;
-  // vehicleCalcultedData: Record<string,vehicleCalcultedDataProps>|undefined;
   vehicleCalcultedIdData: Record<string,vehicleCalcultedDataProps>|undefined;
   name:string;
   unit:string;
   isImageLoading:boolean;
+  MaxTemp:string|undefined|null;
+  MinTemp:string|undefined|null;
 
   // State Functions
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
@@ -40,6 +41,8 @@ type UserContextProps = {
   setUserCountry:React.Dispatch<React.SetStateAction<string>>;
   setuserEmail:React.Dispatch<React.SetStateAction<string>>;
   setUserImage:React.Dispatch<React.SetStateAction<string>>;
+  setMaxTemp:React.Dispatch<React.SetStateAction<string|undefined|null>>;
+  setMinTemp:React.Dispatch<React.SetStateAction<string|undefined|null>>;
 }
 
 const AppContext = createContext({} as UserContextProps);
@@ -59,11 +62,12 @@ const AppProvider = ({ children }:any) => {
   const [userEmail,setuserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
-  // const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [unit, setUnit] = useState<string>('Km')
   const [isLoading, setIsLoading] = useState(true)
-  const [isImageLoading, setIsImageLoading] = useState(true)
+  const [isImageLoading, setIsImageLoading] = useState(true)  
+  const [MaxTemp,setMaxTemp]=useState<string|undefined|null>()
+  const [MinTemp,setMinTemp]=useState<string|undefined|null>()
 
   // Hook for fetching the user details (name, location, email)
   useEffect(() => {
@@ -110,6 +114,31 @@ const AppProvider = ({ children }:any) => {
   //   }
   // },[userId])
   
+  // let [count,setCount]=useState(0)
+
+  useEffect(()=>{
+    // We need to refresh this everyday or when userLocation changes
+    const max_temp = localStorage.getItem('maxTemp')
+    const min_temp = localStorage.getItem('minTemp')
+    console.log(max_temp)
+    console.log(min_temp)
+    if(max_temp===null || max_temp==="" || min_temp===null || max_temp===""){
+      if(userLocation){
+        // setCount(count+1)
+        axios.get(`http://api.weatherapi.com/v1/forecast.json?key=4b950044e17b4d2683693010232807&q=${userLocation?.split(',')[0].replace(" ","+")}`)
+        .then((res)=>{
+          setMaxTemp(res.data.forecast.forecastday[0].day.maxtemp_c)
+          setMinTemp(res.data.forecast.forecastday[0].day.mintemp_c)
+          localStorage.setItem('maxTemp',res.data.forecast.forecastday[0].day.maxtemp_c)
+          localStorage.setItem('minTemp',res.data.forecast.forecastday[0].day.mintemp_c)
+        })
+      }
+      // console.log("count:"+count)
+      // console.log("mintemp:"+min_temp)
+      // console.log("maxtemp:"+max_temp)
+    }
+  },[userLocation,userId])
+  
   useEffect(() => {
     if(userId){
       fetchUserImage()
@@ -118,10 +147,20 @@ const AppProvider = ({ children }:any) => {
 
   const fetchUserImage = async () => {
     axios.get(`http://localhost:5000/user-data/users/image/${userId}`)
-    .then((response) => {
-      setUserImage(response.data);
+    .then(async (response) => {
       console.log("fetchUserImageResponse",response);
-      setIsImageLoading(false)
+      
+      await axios.get(response.data)
+      .then((res) => {
+        setUserImage(response.data);
+        setIsImageLoading(false)
+      })
+      .catch((error) => {
+        // setUserImage('')
+        console.log('URL does not lead to a image in S3: '+error)
+        setIsImageLoading(false)
+      })
+
     })
     .catch((error) => {
       console.log('fetchUserImage Error: \n'+error)
@@ -131,29 +170,6 @@ const AppProvider = ({ children }:any) => {
     })
   }
 
-  // Hook for getting all the vehicle Data for a particular user
-  // useEffect(()=>{
-  //   if(userId){
-  //     const getUserVehicleData = async () => {
-  //         axios.get('http://localhost:5000/vehicles/get-vehicles', {
-  //           headers: {
-  //             'user-id': userId,
-  //         },
-  //       })
-  //       .then((res) => {
-  //           setVehicleData(res.data.data)
-  //           setIsLoading(false)
-  //           setVehicleIdData(res.data[0])
-  //       })
-  //       .catch((err) => {
-  //           console.error(err);
-  //           setIsLoading(false)
-  //       });
-  //     }
-  //     getUserVehicleData();
-  //   }
-  // },[userId])
-
   // Function for getting data of a particular vehicle_Id
 
   const filteredVehicleData = (v_id:string|string[] | undefined) => {
@@ -161,10 +177,10 @@ const AppProvider = ({ children }:any) => {
       axios.get(`http://localhost:5000/user-data/users/${userId}/${v_id}`)
       .then((res) => {
         console.log(res.data)
-        // setVehicleIdData(vehicleData.filter((item:any)=>item.id===v_id)[0])
         setVehicleIdData(res.data.vehicleData)
         setVehicleCalcultedIdData(res.data.processedData)
-      }).catch((err)=>{
+      })
+      .catch((err) => {
         console.log("Error in filteredVehicleData: "+err)
       })
     }
@@ -191,7 +207,7 @@ const AppProvider = ({ children }:any) => {
       console.log(vehicleData)
       console.log(JSON.stringify(vehicleCalcultedIdData))
     } 
-  }, [userId,vehicleCalcultedIdData])
+  }, [userId])
 
 
   return (
@@ -216,7 +232,8 @@ const AppProvider = ({ children }:any) => {
       name,
       unit,
       isImageLoading,
-      // vehicleCalcultedData,
+      MaxTemp,
+      MinTemp,
 
       // State Functions
       setVehicleIdData,
@@ -228,7 +245,9 @@ const AppProvider = ({ children }:any) => {
       setUserState,
       setUserCountry,
       setuserEmail,
-      setUserImage
+      setUserImage,
+      setMaxTemp,
+      setMinTemp,
       }}>
         {children}
     </AppContext.Provider>

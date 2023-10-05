@@ -1,29 +1,17 @@
 // @ts-nocheck
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { statisticsChartsData } from '@/configs';
 import dynamic from 'next/dynamic'
-import { useAppContext } from '@/context/userContext';
 import { VehicleUsageProps } from '@/utils/props';
-import axios from 'axios';
+
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const VehicleUsage = ({
+  MaxTemp,
+  MinTemp,
+  setDistanceValue,
   unit,
 }:VehicleUsageProps ) => {
-  const {setDistanceValue,userLocation} = useAppContext()
-  let [MaxTemp,setMaxTemp]=useState()
-  let [MinTemp,setMinTemp]=useState()
-  
-  // Temporary adding here, should be only called once in a day
-  useEffect(()=>{
-    if(userLocation){
-      axios.get(`http://api.weatherapi.com/v1/forecast.json?key=4b950044e17b4d2683693010232807&q=${userLocation?.split(',')[0].replace(" ","+")}`)
-      .then((res)=>{
-        setMaxTemp(res.data.forecast.forecastday[0].day.maxtemp_c)
-        setMinTemp(res.data.forecast.forecastday[0].day.mintemp_c)
-      })
-    }
-  },[userLocation])
 
   return (
     <>  

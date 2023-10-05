@@ -1,12 +1,9 @@
 // @ts-nocheck
 import React from 'react'
 import { statisticsChartsData } from '@/configs';
+import { BatteryHealthProps } from '@/utils/props';
 import dynamic from 'next/dynamic'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
-
-type BatteryHealthProps = {
-  SoH:number|undefined;
-}
 
 const BatteryHealth = ({
   SoH,
@@ -27,7 +24,6 @@ const BatteryHealth = ({
           Estimated Degradation
           <span className='text-black dark:text-white-100 text-sm'>
             {parseFloat(100-SoH).toFixed(2)+" %"}
-            {/* 0.40 % */}
           </span>
         </p>
         <p className='flex flex-col text-sm font-medium text-gray-500'>

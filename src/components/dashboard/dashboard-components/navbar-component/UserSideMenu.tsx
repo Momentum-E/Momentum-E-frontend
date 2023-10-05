@@ -1,7 +1,6 @@
 import React,{Fragment, useContext,} from 'react'
 import  {Menu, Transition} from '@headlessui/react'
 import { useRouter } from 'next/router';
-import Image from 'next/image'
 import { UserImage } from '@/components/dashboard/profile-components/UserImage';
 import { AccountContext } from '@/context/account';
 import { useAppContext } from '@/context/userContext';
@@ -21,7 +20,14 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
 
     const router = useRouter()
     const {logout} = useContext(AccountContext);
-    const {setName,setVehicleData,setUserCity,setUserState,setUserCountry,setuserEmail,} = useAppContext()
+    const {
+        setName,
+        setVehicleData,
+        setUserCity,
+        setUserState,
+        setUserCountry,
+        setuserEmail
+    } = useAppContext()
 
     const SignOut = () => {
         logout();

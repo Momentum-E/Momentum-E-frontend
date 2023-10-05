@@ -1,16 +1,11 @@
 import React from 'react'
-
-type BasicCarData ={
-    heading: string;
-    data:string;
-    icon:any;
-}
+import { BasicCarDataProps } from '@/utils/props'
 
 const BasicCarData = ({
     heading,
     data,
     icon,
-}:BasicCarData) => {
+}:BasicCarDataProps) => {
   return (
     <div className="flex items-center space-x-3 p-2 w-full h-16 rounded-2xl border border-me-green-200 bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient ">
       {icon}
