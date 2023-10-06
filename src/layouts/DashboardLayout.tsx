@@ -18,7 +18,20 @@ const DashboardLayout = ({
 }:DashboardLayoutProps) => {
   let isTab = useMediaQuery({ query: '(max-width:640px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
-  const {isLoading, userId, vehicleData, name, userImage, isImageLoading} = useAppContext()
+  const {
+    isLoading,
+    userId, 
+    vehicleData,
+    name, 
+    userImage, 
+    isImageLoading,
+    setName,
+    setVehicleData,
+    setUserCity,
+    setUserState,
+    setUserCountry,
+    setUserEmail
+  } = useAppContext()
   const {theme, setTheme} = useTheme()
   
   useEffect(() => {
@@ -48,12 +61,18 @@ const DashboardLayout = ({
             <DashboardNavbar 
               name={name} 
               id={userId}
-              page={page===undefined?'':page}
+              page={page===undefined ? '' : page}
               isTab={isTab} 
               setIsOpen={setIsOpen} 
               isOpen={isOpen} 
               userImage={userImage}
               isImageLoading={isImageLoading}
+              setName={setName}
+              setVehicleData={setVehicleData}
+              setUserCity={setUserCity}
+              setUserState={setUserState}
+              setUserCountry={setUserCountry}
+              setUserEmail={setUserEmail}
             />
             <div className="overflow-auto max-h-full">
               {children}

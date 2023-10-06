@@ -35,8 +35,10 @@ export type YourVehicleProps = {
 }
 
 export type VehicleUsageProps ={
-  MaxTemp:string | null | undefined;
-  MinTemp:string | null | undefined;
+  temperatureData:{
+    minTemperature: number | null | undefined;
+    maxTemperature: number | null | undefined;
+  }
   unit:string;
   setDistanceValue:(val: number | undefined) => string | number | undefined
 } 
@@ -143,6 +145,12 @@ export type DashboardNavbarProps = {
   isTab:boolean;
   userImage:string;
   isImageLoading:boolean;
+  setName:React.Dispatch<React.SetStateAction<string>>;
+  setUserCity:React.Dispatch<React.SetStateAction<string>>;
+  setUserState:React.Dispatch<React.SetStateAction<string>>;
+  setUserCountry:React.Dispatch<React.SetStateAction<string>>;
+  setUserEmail:React.Dispatch<React.SetStateAction<string>>;
+  setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>;
 };
 
 export type UserSideMenuProps = {
@@ -150,6 +158,12 @@ export type UserSideMenuProps = {
   id:string;
   userImage:string;
   isImageLoading:boolean;
+  setName:React.Dispatch<React.SetStateAction<string>>;
+  setUserCity:React.Dispatch<React.SetStateAction<string>>;
+  setUserState:React.Dispatch<React.SetStateAction<string>>;
+  setUserCountry:React.Dispatch<React.SetStateAction<string>>;
+  setUserEmail:React.Dispatch<React.SetStateAction<string>>;
+  setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>;
 }
 
 export type UserImageProps ={

@@ -23,7 +23,6 @@ const ForgotPassword = () => {
   const initiateForgotPassword = async () => {
     // Should add code to implement if the email is present in the database
     // and only then run the code below
-    // Testing remaining for the code
     user.forgotPassword({
       onSuccess: function (data) {
         console.log(data);

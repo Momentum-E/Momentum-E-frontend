@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React, { Fragment, useState } from 'react';
 import { Combobox, Transition } from '@headlessui/react';
 import { SelectorProps } from '@/utils/props';
@@ -13,7 +12,7 @@ const Selector: React.FC<SelectorProps> = ({
 
   const filteredLocation =
     query === '' ? data : 
-      data.filter((value) =>
+      data.filter((value:string|any) =>
         (value.name||value)
           .toLowerCase()
           .replace(/\s+/g, '')
@@ -30,7 +29,7 @@ const Selector: React.FC<SelectorProps> = ({
             autoComplete={'id'}
             id={id}
             className="block w-full border border-[#C6DE41] px-2 py-2 text-black dark:text-white-100 bg-transparent rounded text-sm focus:outline-none focus:ring-0 sm:text-sm sm:leading-6"
-            displayValue={(value) => value.name||value}
+            displayValue={(value:string|any) => value.name||value}
             onChange={(event) => setQuery(event.target.value)}
           />
           <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -56,7 +55,7 @@ const Selector: React.FC<SelectorProps> = ({
               ) 
               : 
               (
-                filteredLocation.map((location, i) => (
+                filteredLocation.map((location:string|any, i:number) => (
                   <Combobox.Option
                     key={i}
                     className={({ active }) =>

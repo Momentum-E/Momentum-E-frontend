@@ -4,6 +4,7 @@ import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
 import { Account, AccountContext } from '@/context/account';
 import { AppProvider } from '@/context/userContext';
+import {ErrorBoundary} from '@/components/auth'
 
 export default function App({ Component, pageProps }: AppProps) {
   
@@ -14,7 +15,9 @@ export default function App({ Component, pageProps }: AppProps) {
           return (
             <ThemeProvider attribute='class'>
               <AppProvider>
-                <Component {...pageProps} accountContext={accountContext}/>
+                <ErrorBoundary>
+                  <Component {...pageProps} />
+                </ErrorBoundary> 
               </AppProvider> 
             </ThemeProvider>
           );

@@ -11,6 +11,12 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   id,
   userImage,
   isImageLoading,
+  setName,
+  setVehicleData,
+  setUserCity,
+  setUserState,
+  setUserCountry,
+  setUserEmail
 }) => {
 
   return (
@@ -77,6 +83,12 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                 name={name} 
                 id={id}
                 isImageLoading={isImageLoading}
+                setName={setName}
+                setVehicleData={setVehicleData}
+                setUserCity={setUserCity}
+                setUserState={setUserState}
+                setUserCountry={setUserCountry}
+                setUserEmail={setUserEmail}
               />
             </div>
           </div>

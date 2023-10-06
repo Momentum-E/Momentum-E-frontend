@@ -7,8 +7,7 @@ import { VehicleUsageProps } from '@/utils/props';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const VehicleUsage = ({
-  MaxTemp,
-  MinTemp,
+  temperatureData,
   setDistanceValue,
   unit,
 }:VehicleUsageProps ) => {
@@ -40,7 +39,7 @@ const VehicleUsage = ({
             <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               Temperature High/Low
               <span className='text-black dark:text-white-100 text-sm'>
-                {MaxTemp}&deg;C / {MinTemp}&deg;C
+                {temperatureData.maxTemperature}&deg;C / {temperatureData.minTemperature}&deg;C
               </span>
             </p>
           </div>

@@ -1,4 +1,3 @@
-// @ts-nochec
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AccountContext } from './account';
@@ -27,8 +26,10 @@ type UserContextProps = {
   name:string;
   unit:string;
   isImageLoading:boolean;
-  MaxTemp:string|undefined|null;
-  MinTemp:string|undefined|null;
+  temperatureData: {
+    minTemperature: number | null | undefined;
+    maxTemperature: number | null | undefined;
+  };
 
   // State Functions
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
@@ -39,10 +40,12 @@ type UserContextProps = {
   setUserCity:React.Dispatch<React.SetStateAction<string>>;
   setUserState:React.Dispatch<React.SetStateAction<string>>;
   setUserCountry:React.Dispatch<React.SetStateAction<string>>;
-  setuserEmail:React.Dispatch<React.SetStateAction<string>>;
+  setUserEmail:React.Dispatch<React.SetStateAction<string>>;
   setUserImage:React.Dispatch<React.SetStateAction<string>>;
-  setMaxTemp:React.Dispatch<React.SetStateAction<string|undefined|null>>;
-  setMinTemp:React.Dispatch<React.SetStateAction<string|undefined|null>>;
+  setTemperatureData: React.Dispatch<React.SetStateAction<{
+    minTemperature: number | null | undefined;
+    maxTemperature: number | null | undefined;
+  }>>
 }
 
 const AppContext = createContext({} as UserContextProps);
@@ -59,19 +62,24 @@ const AppProvider = ({ children }:any) => {
   const [userCountry, setUserCountry] = useState<string>("");
   const [userLocation, setUserLocation] = useState<string>("");
   const [userImage, setUserImage] = useState<string>("")
-  const [userEmail,setuserEmail] = useState<string>("")
+  const [userEmail,setUserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
   const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [unit, setUnit] = useState<string>('Km')
   const [isLoading, setIsLoading] = useState(true)
   const [isImageLoading, setIsImageLoading] = useState(true)  
-  const [MaxTemp,setMaxTemp]=useState<string|undefined|null>()
-  const [MinTemp,setMinTemp]=useState<string|undefined|null>()
+  const [temperatureData, setTemperatureData] = useState<{
+    minTemperature: number | null | undefined;
+    maxTemperature: number | null | undefined;
+  }>({
+    minTemperature: null,
+    maxTemperature: null,
+  });
 
-  // Hook for fetching the user details (name, location, email)
+  // Hook for fetching the user details
   useEffect(() => {
-    const fetchuserdetails = async () => {
+    const fetchUserDetails = async () => {
       try {
         const session = await getSession();
         const userid = session.idToken.payload.sub;
@@ -90,7 +98,7 @@ const AppProvider = ({ children }:any) => {
           :response.data.city === "" ? response.data.state + ", " + response.data.country 
           :response.data.city + ", " + response.data.country
         }`)
-        setuserEmail(response.data.email)
+        setUserEmail(response.data.email)
         if(userId){
           setVehicleData(response.data.vehicles)
           setVehicleIdData(response.data.vehicles[0])
@@ -102,7 +110,7 @@ const AppProvider = ({ children }:any) => {
         console.error('Error, no user (userContext):', error);
       }
     };
-    fetchuserdetails();
+    fetchUserDetails();
   }, [userId]);
 
   // useEffect(()=>{
@@ -113,32 +121,44 @@ const AppProvider = ({ children }:any) => {
   //     }
   //   }
   // },[userId])
-  
-  // let [count,setCount]=useState(0)
 
   useEffect(()=>{
-    // We need to refresh this everyday or when userLocation changes
-    const max_temp = localStorage.getItem('maxTemp')
-    const min_temp = localStorage.getItem('minTemp')
-    console.log(max_temp)
-    console.log(min_temp)
-    if(max_temp===null || max_temp==="" || min_temp===null || max_temp===""){
+    const getTemperatureData = async () => {
+      const storedDate = localStorage.getItem('tempCollectedDate');
+      const currentDate = new Date().toISOString();
       if(userLocation){
-        // setCount(count+1)
-        axios.get(`http://api.weatherapi.com/v1/forecast.json?key=4b950044e17b4d2683693010232807&q=${userLocation?.split(',')[0].replace(" ","+")}`)
-        .then((res)=>{
-          setMaxTemp(res.data.forecast.forecastday[0].day.maxtemp_c)
-          setMinTemp(res.data.forecast.forecastday[0].day.mintemp_c)
-          localStorage.setItem('maxTemp',res.data.forecast.forecastday[0].day.maxtemp_c)
-          localStorage.setItem('minTemp',res.data.forecast.forecastday[0].day.mintemp_c)
-        })
+        if (!storedDate || (storedDate <= currentDate)) {
+          // Fetch data from the API
+          const res = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=4b950044e17b4d2683693010232807&q=${userLocation?.split(',')[0].replace(" ","+")}`)
+          // .then((data) => {
+            const data = {
+              minTemperature: res.data.forecast.forecastday[0].day.mintemp_c,
+              maxTemperature: res.data.forecast.forecastday[0].day.maxtemp_c,
+            }
+            // Update state with API data
+            setTemperatureData(data);
+    
+            // Update local storage with new data and current date
+            localStorage.setItem('temperatureData', JSON.stringify(data));
+            localStorage.setItem('tempCollectedDate', currentDate);
+          // });
+        } else {
+          // Fetch data from local storage
+          // const dataFromLocalStorage = fetchDataFromLocalStorage();
+          const storedData  = localStorage.getItem('temperatureData');
+          if(storedData){
+            setTemperatureData(JSON.parse(storedData));
+          }
+          else{
+            console.log('No temperature data found in local storage.')
+            return
+          }
+        }
       }
-      // console.log("count:"+count)
-      // console.log("mintemp:"+min_temp)
-      // console.log("maxtemp:"+max_temp)
     }
-  },[userLocation,userId])
-  
+    getTemperatureData()
+  },[userLocation])
+
   useEffect(() => {
     if(userId){
       fetchUserImage()
@@ -171,7 +191,6 @@ const AppProvider = ({ children }:any) => {
   }
 
   // Function for getting data of a particular vehicle_Id
-
   const filteredVehicleData = (v_id:string|string[] | undefined) => {
     if(vehicleData.length > 0){
       axios.get(`http://localhost:5000/user-data/users/${userId}/${v_id}`)
@@ -205,7 +224,8 @@ const AppProvider = ({ children }:any) => {
       console.log("userId: "+userId)
       console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
       console.log(vehicleData)
-      console.log(JSON.stringify(vehicleCalcultedIdData))
+      console.log("mintemp: "+JSON.stringify(temperatureData))
+      // console.log("maxtemp:"+MaxTemp)
     } 
   }, [userId])
 
@@ -232,8 +252,7 @@ const AppProvider = ({ children }:any) => {
       name,
       unit,
       isImageLoading,
-      MaxTemp,
-      MinTemp,
+      temperatureData,
 
       // State Functions
       setVehicleIdData,
@@ -244,10 +263,9 @@ const AppProvider = ({ children }:any) => {
       setUserCity,
       setUserState,
       setUserCountry,
-      setuserEmail,
+      setUserEmail,
       setUserImage,
-      setMaxTemp,
-      setMinTemp,
+      setTemperatureData
       }}>
         {children}
     </AppContext.Provider>

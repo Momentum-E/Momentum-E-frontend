@@ -16,18 +16,24 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
     id,
     userImage,
     isImageLoading,
+    setName,
+    setVehicleData,
+    setUserCity,
+    setUserState,
+    setUserCountry,
+    setUserEmail
 }) => {
 
     const router = useRouter()
     const {logout} = useContext(AccountContext);
-    const {
-        setName,
-        setVehicleData,
-        setUserCity,
-        setUserState,
-        setUserCountry,
-        setuserEmail
-    } = useAppContext()
+    // const {
+    //     setName,
+    //     setVehicleData,
+    //     setUserCity,
+    //     setUserState,
+    //     setUserCountry,
+    //     setUserEmail
+    // } = useAppContext()
 
     const SignOut = () => {
         logout();
@@ -37,7 +43,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
         setUserCity("")
         setUserState("")
         setUserCountry("")
-        setuserEmail('')
+        setUserEmail('')
     };
     
     return (

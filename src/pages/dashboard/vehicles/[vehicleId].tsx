@@ -20,8 +20,8 @@ const VehicleDashboardContent = () => {
     isLoading,
     unit, 
     vehicleIdData,
-    MaxTemp,
-    MinTemp,
+    temperatureData,
+    vehicleCalcultedIdData,
     setDistanceValue, 
     filteredVehicleData,
   } = useAppContext()
@@ -121,8 +121,9 @@ const VehicleDashboardContent = () => {
                   <div className=" h-[600px] md:h-[445px] flex flex-col p-3 space-y-3 text-gray-400 text-lg font-medium rounded-2xl border border-me-green-200 bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
                     <p className="flex flex-col text-lg text-gray-400">Usage</p>  
                       <VehicleUsage 
-                        MaxTemp={MaxTemp}
-                        MinTemp={MinTemp}
+                        // MaxTemp={MaxTemp}
+                        // MinTemp={MinTemp}
+                        temperatureData={temperatureData}
                         setDistanceValue={setDistanceValue}
                         unit={unit}
                       />
