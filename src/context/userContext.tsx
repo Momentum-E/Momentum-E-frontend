@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AccountContext } from './account';
 import { vehicleDataProps, vehicleCalcultedDataProps } from '@/utils/props';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
 type UserContextProps = {
@@ -22,7 +22,7 @@ type UserContextProps = {
   userId:string;
   userImage:string;
   isLoading:boolean;
-  vehicleCalcultedIdData: Record<string,vehicleCalcultedDataProps>|undefined;
+  vehicleCalcultedIdData: vehicleCalcultedDataProps|undefined;
   name:string;
   unit:string;
   isImageLoading:boolean;
@@ -51,8 +51,8 @@ type UserContextProps = {
 const AppContext = createContext({} as UserContextProps);
 
 const AppProvider = ({ children }:any) => {
-  const router = useRouter();
-  const { getSession }:any = useContext(AccountContext);
+  // const router = useRouter();
+  const { getSession } = useContext(AccountContext);
 
   const [userId, setUserId] = useState<string>("");
   const [name, setName] = useState<string>('');
@@ -65,7 +65,7 @@ const AppProvider = ({ children }:any) => {
   const [userEmail,setUserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
-  const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<Record<string,vehicleCalcultedDataProps>>()
+  const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
   const [unit, setUnit] = useState<string>('Km')
   const [isLoading, setIsLoading] = useState(true)
   const [isImageLoading, setIsImageLoading] = useState(true)  
@@ -81,7 +81,7 @@ const AppProvider = ({ children }:any) => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const session = await getSession();
+        const session:any = await getSession();
         const userid = session.idToken.payload.sub;
         setUserId(userid); 
         const response = await axios.get(
@@ -102,6 +102,8 @@ const AppProvider = ({ children }:any) => {
         if(userId){
           setVehicleData(response.data.vehicles)
           setVehicleIdData(response.data.vehicles[0])
+
+          // Setting vehicleCalcultedIdData as the first vehicle in the list
           setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
           setIsLoading(false)
         }
@@ -224,8 +226,8 @@ const AppProvider = ({ children }:any) => {
       console.log("userId: "+userId)
       console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
       console.log(vehicleData)
-      console.log("mintemp: "+JSON.stringify(temperatureData))
-      // console.log("maxtemp:"+MaxTemp)
+      // console.log("mintemp: "+JSON.stringify(temperatureData))
+      // console.log(vehicleCalcultedIdData)
     } 
   }, [userId])
 
@@ -272,12 +274,12 @@ const AppProvider = ({ children }:any) => {
   );
 };
 
-const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (!context) {
-    throw new Error('useAppContext must be used within the AppProvider');
-  }
-  return context;
-};
+// const useAppContext = () => {
+//   const context = useContext(AppContext);
+//   if (!context) {
+//     throw new Error('useAppContext must be used within the AppProvider');
+//   }
+//   return context;
+// };
 
-export { AppProvider, useAppContext };
+export { AppProvider, AppContext };

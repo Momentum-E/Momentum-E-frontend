@@ -10,12 +10,12 @@ type UploadUserImageProps ={
     fetchUserImage:() => Promise<void>;
 }
 
-const UploadUserImage = ({
+const UploadUserImage:React.FC<UploadUserImageProps>  = ({
     userId,
     userImage,
     isImageLoading,
     fetchUserImage
-}:UploadUserImageProps) => {
+}) => {
     const onSelectFile = async (event:any) => {
         
         const imageFile = event.target.files[0]

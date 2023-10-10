@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { City, Country, State } from 'country-state-city';
@@ -11,11 +11,11 @@ import {
   AuthSelector
 } from '@/components/auth/AuthComponents';
 import { GetUserDataComponentProps } from '@/utils/props';
-import { useAppContext } from '@/context/userContext';
+import { AppContext } from '@/context/userContext';
 
 const owner_type = [{ type: 'Individual Owner' }, { type: 'Fleet Owner' }];
 
-const GetUserDataComponent = ({
+const GetUserDataComponent:React.FC<GetUserDataComponentProps> = ({
   isRequired,
   heading,
   page,
@@ -23,10 +23,10 @@ const GetUserDataComponent = ({
   userEmail,
   formDiv,
   buttonName,
-}:GetUserDataComponentProps) => {
+}) => {
   const countryData = Country.getAllCountries();
   const router = useRouter();
-  const {name, userOwnerType ,userCity,userState,userCountry} = useAppContext()
+  const {name, userOwnerType ,userCity,userState,userCountry} = useContext(AppContext)
   
   const [Name, setName] = useState('');
   const [ownerType, setOwnerType] = useState<{type:string}>(page==='profile'?{type:userOwnerType}:owner_type[0]);

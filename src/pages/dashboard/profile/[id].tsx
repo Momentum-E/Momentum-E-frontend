@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppContext } from '@/context/userContext';
+import { AppContext } from '@/context/userContext';
 
 import { DashboardLayout } from '@/layouts';
 import {
@@ -22,7 +22,7 @@ const Profile = () => {
     userImage,
     isImageLoading,
     fetchUserImage
-  } = useAppContext()
+  } = useContext(AppContext)
   const [VendorCounts, setVendorCounts] = useState<VendorCountProp[]>([])
 
   // Getting the vehicle Data count
@@ -49,30 +49,32 @@ const Profile = () => {
 
   return (
     <DashboardLayout page={` profile / ${name}`}>
-      <div className="max-h-full flex flex-col items-center max-w-xl w-full mx-auto space-y-10 px-2 md:px-0 pt-10 pb-20 overflow-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
-        <UploadUserImage
-          userId={userId}
-          userImage={userImage}
-          isImageLoading={isImageLoading}
-          fetchUserImage={fetchUserImage}
-        />
-        <DeleteVehicle 
-          userId={userId} 
-          VendorCounts={VendorCounts}
-        /> 
-        <div className=" border border-me-green-200 p-4 rounded-xl w-full">
-          <GetUserDataComponent
-            isRequired={false}
-            heading={'Update Data'}
-            page={'profile'}
+      <div className="max-h-full overflow-auto">
+        <div className="max-w-xl w-full mx-auto flex flex-col items-center space-y-10 px-2 md:px-0 pt-10 pb-20 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
+          <UploadUserImage
             userId={userId}
-            userEmail={userEmail}
-            formDiv=''
-            buttonName={'Update Details'}
+            userImage={userImage}
+            isImageLoading={isImageLoading}
+            fetchUserImage={fetchUserImage}
           />
-        </div>   
-        <ChangeUserPassword userId={userId} />    
-        <DeleteUser name={name} userId={userId}/>     
+          <DeleteVehicle 
+            userId={userId} 
+            VendorCounts={VendorCounts}
+          /> 
+          <div className=" border border-me-green-200 p-4 rounded-xl w-full">
+            <GetUserDataComponent
+              isRequired={false}
+              heading={'Update Data'}
+              page={'profile'}
+              userId={userId}
+              userEmail={userEmail}
+              formDiv=''
+              buttonName={'Update Details'}
+            />
+          </div>   
+          <ChangeUserPassword userId={userId} />    
+          <DeleteUser name={name} userId={userId}/>     
+        </div>
       </div>
       <ToastContainer />
     </DashboardLayout>

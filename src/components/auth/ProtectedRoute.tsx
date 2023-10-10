@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 // import { useRouter } from 'next/router';
 import { redirect } from 'next/navigation'
-import { AccountContext } from '../../context/account';
+import { AccountContext } from '@/context/account';
 
 const ProtectedRoute = ({ children }: any) => {
   const { getSession } = useContext(AccountContext);
@@ -22,9 +22,9 @@ const ProtectedRoute = ({ children }: any) => {
   }, [getSession]);
 
   return (
-    <div>
+    <>
       {children}
-    </div>
+    </>
   )
 };
 

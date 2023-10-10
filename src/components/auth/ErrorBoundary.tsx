@@ -1,4 +1,5 @@
-import { redirect } from "next/navigation";
+// @ts-nocheck
+import { useRouter } from "next/router";
 import React from "react"
 
 type ErrorBoundaryProps = {
@@ -7,16 +8,17 @@ type ErrorBoundaryProps = {
 
 
 class ErrorBoundary extends React.Component {
-    constructor(props:ErrorBoundaryProps ) {
-        super(props)
-        
-        // Define a state variable to track whether is an error or not
-        this.state = { hasError: false }
-    }
-    
-    handleError() {
-        this.setState({ hasError: false })
-        redirect('/')
+  constructor(props:ErrorBoundaryProps ) {
+    super(props)
+    // Define a state variable to track whether is an error or not
+    this.state = { hasError: false }
+  }
+  
+  handleError() {
+      this.setState({ hasError: false })
+      // redirect('/')
+      const router = useRouter()
+      router.push('/')
     }
 
     static getDerivedStateFromError(error:any) {

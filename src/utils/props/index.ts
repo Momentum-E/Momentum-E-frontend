@@ -95,38 +95,41 @@ export type vehicleDataProps = {
   }
 };
 
-export interface vehicleCalcultedDataProps {
-  avgDailyMiles: {
-    avgValue: number;
-    currentOdometerReading: number;
-    prevMonthOdometerReading: number | null;
-  };
-  certifiedRange: number;
-  chargeRateData: {
-    avgChargingRate: number;
-    currentChargeRate: number | null;
-  };
-  connectorType: string;
-  rangeData: {
-    avgRealRange: number;
-    currentRange: number;
-    maxRange: number;
-    minRange: number | null;
-  };
-  socData: {
-    avgValue: number;
-    max: number;
-    min: number;
-  };
-  soh: number;
-  temperatureRange: {
-    max: number;
-    min: number;
-  };
-  totalChargingSessions: number;
+export type vehicleCalcultedDataProps = {
+  connectorType:string|null;
+  avgDailyMiles:
+  {
+    // avgDistancePrevMonths:[null,null,null,null,null,null,null,null,null,null,null,null]
+    avgDistancePrevMonths:number[]|null[]
+    avgValue:number|null
+    prevMonthOdometerReading:number|null
+    currentOdometerReading:number|null
+  }
+  totalChargingSessions:number|null
+  socData:{
+    avgValue:number|null
+    max:number|null
+    min:number|null
+  }
+  certifiedRange:number|null
+  rangeData:
+  {
+    currentRange:number|null
+    maxRange:number|null
+    avgRealRange:number|null
+    minRange:number|null
+  }
+  soh:number|null
+  chargeRateData:{
+    totalEnergyConsumed:number|null
+    chargeStartTime:null|Date|any
+    chargeEndTime:null|Date|any
+    avgChargingRate:number|null
+    currentChargeRate:number|null
+  }
 }
 
-export type VendorCountProp = {
+  export type VendorCountProp = {
   vendor:string;
   count:number;
 }

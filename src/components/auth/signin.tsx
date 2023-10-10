@@ -1,14 +1,14 @@
-import React, { useState, useContext } from 'react';
-import { AccountContext } from '../../context/account';
+import React, { useState } from 'react';
+import { useAccountContext } from '@/context/account';
 import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import { useRouter } from 'next/router';
+
 import ConfirmSignup from '@/pages/auth/confirmSignup';
 import AuthInput from '@/components/auth/AuthComponents/AuthInput';
 
 const SignIn = () => {
-  const { authenticate } = useContext(AccountContext);
+  const { authenticate } = useAccountContext();
   
   // const router = useRouter();
   const [userConfirmed, setUserConfirmed] = useState(true)

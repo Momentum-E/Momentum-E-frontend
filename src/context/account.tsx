@@ -1,12 +1,20 @@
 import { toast } from 'react-toastify';
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import Pool from './user-pool/user-pool';
 import axios from 'axios';
 
-const AccountContext = createContext();
+type AccountContextProps = {
+  isAuthenticated:boolean;
+  authenticate:(Username: string, Password: string) => Promise<void>;
+  getSession:() => Promise<unknown>;
+  DeleteUserAccount:(username: string, password: string) => Promise<void>;
+  logout: () => void;
+}
 
-const Account = ({ children }) => {
+const AccountContext = createContext({} as AccountContextProps);
+
+const AccountProvider = ({ children }:any) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -17,7 +25,7 @@ const Account = ({ children }) => {
     try {
       const user = Pool.getCurrentUser();
       if (user) {
-        await getSession(user);
+        await getSession();
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
@@ -31,7 +39,7 @@ const Account = ({ children }) => {
     return await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser();
       if (user) {
-        user.getSession((err, session) => {
+        user.getSession((err:any, session:any) => {
           if (err) {
             reject();
           } else {
@@ -45,7 +53,7 @@ const Account = ({ children }) => {
     });
   };
 
-  const authenticate = async (Username, Password) => {
+  const authenticate = async (Username:string, Password:string) => {
     await new Promise((resolve, reject) => {
       const user = new CognitoUser({ Username, Pool });
 
@@ -56,9 +64,11 @@ const Account = ({ children }) => {
           console.log('onSuccess: ', data);
           resolve(data);
           setIsAuthenticated(true);
+
           window.history.replaceState({
             fromHashChange: true
-          }, null,'/dashboard');
+          }, '/dashboard');
+
           window.location.reload()
         },
         onFailure: (err) => {
@@ -74,7 +84,7 @@ const Account = ({ children }) => {
     });
   };
 
-  const DeleteUserAccount = async (username,password) => {
+  const DeleteUserAccount = async (username:string,password:string) => {
     const user = new CognitoUser({ Username: username, Pool });
     const authDetails = new AuthenticationDetails({ Username: username, Password: password });
 
@@ -133,15 +143,23 @@ const Account = ({ children }) => {
 
   return (
     <AccountContext.Provider value={{
-      isAuthenticated,
-      authenticate,
-      getSession,
-      DeleteUserAccount,
-      logout 
+        isAuthenticated,
+        authenticate,
+        getSession,
+        DeleteUserAccount,
+        logout 
       }}>
       {children}
     </AccountContext.Provider>
   );
 };
 
-export { Account, AccountContext };
+const useAccountContext = () => {
+  const context = useContext(AccountContext);
+  if (!context) {
+    throw new Error('useAccountContext must be used within the AppProvider');
+  }
+  return context;
+};
+
+export { AccountProvider, AccountContext, useAccountContext };

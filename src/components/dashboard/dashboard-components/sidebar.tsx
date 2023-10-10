@@ -37,10 +37,6 @@ const Sidebar = ({
     isTab && setIsOpen(false);
   }, [pathname]);
 
-  useEffect(()=>{ 
-    !isTab && setIsOpen(true)
-  },[isTab])
-
   const addVehicle = (getPage:string) => {
     let newPage = getPage.split(" ").join('')
     if(newPage === ''){
@@ -60,7 +56,7 @@ const Sidebar = ({
   };
 
   return (
-    <div className="">
+    <>
       <div
         className={`${!isOpen ? `hidden ` : `block `} fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50 `}
         onClick={() => setIsOpen(false)}
@@ -119,7 +115,7 @@ const Sidebar = ({
           page={page}
         />
       </div>
-    </div>
+    </>
   );
 };
 

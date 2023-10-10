@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react'
-import { useAppContext } from '@/context/userContext';
+import React, { useContext, useEffect } from 'react'
+import { AppContext } from '@/context/userContext';
 
 import { DashboardLayout } from '@/layouts/';
 import {
@@ -10,6 +10,7 @@ import {
   VehicleInfo,
   ChargingPattern
 } from '@/components/dashboard/vehicle-components/vehicle-card-components';
+import { MainCard } from '@/components/dashboard/vehicle-components/VehicleCard';
 
 const VehicleDashboardContent = () => {
   const router = useRouter();
@@ -24,7 +25,8 @@ const VehicleDashboardContent = () => {
     vehicleCalcultedIdData,
     setDistanceValue, 
     filteredVehicleData,
-  } = useAppContext()
+  } = useContext(AppContext)
+  
   let SoH=99.6
 
   useEffect(()=>{
@@ -80,70 +82,69 @@ const VehicleDashboardContent = () => {
                 </div>
         
                 {/* Vehicle Content block 2*/}
-                <div className="flex-row  space-y-4 lg:flex md:flex-row lg:space-y-0 gap-4">
-                  <div className="lg:w-[50%] h-80 flex flex-col justify-between p-3 space-y-3 rounded-2xl border border-me-green-200 bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient ">
-                    <p className='flex flex-col text-lg text-gray-400'>Vehicle Info</p>
-                    <VehicleInfo 
-                      Odometer={vehicleIdData?.odometer?.distance}
-                      Brand={vehicleIdData?.information?.brand}
-                      Model={vehicleIdData?.information?.model}
-                      Year={vehicleIdData?.information?.year}
-                      Vin={vehicleIdData?.information?.vin}
-                      unit={unit}
-                      batterCapacity={vehicleIdData?.chargeState?.batteryCapacity}
-                      setDistanceValue={setDistanceValue}
-                    />
-                  </div>
+                <div className="flex-row space-y-4 lg:flex md:flex-row lg:space-y-0 gap-4">
+
+                  <MainCard
+                    divContent='lg:w-[50%] h-80'
+                    CardName={'Vehicle Info'}
+                    VehicleComponent={
+                      <VehicleInfo 
+                        Odometer={vehicleIdData?.odometer?.distance}
+                        Brand={vehicleIdData?.information?.brand}
+                        Model={vehicleIdData?.information?.model}
+                        Year={vehicleIdData?.information?.year}
+                        Vin={vehicleIdData?.information?.vin}
+                        unit={unit}
+                        batterCapacity={vehicleIdData?.chargeState?.batteryCapacity}
+                        setDistanceValue={setDistanceValue}
+                      />
+                    }
+                    SideBlockPresent={false}
+                  />
         
-                  <div className="lg:w-[50%] flex flex-0 flex-col justify-between p-3 h-80 text-xl text-gray-400 font-medium border border-me-green-200 rounded-2xl bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
-                    <div className="w-full flex justify-between text-lg font-medium text-gray-400">
-                      <p className='flex flex-col text-lg text-gray-400'>
-                        Charging Pattern
-                      </p>
-                      <div className="flex flex-col items-center text-xs p-1 rounded-lg border border-me-green-200 dark:border-white-100 bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient">
-                        Total Energy Consumed
-                        <span className='text-me-green-100 dark:text-me-green-200'>
-                          {400} kW
-                        </span>
-                      </div>
-                    </div>
+                  <MainCard
+                    divContent='h-80 lg:w-[50%] '
+                    CardName={'Charging Pattern'}
+                    VehicleComponent=
+                    {
                       <ChargingPattern
                         avgSoC={vehicleIdData?.chargeState?.batteryLevel}
                         chargeRate={vehicleIdData?.chargeState?.chargeRate}
                       />
-                  </div>
+                    }
+                    SideBlockPresent={true}
+                    SideBlockHeading={'Total Energy Consumed'}
+                    SideBlockData={vehicleCalcultedIdData?.chargeRateData.totalEnergyConsumed}
+                    SideBlockUnit='kW'
+                  />
                 </div>
                 
                 {/* Vehicle Content block 3*/}
                 <div className="lg:grid lg:grid-cols-2 lg:space-y-0 grid-col-1 space-y-4 gap-4">
-        
-                  {/* Usage */}
-                  <div className=" h-[600px] md:h-[445px] flex flex-col p-3 space-y-3 text-gray-400 text-lg font-medium rounded-2xl border border-me-green-200 bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient">
-                    <p className="flex flex-col text-lg text-gray-400">Usage</p>  
+                  
+                  <MainCard
+                    divContent=' space-y-3 '
+                    CardName={'Usage'}
+                    VehicleComponent={
                       <VehicleUsage 
-                        // MaxTemp={MaxTemp}
-                        // MinTemp={MinTemp}
                         temperatureData={temperatureData}
                         setDistanceValue={setDistanceValue}
                         unit={unit}
                       />
-                  </div>
-        
-                    {/* Avg Daily Miles */}
-                  <div className="h-[445px] space-y-5 flex flex-col items-end p-3 rounded-2xl bg-gradient-to-br from-white-100 to-gray-200/50 dark:bg-dashboard-gradient border border-me-green-200">
-                    <div className="w-full flex justify-between text-lg font-medium text-gray-400">
-                      <p className='flex flex-col text-lg text-gray-400'>
-                        Battery Health
-                      </p>
-                      <div className="w-24 flex flex-col items-center text-xs p-1 rounded-lg border border-me-green-200 dark:border-white-100 bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient">
-                        SoH
-                        <span className='text-me-green-100 dark:text-me-green-200'>
-                          {SoH}%
-                        </span>
-                      </div>
-                    </div>
-                    <BatteryHealth SoH={SoH}/>
-                  </div>
+                    }
+                    SideBlockPresent={false}
+                  />
+
+                  <MainCard
+                    divContent='h-[445px] space-y-5'
+                    CardName={'Battery Health'}
+                    VehicleComponent={ <BatteryHealth SoH={SoH}/> }
+                    SideBlockPresent={true}
+                    SideBlockHeading={'Total Energy Consumed'}
+                    SideBlockData={vehicleCalcultedIdData?.soh}
+                    SideBlockUnit='%'
+                  />
+
                 </div>
               </div>
             </div>

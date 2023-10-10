@@ -20,7 +20,7 @@ const  VehicleInfo = ({
 
   return (
     <>
-      <p className='dark:text-white-100 text-lg'>  
+      <p className='dark:text-white-100 text-black text-lg'>  
         {`${monthNames[monthIndex]} ${monthYear}`} Report
       </p>
       <div className='h-full flex justify-between pt-2'> 

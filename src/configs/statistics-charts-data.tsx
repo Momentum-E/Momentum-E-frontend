@@ -1,13 +1,18 @@
 import { chartsConfig } from "@/configs";
+import { AppContext } from '@/context/userContext';
+import { useContext } from "react";
 
-const AvgDailyMiles = {
+const StatisticsChartsData = () => {
+  const { vehicleCalcultedIdData } = useContext(AppContext);
+
+  const AvgDailyMiles = {
     type: "bar",
     height:'100%',
     width:'100%',
     series: [
       {
         name: "Miles",
-        data: [106, 95, 102],
+        data: vehicleCalcultedIdData?.avgDailyMiles.avgDistancePrevMonths,
       },
     ],
     options: {
@@ -21,11 +26,11 @@ const AvgDailyMiles = {
       },
       xaxis: {
         ...chartsConfig.xaxis,
-        categories: ["Jan", "Feb", "Mar"],
+        categories: ["Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
       },
     },
   };
-  
+
   const BatteryHealth = {
     type: "area",
     height:'100%',
@@ -74,20 +79,19 @@ const AvgDailyMiles = {
           "May",
           "Jun",
           "Jul",
-          // "Aug",
-          // "Sep",
-          // "Oct",
-          // "Nov",
-          // "Dec",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
         ],
       },
     },
   };
-  
-  
-export const statisticsChartsData = [
+    
+  const statisticsChartsData = [
     {
-      title: "Avg Distance Driven (3 months)",
+      title: "Avg Distance Driven",
       chart: AvgDailyMiles,
     },
     {
@@ -95,3 +99,8 @@ export const statisticsChartsData = [
       chart: BatteryHealth,
     },
   ];
+    
+  return statisticsChartsData;
+};
+
+export default StatisticsChartsData;

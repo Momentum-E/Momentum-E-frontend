@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DashboardLayoutProps } from '@/utils/props';
 import { useMediaQuery } from 'react-responsive';
 import { useTheme } from 'next-themes';
-import { useAppContext } from '@/context/userContext';
+import { AppContext } from '@/context/userContext';
 import SetValue from '@/components/dashboard/set-values-component/SetValue';
 
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
@@ -16,7 +16,7 @@ const DashboardLayout = ({
   children,
   page,
 }:DashboardLayoutProps) => {
-  let isTab = useMediaQuery({ query: '(max-width:640px)' });
+  const isTab = useMediaQuery({ query: '(max-width:767px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
   const {
     isLoading,
@@ -31,17 +31,20 @@ const DashboardLayout = ({
     setUserState,
     setUserCountry,
     setUserEmail
-  } = useAppContext()
+  } = useContext(AppContext)
   const {theme, setTheme} = useTheme()
   
   useEffect(() => {
-    if (isTab) {
-      setIsOpen(false);
-    } else {
-      setIsOpen(true);
-    }
+    isTab ? 
+      setIsOpen(false)
+    :
+      setIsOpen(true)
+    // console.log(isTab)
+  }, [isTab]);
+
+  useEffect(() => {
     setTheme(theme||'dark')
-  }, [isTab,theme]);
+  },[theme])
 
   return (
     <ProtectedRoute>
@@ -74,10 +77,8 @@ const DashboardLayout = ({
               setUserCountry={setUserCountry}
               setUserEmail={setUserEmail}
             />
-            <div className="overflow-auto max-h-full">
               {children}
               <SetValue/> 
-            </div>
           </div>
         </div>
       </div>
