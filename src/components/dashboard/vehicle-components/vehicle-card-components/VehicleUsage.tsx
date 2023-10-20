@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react'
 import statisticsChartsData from '@/configs/statistics-charts-data';
 import dynamic from 'next/dynamic'
@@ -7,6 +6,13 @@ import { VehicleUsageProps } from '@/utils/props';
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const VehicleUsage = ({
+  avgDailyDistance,
+  SoCMinRange,
+  SoCMaxRange,
+  avgRealRangeObserved,
+  minRange,
+  maxRange,
+  certifiedRange,
   temperatureData,
   setDistanceValue,
   unit,
@@ -17,16 +23,17 @@ const VehicleUsage = ({
   return (
     <>  
         <div className="h-1/3 md:h-2/3 p-1.5 rounded-xl border border-me-green-100 bg-[#F6F6F6] dark:bg-me-green-300">
-          <span className=" text-sm text-gray-500">
+          <span className="text-sm text-gray-500">
             {chartData[0].title} 
           </span>
           <div className="text-black">
             <Chart 
+              type={"bar"}
               height={chartData[0].chart.height} 
               width={chartData[0].chart.width} 
-              type={chartData[0].chart.type}
               options={chartData[0].chart.options} 
-              series={chartData[0].chart.series}/>
+              series={chartData[0].chart.series}
+            />
           </div>  
         </div>
         <div className="flex h-2/3 flex-col gap-4 md:flex-row justify-between">
@@ -34,7 +41,7 @@ const VehicleUsage = ({
             <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               Avg Daily {unit} Driven
               <span className='text-black dark:text-white-100 text-sm'>
-                {` ${setDistanceValue(102)} `}
+                {` ${setDistanceValue(avgDailyDistance)} `}
               </span>
             </p>
             
@@ -50,14 +57,14 @@ const VehicleUsage = ({
             <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               SoC Range
               <span className='text-black dark:text-white-100 text-sm'>
-                {`${20}% - ${80}%`}
+                {`${SoCMinRange}% - ${SoCMaxRange}%`}
               </span>
             </p>
             
             <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               Range Observed Max/Min ( {unit} )
               <span className='text-black dark:text-white-100 text-sm'>
-                {`${setDistanceValue(300)} / ${setDistanceValue(220)}`}
+                {`${setDistanceValue(minRange)} / ${setDistanceValue(maxRange)}`}
               </span>
             </p>
           </div>
@@ -66,7 +73,7 @@ const VehicleUsage = ({
             <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
               Avg Real Range Observed
               <span className='text-black dark:text-white-100 text-sm'>
-                {`${setDistanceValue(260)} ${unit}`}
+                {`${setDistanceValue(avgRealRangeObserved)} ${unit}`}
               </span>
             </p>
 
@@ -74,10 +81,10 @@ const VehicleUsage = ({
               Observed v/s EPA/WLTP provided
               <span className="flex w-full justify-between">
                 <span className='w-full text-left text-black dark:text-white-100 text-sm'>
-                  {setDistanceValue(260)} {unit}
+                  {setDistanceValue(avgRealRangeObserved)} {unit}
                 </span>
                 <span className='w-full text-left text-black dark:text-white-100 text-sm'>
-                  {setDistanceValue(275)} {unit}
+                  {setDistanceValue(certifiedRange)} {unit}
                 </span> 
               </span>
             </p>

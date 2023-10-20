@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { DashboardLayoutProps } from '@/utils/props';
 import { useMediaQuery } from 'react-responsive';
 import { useTheme } from 'next-themes';
 import { AppContext } from '@/context/userContext';
-import SetValue from '@/components/dashboard/set-values-component/SetValue';
-
-import ProtectedRoute from '@/components/auth/ProtectedRoute';
 
 import {
   Sidebar,
   DashboardNavbar,
 } from '@/components/dashboard/dashboard-components';
+import { DashboardLayoutProps } from '@/utils/props';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import SetValue from '@/components/dashboard/set-values-component/SetValue';
 
 const DashboardLayout = ({
   children,
@@ -18,6 +17,8 @@ const DashboardLayout = ({
 }:DashboardLayoutProps) => {
   const isTab = useMediaQuery({ query: '(max-width:767px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
+
+
   const {
     isLoading,
     userId, 
@@ -30,7 +31,8 @@ const DashboardLayout = ({
     setUserCity,
     setUserState,
     setUserCountry,
-    setUserEmail
+    setUserEmail,
+    webSocket
   } = useContext(AppContext)
   const {theme, setTheme} = useTheme()
   
@@ -39,7 +41,6 @@ const DashboardLayout = ({
       setIsOpen(false)
     :
       setIsOpen(true)
-    // console.log(isTab)
   }, [isTab]);
 
   useEffect(() => {
@@ -53,7 +54,7 @@ const DashboardLayout = ({
           <Sidebar 
           id={userId}
           isLoading={isLoading}
-          vehicle_data={vehicleData||[]} 
+          vehicleData={vehicleData||[]} 
           isOpen={isOpen} 
           setIsOpen={setIsOpen} 
           isTab={isTab}
@@ -62,6 +63,7 @@ const DashboardLayout = ({
           />
           <div className="max-w-full flex-1 h-screen overflow-hidden">
             <DashboardNavbar 
+              webSocket={webSocket}
               name={name} 
               id={userId}
               page={page===undefined ? '' : page}

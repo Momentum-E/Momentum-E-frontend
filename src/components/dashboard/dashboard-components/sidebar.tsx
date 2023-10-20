@@ -19,16 +19,16 @@ const SidebarDarkLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarDarkLo
   ssr:false,
 })
 
-const Sidebar = ({
+const Sidebar:React.FC<SidebarProps> = ({
   id,
   isLoading,
-  vehicle_data, 
+  vehicleData, 
   isTab, 
   isOpen, 
   setIsOpen,
   page,
   theme,
- }: SidebarProps) => {
+ }) => {
   
   const router = useRouter();
   const { pathname } = router;
@@ -109,7 +109,7 @@ const Sidebar = ({
 
         <YourVehicles
           isLoading={isLoading}
-          vehicleData={vehicle_data}
+          vehicleData={vehicleData}
           setIsOpen={setIsOpen}
           isTab={isTab}
           page={page}

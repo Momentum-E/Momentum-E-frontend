@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { toast } from 'react-toastify';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
@@ -67,7 +68,7 @@ const AccountProvider = ({ children }:any) => {
 
           window.history.replaceState({
             fromHashChange: true
-          }, '/dashboard');
+          },null, '/dashboard');
 
           window.location.reload()
         },

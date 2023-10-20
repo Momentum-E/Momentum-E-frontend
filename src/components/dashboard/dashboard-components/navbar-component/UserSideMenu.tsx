@@ -12,6 +12,7 @@ function classNames(...classes: string[]) {
   }
 
 const UserSideMenu:React.FC<UserSideMenuProps> = ({
+    webSocket,
     name,
     id,
     userImage,
@@ -26,14 +27,6 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
 
     const router = useRouter()
     const {logout} = useAccountContext();
-    // const {
-    //     setName,
-    //     setVehicleData,
-    //     setUserCity,
-    //     setUserState,
-    //     setUserCountry,
-    //     setUserEmail
-    // } = useAppContext()
 
     const SignOut = () => {
         logout();
@@ -44,6 +37,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
         setUserState("")
         setUserCountry("")
         setUserEmail('')
+        webSocket?.close()
     };
     
     return (

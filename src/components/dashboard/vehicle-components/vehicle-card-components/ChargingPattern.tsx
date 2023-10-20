@@ -5,6 +5,8 @@ import { CharginPatternProps } from '@/utils/props';
 const ChargingPattern = ({
     avgSoC,
     chargeRate,
+    totalChargingSessions,
+    connectorType
 }:CharginPatternProps) => {
   return (
     <div className='xl:space-x-2 h-full w-full flex justify-between'>
@@ -12,13 +14,13 @@ const ChargingPattern = ({
             <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Average SoC
                 <span className='text-black dark:text-white-100 text-base'>
-                    {96}%
+                    {avgSoC}%
                 </span>
             </p>
             <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Connector Type
                 <span className='text-black dark:text-white-100 text-base'>
-                {`CCS`}
+                {connectorType}
                 </span>
             </p>
         </div>
@@ -27,7 +29,7 @@ const ChargingPattern = ({
                 {/* Battery level of the car */}
                 <Progress 
                     type="dashboard" 
-                    percent={(avgSoC!==null) ? 96 : undefined} 
+                    percent={(avgSoC!==null) ? avgSoC : undefined} 
                     status='exception' 
                     size={200}
                     strokeColor={{ '0%': 'rgba(198, 222, 65, 0.00)', '100%': '#C6DE41' }} 
@@ -48,8 +50,8 @@ const ChargingPattern = ({
                 <div className="w-full bg-gradient-to-br from-white-100 to-me-green-200/40 dark:bg-dashboard-gradient flex justify-between text-xs border-[0.5px] border-me-green-200 dark:border-gray-400 p-4  rounded-3xl text-gray-500 font-normal h-20">
                     <span>0%</span>
                     <p className='text-black dark:text-white-100 text-3xl pl-3'>
-                        {/* {avgSoC}% */}
-                        {96}% 
+                        {avgSoC+"%"}
+                        {/* {96}%  */}
                     </p>
                     <span>100%</span>
                 </div>
@@ -59,14 +61,14 @@ const ChargingPattern = ({
             <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Total Charging Sessions
                 <span className='text-black dark:text-white-100 text-xl'>
-                {20}
+                {totalChargingSessions}
                 </span>
             </p>
             <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Average Charging Rate
                 <span className='text-black dark:text-white-100 text-base'>
-                    {/* {`${chargeRate!==null ? chargeRate+' Kw' : 'NA'}`} */}
-                    45 kW
+                    {`${chargeRate!==null ? chargeRate+' Kw' : 'NA'}`}
+                    {/* 45 kW */}
                 </span>
             </p>
         </div>

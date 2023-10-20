@@ -1,6 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
-// import logo from '../../assets/logos/logo_white_nocap.png';
-// import Image from 'next/image';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useAccountContext } from '@/context/account';
 
@@ -19,11 +17,6 @@ export default function NavBar() {
             <Link href="/">
               <h2 className="text-2xl font-bold text-white-100">
                 <figure>
-                  {/* <Image 
-                    src={logo} 
-                    alt="Logo" 
-                    className=" w-36 h-auto" 
-                  /> */}
                   <SidebarLightLogo/>
                 </figure>
               </h2>

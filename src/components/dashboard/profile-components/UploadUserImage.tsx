@@ -10,7 +10,7 @@ type UploadUserImageProps ={
     fetchUserImage:() => Promise<void>;
 }
 
-const UploadUserImage:React.FC<UploadUserImageProps>  = ({
+const UploadUserImage:React.FC<UploadUserImageProps> = ({
     userId,
     userImage,
     isImageLoading,
@@ -48,21 +48,23 @@ const UploadUserImage:React.FC<UploadUserImageProps>  = ({
                 },
               };
       
-              // Send the PUT request with the selected image file
-              await axios.put(put_url, imageFile, config)
+              // PUT request with the selected image file
+              axios.put(put_url, imageFile, config)
               .then((response) => {
                 console.log(response);
-                toast.success('Image changes successfully.');
+                toast.success('Image changed successfully.');
                 // setSelectedFile(null)
+                console.log("in the then statement. fetching user Image")
                 fetchUserImage()
               })
               .catch((error) => { 
                 console.log(error);
+                toast.error('Could not upload image.');
+                // return
               })
         } 
-        else {
-            toast.error('Could not upload image.');
-            return
+        else{
+            console.log('No URL received in put statement.')
         }
     }
 
@@ -85,7 +87,6 @@ const UploadUserImage:React.FC<UploadUserImageProps>  = ({
                 svgClassName={'w-20 h-20'}
                 imageSize={'w-40 h-40'}
                 fontSize={24}
-                // setUserImage={setUserImage}
             />
             <div className="absolute hidden border dark:border-white-100 border-black group-hover:flex items-center justify-center group-hover:bg-black/20 rounded-full w-40 h-40">
                 <div className="p-1 flex bg-gray-900 rounded-r-full rounded-l-full">

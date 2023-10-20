@@ -32,11 +32,10 @@ const ConfirmSignup = ({ username }: any) => {
       } else {
         console.log(data);
         toast.success('Account verified successfully');
-        // router.replace('/get-user-data');
         setGetUserDataProcess(true)
       }
-    });
-  };
+    })
+  }
 
   const resendConfirmationCode = () => {
     user.resendConfirmationCode(function(err, result) {

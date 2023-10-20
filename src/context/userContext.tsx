@@ -1,57 +1,19 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AccountContext } from './account';
-import { vehicleDataProps, vehicleCalcultedDataProps } from '@/utils/props';
-// import { useRouter } from 'next/router';
-import { toast } from 'react-toastify';
-
-type UserContextProps = {
-  // Functions
-  filteredVehicleData:(v_id: string|string|string[] | undefined) => void;
-  fetchUserImage:() => Promise<void>;
-
-  // State Variables 
-  vehicleData:vehicleDataProps[];
-  vehicleIdData:vehicleDataProps|undefined;
-  userEmail:string;
-  userOwnerType:string;
-  userCity:string|undefined;
-  userState:string|undefined;
-  userCountry:string|undefined;
-  userLocation:string;
-  userId:string;
-  userImage:string;
-  isLoading:boolean;
-  vehicleCalcultedIdData: vehicleCalcultedDataProps|undefined;
-  name:string;
-  unit:string;
-  isImageLoading:boolean;
-  temperatureData: {
-    minTemperature: number | null | undefined;
-    maxTemperature: number | null | undefined;
-  };
-
-  // State Functions
-  setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
-  setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
-  setUnit:React.Dispatch<React.SetStateAction<string>>;
-  setDistanceValue:(val: number|undefined) => string | number | undefined;
-  setName:React.Dispatch<React.SetStateAction<string>>;
-  setUserCity:React.Dispatch<React.SetStateAction<string>>;
-  setUserState:React.Dispatch<React.SetStateAction<string>>;
-  setUserCountry:React.Dispatch<React.SetStateAction<string>>;
-  setUserEmail:React.Dispatch<React.SetStateAction<string>>;
-  setUserImage:React.Dispatch<React.SetStateAction<string>>;
-  setTemperatureData: React.Dispatch<React.SetStateAction<{
-    minTemperature: number | null | undefined;
-    maxTemperature: number | null | undefined;
-  }>>
-}
+import { 
+  vehicleDataProps, 
+  vehicleCalcultedDataProps, 
+  UserContextProps, 
+  temperatureDataProps
+} from '@/utils/props';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify'; 
 
 const AppContext = createContext({} as UserContextProps);
 
 const AppProvider = ({ children }:any) => {
-  // const router = useRouter();
+  const router = useRouter();
   const { getSession } = useContext(AccountContext);
 
   const [userId, setUserId] = useState<string>("");
@@ -65,29 +27,27 @@ const AppProvider = ({ children }:any) => {
   const [userEmail,setUserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
+  const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
   const [unit, setUnit] = useState<string>('Km')
   const [isLoading, setIsLoading] = useState(true)
   const [isImageLoading, setIsImageLoading] = useState(true)  
-  const [temperatureData, setTemperatureData] = useState<{
-    minTemperature: number | null | undefined;
-    maxTemperature: number | null | undefined;
-  }>({
+  const [webSocket, setWebSocket] = useState<WebSocket|null>(null);
+  const [temperatureData, setTemperatureData] = useState<temperatureDataProps>({
     minTemperature: null,
     maxTemperature: null,
   });
 
   // Hook for fetching the user details
   useEffect(() => {
-    const fetchUserDetails = async () => {
+    const fetchUserDetails =  async () => {
       try {
         const session:any = await getSession();
         const userid = session.idToken.payload.sub;
         setUserId(userid); 
         const response = await axios.get(
-            `http://localhost:5000/auth/users/${userid}`
-        );
-
+          `http://localhost:5000/auth/users/${userid}`
+          );  
         setName(response.data.name)
         setOwnerType(response.data.owner_type)
         setUserCity(response.data.city)
@@ -101,12 +61,13 @@ const AppProvider = ({ children }:any) => {
         setUserEmail(response.data.email)
         if(userId){
           setVehicleData(response.data.vehicles)
+          setVehicleCalcultedData(response.data.vehicles_processed_data)
+          // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
           setVehicleIdData(response.data.vehicles[0])
-
-          // Setting vehicleCalcultedIdData as the first vehicle in the list
           setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
-          setIsLoading(false)
+          // getVehicleDataFromEnode()
         }
+        setIsLoading(false)
       } 
       catch (error) {
         console.error('Error, no user (userContext):', error);
@@ -122,8 +83,87 @@ const AppProvider = ({ children }:any) => {
   //       // toast.info('Please fill your details first.')
   //     }
   //   }
-  // },[userId])
+  // },[])
 
+  /*
+    Sets a new websocket with the user-credentials 
+    returns the new socket
+  */
+  const SettingWebsocket = () => {
+    const authToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
+    const socket = new WebSocket(`wss://gav5fur5v0.execute-api.ap-south-1.amazonaws.com/development?userId=${authToken}`);
+    
+    socket.onopen = (event) => {
+      console.log('Websocket connection established with userId: '+userId);
+    };
+
+    socket.onmessage = (event) => {
+      const SocketData = JSON.parse(event.data);
+      
+      // Handle data from the server, including the 'updatedData' field, as needed
+      console.log('Received data from the server: \n'+ JSON.stringify(SocketData) 
+      +"eventName: \n"+SocketData.eventName+"\n"
+      +"SoH: "+SocketData.updatedData.vehicles_processed_data[vehicleData[0]?.id]?.chargeRateData.totalEnergyConsumed
+      )
+
+      setName(SocketData.updatedData.name)
+      setUserCountry(SocketData.updatedData.country)
+      setOwnerType(SocketData.updatedData.owner_type)
+      setUserEmail(SocketData.updatedData.email)
+      setUserCity(SocketData.updatedData.city ? SocketData.updatedData.city : "")
+      setUserState(SocketData.updatedData.state ? SocketData.updatedData.state : "")
+      setVehicleData(SocketData.updatedData.vehicles)
+      setVehicleCalcultedData(SocketData.updatedData.vehicles_processed_data)
+    };
+
+    socket.onerror = (event) => {
+      console.error('WebSocket Error:', event);
+      if(!userId){
+        socket.close();
+      }
+    };
+
+    socket.onclose = (event) => {
+      console.log('Websocket connection closed with userId and event: ' + userId, event);
+
+      // Optionally, you can attempt to reopen the connection here.
+      // You can also handle different close codes and reasons.
+      console.log('Trying to reconnect to the websocket')
+      if(userId){
+        console.log('userId present'+ userId)
+        // const newSocket = SettingWebsocket();
+        // setWebSocket(newSocket)
+      
+        const newSocket = SettingWebsocket();
+        setWebSocket(newSocket)
+      }
+      else{
+        setWebSocket(null)
+      }
+    };
+
+    // setWebSocket(socket);
+    return socket
+  };  
+  
+  /*
+    Sets a new a websocket when the component renders
+  */
+  useEffect(() => {
+    if (userId) {
+      const socket = SettingWebsocket();
+      setWebSocket(socket)
+      // if(webSocket){
+      //   console.log('WebSocket present'+ webSocket)
+        
+      // }
+    }
+  }, [userId]);
+
+  /* 
+    Sets the temperature according to the useLocation 
+    and updates it everyday.
+  */
   useEffect(()=>{
     const getTemperatureData = async () => {
       const storedDate = localStorage.getItem('tempCollectedDate');
@@ -161,13 +201,16 @@ const AppProvider = ({ children }:any) => {
     getTemperatureData()
   },[userLocation])
 
+  //Hook for fetching user image on any userId change. 
   useEffect(() => {
     if(userId){
       fetchUserImage()
     }
   },[userId])
 
+  // Function for fetching the user image from the AWS S3 bucket
   const fetchUserImage = async () => {
+    console.log('Fetching user image.')
     axios.get(`http://localhost:5000/user-data/users/image/${userId}`)
     .then(async (response) => {
       console.log("fetchUserImageResponse",response);
@@ -192,26 +235,8 @@ const AppProvider = ({ children }:any) => {
     })
   }
 
-  // Function for getting data of a particular vehicle_Id
-  const filteredVehicleData = (v_id:string|string[] | undefined) => {
-    if(vehicleData.length > 0){
-      axios.get(`http://localhost:5000/user-data/users/${userId}/${v_id}`)
-      .then((res) => {
-        console.log(res.data)
-        setVehicleIdData(res.data.vehicleData)
-        setVehicleCalcultedIdData(res.data.processedData)
-      })
-      .catch((err) => {
-        console.log("Error in filteredVehicleData: "+err)
-      })
-    }
-    else{
-      console.log('No vehicles added.')
-    }
-  }
-
   // Function for convertion of distance between Miles and KiloMeters
-  const setDistanceValue = (val:number | any) => {
+  const setDistanceValue = (val:number|null| any) => {
     if (val!==null)
     {
       if(unit==='Mi') 
@@ -235,12 +260,14 @@ const AppProvider = ({ children }:any) => {
   return (
     <AppContext.Provider value={{
       // Functions
-      filteredVehicleData,
+      // filteredVehicleData,
       fetchUserImage,
+      setDistanceValue,
 
       // State Variables
       vehicleData,
       vehicleIdData,
+      vehicleCalcultedData,
       userId,
       userLocation,
       userEmail,
@@ -255,13 +282,15 @@ const AppProvider = ({ children }:any) => {
       unit,
       isImageLoading,
       temperatureData,
+      webSocket,
 
       // State Functions
-      setVehicleIdData,
       setUnit,
-      setDistanceValue,
       setName,
       setVehicleData,
+      setVehicleCalcultedData,
+      setVehicleIdData,
+      setVehicleCalcultedIdData,
       setUserCity,
       setUserState,
       setUserCountry,
@@ -273,13 +302,5 @@ const AppProvider = ({ children }:any) => {
     </AppContext.Provider>
   );
 };
-
-// const useAppContext = () => {
-//   const context = useContext(AppContext);
-//   if (!context) {
-//     throw new Error('useAppContext must be used within the AppProvider');
-//   }
-//   return context;
-// };
 
 export { AppProvider, AppContext };
