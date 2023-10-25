@@ -37,7 +37,7 @@ const Signup = () => {
     setInputType('password')
     setConfirmInputType('password')
     // changed the 4th parameter to [] from null
-    userPool.signUp(input.email, input.password, [], [], (err, data) => {
+    userPool.signUp(input.email, input.password, [], [], (err:any, data) => {
       if (err) {
         if (err.code === 'InvalidPasswordException') {
           const errorMessage = err.message || 'An unknown error occurred.';

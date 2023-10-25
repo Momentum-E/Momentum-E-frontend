@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from 'react'
 import { AppContext } from '@/context/userContext';
 
 import { DashboardLayout } from '@/layouts/';
+import {Loader} from '@/components/shared';
 import VehicleComponent from '@/components/dashboard/vehicle-components/VehicleComponent';
 import axios from 'axios';
 
@@ -31,15 +32,14 @@ const VehicleDashboardContent = () => {
       if(v_id && vehicleCalcultedData && vehicleData && vehicleData.length > 0){
         setVehicleIdData(vehicleData.find(vehicle => vehicle.id === vehicleId))
         setVehicleCalcultedIdData(vehicleCalcultedData[v_id])
-        // axios.get(`http://localhost:5000/user-data/users/${userId}/${vehicleId}`)
-        // .then((res) => {
-        //   console.log(res.data)
-        //   setVehicleIdData(res.data.vehicleData)
-        //   setVehicleCalcultedIdData(res.data.processedData)
-        // })
-        // .catch((err) => {
-        //   console.log("Error in filteredVehicleData: "+err)
-        // })
+
+        axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/users/${userId}/${vehicleId}`)
+        .then((res) => {
+          // console.log(res.data)
+        })
+        .catch((err) => {
+          console.log("Error in filteredVehicleData: "+err)
+        })
       }
       else{
         console.log('No vehicles added.')
@@ -57,16 +57,15 @@ const VehicleDashboardContent = () => {
           isLoading?
           (
             <span className='h-full flex items-center justify-center'>
-              Loading...
+              <Loader LoaderSize={24}/>
             </span>
           )
           :
           (
             <VehicleComponent
               vehicleIdData={vehicleIdData}
-              temperatureData={temperatureData}
               vehicleCalcultedIdData={vehicleCalcultedIdData}
-              SoH={vehicleCalcultedIdData?.soh}
+              temperatureData={temperatureData}
               unit={unit}
               userLocation={userLocation}
               setDistanceValue={setDistanceValue}

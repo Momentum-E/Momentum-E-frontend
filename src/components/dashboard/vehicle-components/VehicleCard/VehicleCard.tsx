@@ -1,12 +1,15 @@
 import React from 'react'
+import Tippy from '@tippyjs/react';
+
 import CardSideBlock from './CardSideBlock'
 
 type VehicleCardProps = {
     divContent:string
     CardName: string
     VehicleComponent: JSX.Element
-    infoIconPresent?:boolean
     SideBlockPresent: boolean
+    InfoIconPresent?:boolean
+    InfoIconContent?:string;
     SideBlockHeading?: string
     SideBlockData?: string | number | undefined | null
     SideBlockUnit?: string 
@@ -15,7 +18,8 @@ type VehicleCardProps = {
 const VehicleCard: React.FC<VehicleCardProps>  = ({
     divContent,
     CardName,
-    infoIconPresent=false,
+    InfoIconPresent=false,
+    InfoIconContent='',
     VehicleComponent,
     SideBlockPresent,
     SideBlockHeading,
@@ -29,19 +33,25 @@ const VehicleCard: React.FC<VehicleCardProps>  = ({
                 <span>
                     {CardName}
                 </span>
-                <span className='ml-2 my-auto hover:cursor-pointer'>
+                <span className='ml-2 my-auto hover:cursor-pointer focus:none outline:none border-none'>
                     {
-                        infoIconPresent &&
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-                        </svg>
+                        InfoIconPresent &&
+                        <Tippy placement='right' arrow={false} content={
+                            <span className='flex items-center justify-center border border-me-green-200 text-me-green-100 bg-white-100 dark:bg-gray-900 dark:text-white-100 dark:border-white-100 m-0 p-0.5 px-1 rounded-md text-xs'>
+                                {InfoIconContent}
+                            </span>
+                        }>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                            </svg>
+                        </Tippy>
                     }
                 </span>
             </p>
             {
                 SideBlockPresent && 
                 <CardSideBlock
-                CardHeading={SideBlockHeading}
+                    CardHeading={SideBlockHeading}
                     CardData={SideBlockData ? SideBlockData : '-'}
                     CardUnit={SideBlockUnit}
                 />

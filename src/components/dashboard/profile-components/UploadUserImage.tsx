@@ -31,7 +31,7 @@ const UploadUserImage:React.FC<UploadUserImageProps> = ({
             return
         }
 
-        const response = await axios.post('http://localhost:5000/user-data/users/image',
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/users/image`,
             {
                 imageName: `${userId}`,
                 type: "image/"+imageFileType
@@ -69,10 +69,11 @@ const UploadUserImage:React.FC<UploadUserImageProps> = ({
     }
 
     const removeImage = async () => {
-        axios.delete(`http://localhost:5000/user-data/users/image/${userId}`)
+        axios.delete(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/users/image/${userId}`)
         .then((res)=>{
             console.log('User image deleted from s3: '+res.data)
-        }).catch((err)=>{
+        })
+        .catch((err)=>{
             console.log('Error deleting user image from s3: '+err)
         })
     }

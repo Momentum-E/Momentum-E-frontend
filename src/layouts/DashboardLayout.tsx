@@ -26,13 +26,13 @@ const DashboardLayout = ({
     name, 
     userImage, 
     isImageLoading,
+    webSocket,
     setName,
     setVehicleData,
     setUserCity,
     setUserState,
     setUserCountry,
     setUserEmail,
-    webSocket
   } = useContext(AppContext)
   const {theme, setTheme} = useTheme()
   

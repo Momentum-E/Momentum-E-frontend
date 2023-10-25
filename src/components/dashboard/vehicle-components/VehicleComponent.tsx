@@ -8,25 +8,28 @@ import {
     VehicleInfo,
     ChargingPattern
 } from '@/components/dashboard/vehicle-components/vehicle-card-components';
-import { MainCard } from '@/components/dashboard/vehicle-components/VehicleCard';
-import { Loader } from '@/components/shared';
+import { VehicleCard } from '@/components/dashboard/vehicle-components/VehicleCard';
 
 const VehicleComponent = ({
     vehicleIdData,
     temperatureData,
     vehicleCalcultedIdData,
-    SoH,
     unit,
     userLocation,
     setDistanceValue,
 }:VehicleComponentProps) => {
 
-    const convertDate = (toDate:string) => {
+    const convertDate = (toDate:string|undefined|null) => {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const date = new Date(toDate).getDate();
-        const month = new Date(toDate).getMonth();
-        const year = new Date(toDate).getFullYear();
-        return `${date} ${monthNames[month]} ${year}`
+        if(toDate){
+            const date = new Date(toDate).getDate();
+            const month = new Date(toDate).getMonth();
+            const year = new Date(toDate).getFullYear();
+            return `${date} ${monthNames[month]} ${year}`
+        }
+        else{
+            return "-"
+        }
     }
 
     return (
@@ -36,7 +39,7 @@ const VehicleComponent = ({
                 <section className="lg:grid lg:grid-cols-3 md:grid-cols-2 flex flex-col gap-4">
                     <BasicCarData 
                         heading='Loaction'
-                        data={userLocation ? userLocation : <Loader LoaderSize={10}/>}
+                        data={userLocation}
                         icon=
                         {
                             <svg xmlns="http://www.w3.org/2000/svg" className='w-8 h-9' viewBox="0 0 41 48" fill="none">
@@ -48,11 +51,7 @@ const VehicleComponent = ({
                     {/* should come from DynamoDB */}
                     <BasicCarData 
                         heading='Data Points Collected'
-                        data={
-                            vehicleCalcultedIdData?.dataPointCollected 
-                            ? vehicleCalcultedIdData.dataPointCollected 
-                            : <Loader LoaderSize={10}/>
-                        }
+                        data={vehicleCalcultedIdData?.dataPointCollected}
                         icon=
                         {
                             <svg xmlns="http://www.w3.org/2000/svg" className='w-10 h-11' viewBox="0 0 48 48" fill="none">
@@ -65,11 +64,7 @@ const VehicleComponent = ({
                     <BasicCarData 
                         heading='Connected on'
                         // Get the current date and also pass it into DB
-                        data={
-                            vehicleIdData?.Connected_On
-                            ? convertDate(vehicleIdData.Connected_On)
-                            : <Loader LoaderSize={10}/>
-                        }
+                        data={convertDate(vehicleIdData?.Connected_On)}
                         icon=
                         {
                             <svg xmlns="http://www.w3.org/2000/svg" className='w-9 h-10' viewBox="0 0 44 48" fill="none">
@@ -81,7 +76,7 @@ const VehicleComponent = ({
 
                 {/* Vehicle Content block 2*/}
                 <section className="flex-row space-y-4 lg:flex md:flex-row lg:space-y-0 gap-4">
-                    <MainCard
+                    <VehicleCard
                         divContent='lg:w-[50%] h-80'
                         CardName={'Vehicle Info'}
                         VehicleComponent=
@@ -97,11 +92,12 @@ const VehicleComponent = ({
                                 setDistanceValue={setDistanceValue}
                             />
                         }
-                        infoIconPresent={true}
+                        InfoIconPresent={true}
+                        InfoIconContent={"Last Seen:"+"\n"+convertDate(vehicleIdData?.lastSeen)}
                         SideBlockPresent={false}
                     />
 
-                    <MainCard
+                    <VehicleCard
                         divContent='h-80 lg:w-[50%] '
                         CardName={'Charging Pattern'}
                         VehicleComponent=
@@ -111,8 +107,13 @@ const VehicleComponent = ({
                                 chargeRate={vehicleCalcultedIdData?.chargeRateData.avgChargingRate}
                                 totalChargingSessions={vehicleCalcultedIdData?.totalChargingSessions}
                                 connectorType={vehicleCalcultedIdData?.connectorType}
+                                batteryLevel = {vehicleIdData?.chargeState.batteryLevel}
+                                isCharging={vehicleIdData?.chargeState.isCharging}
+                                timeRemaining={vehicleIdData?.chargeState.chargeTimeRemaining}
                             />
                         }
+                        InfoIconPresent={true}
+                        InfoIconContent={"Last Updated"+"\n" +convertDate(vehicleIdData?.chargeState.lastUpdated)}
                         SideBlockPresent={true}
                         SideBlockHeading={'Total Energy Consumed'}
                         SideBlockData={vehicleCalcultedIdData?.chargeRateData.totalEnergyConsumed}
@@ -122,7 +123,7 @@ const VehicleComponent = ({
                 
                 {/* Vehicle Content block 3*/}
                 <section className="lg:grid lg:grid-cols-2 lg:space-y-0 grid-col-1 space-y-4 gap-4">          
-                    <MainCard
+                    <VehicleCard
                         divContent=' space-y-3 '
                         CardName={'Usage'}
                         VehicleComponent=
@@ -143,16 +144,16 @@ const VehicleComponent = ({
                         SideBlockPresent={false}
                     />
 
-                    <MainCard
+                    <VehicleCard
                         divContent='h-[445px] space-y-5'
                         CardName={'Battery Health'}
                         VehicleComponent=
                         { 
-                            <BatteryHealth SoH={SoH}/> 
+                            <BatteryHealth SoH={vehicleCalcultedIdData?.soh}/> 
                         }
                         SideBlockPresent={true}
                         SideBlockHeading={'State of Health'}
-                        SideBlockData={SoH}
+                        SideBlockData={vehicleCalcultedIdData?.soh}
                         SideBlockUnit='%'
                     />
                 </section>

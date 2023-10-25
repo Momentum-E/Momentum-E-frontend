@@ -8,7 +8,8 @@ import {
   ChangeUserPassword,
   DeleteVehicle,
   DeleteUser,
-  UploadUserImage
+  UploadUserImage,
+  VehicleIntervention
 } from '@/components/dashboard/profile-components/';
 import GetUserDataComponent from '@/components/auth/GetUserDataComponent';
 import { VendorCountProp } from '@/utils/props';
@@ -61,6 +62,9 @@ const Profile = () => {
             userId={userId} 
             VendorCounts={VendorCounts}
           /> 
+          <VehicleIntervention
+            vehicleData={vehicleData}
+          />
           <div className=" border border-me-green-200 p-4 rounded-xl w-full">
             <GetUserDataComponent
               isRequired={false}
@@ -73,7 +77,7 @@ const Profile = () => {
             />
           </div>   
           <ChangeUserPassword userId={userId} />    
-          <DeleteUser name={name} userId={userId}/>     
+          <DeleteUser userId={userId}/>     
         </div>
       </div>
       <ToastContainer />

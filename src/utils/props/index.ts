@@ -122,6 +122,9 @@ export type CharginPatternProps ={
     chargeRate:number|null|undefined;
     totalChargingSessions:number|null|undefined;
     connectorType:string|null|undefined
+    batteryLevel:number|null|undefined;
+    isCharging:boolean|undefined;
+    timeRemaining:number|null|undefined;
 }
 
 export type vehicleDataProps = {
@@ -195,7 +198,6 @@ export type VehicleComponentProps = {
   vehicleIdData:vehicleDataProps|undefined;
   temperatureData:temperatureDataProps;
   vehicleCalcultedIdData:vehicleCalcultedDataProps|undefined|null;
-  SoH: number|undefined|null;
   unit: string;
   userLocation: string;
   setDistanceValue:(val: number|null|undefined) => string|number|undefined;

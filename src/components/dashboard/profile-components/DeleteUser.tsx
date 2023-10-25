@@ -3,7 +3,13 @@ import { AccountContext } from '@/context/account';
 
 import { Modal } from '@/components/shared';
 
-const DeleteUser = ({userId}:string|any) => {
+type DeleteUserProps = {
+    userId:string;
+}
+
+const DeleteUser:React.FC<DeleteUserProps>  = ({
+    userId
+}) => {
     const {DeleteUserAccount} = useContext(AccountContext);
     const [Password,setPassword] = useState('')
     let [isOpen, setIsOpen] = useState(false)

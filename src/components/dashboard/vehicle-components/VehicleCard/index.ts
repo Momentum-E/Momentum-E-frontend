@@ -1,2 +1,2 @@
-export {default as MainCard} from './MainCard';
+export {default as VehicleCard} from './VehicleCard';
 export {default as MainCardHeader} from './CardSideBlock';

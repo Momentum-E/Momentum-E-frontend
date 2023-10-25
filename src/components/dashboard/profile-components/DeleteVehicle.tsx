@@ -9,25 +9,25 @@ type DeleteVehicleProps = {
     VendorCounts: VendorCountProp[];
 }
 
-const DeleteVehicle = ({
+const DeleteVehicle:React.FC<DeleteVehicleProps> = ({
     userId,
     VendorCounts,
-}:DeleteVehicleProps) => {
+}) => {
     const [isOpen, setIsOpen] = useState(false)
     const [deleteVendor,setDeleteVendor] = useState('')
 
     // This deletes all the vehicles for a particular vendor_type (eg: Tesla, BMW) 
     function DeleteEntireVendor(vendorName:string){
         axios
-        .get(`http://localhost:5000/vehicles/delete-entire-vendor/${userId}/${vendorName}`)
+        .get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/delete-entire-vendor/${userId}/${vendorName}`)
         .then((res) => {
             if(res.status === 204){
                 toast.success('Vehicles deleted successfully.')
-                window.location.reload()
+                // window.location.reload()
             }
             else{
                 toast.success("Vehicles deleted successfully.")
-                window.location.reload()
+                // window.location.reload()
             }
         })
         .catch((err) => {

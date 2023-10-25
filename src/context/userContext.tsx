@@ -73,7 +73,9 @@ const AppProvider = ({ children }:any) => {
         console.error('Error, no user (userContext):', error);
       }
     };
+    // if(userId){
     fetchUserDetails();
+    // }
   }, [userId]);
 
   // useEffect(()=>{
@@ -89,61 +91,84 @@ const AppProvider = ({ children }:any) => {
     Sets a new websocket with the user-credentials 
     returns the new socket
   */
-  const SettingWebsocket = () => {
+  const SettingWebsocket = async () => {
+
     const authToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
-    const socket = new WebSocket(`wss://gav5fur5v0.execute-api.ap-south-1.amazonaws.com/development?userId=${authToken}`);
     
-    socket.onopen = (event) => {
-      console.log('Websocket connection established with userId: '+userId);
-    };
+    if(authToken){
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/websocket/generate-token`,{
+        headers: {
+          authorization: `Bearer ${authToken}`
+        }
+      })
 
-    socket.onmessage = (event) => {
-      const SocketData = JSON.parse(event.data);
-      
-      // Handle data from the server, including the 'updatedData' field, as needed
-      console.log('Received data from the server: \n'+ JSON.stringify(SocketData) 
-      +"eventName: \n"+SocketData.eventName+"\n"
-      +"SoH: "+SocketData.updatedData.vehicles_processed_data[vehicleData[0]?.id]?.chargeRateData.totalEnergyConsumed
-      )
+      console.log(response.data)
+      const socket = new WebSocket(`wss://gav5fur5v0.execute-api.ap-south-1.amazonaws.com/development?token=${response.data.uniqueToken}`);
+      setWebSocket(socket)
 
-      setName(SocketData.updatedData.name)
-      setUserCountry(SocketData.updatedData.country)
-      setOwnerType(SocketData.updatedData.owner_type)
-      setUserEmail(SocketData.updatedData.email)
-      setUserCity(SocketData.updatedData.city ? SocketData.updatedData.city : "")
-      setUserState(SocketData.updatedData.state ? SocketData.updatedData.state : "")
-      setVehicleData(SocketData.updatedData.vehicles)
-      setVehicleCalcultedData(SocketData.updatedData.vehicles_processed_data)
-    };
-
-    socket.onerror = (event) => {
-      console.error('WebSocket Error:', event);
-      if(!userId){
-        socket.close();
-      }
-    };
-
-    socket.onclose = (event) => {
-      console.log('Websocket connection closed with userId and event: ' + userId, event);
-
-      // Optionally, you can attempt to reopen the connection here.
-      // You can also handle different close codes and reasons.
-      console.log('Trying to reconnect to the websocket')
-      if(userId){
-        console.log('userId present'+ userId)
-        // const newSocket = SettingWebsocket();
-        // setWebSocket(newSocket)
-      
-        const newSocket = SettingWebsocket();
-        setWebSocket(newSocket)
-      }
-      else{
-        setWebSocket(null)
-      }
-    };
-
-    // setWebSocket(socket);
-    return socket
+      socket.onopen = (event) => {
+        console.log('Websocket connection established with userId: '+userId+"\n"+event);
+      };
+  
+      socket.onmessage = (event) => {
+        const SocketData = JSON.parse(event.data);
+        
+        // Handle data from the server, including the 'updatedData' field, as needed
+        console.log('Received data from the server: \n'+ JSON.stringify(SocketData) 
+        +"eventName: \n"+SocketData.eventName+"\n"
+        +"SoH: "+SocketData.updatedData.vehicles_processed_data[vehicleData[0]?.id]?.chargeRateData.totalEnergyConsumed
+        )
+  
+        setName(SocketData.updatedData.name)
+        setUserCountry(SocketData.updatedData.country)
+        setOwnerType(SocketData.updatedData.owner_type)
+        setUserEmail(SocketData.updatedData.email)
+        setUserCity(SocketData.updatedData.city ? SocketData.updatedData.city : "")
+        setUserState(SocketData.updatedData.state ? SocketData.updatedData.state : "")
+        setVehicleData(SocketData.updatedData.vehicles)
+        setVehicleCalcultedData(SocketData.updatedData.vehicles_processed_data)
+      };
+  
+      socket.onerror = (event:any) => {
+        console.error('WebSocket Error:', event);
+        
+        if(!userId){
+          socket.close();
+        }
+        else {
+          switch (event.code){
+            case 1000:
+              console.log('error code 1000.')
+            break;
+            case 1006:
+              socket.close()
+              SettingWebsocket();
+              // setWebSocket(newSocket)
+              console.log('error code 1006.')
+            break;
+          }
+        }
+      };
+  
+      socket.onclose = async (event) => {
+        console.log('Websocket connection closed with userId and event: ' + userId, event);
+  
+        // Optionally, you can attempt to reopen the connection here.
+        // You can also handle different close codes and reasons.
+        console.log('Trying to reconnect to the websocket')
+        if(userId){
+          console.log('userId present'+ userId)
+          SettingWebsocket();
+        }
+        else{
+          setWebSocket(null)
+        }
+      };
+    }
+    else{
+      toast.error('No authToken found, please login again.')
+      return 
+    }
   };  
   
   /*
@@ -151,12 +176,7 @@ const AppProvider = ({ children }:any) => {
   */
   useEffect(() => {
     if (userId) {
-      const socket = SettingWebsocket();
-      setWebSocket(socket)
-      // if(webSocket){
-      //   console.log('WebSocket present'+ webSocket)
-        
-      // }
+      SettingWebsocket();
     }
   }, [userId]);
 
