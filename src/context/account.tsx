@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { toast } from 'react-toastify';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
@@ -67,7 +68,7 @@ const AccountProvider = ({ children }:any) => {
 
           window.history.replaceState({
             fromHashChange: true
-          }, '/dashboard');
+          },null, '/dashboard');
 
           window.location.reload()
         },
@@ -99,7 +100,7 @@ const AccountProvider = ({ children }:any) => {
             setIsAuthenticated(false)
             
             // Delete user from DynamoDb
-            axios.get(`http://localhost:5000/auth/users/delete/${username}`)
+            axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/delete/${username}`)
             .then((res)=>{
               console.log('Deleted user from dynamoDB: '+res.data)
             }).catch((err)=>{

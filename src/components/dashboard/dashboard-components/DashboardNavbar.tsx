@@ -4,6 +4,7 @@ import { Disclosure,} from '@headlessui/react';
 import { UserSideMenu } from './navbar-component';
 
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
+  webSocket,
   setIsOpen,
   isOpen,
   page,
@@ -31,7 +32,8 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                     className="inline-flex items-center justify-center rounded-md p-2 border border-black dark:border-white-100 text-black dark:text-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                     onClick={() => setIsOpen(true)}>
                     <span className="sr-only">Open main menu</span>
-                    {isOpen ? (
+                    {isOpen ? 
+                    (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true"
@@ -46,7 +48,9 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                           d="M6 18L18 6M6 6l12 12"
                         />
                       </svg>
-                    ) : (
+                    ) 
+                    : 
+                    (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -79,6 +83,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                 </div>
               </div>
               <UserSideMenu 
+                webSocket={webSocket}
                 userImage={userImage} 
                 name={name} 
                 id={id}

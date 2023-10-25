@@ -10,6 +10,9 @@ const getInTouch = () => {
     
     const onMessageSubmit = (e:React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
+
+      // Email it to info@momentum-e.com
+
       setIsOpen(false)
 
     }
@@ -17,25 +20,25 @@ const getInTouch = () => {
     return (
     <>
       <div className=" flex flex-row mx-auto space-x-5 rounded-lg py-4 px-4 max-w-xl bg-white-100">
-          <div className="flex flex-1 flex-col space-y-5 justify-between h-full w-full text-sm text-[#060E02]">
+        <div className="flex flex-1 flex-col space-y-5 justify-between h-full w-full text-sm text-[#060E02]">
           <h2 className='text-black text-xl font-bold text-left'>GET IN TOUCH WITH US</h2>
           <p className='h-full'>
               <span className='text-center'>
               Get in touch with us to enquire about our product
               </span>
           </p>
-          </div>
-          <div className='flex items-center justify-center'>
+        </div>
+        <div className='flex items-center justify-center'>
           <button
           type="button"
           onClick={()=>setIsOpen(true)}
           className="rounded-md bg-me-green-200 px-4 py-2 font-medium text-white hover:bg-me-green-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
           >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-[#060E02]">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-          </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-[#060E02]">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
           </button>
-          </div>
+        </div>
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>

@@ -1,11 +1,17 @@
-import React, { useContext, useEffect } from 'react';
-// import { useRouter } from 'next/router';
-import { redirect } from 'next/navigation'
+import React, { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { AccountContext } from '@/context/account';
+// import socket from '@/configs/webSockets/WebSockets';
 
-const ProtectedRoute = ({ children }: any) => {
+type ProtectedRouteProps = {
+  children: React.ReactNode;
+}
+
+const ProtectedRoute = ({
+   children,
+  }:ProtectedRouteProps) => {
   const { getSession } = useContext(AccountContext);
-  // const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -14,7 +20,7 @@ const ProtectedRoute = ({ children }: any) => {
         await getSession();
       } catch (error) {
         // If there is no active session, redirect to the login page
-        redirect('/auth/login/')
+        router.replace('/auth/login/')
       }
     };
     // window.location.reload()

@@ -19,16 +19,16 @@ const SidebarDarkLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarDarkLo
   ssr:false,
 })
 
-const Sidebar = ({
+const Sidebar:React.FC<SidebarProps> = ({
   id,
   isLoading,
-  vehicle_data, 
+  vehicleData, 
   isTab, 
   isOpen, 
   setIsOpen,
   page,
   theme,
- }: SidebarProps) => {
+ }) => {
   
   const router = useRouter();
   const { pathname } = router;
@@ -43,7 +43,7 @@ const Sidebar = ({
       newPage = 'redirect/dashboard' 
     }
     axios
-      .get(`http://localhost:5000/vehicles/users/${id}/link/${newPage}/`)
+      .get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`)
       .then((res) => {
         console.log(res.data);
         const linkUrl = res.data.linkUrl;
@@ -109,7 +109,7 @@ const Sidebar = ({
 
         <YourVehicles
           isLoading={isLoading}
-          vehicleData={vehicle_data}
+          vehicleData={vehicleData}
           setIsOpen={setIsOpen}
           isTab={isTab}
           page={page}

@@ -112,7 +112,7 @@ const GetUserDataComponent:React.FC<GetUserDataComponentProps> = ({
         vehicles:[],
       };
   
-      axios('http://localhost:5000/auth/signup', {
+      axios(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/signup`, {
         method: 'POST',
         data: formData,
       })

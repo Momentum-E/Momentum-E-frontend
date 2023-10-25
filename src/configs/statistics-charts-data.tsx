@@ -6,27 +6,55 @@ const StatisticsChartsData = () => {
   const { vehicleCalcultedIdData } = useContext(AppContext);
 
   const AvgDailyMiles = {
-    type: "bar",
     height:'100%',
     width:'100%',
     series: [
       {
         name: "Miles",
-        data: vehicleCalcultedIdData?.avgDailyMiles.avgDistancePrevMonths,
+        // data: vehicleCalcultedIdData?.avgDailyMiles.avgDistancePrevMonths,
+        data: [100,103,98,102],
       },
     ],
     options: {
+      colors: ["#C6DE41"],
+      // plotOptions: {
+      //   bar: {
+          // columnWidth: "16%",
+      //   },
+      // },
       ...chartsConfig,
-      colors: "#C6DE41",
-      plotOptions: {
-        bar: {
-          columnWidth: "16%",
-          borderRadius: 5,
-        },
-      },
       xaxis: {
-        ...chartsConfig.xaxis,
-        categories: ["Jan", "Feb", "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+        // {
+          axisTicks: {
+            show: false,
+          },
+          axisBorder: {
+            show: false,
+          },
+          labels: {
+            style: {
+              colors: "#848484",
+              fontSize: "13px",
+              fontFamily: "inherit",
+              fontWeight: 300,
+            },
+          },
+        // },
+        categories: 
+        [
+          "Jan", 
+          "Feb", 
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ],
       },
     },
   };
@@ -69,9 +97,23 @@ const StatisticsChartsData = () => {
           speed: 1000
         }
       },
-      xaxis: {
-        ...chartsConfig.xaxis,
-        categories: [
+      xaxis: {  
+        axisTicks: {
+          show: false,
+        },
+        axisBorder: {
+          show: false,
+        },
+        labels: {
+          style: {
+            colors: "#848484",
+            fontSize: "13px",
+            fontFamily: "inherit",
+            fontWeight: 300,
+          },
+        },
+        categories: 
+        [
           "Jan",
           "Feb",
           "Mar",
