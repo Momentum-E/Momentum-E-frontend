@@ -1,2 +1,2 @@
 export * from "./charts-config";
-export * from './statistics-charts-data'
+export {default as StatisticsChartsData } from './statistics-charts-data'

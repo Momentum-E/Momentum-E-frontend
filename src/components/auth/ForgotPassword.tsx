@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { useRouter } from 'next/router';
+
 import {PagesLayout} from '@/layouts/'
 import AuthInput from './AuthComponents/AuthInput';
 
@@ -23,7 +24,6 @@ const ForgotPassword = () => {
   const initiateForgotPassword = async () => {
     // Should add code to implement if the email is present in the database
     // and only then run the code below
-    // Testing remaining for the code
     user.forgotPassword({
       onSuccess: function (data) {
         console.log(data);

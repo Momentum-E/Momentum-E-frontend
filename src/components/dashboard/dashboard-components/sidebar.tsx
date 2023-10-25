@@ -19,16 +19,16 @@ const SidebarDarkLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarDarkLo
   ssr:false,
 })
 
-const Sidebar = ({
+const Sidebar:React.FC<SidebarProps> = ({
   id,
   isLoading,
-  vehicle_data, 
+  vehicleData, 
   isTab, 
   isOpen, 
   setIsOpen,
   page,
   theme,
- }: SidebarProps) => {
+ }) => {
   
   const router = useRouter();
   const { pathname } = router;
@@ -37,17 +37,13 @@ const Sidebar = ({
     isTab && setIsOpen(false);
   }, [pathname]);
 
-  useEffect(()=>{ 
-    !isTab && setIsOpen(true)
-  },[isTab])
-
   const addVehicle = (getPage:string) => {
     let newPage = getPage.split(" ").join('')
     if(newPage === ''){
       newPage = 'redirect/dashboard' 
     }
     axios
-      .get(`http://localhost:5000/vehicles/users/${id}/link/${newPage}/`)
+      .get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`)
       .then((res) => {
         console.log(res.data);
         const linkUrl = res.data.linkUrl;
@@ -60,7 +56,7 @@ const Sidebar = ({
   };
 
   return (
-    <div className="">
+    <>
       <div
         className={`${!isOpen ? `hidden ` : `block `} fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50 `}
         onClick={() => setIsOpen(false)}
@@ -113,13 +109,13 @@ const Sidebar = ({
 
         <YourVehicles
           isLoading={isLoading}
-          vehicleData={vehicle_data}
+          vehicleData={vehicleData}
           setIsOpen={setIsOpen}
           isTab={isTab}
           page={page}
         />
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,8 +1,6 @@
-// @ts-nocheck
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import userPool from '../../context/user-pool/user-pool';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { Switch } from '@headlessui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -38,7 +36,8 @@ const Signup = () => {
     event.preventDefault();
     setInputType('password')
     setConfirmInputType('password')
-    userPool.signUp(input.email, input.password, [], null, (err, data) => {
+    // changed the 4th parameter to [] from null
+    userPool.signUp(input.email, input.password, [], [], (err:any, data) => {
       if (err) {
         if (err.code === 'InvalidPasswordException') {
           const errorMessage = err.message || 'An unknown error occurred.';
@@ -52,7 +51,9 @@ const Signup = () => {
         }
       } else {
         console.log(data);
-        localStorage.setItem('userId', data?.userSub);
+        if(data){
+          localStorage.setItem('userId', data?.userSub);
+        } 
         toast.success('Please confirm your email to continue');
         setVerifyProcess(true);
       }

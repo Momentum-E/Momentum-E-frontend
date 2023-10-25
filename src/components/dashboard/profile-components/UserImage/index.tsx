@@ -1,10 +1,10 @@
 import React from 'react'
 import Image from 'next/image'
-import {UserImageProps} from '@/utils/props'
-import { LoadingOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
 
-export const UserImage = ({
+import {UserImageProps} from '@/utils/props'
+import {Loader} from '@/components/shared'
+
+export const UserImage:React.FC<UserImageProps> = ({
     userImage,
     imageWidth,
     imageHeight,
@@ -12,7 +12,7 @@ export const UserImage = ({
     svgClassName,
     isLoading,
     fontSize,
-}:UserImageProps) => {
+}) => {
 
     return (
         <>
@@ -26,7 +26,6 @@ export const UserImage = ({
                         className={`object-cover object-center rounded-full ${imageSize}`}
                         src={userImage}
                         alt=''
-                        // onError={() => imageError()}
                     />
                     :
                     <div className="flex items-center justify-center rounded-full w-full h-full">
@@ -37,10 +36,7 @@ export const UserImage = ({
             )
             :
             (
-                <Spin 
-                    indicator={<LoadingOutlined style={{ fontSize: fontSize }} spin />} 
-                    className='text-me-green-200'
-                />
+                <Loader LoaderSize={fontSize}/>
             )
         }
         </>

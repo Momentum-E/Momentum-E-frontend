@@ -4,9 +4,9 @@ import { Navbar,Footer } from '@/components/shared'
 function PagesLayout({children}:any) {
   return (
     <>
-        <Navbar/>
+      <Navbar/>
         {children}
-        <Footer/>
+      <Footer/>
     </>
   )
 }

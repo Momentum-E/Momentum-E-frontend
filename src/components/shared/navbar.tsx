@@ -1,15 +1,13 @@
-import { useEffect, useState, useContext } from 'react';
-// import logo from '../../assets/logos/logo_white_nocap.png';
-// import Image from 'next/image';
+import { useState } from 'react';
 import Link from 'next/link';
-import { AccountContext } from '../../context/account';
+import { useAccountContext } from '@/context/account';
 
 import { SidebarLightLogo } from '@/utils/sidebar_icons';
 
 export default function NavBar() {
   const [navbar, setNavbar] = useState(false);
   
-  const {isAuthenticated} = useContext(AccountContext)
+  const {isAuthenticated} = useAccountContext()
   
   return (
     <nav className="w-full shadow">
@@ -19,11 +17,6 @@ export default function NavBar() {
             <Link href="/">
               <h2 className="text-2xl font-bold text-white-100">
                 <figure>
-                  {/* <Image 
-                    src={logo} 
-                    alt="Logo" 
-                    className=" w-36 h-auto" 
-                  /> */}
                   <SidebarLightLogo/>
                 </figure>
               </h2>

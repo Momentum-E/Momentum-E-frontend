@@ -1,3 +1,49 @@
+export type UserContextProps = {
+  // Functions
+  // filteredVehicleData:(v_id: string|string|string[] | undefined) => void;
+  setDistanceValue:(val: number|null|undefined) => string | number | undefined;
+  fetchUserImage:() => Promise<void>;
+
+  // State Variables 
+  userEmail:string;
+  userOwnerType:string;
+  userCity:string|undefined;
+  userState:string|undefined;
+  userCountry:string|undefined;
+  userLocation:string;
+  userId:string;
+  userImage:string;
+  isLoading:boolean;
+  vehicleData:vehicleDataProps[];
+  vehicleIdData:vehicleDataProps|undefined;
+  vehicleCalcultedData:Record<string, vehicleCalcultedDataProps>|undefined|null;
+  vehicleCalcultedIdData: vehicleCalcultedDataProps|undefined|null;
+  name:string;
+  unit:string;
+  isImageLoading:boolean;
+  temperatureData: temperatureDataProps;
+  webSocket:WebSocket|null;
+
+  // State Functions
+  setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
+  setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
+  setVehicleCalcultedIdData:React.Dispatch<React.SetStateAction<vehicleCalcultedDataProps | undefined>>;
+  setVehicleCalcultedData:React.Dispatch<React.SetStateAction<Record<string, vehicleCalcultedDataProps>| undefined>>;
+  setUnit:React.Dispatch<React.SetStateAction<string>>;
+  setName:React.Dispatch<React.SetStateAction<string>>;
+  setUserCity:React.Dispatch<React.SetStateAction<string>>;
+  setUserState:React.Dispatch<React.SetStateAction<string>>;
+  setUserCountry:React.Dispatch<React.SetStateAction<string>>;
+  setUserEmail:React.Dispatch<React.SetStateAction<string>>;
+  setUserImage:React.Dispatch<React.SetStateAction<string>>;
+  setTemperatureData: React.Dispatch<React.SetStateAction<temperatureDataProps>>
+}
+
+export type temperatureDataProps = {
+  minTemperature: number|null;
+  maxTemperature: number|null;
+}
+
 export type SelectorProps = {
   data: any;
   selected: string;
@@ -8,7 +54,7 @@ export type SelectorProps = {
 export type SidebarProps = {
   id:string|any;
   isLoading:boolean;
-  vehicle_data:vehicleDataProps[];
+  vehicleData:vehicleDataProps[];
   isTab: boolean;
   isOpen: boolean;
   setIsOpen: (value: React.SetStateAction<boolean>) => void;
@@ -35,19 +81,28 @@ export type YourVehicleProps = {
 }
 
 export type VehicleUsageProps ={
-  MaxTemp:string | null | undefined;
-  MinTemp:string | null | undefined;
+  avgDailyDistance:number|null| undefined;
+  SoCMinRange:number|null| undefined;
+  SoCMaxRange:number|null| undefined;
+  avgRealRangeObserved:number|null| undefined;
+  minRange:number|null| undefined;
+  maxRange:number|null|undefined;
+  certifiedRange:any;
+  temperatureData:{
+    minTemperature: number | null | undefined;
+    maxTemperature: number | null | undefined;
+  }
   unit:string;
-  setDistanceValue:(val: number | undefined) => string | number | undefined
+  setDistanceValue:(val: number|null|undefined) => string | number | undefined
 } 
 
 export type BatteryHealthProps = {
-  SoH:number|undefined;
+  SoH:number|undefined|null;
 }
 
 export type BasicCarDataProps = {
   heading: string;
-  data:string;
+  data:number|string|Date|React.JSX.Element|any;
   icon:React.ReactNode;
 }
 
@@ -59,27 +114,40 @@ export type vehicleInfoProps = {
   Vin:string|null|undefined;
   unit:string;
   batterCapacity:number|null|undefined;
-  setDistanceValue:(val: number | undefined) => string | number | undefined
+  setDistanceValue:(val: number |null| undefined) => string | number | undefined
 }
 
 export type CharginPatternProps ={
     avgSoC:number|null|undefined;
     chargeRate:number|null|undefined;
+    totalChargingSessions:number|null|undefined;
+    connectorType:string|null|undefined
+    batteryLevel:number|null|undefined;
+    isCharging:boolean|undefined;
+    timeRemaining:number|null|undefined;
 }
 
 export type vehicleDataProps = {
+  Connected_On:string;
+  Subs_fee:number;
+  Vehicle_Type:string;
   id:string;
   vendor:string;
+  plan:string;
   isReachable:boolean|null;
   lastSeen:string;
   chargeState:{
     batteryCapacity:number;
     batteryLevel:number;
-    chargeRate:number;
+    chargeLimit:number;
+    chargeRate:number|null;
     isFullyCharged:boolean;
     isCharging:boolean;
     lastUpdated:string;
     range:number;
+    isPluggedIn:boolean;
+    chargeTimeRemaining:number|null;
+    powerDeliveryState:string;
   }
   information:{
       vin:string|null;
@@ -93,35 +161,46 @@ export type vehicleDataProps = {
   }
 };
 
-export interface vehicleCalcultedDataProps {
-  avgDailyMiles: {
-    avgValue: number;
-    currentOdometerReading: number;
-    prevMonthOdometerReading: number | null;
-  };
-  certifiedRange: number;
-  chargeRateData: {
-    avgChargingRate: number;
-    currentChargeRate: number | null;
-  };
-  connectorType: string;
-  rangeData: {
-    avgRealRange: number;
-    currentRange: number;
-    maxRange: number;
-    minRange: number | null;
-  };
-  socData: {
-    avgValue: number;
-    max: number;
-    min: number;
-  };
-  soh: number;
-  temperatureRange: {
-    max: number;
-    min: number;
-  };
-  totalChargingSessions: number;
+export type vehicleCalcultedDataProps = {
+  avgDailyMiles:{
+    avgDistancePrevMonths:number[]|null[]|any;
+    avgValue:number|null;
+    prevMonthOdometerReading:number|null;
+    currentOdometerReading:number|null;
+  }
+  certifiedRange:number|null;
+  chargeRateData:{
+    avgChargingRate:number|null;
+    chargeEndTime:null|Date;
+    chargeStartTime:null|Date;
+    currentChargeRate:number|null;
+    odometerReadingAfterCharging:number|null;
+    totalEnergyConsumed:number|null;
+  }
+  connectorType:string|null;
+  dataPointCollected:number|null;
+  rangeData:{
+    avgRealRange:number|null;
+    currentRange:number|null;
+    minRange:number|null;
+    maxRange:number|null;
+  }
+  socData:{
+    avgValue:number|null;
+    min:number|null;
+    max:number|null;
+  }
+  soh:number|null;
+  totalChargingSessions:number|null;
+}
+
+export type VehicleComponentProps = {
+  vehicleIdData:vehicleDataProps|undefined;
+  temperatureData:temperatureDataProps;
+  vehicleCalcultedIdData:vehicleCalcultedDataProps|undefined|null;
+  unit: string;
+  userLocation: string;
+  setDistanceValue:(val: number|null|undefined) => string|number|undefined;
 }
 
 export type VendorCountProp = {
@@ -135,6 +214,7 @@ export type DashboardLayoutProps = {
 }
 
 export type DashboardNavbarProps = {
+  webSocket:WebSocket|null;
   setIsOpen: any;
   isOpen: boolean;
   page:string | string[] | undefined;
@@ -143,13 +223,26 @@ export type DashboardNavbarProps = {
   isTab:boolean;
   userImage:string;
   isImageLoading:boolean;
+  setName:React.Dispatch<React.SetStateAction<string>>;
+  setUserCity:React.Dispatch<React.SetStateAction<string>>;
+  setUserState:React.Dispatch<React.SetStateAction<string>>;
+  setUserCountry:React.Dispatch<React.SetStateAction<string>>;
+  setUserEmail:React.Dispatch<React.SetStateAction<string>>;
+  setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>;
 };
 
 export type UserSideMenuProps = {
+  webSocket:WebSocket|null;
   name:string|any;
   id:string;
   userImage:string;
   isImageLoading:boolean;
+  setName:React.Dispatch<React.SetStateAction<string>>;
+  setUserCity:React.Dispatch<React.SetStateAction<string>>;
+  setUserState:React.Dispatch<React.SetStateAction<string>>;
+  setUserCountry:React.Dispatch<React.SetStateAction<string>>;
+  setUserEmail:React.Dispatch<React.SetStateAction<string>>;
+  setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>;
 }
 
 export type UserImageProps ={
@@ -198,3 +291,289 @@ export type AuthListBoxProps = {
   value:any;
   OnChange:React.ChangeEventHandler<HTMLInputElement> | undefined;
 }
+
+// {
+//   "userId":"61c3c5cf-98fd-4e64-a6a9-d4024724491d",
+//   "eventName":"MODIFY",
+//   "updatedData":{
+//      "country":"Spain",
+//      "city":"Madrid",
+//      "vehicles_processed_data":{
+//         "cb59389d-2a5f-49fd-8f20-e4806b9f5f04":{
+//            "dataPointCollected":56,
+//            "connectorType":"ChaDeMo",
+//            "avgDailyMiles":{
+//               "avgValue":3388.842105263158,
+//               "currentOdometerReading":64388,
+//               "prevMonthOdometerReading":0,
+//               "avgDistancePrevMonths":[
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null
+//               ]
+//            },
+//            "totalChargingSessions":0,
+//            "certifiedRange":350,
+//            "socData":{
+//               "avgValue":0,
+//               "min":20,
+//               "max":80
+//            },
+//            "rangeData":{
+//               "currentRange":300,
+//               "maxRange":300,
+//               "avgRealRange":300,
+//               "minRange":null
+//            },
+//            "soh":98,
+//            "chargeRateData":{
+//               "chargeStartTime":null,
+//               "totalEnergyConsumed":0,
+//               "chargeEndTime":null,
+//               "avgChargingRate":0,
+//               "odometerReadingAfterCharging":0,
+//               "currentChargeRate":null
+//            }
+//         },
+//         "3e16428b-5ecd-4457-ae1d-adfcde1829c2":{
+//            "dataPointCollected":36,
+//            "connectorType":"ChaDeMo",
+//            "avgDailyMiles":{
+//               "avgValue":1402.8947368421052,
+//               "currentOdometerReading":26655,
+//               "prevMonthOdometerReading":0,
+//               "avgDistancePrevMonths":[
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null,
+//                  null
+//               ]
+//            },
+//            "totalChargingSessions":0,
+//            "certifiedRange":350,
+//            "socData":{
+//               "avgValue":0,
+//               "min":20,
+//               "max":80
+//            },
+//            "rangeData":{
+//               "currentRange":211,
+//               "maxRange":211,
+//               "avgRealRange":211,
+//               "minRange":null
+//            },
+//            "soh":98,
+//            "chargeRateData":{
+//               "chargeStartTime":null,
+//               "totalEnergyConsumed":0,
+//               "chargeEndTime":null,
+//               "avgChargingRate":0,
+//               "odometerReadingAfterCharging":0,
+//               "currentChargeRate":null
+//            }
+//         }
+//      },
+//      "name":"Momentum-E",
+//      "vehicles":[
+//         {
+//            "capabilities":{
+//               "chargeState":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "odometer":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "stopCharging":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "information":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "location":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "smartCharging":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "startCharging":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               }
+//            },
+//            "chargeState":{
+//               "isPluggedIn":false,
+//               "chargeRate":null,
+//               "chargeLimit":100,
+//               "lastUpdated":"2023-10-19T06:41:51.228Z",
+//               "chargeTimeRemaining":null,
+//               "range":211,
+//               "isCharging":false,
+//               "isFullyCharged":false,
+//               "batteryCapacity":75,
+//               "powerDeliveryState":"UNPLUGGED",
+//               "batteryLevel":0
+//            },
+//            "isReachable":true,
+//            "odometer":{
+//               "lastUpdated":"2023-10-04T01:55:16.000Z",
+//               "distance":26655
+//            },
+//            "smartChargingPolicy":{
+//               "minimumChargeLimit":0,
+//               "isEnabled":false,
+//               "deadline":null
+//            },
+//            "Subs_fee":15,
+//            "Vehicle_Type":"LMV",
+//            "userId":"61c3c5cf-98fd-4e64-a6a9-d4024724491d",
+//            "lastSeen":"2023-10-19T06:41:51.229Z",
+//            "locationId":null,
+//            "vendor":"JAGUAR",
+//            "information":{
+//               "year":2020,
+//               "vin":"F4MXPE9NWGMD16707",
+//               "model":"I-PACE",
+//               "brand":"Jaguar"
+//            },
+//            "location":{
+//               "lastUpdated":"2023-10-03T13:16:50.000Z",
+//               "latitude":27.9953,
+//               "longitude":-168.318
+//            },
+//            "Connected_On":"2023-10-04T12:54:14.482Z",
+//            "id":"3e16428b-5ecd-4457-ae1d-adfcde1829c2",
+//            "plan":"PAID"
+//         },
+//         {
+//            "capabilities":{
+//               "chargeState":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "odometer":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "stopCharging":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "information":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "location":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "smartCharging":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               },
+//               "startCharging":{
+//                  "interventionIds":[
+                    
+//                  ],
+//                  "isCapable":true
+//               }
+//            },
+//            "chargeState":{
+//               "isPluggedIn":false,
+//               "chargeRate":null,
+//               "chargeLimit":100,
+//               "lastUpdated":"2023-10-19T06:39:01.190Z",
+//               "chargeTimeRemaining":null,
+//               "range":300,
+//               "isCharging":false,
+//               "isFullyCharged":false,
+//               "batteryCapacity":75,
+//               "powerDeliveryState":"UNPLUGGED",
+//               "batteryLevel":0
+//            },
+//            "isReachable":true,
+//            "odometer":{
+//               "lastUpdated":"2023-10-03T16:32:59.000Z",
+//               "distance":64388
+//            },
+//            "smartChargingPolicy":{
+//               "minimumChargeLimit":0,
+//               "isEnabled":false,
+//               "deadline":null
+//            },
+//            "Subs_fee":20,
+//            "Vehicle_Type":"LMV",
+//            "userId":"61c3c5cf-98fd-4e64-a6a9-d4024724491d",
+//            "lastSeen":"2023-10-19T06:39:01.191Z",
+//            "locationId":null,
+//            "vendor":"JAGUAR",
+//            "information":{
+//               "year":2020,
+//               "vin":"8SGRVF5DUPBT88389",
+//               "model":"I-PACE",
+//               "brand":"Jaguar"
+//            },
+//            "location":{
+//               "lastUpdated":"2023-10-04T01:50:22.000Z",
+//               "latitude":-9.3161,
+//               "longitude":12.6848
+//            },
+//            "Connected_On":"2023-10-04T12:54:14.882Z",
+//            "id":"cb59389d-2a5f-49fd-8f20-e4806b9f5f04",
+//            "plan":"PAID"
+//         }
+//      ],
+//      "state":"Madrid",
+//      "userId":"61c3c5cf-98fd-4e64-a6a9-d4024724491d",
+//      "email":"mannandassani@momentum-e.com",
+//      "owner_type":"Fleet Owner"
+//   }
+// }

@@ -1,12 +1,12 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext } from 'react'
 import { useTheme } from 'next-themes';
 import { Popover, Transition } from '@headlessui/react';
-import { useAppContext } from '@/context/userContext';
+import { AppContext } from '@/context/userContext';
 
 const SetValue = () => {
 
     const { theme, setTheme } = useTheme()
-    const {unit, setUnit}:any = useAppContext()
+    const {unit, setUnit} = useContext(AppContext)
 
     return (
         <Popover as="div" className=" absolute right-12 bottom-8 translate-x-1/2 translate-y-1/2 ">

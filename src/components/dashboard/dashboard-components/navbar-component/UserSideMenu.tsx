@@ -1,9 +1,8 @@
-import React,{Fragment, useContext,} from 'react'
-import  {Menu, Transition} from '@headlessui/react'
+import React,{ Fragment } from 'react'
+import  { Menu, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router';
 import { UserImage } from '@/components/dashboard/profile-components/UserImage';
-import { AccountContext } from '@/context/account';
-import { useAppContext } from '@/context/userContext';
+import { useAccountContext } from '@/context/account';
 
 import { UserSideMenuProps } from '@/utils/props';
 
@@ -12,22 +11,21 @@ function classNames(...classes: string[]) {
   }
 
 const UserSideMenu:React.FC<UserSideMenuProps> = ({
+    webSocket,
     name,
     id,
     userImage,
     isImageLoading,
+    setName,
+    setVehicleData,
+    setUserCity,
+    setUserState,
+    setUserCountry,
+    setUserEmail
 }) => {
 
     const router = useRouter()
-    const {logout} = useContext(AccountContext);
-    const {
-        setName,
-        setVehicleData,
-        setUserCity,
-        setUserState,
-        setUserCountry,
-        setuserEmail
-    } = useAppContext()
+    const {logout} = useAccountContext();
 
     const SignOut = () => {
         logout();
@@ -37,7 +35,8 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
         setUserCity("")
         setUserState("")
         setUserCountry("")
-        setuserEmail('')
+        setUserEmail('')
+        webSocket?.close()
     };
     
     return (
