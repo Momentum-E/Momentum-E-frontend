@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes'
 
 function ForgotPasswordPage() {
   
-  const { theme, setTheme } = useTheme()
+  const { setTheme } = useTheme()
   useEffect(()=>{
       setTheme('dark')
   })

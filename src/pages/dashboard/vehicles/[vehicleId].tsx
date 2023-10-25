@@ -1,19 +1,77 @@
 import { useRouter } from 'next/router';
-import React from 'react'
-// import SetValue from '@/components/dashboard/set-values-component/SetValue';
+import React, { useContext, useEffect } from 'react'
+import { AppContext } from '@/context/userContext';
 
-import VehicleData from '@/components/dashboard/vehicle-components/VehicleData';
 import { DashboardLayout } from '@/layouts/';
+import {Loader} from '@/components/shared';
+import VehicleComponent from '@/components/dashboard/vehicle-components/VehicleComponent';
+import axios from 'axios';
 
 const VehicleDashboardContent = () => {
   const router = useRouter();
   const { vehicleId } = router.query;
+  const {
+    userId,
+    userLocation, 
+    isLoading,
+    unit, 
+    vehicleIdData,
+    temperatureData,
+    vehicleData,
+    vehicleCalcultedData,
+    vehicleCalcultedIdData,
+    setDistanceValue, 
+    setVehicleIdData,
+    setVehicleCalcultedIdData,
+    // filteredVehicleData,
+  } = useContext(AppContext)
+
+  useEffect(()=>{
+    // Function for getting data of a particular vehicle_Id
+    const filteredVehicleData = (v_id:any) => {
+      if(v_id && vehicleCalcultedData && vehicleData && vehicleData.length > 0){
+        setVehicleIdData(vehicleData.find(vehicle => vehicle.id === vehicleId))
+        setVehicleCalcultedIdData(vehicleCalcultedData[v_id])
+
+        axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/users/${userId}/${vehicleId}`)
+        .then((res) => {
+          // console.log(res.data)
+        })
+        .catch((err) => {
+          console.log("Error in filteredVehicleData: "+err)
+        })
+      }
+      else{
+        console.log('No vehicles added.')
+      }
+    }
+    filteredVehicleData(vehicleId)
+  },[vehicleId,vehicleData])
+
+
 
   return (
-    <DashboardLayout page={vehicleId}>
+    <DashboardLayout page={`vehicles / ${vehicleIdData?.information?.vin}`}>
       <div className='h-screen overflow-y-auto overflow-x-hidden pb-16 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300'>
-        <VehicleData/>  
-        {/* <SetValue/> */}
+        {
+          isLoading?
+          (
+            <span className='h-full flex items-center justify-center'>
+              <Loader LoaderSize={24}/>
+            </span>
+          )
+          :
+          (
+            <VehicleComponent
+              vehicleIdData={vehicleIdData}
+              vehicleCalcultedIdData={vehicleCalcultedIdData}
+              temperatureData={temperatureData}
+              unit={unit}
+              userLocation={userLocation}
+              setDistanceValue={setDistanceValue}
+            />
+          )
+        }
       </div>
     </DashboardLayout>
   )

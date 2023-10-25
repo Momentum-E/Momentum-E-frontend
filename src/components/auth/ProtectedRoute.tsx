@@ -1,8 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { AccountContext } from '../../context/account';
+import { AccountContext } from '@/context/account';
+// import socket from '@/configs/webSockets/WebSockets';
 
-const ProtectedRoute = ({ children }: any) => {
+type ProtectedRouteProps = {
+  children: React.ReactNode;
+}
+
+const ProtectedRoute = ({
+   children,
+  }:ProtectedRouteProps) => {
   const { getSession } = useContext(AccountContext);
   const router = useRouter();
 
@@ -16,13 +23,14 @@ const ProtectedRoute = ({ children }: any) => {
         router.replace('/auth/login/')
       }
     };
+    // window.location.reload()
     checkAuthentication();
   }, [getSession]);
 
   return (
-    <div>
+    <>
       {children}
-    </div>
+    </>
   )
 };
 

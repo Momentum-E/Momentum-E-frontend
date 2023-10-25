@@ -1,67 +1,48 @@
 export const chartsConfig = {
-    chart: {
-      redrawOnParentResize: true,
-      toolbar: {
-        show: true,
-        offsetX: 0,
-        offsetY: 0,
-        tools: {
-          download: true,
-          selection: true,
-          zoom: true,
-          zoomin: true,
-          zoomout: true,
-          pan: true,
-          reset: true,
-        },
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    xaxis: {
-      axisTicks: {
-        show: false,
-      },
-      axisBorder: {
-        show: false,
-      },
-      labels: {
-        style: {
-          colors: "#848484",
-          fontSize: "13px",
-          fontFamily: "inherit",
-          fontWeight: 300,
-        },
-      },
-    },
-    yaxis: {
-      labels: {
-        style: {
-          colors: "#848484",
-          fontSize: "13px",
-          fontFamily: "inherit",
-          fontWeight: 300,
-        },
-      },
-    },
-    grid: {
+  chart: {
+    redrawOnParentResize: true,
+    toolbar: {
       show: true,
-      borderColor: "#848484",
-      strokeDashArray: 5,
-      yaxis: {
-        lines: {
-          show: true,
-        },
+      offsetX: 0,
+      offsetY: 0,
+      tools: {
+        download: true,
+        selection: true,
+        zoom: true,
+        zoomin: true,
+        zoomout: true,
+        pan: true,
+        reset: true,
       },
     },
-    // fill: {
-    //   opacity: 0.8,
-    // },
-    tooltip: {
-      theme: "dark",
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  yaxis: {
+    labels: {
+      style: {
+        colors: "#848484",
+        fontSize: "13px",
+        fontFamily: "inherit",
+        fontWeight: 300,
+      },
     },
-  };
+  },
+  grid: {
+    show: true,
+    borderColor: "#848484",
+    strokeDashArray: 5,
+    yaxis: {
+      lines: {
+        show: true,
+      },
+    },
+  },
+  tooltip: {
+    theme: "dark",
+  },
+};
   
-  export default chartsConfig;
+export default chartsConfig;
 

@@ -1,25 +1,42 @@
-import React,{Fragment, useContext,} from 'react'
-import  {Menu, Transition} from '@headlessui/react'
+import React,{ Fragment } from 'react'
+import  { Menu, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router';
-import Image from 'next/image'
-import { AccountContext } from '@/context/account';
-import { UserSideMenuProps } from '@/utils/props/props';
+import { UserImage } from '@/components/dashboard/profile-components/UserImage';
+import { useAccountContext } from '@/context/account';
+
+import { UserSideMenuProps } from '@/utils/props';
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');
   }
 
 const UserSideMenu:React.FC<UserSideMenuProps> = ({
+    webSocket,
     name,
-    id
+    id,
+    userImage,
+    isImageLoading,
+    setName,
+    setVehicleData,
+    setUserCity,
+    setUserState,
+    setUserCountry,
+    setUserEmail
 }) => {
 
     const router = useRouter()
-    const {logout} = useContext(AccountContext);
+    const {logout} = useAccountContext();
 
     const SignOut = () => {
         logout();
         router.replace('/auth/login')  
+        setName("")  
+        setVehicleData([])
+        setUserCity("")
+        setUserState("")
+        setUserCountry("")
+        setUserEmail('')
+        webSocket?.close()
     };
     
     return (
@@ -30,17 +47,19 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
             <div className="flex items-center justify-end">
                 <p className="dark:text-white-100 mr-2 w-[80%] text-sm hidden lg:flex lg:justify-end">
                     <span className='overflow-hidden overflow-ellipsis'>
-                        Hello, {name===""?'User':name}
+                        Welcome, {name===""?'User':name}
                     </span>
                 </p>
                 <div className="md:w-[20%]">
                     <Menu.Button className="flex justify-end rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        <Image
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt="Image of the person"
-                        width={32}
-                        height={32}
+                        <UserImage 
+                            userImage={userImage}
+                            imageWidth={32}
+                            imageHeight={32}
+                            imageSize='h-8 w-8'
+                            svgClassName='w-8 h-8'
+                            fontSize={12}    
+                            isLoading={isImageLoading}
                         />
                     </Menu.Button>
                 </div>

@@ -1,12 +1,10 @@
-// @ts-nocheck
 import React, { useState } from 'react';
 import userPool from '../../context/user-pool/user-pool';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { Switch } from '@headlessui/react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AuthInput from '../AuthInput';
+import AuthInput from './AuthComponents/AuthInput';
 import ConfirmSignUp from '@/pages/auth/confirmSignup';
 
 function classNames(...classes: string[]) {
@@ -14,11 +12,10 @@ function classNames(...classes: string[]) {
 }
 
 const Signup = () => {
-  // router can be used to redirect to dashboard
-  const router = useRouter();
 
   const [agreed, setAgreed] = useState(false);
-  const [errorData, setErrorData] = useState<undefined | any>();
+  const [inputType,setInputType] = useState('password')
+  const [confirmInputType,setConfirmInputType] = useState('password')
   const [verifyProcess, setVerifyProcess] = useState(false);
   const [input, setInput] = useState({
     username: '',
@@ -35,48 +32,28 @@ const Signup = () => {
     }));
   };
 
-  // const handleAWSError = (err: any) => {
-  //   if (err.code === 'InvalidPasswordException') {
-  //     const errorMessage = err.message || 'An unknown error occurred.';
-  //     // setErrorData(errorMessage);
-  //     //AWS error message with a toast message
-  //     toast.error(errorMessage);
-  //   }
-  //   if (err.code === 'UsernameExistsException') {
-  //     const errorMessage = err.message || 'User already present.';
-  //     // setErrorData(errorMessage);
-  //     //AWS error message with a toast message
-  //     toast.success(errorMessage);
-  //   } else {
-  //     console.error(err);
-  //   }
-  // };
-
   const onSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-
-    userPool.signUp(input.email, input.password, [], null, (err, data) => {
+    setInputType('password')
+    setConfirmInputType('password')
+    // changed the 4th parameter to [] from null
+    userPool.signUp(input.email, input.password, [], [], (err:any, data) => {
       if (err) {
-        // console.log(err)
-        // handleAWSError(err);
         if (err.code === 'InvalidPasswordException') {
           const errorMessage = err.message || 'An unknown error occurred.';
           toast.error(errorMessage);
-          setErrorData(errorMessage);
-          //AWS error message with a toast message
         }
         if (err.code === 'UsernameExistsException') {
           const errorMessage = err.message || 'User already present.';
           toast.success(errorMessage);
-          setErrorData(errorMessage);
-          //AWS error message with a toast message
         } else {
           console.error(err);
         }
       } else {
-        // router.replace('/auth/confirmSignup');
         console.log(data);
-        localStorage.setItem('userId', data?.userSub);
+        if(data){
+          localStorage.setItem('userId', data?.userSub);
+        } 
         toast.success('Please confirm your email to continue');
         setVerifyProcess(true);
       }
@@ -118,39 +95,65 @@ const Signup = () => {
                 children={null}
               />
               
-              <AuthInput
-                outerDiv=''
-                labelName='Password'
-                labelFor='password'
-                isRequired={true}
-                inputType='password'
-                inputAutocomplete='off'
-                inputClassname={`${
-                  input.password != input.confirmPassword
-                    ? `border-red-500`
-                    : `border-me-green-200`
-                }`}
-                inputValue={input.password}
-                inputOnChange={(e) => onInputChange(e)}
-                children={null}
-              />
+              <div className="flex">
+                <AuthInput
+                  outerDiv='w-full'
+                  labelName='Password'
+                  labelFor='password'
+                  isRequired={true}
+                  inputType={inputType}
+                  inputAutocomplete='off'
+                  inputClassname={`${
+                    input.password != input.confirmPassword
+                      ? `border-red-500`
+                      : `border-me-green-200`
+                  }`}
+                  inputValue={input.password}
+                  inputOnChange={(e) => onInputChange(e)}
+                  children={null}
+                />
+                <button className='focus:outline-none focus:border-none' type='button' onClick={()=>setInputType(inputType === 'text' ? 'password': 'text')}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  
+                    strokeWidth={1.5} stroke="currentColor" 
+                    className={`w-4 h-4 focus:outline-none focus:border-none ${inputType === 'text' ? 'hidden' : 'flex'}`}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-4 h-4 focus:outline-none focus:border-none ${inputType === 'password' ? 'hidden' : 'flex'}`}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                  </svg>
+                </button>
+              </div>
               
-              <AuthInput
-                outerDiv=''
-                labelName='Confirm Password'
-                labelFor='confirmPassword'
-                isRequired={true}
-                inputType='password'
-                inputAutocomplete='off'
-                inputClassname={`${
-                  input.password != input.confirmPassword
-                    ? `border-b border-red-500`
-                    : `border-me-green-200`
-                }`}
-                inputValue={input.confirmPassword}
-                inputOnChange={(e) => onInputChange(e)}
-                children={null}
-              />
+              <div className="flex w-full">
+                <AuthInput
+                  outerDiv='w-full'
+                  labelName='Confirm Password'
+                  labelFor='confirmPassword'
+                  isRequired={true}
+                  inputType={confirmInputType}
+                  inputAutocomplete='off'
+                  inputClassname={`${
+                    input.password != input.confirmPassword
+                      ? `border-b border-red-500`
+                      : `border-me-green-200`
+                  }`}
+                  inputValue={input.confirmPassword}
+                  inputOnChange={(e) => onInputChange(e)}
+                  children={null}
+                />
+                <button className='focus:outline-none focus:border-none' type='button' onClick={()=>setConfirmInputType(confirmInputType === 'text' ? 'password': 'text')}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  
+                    strokeWidth={1.5} stroke="currentColor" 
+                    className={`w-4 h-4 ${confirmInputType === 'text' ? 'hidden' : 'flex'}`}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-4 h-4 ${confirmInputType === 'password' ? 'hidden' : 'flex'}`}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                  </svg>
+                </button>
+              </div>
 
               <div className="sm:col-span-2">
                 {/* Matching Password Error */}

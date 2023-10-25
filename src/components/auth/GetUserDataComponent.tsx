@@ -1,45 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { City, Country, State } from 'country-state-city';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import AuthListBox from '@/components/AuthListBox'; 
-import { Selector } from '@/components/dashboard/dashboard-components';
-import AuthInput from '@/components/AuthInput';
+ 
+import {
+  AuthInput,
+  AuthListBox,
+  AuthSelector
+} from '@/components/auth/AuthComponents';
+import { GetUserDataComponentProps } from '@/utils/props';
+import { AppContext } from '@/context/userContext';
 
 const owner_type = [{ type: 'Individual Owner' }, { type: 'Fleet Owner' }];
 
-type GetUserDataComponentProps = {
-  heading:string;
-  page:string;
-  userId:string|null;
-  userEmail:string|null;
-  formDiv:string;
-  buttonName:string;
-}
-
-const GetUserDataComponent = ({
+const GetUserDataComponent:React.FC<GetUserDataComponentProps> = ({
+  isRequired,
   heading,
   page,
   userId,
   userEmail,
   formDiv,
   buttonName,
-}:GetUserDataComponentProps) => {
+}) => {
   const countryData = Country.getAllCountries();
   const router = useRouter();
+  const {name, userOwnerType ,userCity,userState,userCountry} = useContext(AppContext)
   
-  const [ownerType, setOwnerType] = useState(owner_type[0]);
+  const [Name, setName] = useState('');
+  const [ownerType, setOwnerType] = useState<{type:string}>(page==='profile'?{type:userOwnerType}:owner_type[0]);
+  //{type:userOwnerType}
+
+  // Setting the data for the particular country
   const [stateData, setStateData] = useState<any>();
   const [cityData, setCityData] = useState<any>();
-  const [country, setCountry] = useState<any>();
-  const [state, setState] = useState<any>();
-  const [city, setCity] = useState<any>();
-  const [Name, setName] = useState('');
-  // const [FirstName,setFirstName] = useState('')
-  // const [LastName,setLastName] = useState('')
+
+  // Setting the data of the user Location 
+  const [country, setCountry] = useState<string|any>("");
+  const [state, setState] = useState<string|any>("");
+  const [city, setCity] = useState<string|any>("");
+
+  useEffect(() => {
+    if(page==='profile'){
+      setOwnerType({type:userOwnerType})
+      setName(name)
+      setCountry(userCountry)
+      setState(userState)
+      setCity(userCity)
+    }
+  },[name,userOwnerType,userCountry,userState,userCity])  
 
   useEffect(() => {
     return setStateData(State.getStatesOfCountry(country?.isoCode));
@@ -50,71 +60,65 @@ const GetUserDataComponent = ({
   }, [state]);
 
   useEffect(() => {
-    stateData && setState(stateData[0]);
+    stateData && setState(page==='profile' ? userState : stateData[0]);
   }, [stateData]);
 
   useEffect(() => {
-    cityData && setCity(cityData[0]);
+    cityData && setCity(page==='profile' ? userCity : cityData[0]);
   }, [cityData]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if(page==='profile'){
+      if((country.name||country)===""){
+        setCity(userCity)
+        setState(userState)
+        setCountry(userCountry)
+      }
+      else{
+      }
       const newFormData = {
-        // firstName: FirstName,
-        // lastName: LastName,
         email: userEmail,
-        // address: {
-        country: country.name,
-        city: city.name,
-        state: state.name,
-        // },
-        owner_type: ownerType,
-        name: Name,
+        country: country?.name||country,
+        city: city?.name||city,
+        state: state?.name||state,
+        owner_type: ownerType?.type,
+        name: Name===""?name:Name,
       };
-  
-      axios(`http://localhost:5000/auth/users/${userId}`, {
-        method: 'PATCH',
-        data: newFormData,
-      })
-        .then((res) => {
-          console.log(res);
-          toast.success('User updated successfully');
-          location.reload();
-        })
-        .catch((err) => {
-          console.error(err);
-          toast.error('Something went wrong');
-        });
-  
       console.log(newFormData);
+      // axios(`http://localhost:5000/auth/users/${userId}`, {
+      //   method: 'PATCH',
+      //   data: newFormData,
+      // })
+      // .then((res) => {
+      //   console.log(res);
+      //   toast.success('User updated successfully');
+      //   window.location.reload()
+      // })
+      // .catch((err) => {
+      //   console.error(err);
+      //   toast.error('Something went wrong');
+      // });
     }
     else{
       const formData = {
         userId: localStorage.getItem('userId'),
         email: localStorage.getItem('email'),
-        // firstName: FirstName,
-        // lastName: LastName,
-        owner_type: ownerType.type,
-        // address: {
-        //   country: country?.name,
-        //   state: state?.name,
-        //   city: city?.name,
-        // },
+        owner_type: ownerType?.type,
         country: country?.name,
-        state: state?.name,
-        city: city?.name,
+        state: state?.name===undefined?'':state.name,
+        city: city?.name===undefined?'':city.name,
         name: Name,
         vehicles:[],
       };
   
-      axios('http://localhost:5000/auth/signup', {
+      axios(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/signup`, {
         method: 'POST',
         data: formData,
       })
       .then((res) => {
         console.log(res.data, formData);
-        toast.success('User successfully created');
+        toast.success('Login to view the dashboard.');
         router.replace('/auth/login')
         
         localStorage.removeItem('email');
@@ -133,61 +137,47 @@ const GetUserDataComponent = ({
       method="POST"
       onSubmit={(e) => onSubmit(e)}
       className={formDiv}>
-      <p className="mt-10 text-center text-2xl  leading-9  text-black dark:text-white-100">
+      <p className="mt-5 text-center text-2xl  leading-9  text-black dark:text-white-100">
         {heading}
       </p>
       <div className="grid grid-cols-1 px-5 gap-x-8 gap-y-6 sm:grid-cols-2">
         <AuthListBox 
           labelFor={'owner_type'}
-          isRequired={true}
+          isRequired={isRequired}
           labelName={'Type of Owner'}
           data={owner_type} 
           value={ownerType}
           OnChange={setOwnerType}
         />
         {
-        ownerType.type === owner_type[0].type ? (
-          <>
+          ownerType?.type === owner_type[0].type ? (
             <AuthInput
               outerDiv='sm:col-span-2'
               labelName='Full Name:'
               labelFor='name'
-              isRequired={true}
+              isRequired={isRequired}
               inputType='text'
               inputAutocomplete='given-name'
               inputClassname='border-me-green-200'
               inputValue={Name}
               inputOnChange={(e)=>setName(e.target.value)}
               children={null}
-            />
-            {/* <AuthInput
-              outerDiv=''
-              labelName='Last Name'
-              labelFor='lastname'
-              isRequired={true}
+            />       
+          ) : 
+          (
+            <AuthInput
+              outerDiv='sm:col-span-2'
+              labelName='Company Name:'
+              labelFor='company'
+              isRequired={isRequired}
               inputType='text'
-              inputAutocomplete='last-name'
+              inputAutocomplete='company'
               inputClassname='border-me-green-200'
-              inputValue={LastName}
-              inputOnChange={(e)=>setLastName(e.target.value)}
+              inputValue={Name}
+              inputOnChange={(e)=>setName(e.target.value)}
               children={null}
-            /> */}
-          </>
-        ) : 
-        (
-          <AuthInput
-            outerDiv='sm:col-span-2'
-            labelName='Company Name:'
-            labelFor='company'
-            isRequired={true}
-            inputType='text'
-            inputAutocomplete='company'
-            inputClassname='border-me-green-200'
-            inputValue={Name}
-            inputOnChange={(e)=>setName(e.target.value)}
-            children={null}
-          />
-        )
+            />
+          )
         }
 
         <div className="sm:col-span-2 mt-2.5 space-y-8">
@@ -196,9 +186,9 @@ const GetUserDataComponent = ({
               htmlFor="country"
               className="block text-sm mb-2.5 leading-6 text-black dark:text-white-100">
               Country
-              <span className="text-red-500 pl-1">*</span>
+              {isRequired&&<span className="text-red-500 pl-1">*</span>}
             </label>
-            <Selector
+            <AuthSelector
               id={'country'}
               data={countryData}
               selected={country}
@@ -207,7 +197,7 @@ const GetUserDataComponent = ({
           </div>
 
           <div>
-            {state && (
+            {(state) && (
               <div>
                 <label
                   htmlFor="state"
@@ -215,7 +205,7 @@ const GetUserDataComponent = ({
                   State
                   <span className="text-red-500 pl-1">*</span>
                 </label>
-                <Selector
+                <AuthSelector
                   id={'state'}
                   data={stateData}
                   selected={state}
@@ -231,9 +221,10 @@ const GetUserDataComponent = ({
                 <label
                   htmlFor="city"
                   className="block text-sm leading-6 text-black dark:text-white-100">
-                  City<span className="text-red-500 pl-1">*</span>
+                  City
+                  <span className="text-red-500 pl-1">*</span>
                 </label>
-                <Selector
+                <AuthSelector
                   id={'city'}
                   data={cityData}
                   selected={city}

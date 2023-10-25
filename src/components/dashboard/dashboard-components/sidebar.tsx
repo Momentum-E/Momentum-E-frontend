@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { SidebarProps } from '@/utils/props/props';
+import { SidebarProps } from '@/utils/props';
+import axios from 'axios';
 
-import { useAppContext } from '@/context/userContext';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
@@ -19,16 +19,17 @@ const SidebarDarkLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarDarkLo
   ssr:false,
 })
 
-const Sidebar: React.FC<SidebarProps> = ({
+const Sidebar:React.FC<SidebarProps> = ({
+  id,
   isLoading,
-  vehicle_data, 
+  vehicleData, 
   isTab, 
   isOpen, 
   setIsOpen,
   page,
   theme,
  }) => {
-
+  
   const router = useRouter();
   const { pathname } = router;
 
@@ -36,10 +37,26 @@ const Sidebar: React.FC<SidebarProps> = ({
     isTab && setIsOpen(false);
   }, [pathname]);
 
-  const {addVehicle}:any = useAppContext()
+  const addVehicle = (getPage:string) => {
+    let newPage = getPage.split(" ").join('')
+    if(newPage === ''){
+      newPage = 'redirect/dashboard' 
+    }
+    axios
+      .get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`)
+      .then((res) => {
+        console.log(res.data);
+        const linkUrl = res.data.linkUrl;
+        router.push(linkUrl);
+      })
+      .catch((err) => {
+        console.error(err)
+        addVehicle(page)
+      });
+  };
 
   return (
-    <div className="">
+    <>
       <div
         className={`${!isOpen ? `hidden ` : `block `} fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50 `}
         onClick={() => setIsOpen(false)}
@@ -49,8 +66,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         className={`${
           isOpen ? ` ` : `transform -translate-x-full `
         } ease-in-out duration-200 bg-gradient-to-br from-white-100 to-me-green-200/50 dark:bg-dashboard-gradient inset-0 backdrop-blur-3xl rounded-lg p-2 space-y-4 text-gray shadow-md z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed`}>
+        {/* logo */}
         <div className="flex flex-col gap-2.5 py-2 text-white-100 items-center justify-center">
-          {/* logo */}
           {
             theme === 'dark'?
             ( 
@@ -73,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         <div
           className="flex px-4 p-2 dark:text-white-100 bg-me-green-200 dark:bg-gray-700/50 rounded-lg items-center justify-center hover:bg-me-green-200/90 dark:hover:bg-gray-700/40 cursor-pointer focus:bg-blue-200"
-          onClick={addVehicle}>
+          onClick={()=>addVehicle(page)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -92,13 +109,13 @@ const Sidebar: React.FC<SidebarProps> = ({
 
         <YourVehicles
           isLoading={isLoading}
-          vehicleData={vehicle_data}
+          vehicleData={vehicleData}
           setIsOpen={setIsOpen}
           isTab={isTab}
           page={page}
         />
       </div>
-    </div>
+    </>
   );
 };
 

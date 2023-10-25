@@ -1,41 +1,84 @@
-import React from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { useEffect, useState, useContext } from 'react';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppContext } from '@/context/userContext';
+import { AppContext } from '@/context/userContext';
 
 import { DashboardLayout } from '@/layouts';
-import ChangeUserPassword from '@/components/auth/ChangeUserPassword';
-
+import {
+  ChangeUserPassword,
+  DeleteVehicle,
+  DeleteUser,
+  UploadUserImage,
+  VehicleIntervention
+} from '@/components/dashboard/profile-components/';
 import GetUserDataComponent from '@/components/auth/GetUserDataComponent';
-
-interface FormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  address: {
-    country: string;
-    city: string;
-    state: string;
-  };
-  owner_type: string;
-  company_name: string;
-}
+import { VendorCountProp } from '@/utils/props';
 
 const Profile = () => {
-  const {userId,userEmail}:any = useAppContext()
+  const {
+    userId,
+    name,
+    userEmail,
+    vehicleData,
+    userImage,
+    isImageLoading,
+    fetchUserImage
+  } = useContext(AppContext)
+  const [VendorCounts, setVendorCounts] = useState<VendorCountProp[]>([])
+
+  // Getting the vehicle Data count
+  useEffect(() => {
+    const counts:VendorCountProp[] = [];
+    // Create an array of vendor counts
+    if(vehicleData){
+      vehicleData.forEach((vehicle) => {
+        const vendor = vehicle.vendor;
+  
+        // Check if the vendor already exists in the array
+        const existingVendor = counts.find((item) => item.vendor === vendor);
+  
+        if (existingVendor) {
+          existingVendor.count++;
+        } else {
+          // Add a new entry for the vendor
+          counts.push({ vendor, count: 1 });
+        }
+      });
+    }
+    setVendorCounts(counts);
+  }, [vehicleData])
 
   return (
-    <DashboardLayout page={` Profile / ${userId}`}>
-      <div className="max-h-full max-w-xl w-full mx-auto space-y-20 pt-10 pb-20 overflow-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
-        <GetUserDataComponent
-          heading={'Update Data'}
-          page={'profile'}
-          userId={userId}
-          userEmail={userEmail}
-          formDiv=''
-          buttonName={'Submit Details'}
-        />
-        <ChangeUserPassword userId={userId} />             
+    <DashboardLayout page={` profile / ${name}`}>
+      <div className="max-h-full overflow-auto">
+        <div className="max-w-xl w-full mx-auto flex flex-col items-center space-y-10 px-2 md:px-0 pt-10 pb-20 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
+          <UploadUserImage
+            userId={userId}
+            userImage={userImage}
+            isImageLoading={isImageLoading}
+            fetchUserImage={fetchUserImage}
+          />
+          <DeleteVehicle 
+            userId={userId} 
+            VendorCounts={VendorCounts}
+          /> 
+          <VehicleIntervention
+            vehicleData={vehicleData}
+          />
+          <div className=" border border-me-green-200 p-4 rounded-xl w-full">
+            <GetUserDataComponent
+              isRequired={false}
+              heading={'Update Data'}
+              page={'profile'}
+              userId={userId}
+              userEmail={userEmail}
+              formDiv=''
+              buttonName={'Update Details'}
+            />
+          </div>   
+          <ChangeUserPassword userId={userId} />    
+          <DeleteUser userId={userId}/>     
+        </div>
       </div>
       <ToastContainer />
     </DashboardLayout>

@@ -1,14 +1,23 @@
 import React from 'react';
-import { DashboardNavbarProps } from '@/utils/props/props';
+import { DashboardNavbarProps } from '@/utils/props';
 import { Disclosure,} from '@headlessui/react';
 import { UserSideMenu } from './navbar-component';
 
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
+  webSocket,
   setIsOpen,
   isOpen,
   page,
   name,
   id,
+  userImage,
+  isImageLoading,
+  setName,
+  setVehicleData,
+  setUserCity,
+  setUserState,
+  setUserCountry,
+  setUserEmail
 }) => {
 
   return (
@@ -18,12 +27,13 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
           <div className="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="w-full md:w-3/4">
-                <div className={`absolute inset-y-0 left-0 flex items-center md:hidden`}>
+                <div className={`absolute inset-y-0 flex items-center md:hidden`}>
                   <Disclosure.Button
                     className="inline-flex items-center justify-center rounded-md p-2 border border-black dark:border-white-100 text-black dark:text-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                     onClick={() => setIsOpen(true)}>
                     <span className="sr-only">Open main menu</span>
-                    {isOpen ? (
+                    {isOpen ? 
+                    (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true"
@@ -38,7 +48,9 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                           d="M6 18L18 6M6 6l12 12"
                         />
                       </svg>
-                    ) : (
+                    ) 
+                    : 
+                    (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -62,7 +74,6 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                       <span className='text-gray-400'>
                         Dashboard
                       </span> 
-                      {/* {" / " + vehicleId||page} */}
                       {" / " + page}
                     </p>
                     <span className="text-xl md:text-md dark:text-white-100 whitespace-pre flex flex-shrink-0">
@@ -71,7 +82,19 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                   </div>
                 </div>
               </div>
-              <UserSideMenu name={name} id={id}/>
+              <UserSideMenu 
+                webSocket={webSocket}
+                userImage={userImage} 
+                name={name} 
+                id={id}
+                isImageLoading={isImageLoading}
+                setName={setName}
+                setVehicleData={setVehicleData}
+                setUserCity={setUserCity}
+                setUserState={setUserState}
+                setUserCountry={setUserCountry}
+                setUserEmail={setUserEmail}
+              />
             </div>
           </div>
         </>

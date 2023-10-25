@@ -1,38 +1,38 @@
-import React, { useState, useContext } from 'react';
-import { AccountContext } from '../../context/account';
+import React, { useState } from 'react';
+import { useAccountContext } from '@/context/account';
 import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useRouter } from 'next/router';
+
 import ConfirmSignup from '@/pages/auth/confirmSignup';
-import AuthInput from '@/components/AuthInput'
+import AuthInput from '@/components/auth/AuthComponents/AuthInput';
 
 const SignIn = () => {
-  const router = useRouter();
+  const { authenticate } = useAccountContext();
+  
+  // const router = useRouter();
   const [userConfirmed, setUserConfirmed] = useState(true)
   const [input, setInput] = useState({
     email: '',
     password: '',
   });
-
+  
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    
     setInput((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-
+  
   const handleAWSError = (err:any) => {
     if (err.code === 'NotAuthorizedException') {
       const errorMessage = err.message || 'An unknown error occurred.';
-      // setErrorData(errorMessage);
-      //AWS error message with a toast message
       toast.error(errorMessage);
     }
     if (err.code === 'UserNotConfirmedException') {
       const errorMessage = err.message + 'Please verify your email.';
-      // setErrorData(errorMessage);
       //AWS error message with a toast message
       toast.error(errorMessage);
       setUserConfirmed(false)
@@ -42,7 +42,6 @@ const SignIn = () => {
     }
   };
 
-  const { authenticate } = useContext(AccountContext);
 
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -51,11 +50,8 @@ const SignIn = () => {
     .then((data: any) => {
       // check is the email is verified
         console.log(data)
-        router.replace('/dashboard')
-        // We need to get all the user data from the Dynamo DB
       })
       .catch((err: any) => {
-        // console.error('error', err);
         handleAWSError(err);
       });
   };
