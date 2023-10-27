@@ -17,12 +17,13 @@ const AccountContext = createContext({} as AccountContextProps);
 
 const AccountProvider = ({ children }:any) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [AccessToken, setAccessToken] = useState('')
 
   useEffect(() => {
     checkAuthentication();
   }, [isAuthenticated]);
   
-  const checkAuthentication = async () => {
+  const checkAuthentication = async (userId:string) => {
     try {
       const user = Pool.getCurrentUser();
       if (user) {
@@ -34,6 +35,20 @@ const AccountProvider = ({ children }:any) => {
     } catch (error) {
       setIsAuthenticated(false);
     }
+    // const token = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.accessToken`)
+    // axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/get-current-user`,{
+    //   headers:{
+    //     AccessToken:token
+    //   }
+    // })
+    // .then((res)=>{
+    //   await getSession();
+    //   setIsAuthenticated(true);
+    // })
+    // .catch((err)=>{
+    //   console.log(err)
+    //   setIsAuthenticated(false);
+    // })
   };
 
   const getSession = async () => {
@@ -55,34 +70,59 @@ const AccountProvider = ({ children }:any) => {
   };
 
   const authenticate = async (Username:string, Password:string) => {
+    // await new Promise((resolve, reject) => {
+    //   const user = new CognitoUser({ Username, Pool });
+
+    //   const authDetails = new AuthenticationDetails({ Username, Password });
+
+    //   user.authenticateUser(authDetails, {
+    //     onSuccess: (data) => {
+    //       console.log('onSuccess: ', data);
+    //       resolve(data);
+    //       setIsAuthenticated(true);
+
+    //       window.history.replaceState({
+    //         fromHashChange: true
+    //       },null, '/dashboard');
+
+    //       window.location.reload()
+    //     },
+    //     onFailure: (err) => {
+    //       console.error('onFailure: ', err);
+    //       reject(err);
+    //       setIsAuthenticated(false);
+    //     },
+    //     newPasswordRequired: (data) => {
+    //       console.log('newPasswordRequired: ', data);
+    //       alert('New password required, kindly change your password in your profile page.')
+    //     },
+    //   });
+    // });
+    console.log(Username,Password)
     await new Promise((resolve, reject) => {
-      const user = new CognitoUser({ Username, Pool });
+      axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/login`,{
+        headers:{
+          password:Password,
+          username:Username,
+        }
+      })
+      .then((res)=>{
+        console.log('onSuccess: ', res.data);
+        resolve(res.data);
+        setIsAuthenticated(true);
 
-      const authDetails = new AuthenticationDetails({ Username, Password });
+        window.history.replaceState({
+          fromHashChange: true
+        },null, '/dashboard');
 
-      user.authenticateUser(authDetails, {
-        onSuccess: (data) => {
-          console.log('onSuccess: ', data);
-          resolve(data);
-          setIsAuthenticated(true);
-
-          window.history.replaceState({
-            fromHashChange: true
-          },null, '/dashboard');
-
-          window.location.reload()
-        },
-        onFailure: (err) => {
-          console.error('onFailure: ', err);
-          reject(err);
-          setIsAuthenticated(false);
-        },
-        newPasswordRequired: (data) => {
-          console.log('newPasswordRequired: ', data);
-          alert('New password required, kindly change your password.')
-        },
-      });
-    });
+        window.location.reload()
+      })
+      .catch((err)=>{
+        console.error('onFailure: ', err);
+        reject(err);
+        setIsAuthenticated(false);
+      })
+    })
   };
 
   const DeleteUserAccount = async (username:string,password:string) => {
@@ -134,12 +174,24 @@ const AccountProvider = ({ children }:any) => {
     });
   } 
 
-  const logout = async () => {
-    const user = Pool.getCurrentUser();
-    if (user) {
-      user.signOut();
+  const logout = async (userId:string) => {
+    const token = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.accessToken`)
+    // const user = Pool.getCurrentUser();
+    // if (user) {
+    //   user.signOut();
+    //   setIsAuthenticated(false)
+    // }
+    axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/logout`,{
+      headers:{
+        AccessToken:token
+      }
+    })
+    .then((res)=>{
       setIsAuthenticated(false)
-    }
+    })
+    .catch((err)=>{
+      console.log('Error logging out: '+err)
+    })
   };
 
   return (

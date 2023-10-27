@@ -37,6 +37,10 @@ const SignIn = () => {
       toast.error(errorMessage);
       setUserConfirmed(false)
     }
+    if(err.code === 'PasswordResetRequiredException'){
+      const errorMessage = err.message || 'Password reset required for your account.';
+      toast.error(errorMessage);
+    }
     else {
       console.error(err);
     }
@@ -129,7 +133,6 @@ const SignIn = () => {
             </div>
           </section>
         </main>
-
       ):
       (
         <ConfirmSignup username={input.email}/>
