@@ -6,11 +6,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import ConfirmSignup from '@/pages/auth/confirmSignup';
 import AuthInput from '@/components/auth/AuthComponents/AuthInput';
+import axios from 'axios';
 
 const SignIn = () => {
-  const { authenticate } = useAccountContext();
+  const { setIsAuthenticated,setAccessToken } = useAccountContext();
   
-  // const router = useRouter();
   const [userConfirmed, setUserConfirmed] = useState(true)
   const [input, setInput] = useState({
     email: '',
@@ -21,25 +21,22 @@ const SignIn = () => {
     const { name, value } = e.target;
     
     setInput((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+        ...prev,
+        [name]: value,
+      }));
+    };
   
   const handleAWSError = (err:any) => {
-    if (err.code === 'NotAuthorizedException') {
-      const errorMessage = err.message || 'An unknown error occurred.';
-      toast.error(errorMessage);
+    if (err === 'NotAuthorizedException') {
+      toast.error('Incorrect Email or Password');
     }
-    if (err.code === 'UserNotConfirmedException') {
-      const errorMessage = err.message + 'Please verify your email.';
+    if (err === 'UserNotConfirmedException') {
       //AWS error message with a toast message
-      toast.error(errorMessage);
+      toast.error('Please verify your email.');
       setUserConfirmed(false)
     }
-    if(err.code === 'PasswordResetRequiredException'){
-      const errorMessage = err.message || 'Password reset required for your account.';
-      toast.error(errorMessage);
+    if(err === 'PasswordResetRequiredException'){
+      toast.error('Password reset required for your account.');
     }
     else {
       console.error(err);
@@ -49,16 +46,56 @@ const SignIn = () => {
 
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    
-    authenticate(input.email, input.password)
-    .then((data: any) => {
-      // check is the email is verified
-        console.log(data)
+    console.log(input.email, input.password)
+      let data = JSON.stringify({
+        "password": input.password,
+        "email": input.email
+      })  
+
+      let config = {
+        method: 'post',
+        url: `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/login`,
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+      axios.request(config)
+      .then((res)=>{
+        console.log(res.status)
+        if(res.status === 200){
+          setAccessToken(res.data.AuthenticationResult.AccessToken)
+          localStorage.setItem('AccessToken',res.data.AuthenticationResult.AccessToken)
+          localStorage.setItem('RefreshToken',res.data.AuthenticationResult.RefreshToken)
+          localStorage.setItem("IdToken",res.data.AuthenticationResult.IdToken)
+          // console.log(res.data)
+          
+          window.history.replaceState({
+            fromHashChange: true
+          },null, '/dashboard');
+          
+          window.location.reload()
+          setIsAuthenticated(true);
+        }
+        else{
+          handleAWSError(res.data);
+        }
       })
-      .catch((err: any) => {
-        handleAWSError(err);
-      });
-  };
+      .catch((err)=>{
+        console.log(err)
+        // console.log("autherror: "+err.response.data.name)
+        handleAWSError(err.response.data.name);
+      })
+    
+    // authenticate(input.email, input.password)
+    // .then((data: any) => {
+    //   // check is the email is verified
+    //   console.log(data)
+    // })
+    // .catch((err: any) => {
+    //   handleAWSError(err);
+    // });
+  }
 
   return (
     <>

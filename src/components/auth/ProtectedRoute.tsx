@@ -8,24 +8,28 @@ type ProtectedRouteProps = {
 }
 
 const ProtectedRoute = ({
-   children,
+    children,
   }:ProtectedRouteProps) => {
-  const { getSession } = useContext(AccountContext);
+  const { isAuthenticated,checkAuthentication } = useContext(AccountContext);
   const router = useRouter();
 
   useEffect(() => {
-    const checkAuthentication = async () => {
+    const checkUserAuthentication = async () => {
       try {
         // Check if the user has an active session
-        await getSession();
-      } catch (error) {
+        // await getSession();
+        await checkAuthentication()
+        console.log("User Authenticated")
+      } 
+      catch (error) {
         // If there is no active session, redirect to the login page
+        console.log(error)
         router.replace('/auth/login/')
       }
     };
     // window.location.reload()
-    checkAuthentication();
-  }, [getSession]);
+    checkUserAuthentication();
+  }, [isAuthenticated]);
 
   return (
     <>

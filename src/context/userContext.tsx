@@ -7,14 +7,14 @@ import {
   UserContextProps, 
   temperatureDataProps
 } from '@/utils/props';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { toast } from 'react-toastify'; 
 
 const AppContext = createContext({} as UserContextProps);
 
 const AppProvider = ({ children }:any) => {
-  const router = useRouter();
-  const { getSession } = useContext(AccountContext);
+  // const router = useRouter();
+  const { userid,checkAuthentication } = useContext(AccountContext);
 
   const [userId, setUserId] = useState<string>("");
   const [name, setName] = useState<string>('');
@@ -42,32 +42,37 @@ const AppProvider = ({ children }:any) => {
   useEffect(() => {
     const fetchUserDetails =  async () => {
       try {
-        const session:any = await getSession();
-        const userid = session.idToken.payload.sub;
-        setUserId(userid); 
-        const response = await axios.get(
-          `http://localhost:5000/auth/users/${userid}`
-          );  
-        setName(response.data.name)
-        setOwnerType(response.data.owner_type)
-        setUserCity(response.data.city)
-        setUserState(response.data.state)
-        setUserCountry(response.data.country)
-        setUserLocation(`${
-          response.data.state === ""||undefined ? response.data.country
-          :response.data.city === "" ? response.data.state + ", " + response.data.country 
-          :response.data.city + ", " + response.data.country
-        }`)
-        setUserEmail(response.data.email)
-        if(userId){
-          setVehicleData(response.data.vehicles)
-          setVehicleCalcultedData(response.data.vehicles_processed_data)
-          // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
-          setVehicleIdData(response.data.vehicles[0])
-          setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
-          // getVehicleDataFromEnode()
+        // const session:any = await getSession();
+        // const userid = session.idToken.payload.sub;
+        if(!userid){
+          await checkAuthentication()
         }
-        setIsLoading(false)
+        setUserId(userid); 
+    
+          if(userid){
+            console.log("userid:"+userid+"userId:"+userId)
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/${userid}`
+            );  
+          setName(response.data.name)
+          setOwnerType(response.data.owner_type)
+          setUserCity(response.data.city)
+          setUserState(response.data.state)
+          setUserCountry(response.data.country)
+          setUserLocation(`${
+            response.data.state === ""||undefined ? response.data.country
+            :response.data.city === "" ? response.data.state + ", " + response.data.country 
+            :response.data.city + ", " + response.data.country
+          }`)
+          setUserEmail(response.data.email)
+            setVehicleData(response.data.vehicles)
+            setVehicleCalcultedData(response.data.vehicles_processed_data)
+            // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
+            setVehicleIdData(response.data.vehicles[0])
+            setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
+            // getVehicleDataFromEnode()
+          }
+          setIsLoading(false)
       } 
       catch (error) {
         console.error('Error, no user (userContext):', error);
@@ -76,7 +81,7 @@ const AppProvider = ({ children }:any) => {
     // if(userId){
     fetchUserDetails();
     // }
-  }, [userId]);
+  }, [userid]);
 
   // useEffect(()=>{
   //   if(userId){
@@ -93,8 +98,8 @@ const AppProvider = ({ children }:any) => {
   */
   const SettingWebsocket = async () => {
 
-    const authToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
-    
+    // const authToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
+    const authToken = localStorage.getItem('IdToken')
     if(authToken){
       const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/websocket/generate-token`,{
         headers: {

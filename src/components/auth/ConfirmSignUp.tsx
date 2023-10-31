@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
-import { CognitoUser } from 'amazon-cognito-identity-js';
-import userPool from '../../context/user-pool/user-pool';
 import axios from 'axios';
 
 type ConfirmSignUpProps ={
@@ -16,61 +14,54 @@ const ConfirmSignUp = ({
       
     const [OTP, setOTP] = useState('');
 
-    const user = new CognitoUser({
-        Username: username,
-        Pool: userPool,
-      });
-
     const verifyAccount = (e: any) => {
         e.preventDefault();
-        // console.log(user);
-        // user.confirmRegistration(OTP, true, (err, data) => {
-        // if (err) {
-        //     console.log(err);
-        //     toast.error(err.message);
-        // } else {
-        //     console.log(data);
-        //     toast.success('Account verified successfully');
-        //     setGetUserDataProcess(true)
-        // }
-        // })
-        axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/confirm`,{
-        headers:{
-                OTP:OTP,
-                userId:username
+        const userId = localStorage.getItem('userId')
+        
+        let config = {
+            method: 'post',
+            url: `http://localhost:5000/auth/users/confirm`,
+            headers: { 
+                'Content-Type': 'application/json'
+            },
+            data : {
+                "OTP":OTP,
+                "userId":userId
             }
-        })
+        };
+        
+        axios.request(config)
         .then((res) => {
             console.log(res.data)
             toast.success('Account verified successfully');
             setGetUserDataProcess(true)
         })
         .catch((err) => {
-            toast.error(err.message);
+            toast.error("Could not confirm the OTP.");
         })
     }
     
     const resendConfirmationCode = () => {
-        // user.resendConfirmationCode(function(err, result) {
-        //     if (err) {
-        //         // alert(err.message || JSON.stringify(err));
-        //         toast.success('Error occured in sending the code.')
-        //         return;
-        //     }
-        //     console.log('call result: ' + result);
-        //     toast.success('Kindly check your email for the new code.')
-        // });
-        axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/resend`,{
-            headers:{
-                userId:username
+        const userId = localStorage.getItem('userId')
+        
+        let config = {
+            method: 'post',
+            url: `http://localhost:5000/auth/users/resend`,
+            headers: { 
+                'Content-Type': 'application/json'
+            },
+            data : {
+                "userId":userId
             }
-        })
+        };
+
+        axios.request(config)
         .then((res) => {
             console.log(res.data)
             toast.success('Kindly check your email for the new code.')
         })
         .catch((err) => {
-            toast.error(err.message);
+            console.log(err)
             toast.error('Error occured in sending the code.')
         })
     }

@@ -11,19 +11,24 @@ const DeleteUser:React.FC<DeleteUserProps>  = ({
     userId
 }) => {
     const {DeleteUserAccount} = useContext(AccountContext);
-    const [Password,setPassword] = useState('')
+    const [Password,setPassword] = useState("")
     let [isOpen, setIsOpen] = useState(false)
     const [enterPassword, setEnterPassword] = useState(false)
 
     function DeleteUser() {
         setIsOpen(false)
-        DeleteUserAccount(userId,Password)
+        DeleteUserAccount()
     }
-
+        
     function onButtonClick(){
-        if(Password != ""){
-            setEnterPassword(false)
-            setIsOpen(true)
+        if(Password !== ""){
+            if(Password === "delete"){
+                setEnterPassword(false)
+                setIsOpen(true)
+            }
+            else{
+                setEnterPassword(true)
+            }
         }
         else{
             setEnterPassword(true)
@@ -34,16 +39,15 @@ const DeleteUser:React.FC<DeleteUserProps>  = ({
         <div className="space-y-2 border border-me-green-200 p-4 rounded-xl w-full">
             <p className='mt-2 text-center text-xl leading-9 text-black dark:text-white-100'>
                 Delete Your Account 
-                {/* <span className='text-base text-gray-400'>{" ( "+ name +" )"}</span> */}
             </p>
             <p className="text-gray-400">
                 This will permanently delete your Momentum-E user account. 
-                <br />
-                Enter your password to delete account: 
+                <br/>
+                Type "delete" to permanantly delete the account: 
             </p>
             <input 
                 className={`border ${enterPassword ? 'border-red-600' : 'border-me-green-200 '} rounded-lg px-3 py-2 text-black dark:text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 active:outline-none w-full ease-linear transition-all duration-150 sm:text-sm sm:leading-6 `}
-                type="password" 
+                type="text" 
                 name="password" 
                 id="password"
                 value={Password}
@@ -51,11 +55,10 @@ const DeleteUser:React.FC<DeleteUserProps>  = ({
                 onChange={(e)=>setPassword(e.target.value)} 
             />
             <button
-            // onClick={DeleteUserAccount(userId,Password)}
-            type='submit'
-            id='password'
-            onClick={()=>onButtonClick()}
-            className='p-1 rounded-lg border border-red-600 text-red-600'
+                type='submit'
+                id='password'
+                onClick={()=>onButtonClick()}
+                className='p-1 rounded-lg border border-red-600 text-red-600 '
             >
                 Delete User
             </button>

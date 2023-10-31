@@ -27,16 +27,16 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
     const router = useRouter()
     const {logout} = useAccountContext();
 
-    const SignOut = () => {
-        logout();
-        router.replace('/auth/login')  
+    const SignOut = async () => {
         setName("")  
         setVehicleData([])
         setUserCity("")
         setUserState("")
         setUserCountry("")
-        setUserEmail('')
+        setUserEmail("")
         webSocket?.close()
+        router.replace('/auth/login')  
+        await logout();
     };
     
     return (
