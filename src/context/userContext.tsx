@@ -14,7 +14,7 @@ const AppContext = createContext({} as UserContextProps);
 
 const AppProvider = ({ children }:any) => {
   // const router = useRouter();
-  const { userid,checkAuthentication } = useContext(AccountContext);
+  const { userid,checkAuthentication,getSession } = useContext(AccountContext);
 
   const [userId, setUserId] = useState<string>("");
   const [name, setName] = useState<string>('');
@@ -38,50 +38,52 @@ const AppProvider = ({ children }:any) => {
     maxTemperature: null,
   });
 
+  const fetchUserDetails =  async () => {
+    try {
+      // const session:any = await getSession();
+      // console.log(session)
+      // const userid = session.idToken.payload.sub;
+      // if(!userid){
+      // const userData:any = await checkAuthentication()
+      // }
+      // console.log(userData)
+      if(userid){
+        setUserId(userid); 
+        console.log("userid:"+userid+"userId:"+userId)
+        // if(userid){
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/${userid}`
+          );  
+        setName(response.data.name)
+        setOwnerType(response.data.owner_type)
+        setUserCity(response.data.city)
+        setUserState(response.data.state)
+        setUserCountry(response.data.country)
+        setUserLocation(`${
+          response.data.state === ""||undefined ? response.data.country
+          :response.data.city === "" ? response.data.state + ", " + response.data.country 
+          :response.data.city + ", " + response.data.country
+        }`)
+        setUserEmail(response.data.email)
+        setVehicleData(response.data.vehicles)
+        setVehicleCalcultedData(response.data.vehicles_processed_data)
+        setIsLoading(false)
+        // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
+        // setVehicleIdData(response.data.vehicles[0])
+        // setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
+        // getVehicleDataFromEnode()
+        // }
+      }
+    } 
+    catch (error) {
+      console.error('Error, no user (userContext):', error);
+    }
+  };
+
   // Hook for fetching the user details
   useEffect(() => {
-    const fetchUserDetails =  async () => {
-      try {
-        // const session:any = await getSession();
-        // const userid = session.idToken.payload.sub;
-        if(!userid){
-          await checkAuthentication()
-        }
-        setUserId(userid); 
-    
-          if(userid){
-            console.log("userid:"+userid+"userId:"+userId)
-          const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/${userid}`
-            );  
-          setName(response.data.name)
-          setOwnerType(response.data.owner_type)
-          setUserCity(response.data.city)
-          setUserState(response.data.state)
-          setUserCountry(response.data.country)
-          setUserLocation(`${
-            response.data.state === ""||undefined ? response.data.country
-            :response.data.city === "" ? response.data.state + ", " + response.data.country 
-            :response.data.city + ", " + response.data.country
-          }`)
-          setUserEmail(response.data.email)
-            setVehicleData(response.data.vehicles)
-            setVehicleCalcultedData(response.data.vehicles_processed_data)
-            // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
-            setVehicleIdData(response.data.vehicles[0])
-            setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
-            // getVehicleDataFromEnode()
-          }
-          setIsLoading(false)
-      } 
-      catch (error) {
-        console.error('Error, no user (userContext):', error);
-      }
-    };
-    // if(userId){
     fetchUserDetails();
-    // }
-  }, [userid]);
+  }, [userid,userId]);
 
   // useEffect(()=>{
   //   if(userId){
@@ -183,7 +185,7 @@ const AppProvider = ({ children }:any) => {
     if (userId) {
       SettingWebsocket();
     }
-  }, [userId]);
+  }, [userid]);
 
   /* 
     Sets the temperature according to the useLocation 

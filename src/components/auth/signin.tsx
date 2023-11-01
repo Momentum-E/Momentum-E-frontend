@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from 'react';
 import { useAccountContext } from '@/context/account';
 import Link from 'next/link';
@@ -60,6 +61,7 @@ const SignIn = () => {
         },
         data : data
       };
+
       axios.request(config)
       .then((res)=>{
         console.log(res.status)

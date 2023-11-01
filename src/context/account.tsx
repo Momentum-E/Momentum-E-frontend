@@ -2,15 +2,15 @@
 import { toast } from 'react-toastify';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 // import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
-// import Pool from './user-pool/user-pool';
+import Pool from './user-pool/user-pool';
 import axios from 'axios';
 
 type AccountContextProps = {
   isAuthenticated:boolean;
-  userid:string;
+  userid:any;
   checkAuthentication:() => Promise<unknown>;
   // authenticate:(Username: string, Password: string) => Promise<void>;
-  // getSession:() => Promise<unknown>;
+  getSession:() => Promise<unknown>;
   DeleteUserAccount:() => Promise<void>;
   logout: () => void;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
@@ -22,60 +22,95 @@ const AccountContext = createContext({} as AccountContextProps);
 const AccountProvider = ({ children }:any) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [AccessToken, setAccessToken] = useState('')
-  const [userid, setUserid] = useState('')
+  const [userid, setUserid] = useState<any>()
 
   useEffect(() => {
     checkAuthentication();
     console.log('chekAuthentication inside useEffect')
   }, [isAuthenticated]);
   
+  // const checkAuthentication = async () => {
+  //   // if(AccessToken!==""){
+  //     // return await new Promise((resolve, reject) => {
+  //       try{
+  //         const token = localStorage.getItem('AccessToken')
+  //         axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/get-current-user`,{
+  //           headers:{
+  //             authorization:`Bearer ${token}`
+  //           }
+  //         })
+  //         .then((res)=>{
+  //           console.log("checkAuthenticaton:"+res.data)
+  //           setIsAuthenticated(true);
+  //           setUserid(res.data.Username)
+  //           console.log(res.data)
+  //           // resolve(res.data)
+  //         })
+  //         .catch((err)=>{
+  //           setIsAuthenticated(false);
+  //           console.log("checkAuthentication: "+err)
+  //           // reject(err)
+  //         })
+  //       }
+  //       catch(error){
+  //         console.log("chackAuth"+error)
+  //       }
+  //     // })
+  //   // }
+  //   // else{
+  //   //   console.log("No user present")
+  //   // }
+  // };
+
   const checkAuthentication = async () => {
-    // if(AccessToken!==""){
-      return await new Promise((resolve, reject) => {
-        const token = localStorage.getItem('AccessToken')
-        axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/get-current-user`,{
-          headers:{
-            authorization:`Bearer ${token}`
-          }
-        })
-        .then((res)=>{
-          console.log("checkAuthenticaton:"+res.data)
-          setIsAuthenticated(true);
-          setUserid(res.data.Username)
-          console.log(res.data)
-          resolve(res.data)
-        })
-        .catch((err)=>{
-          setIsAuthenticated(false);
-          setUserid('')
-          console.log("checkAuthentication: "+err)
-          // return(err)
-          reject(err)
-        })
-      })
-    // }
-    // else{
-    //   console.log("No user present")
-    // }
+    try {
+      // const user = Pool.getCurrentUser();
+      // if (user) {
+        await getSession();
+        setIsAuthenticated(true);
+      // } else {
+        // setIsAuthenticated(false);
+      // }
+    } catch (error) {
+      setIsAuthenticated(false);
+    }
   };
 
-  // const getSession = async () => {
-  //   return await new Promise((resolve, reject) => {
-  //     const user = Pool.getCurrentUser();
-  //     if (user) {
-  //       user.getSession((err:any, session:any) => {
-  //         if (err) {
-  //           reject();
-  //         } else {
-  //           resolve(session);
-  //         }
-  //       });
-  //     } 
-  //     else {
-  //       reject();
-  //     }
-  //   });
-  // };
+  const getSession = async () => {
+    return await new Promise((resolve, reject) => {
+      // const user = Pool.getCurrentUser();
+      // if (user) {
+      //   user.getSession((err:any, session:any) => {
+      //     if (err) {
+      //       reject(err);
+      //     } else {
+      //       resolve(session);
+      //     }
+      //   });
+      // } 
+      // else {
+      //   console.log("No user present")
+      //   reject();
+      // }
+      const token = localStorage.getItem('AccessToken')
+      axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/get-current-user`,{
+        headers:{
+          authorization:`Bearer ${token}`
+        }
+      })
+      .then((res)=>{
+        console.log(res.data)
+        console.log("checkAuth"+JSON.stringify(res.data.Username))
+        setUserid(res.data.Username)
+        resolve(res.data)
+        return(res.data)
+      })
+      .catch((err)=>{
+        console.log("checkAuthentication: "+err)
+        reject(err)
+      })
+    });
+  };
 
   // const authenticate = async (Username:string, Password:string) => {
   //   await new Promise((resolve, reject) => {
@@ -191,7 +226,8 @@ const AccountProvider = ({ children }:any) => {
     axios.post(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/logout`,{
       headers:{
         authorization:`Bearer ${token}`
-      }
+      },
+      data:{}
     })
     .then((res)=>{
       console.log(res.data)
@@ -213,7 +249,7 @@ const AccountProvider = ({ children }:any) => {
         userid,
         // authenticate,
         checkAuthentication,
-        // getSession,
+        getSession,
         setAccessToken,
         setIsAuthenticated,
         DeleteUserAccount,

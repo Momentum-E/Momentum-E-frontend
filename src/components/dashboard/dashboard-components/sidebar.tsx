@@ -43,7 +43,7 @@ const Sidebar:React.FC<SidebarProps> = ({
       newPage = 'redirect/dashboard' 
     }
     axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`)
+      .get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}`)
       .then((res) => {
         console.log(res.data);
         const linkUrl = res.data.linkUrl;

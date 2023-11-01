@@ -34,6 +34,7 @@ const VehicleIntervention:React.FC<VehicleInterventionProps> = ({
                         </thead>
                         <tbody className='w-full'>
                             {
+                                vehicleData &&
                                 vehicleData.map((vehicle,idx) => (
                                     <tr className="text-center border-t-[1px] border-t-me-green-200 dark:border-t-white-200/30" key={idx}>
                                         <td className='border-r-[1px] p-2 border-r-me-green-200 dark:border-r-white-200/30'>
@@ -57,6 +58,7 @@ const VehicleIntervention:React.FC<VehicleInterventionProps> = ({
                                         </td>
                                     </tr>
                                 ))
+                                
                             }
                         </tbody>
                     </table>
