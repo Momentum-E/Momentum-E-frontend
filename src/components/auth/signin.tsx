@@ -47,55 +47,46 @@ const SignIn = () => {
 
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-      let data = JSON.stringify({
-        "password": input.password,
-        "email": input.email
-      })  
+    let data = JSON.stringify({
+      "password": input.password,
+      "email": input.email
+    })  
 
-      let config = {
-        method: 'post',
-        url: `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/login`,
-        headers: { 
-          'Content-Type': 'application/json'
-        },
-        data : data
-      };
+    let config = {
+      method: 'post',
+      url: `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/login`,
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
 
-      axios.request(config)
-      .then((res)=>{
-        console.log(res.status)
-        if(res.status === 200){
-          setAccessToken(res.data.AuthenticationResult.AccessToken)
-          localStorage.setItem('AccessToken',res.data.AuthenticationResult.AccessToken)
-          localStorage.setItem('RefreshToken',res.data.AuthenticationResult.RefreshToken)
-          localStorage.setItem("IdToken",res.data.AuthenticationResult.IdToken)
-          // console.log(res.data)
-          
-          window.history.replaceState({
-            fromHashChange: true
-          },null, '/dashboard');
-          
-          window.location.reload()
-          setIsAuthenticated(true);
-        }
-        else{
-          handleAWSError(res.data);
-        }
-      })
-      .catch((err)=>{
-        console.log(err)
-        // console.log("autherror: "+err.response.data.name)
-        handleAWSError(err.response.data.name);
-      })
-    
-    // authenticate(input.email, input.password)
-    // .then((data: any) => {
-    //   // check is the email is verified
-    //   console.log(data)
-    // })
-    // .catch((err: any) => {
-    //   handleAWSError(err);
-    // });
+    axios.request(config)
+    .then((res)=>{
+      console.log(res.status)
+      if(res.status === 200){
+        setAccessToken(res.data.AuthenticationResult.AccessToken)
+        localStorage.setItem('AccessToken',res.data.AuthenticationResult.AccessToken)
+        localStorage.setItem('RefreshToken',res.data.AuthenticationResult.RefreshToken)
+        localStorage.setItem("IdToken",res.data.AuthenticationResult.IdToken)
+        // console.log(res.data)
+        
+        window.history.replaceState({
+          fromHashChange: true
+        },null, '/dashboard');
+        
+        window.location.reload()
+        setIsAuthenticated(true);
+      }
+      else{
+        handleAWSError(res.data);
+      }
+    })
+    .catch((err)=>{
+      console.log(err)
+      // console.log("autherror: "+err.response.data.name)
+      handleAWSError(err.response.data.name);
+    })
   }
 
   return (

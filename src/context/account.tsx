@@ -137,12 +137,15 @@ const AccountProvider = ({ children }:any) => {
 
   const RefreshToken = async (fun:()=>any) => {
     const token = localStorage.getItem('RefreshToken')
-    axios.post(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/refresh-token`,{},{
-      headers:{
+    let config = {
+      method: 'post',
+      url: `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/refresh-token`,
+      headers: { 
         authorization:`Bearer ${token}`
       },
-      data:{}
-    })
+      data : {}
+    };
+    axios.request(config)
     .then((res)=>{
       console.log(res.data)
       localStorage.setItem('AccessToken', res.data.authenticatedResult.AccessToken)
@@ -163,6 +166,7 @@ const AccountProvider = ({ children }:any) => {
   const logout = async () => {
     const token = localStorage.getItem('AccessToken')
     // console.log("logout"+token)
+    await RefreshToken(logout)
     axios.post(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/logout`,{},{
       headers:{
         authorization:`Bearer ${token}`
@@ -173,13 +177,12 @@ const AccountProvider = ({ children }:any) => {
       console.log(res.data)
       setUserid('')
       setIsAuthenticated(false)
-      window.location.reload()
     })
     .catch(async (err)=>{
       // Get the error and check if the token has expired if yes get the new token and logout
       if(err === 'NotAuthorizedException'){
         console.log("Logout NotAuthorizedException")
-        await RefreshToken(logout)
+        // await RefreshToken(logout)
       }
       else{
         console.log('Error logging out: '+err)
