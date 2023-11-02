@@ -1,18 +1,16 @@
-// @ts-nochec
 import { toast } from 'react-toastify';
 import React, { createContext, useContext, useState, useEffect } from 'react';
-// import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
-import Pool from './user-pool/user-pool';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 type AccountContextProps = {
   isAuthenticated:boolean;
   userid:any;
   checkAuthentication:() => Promise<unknown>;
-  // authenticate:(Username: string, Password: string) => Promise<void>;
   getSession:() => Promise<unknown>;
   DeleteUserAccount:() => Promise<void>;
   logout: () => void;
+  RefreshToken: (fun:()=>any) => Promise<void>
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
   setAccessToken: React.Dispatch<React.SetStateAction<string>>
 }
@@ -20,6 +18,7 @@ type AccountContextProps = {
 const AccountContext = createContext({} as AccountContextProps);
 
 const AccountProvider = ({ children }:any) => {
+  const router = useRouter()
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [AccessToken, setAccessToken] = useState('')
   const [userid, setUserid] = useState<any>()
@@ -29,69 +28,23 @@ const AccountProvider = ({ children }:any) => {
     console.log('chekAuthentication inside useEffect')
   }, [isAuthenticated]);
   
-  // const checkAuthentication = async () => {
-  //   // if(AccessToken!==""){
-  //     // return await new Promise((resolve, reject) => {
-  //       try{
-  //         const token = localStorage.getItem('AccessToken')
-  //         axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/get-current-user`,{
-  //           headers:{
-  //             authorization:`Bearer ${token}`
-  //           }
-  //         })
-  //         .then((res)=>{
-  //           console.log("checkAuthenticaton:"+res.data)
-  //           setIsAuthenticated(true);
-  //           setUserid(res.data.Username)
-  //           console.log(res.data)
-  //           // resolve(res.data)
-  //         })
-  //         .catch((err)=>{
-  //           setIsAuthenticated(false);
-  //           console.log("checkAuthentication: "+err)
-  //           // reject(err)
-  //         })
-  //       }
-  //       catch(error){
-  //         console.log("chackAuth"+error)
-  //       }
-  //     // })
-  //   // }
-  //   // else{
-  //   //   console.log("No user present")
-  //   // }
-  // };
-
   const checkAuthentication = async () => {
     try {
-      // const user = Pool.getCurrentUser();
-      // if (user) {
+      if(isAuthenticated){
+        console.log('User Authenticated')
+      }
+      else{
         await getSession();
         setIsAuthenticated(true);
-      // } else {
-        // setIsAuthenticated(false);
-      // }
-    } catch (error) {
+      }
+    } 
+    catch (error) {
       setIsAuthenticated(false);
     }
   };
 
   const getSession = async () => {
     return await new Promise((resolve, reject) => {
-      // const user = Pool.getCurrentUser();
-      // if (user) {
-      //   user.getSession((err:any, session:any) => {
-      //     if (err) {
-      //       reject(err);
-      //     } else {
-      //       resolve(session);
-      //     }
-      //   });
-      // } 
-      // else {
-      //   console.log("No user present")
-      //   reject();
-      // }
       const token = localStorage.getItem('AccessToken')
       axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/get-current-user`,{
         headers:{
@@ -105,55 +58,16 @@ const AccountProvider = ({ children }:any) => {
         resolve(res.data)
         return(res.data)
       })
-      .catch((err)=>{
+      .catch(async (err)=>{
         console.log("checkAuthentication: "+err)
+        logout()
         reject(err)
+
+        // refresh the accessToken here
+        await RefreshToken(getSession)
       })
     });
   };
-
-  // const authenticate = async (Username:string, Password:string) => {
-  //   await new Promise((resolve, reject) => {
-  //     console.log(Username, Password)
-  //     let config = {
-  //       method: 'post',
-  //       url: `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/login`,
-  //       headers: { 
-  //         'Content-Type': 'application/json'
-  //       },
-  //       data : JSON.stringify({
-  //         "password": Password,
-  //         "email": Username
-  //       })
-  //     };
-  //     try{
-  //       axios.request(config)
-  //       .then((res)=>{
-  //         setAccessToken(res.data.AuthenticationResult.AccessToken)
-  //         localStorage.setItem('AccessToken',res.data.AuthenticationResult.AccessToken)
-  //         localStorage.setItem('RefreshToken',res.data.AuthenticationResult.RefreshToken)
-  //         localStorage.setItem("IdToken",res.data.AuthenticationResult.IdToken)
-  //         console.log(res.data)
-          
-  //         window.history.replaceState({
-  //           fromHashChange: true
-  //         },null, '/dashboard');
-          
-  //         window.location.reload()
-  //         setIsAuthenticated(true);
-          
-  //         resolve(res.data);
-  //       })
-  //       .catch((err)=>{
-  //         toast.error(err)
-  //       })
-  //     }
-  //     catch(error){
-  //       toast.error(error)
-  //       reject(error);
-  //     }
-  //   })
-  // };
 
   const DeleteUserAccount = async () => {
     // const user = new CognitoUser({ Username: username, Pool });
@@ -221,9 +135,9 @@ const AccountProvider = ({ children }:any) => {
     // });
   } 
 
-  const logout = async () => {
-    const token = localStorage.getItem('AccessToken')
-    axios.post(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/logout`,{
+  const RefreshToken = async (fun:()=>any) => {
+    const token = localStorage.getItem('RefreshToken')
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/refresh-token`,{},{
       headers:{
         authorization:`Bearer ${token}`
       },
@@ -231,15 +145,45 @@ const AccountProvider = ({ children }:any) => {
     })
     .then((res)=>{
       console.log(res.data)
-      localStorage.removeItem('AccessToken')
-      localStorage.removeItem('RefreshToken')
-      localStorage.removeItem('IdToken')
+      localStorage.setItem('AccessToken', res.data.authenticatedResult.AccessToken)
+      setAccessToken(res.data.authenticatedResult.AccessToken)
+      localStorage.setItem('IdToken', res.data.authenticatedResult.IdToken)
+      if(typeof(res.data.authenticatedResult.RefreshToken) !== 'undefined' ||typeof(res.data.authenticatedResult.RefreshToken) !== null){
+        localStorage.setItem('RefreshToken', res.data.authenticatedResult.RefreshToken)
+      }
+      fun()
+    })
+    .catch((err)=>{
+      console.log("Error refreshing token: "+err)
+      router.replace('/auth/login')
+      setIsAuthenticated(false)
+    })
+  }
+
+  const logout = async () => {
+    const token = localStorage.getItem('AccessToken')
+    // console.log("logout"+token)
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/logout`,{},{
+      headers:{
+        authorization:`Bearer ${token}`
+      },
+      data:{}
+    })
+    .then((res)=>{
+      console.log(res.data)
       setUserid('')
       setIsAuthenticated(false)
       window.location.reload()
     })
-    .catch((err)=>{
-      console.log('Error logging out: '+err)
+    .catch(async (err)=>{
+      // Get the error and check if the token has expired if yes get the new token and logout
+      if(err === 'NotAuthorizedException'){
+        console.log("Logout NotAuthorizedException")
+        await RefreshToken(logout)
+      }
+      else{
+        console.log('Error logging out: '+err)
+      }
     })
   };
 
@@ -247,13 +191,13 @@ const AccountProvider = ({ children }:any) => {
     <AccountContext.Provider value={{
         isAuthenticated,
         userid,
-        // authenticate,
         checkAuthentication,
         getSession,
         setAccessToken,
         setIsAuthenticated,
         DeleteUserAccount,
-        logout 
+        RefreshToken,
+        logout
       }}>
       {children}
     </AccountContext.Provider>

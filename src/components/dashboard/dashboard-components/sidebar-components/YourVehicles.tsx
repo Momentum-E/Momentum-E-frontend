@@ -86,7 +86,6 @@ const YourVehicles = ({
                 :
                 (
                     <span className='flex items-center justify-center w-full h-[46%] text-sm text-gray-400'>
-                        {/* Loading... */}
                         <Loader LoaderSize={16}/>
                     </span>
                 )

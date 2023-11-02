@@ -52,7 +52,7 @@ const VehicleCard: React.FC<VehicleCardProps>  = ({
                 SideBlockPresent && 
                 <CardSideBlock
                     CardHeading={SideBlockHeading}
-                    CardData={SideBlockData ? SideBlockData : '-'}
+                    CardData={typeof(SideBlockData) === "number" ? SideBlockData : '-'}
                     CardUnit={SideBlockUnit}
                 />
             }

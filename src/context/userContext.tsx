@@ -14,7 +14,7 @@ const AppContext = createContext({} as UserContextProps);
 
 const AppProvider = ({ children }:any) => {
   // const router = useRouter();
-  const { userid,checkAuthentication,getSession } = useContext(AccountContext);
+  const { userid } = useContext(AccountContext);
 
   const [userId, setUserId] = useState<string>("");
   const [name, setName] = useState<string>('');
@@ -26,9 +26,7 @@ const AppProvider = ({ children }:any) => {
   const [userImage, setUserImage] = useState<string>("")
   const [userEmail,setUserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
-  const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
   const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
-  const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
   const [unit, setUnit] = useState<string>('Km')
   const [isLoading, setIsLoading] = useState(true)
   const [isImageLoading, setIsImageLoading] = useState(true)  
@@ -40,17 +38,17 @@ const AppProvider = ({ children }:any) => {
 
   const fetchUserDetails =  async () => {
     try {
-      // const session:any = await getSession();
-      // console.log(session)
-      // const userid = session.idToken.payload.sub;
       // if(!userid){
       // const userData:any = await checkAuthentication()
       // }
       // console.log(userData)
       if(userid){
         setUserId(userid); 
-        console.log("userid:"+userid+"userId:"+userId)
-        // if(userid){
+        console.log({
+          "userid":userid,
+          "userId":userId
+        })
+
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/${userid}`
           );  
@@ -71,8 +69,6 @@ const AppProvider = ({ children }:any) => {
         // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
         // setVehicleIdData(response.data.vehicles[0])
         // setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
-        // getVehicleDataFromEnode()
-        // }
       }
     } 
     catch (error) {
@@ -83,7 +79,7 @@ const AppProvider = ({ children }:any) => {
   // Hook for fetching the user details
   useEffect(() => {
     fetchUserDetails();
-  }, [userid,userId]);
+  }, [userid]);
 
   // useEffect(()=>{
   //   if(userId){
@@ -99,7 +95,6 @@ const AppProvider = ({ children }:any) => {
     returns the new socket
   */
   const SettingWebsocket = async () => {
-
     // const authToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
     const authToken = localStorage.getItem('IdToken')
     if(authToken){
@@ -108,7 +103,6 @@ const AppProvider = ({ children }:any) => {
           authorization: `Bearer ${authToken}`
         }
       })
-
       console.log(response.data)
       const socket = new WebSocket(`wss://gav5fur5v0.execute-api.ap-south-1.amazonaws.com/development?token=${response.data.uniqueToken}`);
       setWebSocket(socket)
@@ -276,7 +270,6 @@ const AppProvider = ({ children }:any) => {
   useEffect(() => {
     if(userId){
       console.log("userId: "+userId)
-      console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
       console.log(vehicleData)
       // console.log("mintemp: "+JSON.stringify(temperatureData))
       // console.log(vehicleCalcultedIdData)
@@ -293,7 +286,6 @@ const AppProvider = ({ children }:any) => {
 
       // State Variables
       vehicleData,
-      vehicleIdData,
       vehicleCalcultedData,
       userId,
       userLocation,
@@ -304,7 +296,8 @@ const AppProvider = ({ children }:any) => {
       userCountry,
       userImage,
       isLoading,
-      vehicleCalcultedIdData,
+      // vehicleIdData,
+      // vehicleCalcultedIdData,
       name,
       unit,
       isImageLoading,
@@ -316,8 +309,8 @@ const AppProvider = ({ children }:any) => {
       setName,
       setVehicleData,
       setVehicleCalcultedData,
-      setVehicleIdData,
-      setVehicleCalcultedIdData,
+      // setVehicleIdData,
+      // setVehicleCalcultedIdData,
       setUserCity,
       setUserState,
       setUserCountry,

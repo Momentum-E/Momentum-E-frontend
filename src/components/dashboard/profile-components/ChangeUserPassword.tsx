@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
-import Pool from '@/context/user-pool/user-pool';
+// import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+// import Pool from '@/context/user-pool/user-pool';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {AuthInput} from '@/components/auth/AuthComponents';
+import axios from 'axios';
 
 type ChangeUserPasswordProps = {
   userId:string;
@@ -17,37 +18,68 @@ const ChangeUserPassword:React.FC<ChangeUserPasswordProps>  = ({
     const [NewPassword, setNewPassword] = useState<string>('')
 
     const changeUserPassword = () => {
-        const user = Pool.getCurrentUser();
-        // const AwsAccessToken = localStorage.getItem('CognitoIdentityServiceProvider.5anhoi3gpfgvnqsd609smuh0qi.e113adfa-1041-707e-a338-dd09ed225f53.accessToken')
-        if (user) {
-          const authenticationDetails = new AuthenticationDetails({
-            Username:userId,
-            Password: OldPassword,
-          });
-    
-          const userData = {
-            Username:userId,
-            Pool: Pool,
-          };
-    
-          const cognitoUser = new CognitoUser(userData);
-    
-          cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: () => {
-              cognitoUser.changePassword(OldPassword, NewPassword, (err) => {
-                if (err) {
-                  toast.error(err.message)
-                } else {
-                  toast.success('Password changed successfully!')
-                }
-              });
-            },
-            onFailure: (err) => {
-              toast.error(err.message)
-            },
-          });
-        }
-      } 
+      // const user = Pool.getCurrentUser();
+      // const AwsAccessToken = localStorage.getItem('CognitoIdentityServiceProvider.5anhoi3gpfgvnqsd609smuh0qi.e113adfa-1041-707e-a338-dd09ed225f53.accessToken')
+      // if (user) {
+      //   const authenticationDetails = new AuthenticationDetails({
+      //     Username:userId,
+      //     Password: OldPassword,
+      //   });
+  
+      //   const userData = {
+      //     Username:userId,
+      //     Pool: Pool,
+      //   };
+  
+      //   const cognitoUser = new CognitoUser(userData);
+  
+      //   cognitoUser.authenticateUser(authenticationDetails, {
+      //     onSuccess: () => {
+      //       cognitoUser.changePassword(OldPassword, NewPassword, (err) => {
+      //         if (err) {
+      //           toast.error(err.message)
+      //         } else {
+      //           toast.success('Password changed successfully!')
+      //         }
+      //       });
+      //     },
+      //     onFailure: (err) => {
+      //       toast.error(err.message)
+      //     },
+      //   });
+      // }
+      const token = localStorage.getItem('AccessToken')
+      try{
+        let config = {
+          method: 'post',
+          url:`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/change-password`,
+          headers: { 
+            "Authorization":`Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          data : JSON.stringify({
+            "PreviousPassword":OldPassword,
+            "ProposedPassword":NewPassword
+          })
+        };
+
+        axios.request(config)
+        .then((res)=>{
+          console.log(res)
+          toast.success('Password changed successfully!')
+          setOldPassword('')
+          setNewPassword('')
+        })
+        .catch((err)=>{
+          console.log(err)
+          toast.error(err.message)
+        })
+      }
+      catch(err:any){
+        console.log(err)
+        toast.error(err)        
+      }
+    }   
 
     return (
         <div className="space-y-4 border border-me-green-200 p-4 rounded-xl w-full">

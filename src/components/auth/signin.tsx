@@ -47,7 +47,6 @@ const SignIn = () => {
 
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    console.log(input.email, input.password)
       let data = JSON.stringify({
         "password": input.password,
         "email": input.email

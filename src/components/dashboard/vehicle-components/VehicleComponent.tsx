@@ -149,11 +149,11 @@ const VehicleComponent = ({
                         CardName={'Battery Health'}
                         VehicleComponent=
                         { 
-                            <BatteryHealth SoH={vehicleCalcultedIdData?.soh}/> 
+                            <BatteryHealth SoH={vehicleCalcultedIdData?.sohData.currentSoh}/> 
                         }
                         SideBlockPresent={true}
                         SideBlockHeading={'State of Health'}
-                        SideBlockData={vehicleCalcultedIdData?.soh}
+                        SideBlockData={vehicleCalcultedIdData?.sohData.currentSoh}
                         SideBlockUnit='%'
                     />
                 </section>
