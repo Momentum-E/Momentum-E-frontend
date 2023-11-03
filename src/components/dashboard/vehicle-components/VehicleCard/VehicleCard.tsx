@@ -36,8 +36,8 @@ const VehicleCard: React.FC<VehicleCardProps>  = ({
                 <span className='ml-2 my-auto hover:cursor-pointer focus:none outline:none border-none'>
                     {
                         InfoIconPresent &&
-                        <Tippy placement='right' arrow={false} content={
-                            <span className='flex items-center justify-center border border-me-green-200 text-me-green-100 bg-white-100 dark:bg-gray-900 dark:text-white-100 dark:border-white-100 m-0 p-0.5 px-1 rounded-md text-xs'>
+                        <Tippy placement='right' className='border-none focus:outline-none active:outline-none' arrow={false} content={
+                            <span className='flex items-center justify-center border border-me-green-200 text-me-green-100 bg-white-100 dark:bg-gray-900 dark:text-white-100 dark:border-white-100 m-0 p-0.5 px-1 rounded-md text-xs focus:outline-none active:ring-none'>
                                 {InfoIconContent}
                             </span>
                         }>

@@ -9,7 +9,7 @@ type ProtectedRouteProps = {
 const ProtectedRoute = ({
     children,
   }:ProtectedRouteProps) => {
-  const { isAuthenticated,checkAuthentication } = useContext(AccountContext);
+  const { isAuthenticated,checkAuthentication,logout } = useContext(AccountContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -25,6 +25,7 @@ const ProtectedRoute = ({
         console.log(error)
         router.replace('/auth/login/')
         window.location.reload()
+        // await logout()
       }
     };
     // window.location.reload()

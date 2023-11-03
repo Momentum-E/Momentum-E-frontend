@@ -10,9 +10,9 @@ const BatteryHealth = ({
 }:BatteryHealthProps) => {
   
   const chartData = statisticsChartsData()
-  useEffect(()=>{
-    console.log({chartData,SoH})
-  })
+  // useEffect(()=>{
+  //   console.log({chartData,SoH})
+  // })
   return (
     <>
       <div className=" rounded-2xl w-full h-2/3 border text-black border-me-green-100 bg-[#F6F6F6] dark:bg-me-green-300">

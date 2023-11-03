@@ -10,9 +10,9 @@ type AccountContextProps = {
   getSession:() => Promise<unknown>;
   DeleteUserAccount:() => Promise<void>;
   logout: () => void;
-  RefreshToken: (fun:()=>any) => Promise<void>
-  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
-  setAccessToken: React.Dispatch<React.SetStateAction<string>>
+  RefreshToken: (callback:()=>any) => Promise<void>;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  setAccessToken: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AccountContext = createContext({} as AccountContextProps);
@@ -34,8 +34,15 @@ const AccountProvider = ({ children }:any) => {
         console.log('User Authenticated')
       }
       else{
-        await getSession();
-        setIsAuthenticated(true);
+        getSession()
+        .then((res)=>{
+          console.log("checkAuth getSession Run"+res)
+          setIsAuthenticated(true);
+        })
+        .catch((err)=>{
+          console.log("checkAuth getSession Run"+err)
+          setIsAuthenticated(false);
+        })
       }
     } 
     catch (error) {
@@ -62,7 +69,7 @@ const AccountProvider = ({ children }:any) => {
         console.log("checkAuthentication: "+err)
         logout()
         reject(err)
-
+        // if()
         // refresh the accessToken here
         await RefreshToken(getSession)
       })
@@ -135,38 +142,48 @@ const AccountProvider = ({ children }:any) => {
     // });
   } 
 
-  const RefreshToken = async (fun:()=>any) => {
+  const RefreshToken = async (callback:()=>any) => {
     const token = localStorage.getItem('RefreshToken')
-    let config = {
-      method: 'post',
-      url: `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/refresh-token`,
-      headers: { 
-        authorization:`Bearer ${token}`
-      },
-      data : {}
-    };
-    axios.request(config)
-    .then((res)=>{
-      console.log(res.data)
-      localStorage.setItem('AccessToken', res.data.authenticatedResult.AccessToken)
-      setAccessToken(res.data.authenticatedResult.AccessToken)
-      localStorage.setItem('IdToken', res.data.authenticatedResult.IdToken)
-      if(typeof(res.data.authenticatedResult.RefreshToken) !== 'undefined' ||typeof(res.data.authenticatedResult.RefreshToken) !== null){
-        localStorage.setItem('RefreshToken', res.data.authenticatedResult.RefreshToken)
-      }
-      fun()
-    })
-    .catch((err)=>{
-      console.log("Error refreshing token: "+err)
+    console.log("RefreshToken: "+typeof token)
+    if(token?.trim() !== 'undefined' ||  !!token){
+      let config = {
+        method: 'post',
+        url: `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/refresh-token`,
+        headers: { 
+          authorization:`Bearer ${token}`
+        },
+        data : {}
+      };
+      axios.request(config)
+      .then((res)=>{
+        console.log(res.data)
+        localStorage.setItem('AccessToken', res.data.authenticatedResult.AccessToken)
+        setAccessToken(res.data.authenticatedResult.AccessToken)
+        localStorage.setItem('IdToken', res.data.authenticatedResult.IdToken)
+        // if(!(res.data.authenticatedResult.RefreshToken) || res.data.authenticatedResult.RefreshToken !== "undefined" || res.data.authenticatedResult.RefreshToken !== null){
+        // if(!!res.data.authenticatedResult.IdToken && res.data.authenticatedResult.IdToken.trim() !== 'undefined'){
+        //   localStorage.setItem('RefreshToken', res.data.authenticatedResult.RefreshToken)
+        // }
+        // else{
+        //   console.log("No refresh sent to user")
+        // }
+        callback()
+      })
+      .catch((err)=>{
+        console.log("Error refreshing token: "+err)
+        // router.replace('/auth/login')
+        setIsAuthenticated(false)
+      })
+    }
+    else{
+      console.log("No refresh token found")
       router.replace('/auth/login')
-      setIsAuthenticated(false)
-    })
+    }
   }
 
   const logout = async () => {
     const token = localStorage.getItem('AccessToken')
     // console.log("logout"+token)
-    await RefreshToken(logout)
     axios.post(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/logout`,{},{
       headers:{
         authorization:`Bearer ${token}`
@@ -180,12 +197,12 @@ const AccountProvider = ({ children }:any) => {
     })
     .catch(async (err)=>{
       // Get the error and check if the token has expired if yes get the new token and logout
-      if(err === 'NotAuthorizedException'){
+      if(err.status === 401){
         console.log("Logout NotAuthorizedException")
-        // await RefreshToken(logout)
       }
       else{
         console.log('Error logging out: '+err)
+        await RefreshToken(logout)
       }
     })
   };

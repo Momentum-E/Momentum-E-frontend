@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { Suspense, useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { AppContext } from '@/context/userContext';
@@ -66,14 +66,16 @@ const VehicleDashboardContent = () => {
           )
           :
           (
-            <VehicleComponent
-              vehicleIdData={vehicleIdData}
-              vehicleCalcultedIdData={vehicleCalcultedIdData}
-              temperatureData={temperatureData}
-              unit={unit}
-              userLocation={userLocation}
-              setDistanceValue={setDistanceValue}
-            />
+            <Suspense fallback={<Loader LoaderSize={24}/>}>
+              <VehicleComponent
+                vehicleIdData={vehicleIdData}
+                vehicleCalcultedIdData={vehicleCalcultedIdData}
+                temperatureData={temperatureData}
+                unit={unit}
+                userLocation={userLocation}
+                setDistanceValue={setDistanceValue}
+              />
+            </Suspense>
           )
         }
       </div>
