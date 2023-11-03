@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '@/context/userContext';
 
 import { DashboardLayout } from '@/layouts/';
 import {Loader} from '@/components/shared';
 import VehicleComponent from '@/components/dashboard/vehicle-components/VehicleComponent';
 import axios from 'axios';
+import { vehicleCalcultedDataProps, vehicleDataProps } from '@/utils/props';
 
 const VehicleDashboardContent = () => {
   const router = useRouter();
@@ -15,17 +16,19 @@ const VehicleDashboardContent = () => {
     userLocation, 
     isLoading,
     unit, 
-    vehicleIdData,
+    // vehicleIdData,
     temperatureData,
     vehicleData,
     vehicleCalcultedData,
-    vehicleCalcultedIdData,
+    // vehicleCalcultedIdData,
     setDistanceValue, 
-    setVehicleIdData,
-    setVehicleCalcultedIdData,
-    // filteredVehicleData,
+    // setVehicleIdData,
+    // setVehicleCalcultedIdData,
   } = useContext(AppContext)
-
+  
+  const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
+  const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
+  
   useEffect(()=>{
     // Function for getting data of a particular vehicle_Id
     const filteredVehicleData = (v_id:any) => {

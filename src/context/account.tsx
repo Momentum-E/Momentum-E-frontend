@@ -7,7 +7,8 @@ import axios from 'axios';
 
 type AccountContextProps = {
   isAuthenticated:boolean;
-  authenticate:(Username: string, Password: string) => Promise<void>;
+  setIsAuthenticated:React.Dispatch<React.SetStateAction<boolean>>;
+  // authenticate:(Username: string, Password: string) => Promise<void>;
   getSession:() => Promise<unknown>;
   DeleteUserAccount:(username: string, password: string) => Promise<void>;
   logout: () => void;
@@ -54,36 +55,36 @@ const AccountProvider = ({ children }:any) => {
     });
   };
 
-  const authenticate = async (Username:string, Password:string) => {
-    await new Promise((resolve, reject) => {
-      const user = new CognitoUser({ Username, Pool });
+  // const authenticate = async (Username:string, Password:string) => {
+  //   await new Promise((resolve, reject) => {
+  //     const user = new CognitoUser({ Username, Pool });
 
-      const authDetails = new AuthenticationDetails({ Username, Password });
+  //     const authDetails = new AuthenticationDetails({ Username, Password });
 
-      user.authenticateUser(authDetails, {
-        onSuccess: (data) => {
-          console.log('onSuccess: ', data);
-          resolve(data);
-          setIsAuthenticated(true);
+  //     user.authenticateUser(authDetails, {
+  //       onSuccess: (data) => {
+  //         console.log('onSuccess: ', data);
+  //         resolve(data);
+  //         setIsAuthenticated(true);
 
-          window.history.replaceState({
-            fromHashChange: true
-          },null, '/dashboard');
+  //         window.history.replaceState({
+  //           fromHashChange: true
+  //         },null, '/dashboard');
 
-          window.location.reload()
-        },
-        onFailure: (err) => {
-          console.error('onFailure: ', err);
-          reject(err);
-          setIsAuthenticated(false);
-        },
-        newPasswordRequired: (data) => {
-          console.log('newPasswordRequired: ', data);
-          alert('New password required, kindly change your password.')
-        },
-      });
-    });
-  };
+  //         window.location.reload()
+  //       },
+  //       onFailure: (err) => {
+  //         console.error('onFailure: ', err);
+  //         reject(err);
+  //         setIsAuthenticated(false);
+  //       },
+  //       newPasswordRequired: (data) => {
+  //         console.log('newPasswordRequired: ', data);
+  //         alert('New password required, kindly change your password.')
+  //       },
+  //     });
+  //   });
+  // };
 
   const DeleteUserAccount = async (username:string,password:string) => {
     const user = new CognitoUser({ Username: username, Pool });
@@ -145,7 +146,8 @@ const AccountProvider = ({ children }:any) => {
   return (
     <AccountContext.Provider value={{
         isAuthenticated,
-        authenticate,
+        // authenticate,
+        setIsAuthenticated,
         getSession,
         DeleteUserAccount,
         logout 

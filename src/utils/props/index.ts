@@ -15,9 +15,9 @@ export type UserContextProps = {
   userImage:string;
   isLoading:boolean;
   vehicleData:vehicleDataProps[];
-  vehicleIdData:vehicleDataProps|undefined;
+  // vehicleIdData:vehicleDataProps|undefined;
   vehicleCalcultedData:Record<string, vehicleCalcultedDataProps>|undefined|null;
-  vehicleCalcultedIdData: vehicleCalcultedDataProps|undefined|null;
+  // vehicleCalcultedIdData: vehicleCalcultedDataProps|undefined|null;
   name:string;
   unit:string;
   isImageLoading:boolean;
@@ -26,8 +26,8 @@ export type UserContextProps = {
 
   // State Functions
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
-  setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
-  setVehicleCalcultedIdData:React.Dispatch<React.SetStateAction<vehicleCalcultedDataProps | undefined>>;
+  // setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
+  // setVehicleCalcultedIdData:React.Dispatch<React.SetStateAction<vehicleCalcultedDataProps | undefined>>;
   setVehicleCalcultedData:React.Dispatch<React.SetStateAction<Record<string, vehicleCalcultedDataProps>| undefined>>;
   setUnit:React.Dispatch<React.SetStateAction<string>>;
   setName:React.Dispatch<React.SetStateAction<string>>;

@@ -26,9 +26,9 @@ const AppProvider = ({ children }:any) => {
   const [userImage, setUserImage] = useState<string>("")
   const [userEmail,setUserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
-  const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
   const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
-  const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
+  // const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
+  // const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
   const [unit, setUnit] = useState<string>('Km')
   const [isLoading, setIsLoading] = useState(true)
   const [isImageLoading, setIsImageLoading] = useState(true)  
@@ -63,9 +63,8 @@ const AppProvider = ({ children }:any) => {
           setVehicleData(response.data.vehicles)
           setVehicleCalcultedData(response.data.vehicles_processed_data)
           // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
-          setVehicleIdData(response.data.vehicles[0])
-          setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
-          // getVehicleDataFromEnode()
+          // setVehicleIdData(response.data.vehicles[0])
+          // setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
         }
         setIsLoading(false)
       } 
@@ -184,40 +183,56 @@ const AppProvider = ({ children }:any) => {
     Sets the temperature according to the useLocation 
     and updates it everyday.
   */
-  useEffect(()=>{
-    const getTemperatureData = async () => {
-      const storedDate = localStorage.getItem('tempCollectedDate');
-      const currentDate = new Date().toISOString();
-      if(userLocation){
-        if (!storedDate || (storedDate <= currentDate)) {
-          // Fetch data from the API
-          const res = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=4b950044e17b4d2683693010232807&q=${userLocation?.split(',')[0].replace(" ","+")}`)
-          // .then((data) => {
-            const data = {
-              minTemperature: res.data.forecast.forecastday[0].day.mintemp_c,
-              maxTemperature: res.data.forecast.forecastday[0].day.maxtemp_c,
-            }
-            // Update state with API data
-            setTemperatureData(data);
-    
-            // Update local storage with new data and current date
-            localStorage.setItem('temperatureData', JSON.stringify(data));
-            localStorage.setItem('tempCollectedDate', currentDate);
-          // });
-        } else {
-          // Fetch data from local storage
-          // const dataFromLocalStorage = fetchDataFromLocalStorage();
-          const storedData  = localStorage.getItem('temperatureData');
-          if(storedData){
-            setTemperatureData(JSON.parse(storedData));
+
+  const getTemperatureData = async () => {
+    const storedDate = localStorage.getItem('tempCollectedDate');
+    const currentDate = new Date().toISOString();
+    if(userLocation){
+      if (!storedDate || (storedDate <= currentDate)) {
+        // Fetch data from the API
+        // const res = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=4b950044e17b4d2683693010232807&q=${userLocation?.split(',')[0].replace(" ","+")}`)
+        let config = {
+          method: 'post',
+          url:  `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/userData/get-temperature`,
+          headers: { 
+            "Content-Type": "application/json"
+          },
+          data : JSON.stringify({
+            "userLocation": userLocation
+          })
+        };
+        axios.request(config)
+        .then((res)=>{
+          const data = {
+            minTemperature: res.data.forecast.forecastday[0].day.mintemp_c,
+            maxTemperature: res.data.forecast.forecastday[0].day.maxtemp_c,
           }
-          else{
-            console.log('No temperature data found in local storage.')
-            return
-          }
+          setTemperatureData(data);
+          localStorage.setItem('temperatureData', JSON.stringify(data));
+          localStorage.setItem('tempCollectedDate', currentDate);
+        })
+        .catch((err)=>{
+          console.log("Error in getTemperatureData:"+err)
+        })
+        // .then((data) => {
+  
+          // Update local storage with new data and current date
+        // });
+      } else {
+        // Fetch data from local storage
+        const storedData  = localStorage.getItem('temperatureData');
+        if(storedData){
+          setTemperatureData(JSON.parse(storedData));
+        }
+        else{
+          console.log('No temperature data found in local storage.')
+          return
         }
       }
     }
+  }
+  
+  useEffect(()=>{
     getTemperatureData()
   },[userLocation])
 
@@ -269,7 +284,7 @@ const AppProvider = ({ children }:any) => {
   useEffect(() => {
     if(userId){
       console.log("userId: "+userId)
-      console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
+      // console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
       console.log(vehicleData)
       // console.log("mintemp: "+JSON.stringify(temperatureData))
       // console.log(vehicleCalcultedIdData)
@@ -286,7 +301,7 @@ const AppProvider = ({ children }:any) => {
 
       // State Variables
       vehicleData,
-      vehicleIdData,
+      // vehicleIdData,
       vehicleCalcultedData,
       userId,
       userLocation,
@@ -297,7 +312,7 @@ const AppProvider = ({ children }:any) => {
       userCountry,
       userImage,
       isLoading,
-      vehicleCalcultedIdData,
+      // vehicleCalcultedIdData,
       name,
       unit,
       isImageLoading,
@@ -309,8 +324,8 @@ const AppProvider = ({ children }:any) => {
       setName,
       setVehicleData,
       setVehicleCalcultedData,
-      setVehicleIdData,
-      setVehicleCalcultedIdData,
+      // setVehicleIdData,
+      // setVehicleCalcultedIdData,
       setUserCity,
       setUserState,
       setUserCountry,
