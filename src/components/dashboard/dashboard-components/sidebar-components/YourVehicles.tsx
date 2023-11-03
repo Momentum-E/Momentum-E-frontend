@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { YourVehicleProps } from '@/utils/props';
 import {useRouter} from 'next/router';
+import { Loader } from '@/components/shared';
 
 const YourVehicles = ({
     isLoading,
@@ -85,7 +86,7 @@ const YourVehicles = ({
                 :
                 (
                     <span className='flex items-center justify-center w-full h-[46%] text-sm text-gray-400'>
-                        Loading...
+                        <Loader LoaderSize={16}/>
                     </span>
                 )
             }

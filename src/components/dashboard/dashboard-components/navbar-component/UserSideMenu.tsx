@@ -27,16 +27,16 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
     const router = useRouter()
     const {logout} = useAccountContext();
 
-    const SignOut = () => {
-        logout();
-        router.replace('/auth/login')  
+    const SignOut = async () => {
         setName("")  
         setVehicleData([])
         setUserCity("")
         setUserState("")
         setUserCountry("")
-        setUserEmail('')
+        setUserEmail("")
         webSocket?.close()
+        router.replace('/auth/login')  
+        await logout();
     };
     
     return (
@@ -51,7 +51,8 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
                     </span>
                 </p>
                 <div className="md:w-[20%]">
-                    <Menu.Button className="flex justify-end rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    {/* focus:ring-offset-2 focus:ring-offset-gray-800 */}
+                    <Menu.Button className="flex justify-end rounded-full focus:outline-none ring-2 ring-black dark:ring-white-200">
                         <UserImage 
                             userImage={userImage}
                             imageWidth={32}

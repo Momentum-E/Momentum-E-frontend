@@ -1,5 +1,5 @@
 // @ts-nochec
-import React from 'react'
+import React, { useEffect } from 'react'
 import statisticsChartsData from '@/configs/statistics-charts-data';
 import { BatteryHealthProps } from '@/utils/props';
 import dynamic from 'next/dynamic'
@@ -10,7 +10,9 @@ const BatteryHealth = ({
 }:BatteryHealthProps) => {
   
   const chartData = statisticsChartsData()
-
+  // useEffect(()=>{
+  //   console.log({chartData,SoH})
+  // })
   return (
     <>
       <div className=" rounded-2xl w-full h-2/3 border text-black border-me-green-100 bg-[#F6F6F6] dark:bg-me-green-300">
@@ -27,7 +29,7 @@ const BatteryHealth = ({
           SoH
           <span className='text-black dark:text-white-100 text-sm'>
             {
-              SoH ? 
+              typeof(SoH) === "number" ? 
                 SoH.toFixed(2)+" "+"%"
               : 
                 "-"
@@ -38,7 +40,7 @@ const BatteryHealth = ({
           Estimated Degradation
           <span className='text-black dark:text-white-100 text-sm'>
             {
-              SoH ? 
+              typeof(SoH) === "number" ? 
                 (100-SoH).toFixed(2)+" "+"%" 
               : 
                 "-"

@@ -7,14 +7,14 @@ import {
   UserContextProps, 
   temperatureDataProps
 } from '@/utils/props';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { toast } from 'react-toastify'; 
 
 const AppContext = createContext({} as UserContextProps);
 
 const AppProvider = ({ children }:any) => {
-  const router = useRouter();
-  const { getSession } = useContext(AccountContext);
+  // const router = useRouter();
+  const { userid,RefreshToken } = useContext(AccountContext);
 
   const [userId, setUserId] = useState<string>("");
   const [name, setName] = useState<string>('');
@@ -26,9 +26,7 @@ const AppProvider = ({ children }:any) => {
   const [userImage, setUserImage] = useState<string>("")
   const [userEmail,setUserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
-  const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
   const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
-  const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
   const [unit, setUnit] = useState<string>('Km')
   const [isLoading, setIsLoading] = useState(true)
   const [isImageLoading, setIsImageLoading] = useState(true)  
@@ -38,15 +36,21 @@ const AppProvider = ({ children }:any) => {
     maxTemperature: null,
   });
 
-  // Hook for fetching the user details
-  useEffect(() => {
-    const fetchUserDetails =  async () => {
-      try {
-        const session:any = await getSession();
-        const userid = session.idToken.payload.sub;
+  const fetchUserDetails =  async () => {
+    try {
+      // if(!userid){
+      // const userData:any = await checkAuthentication()
+      // }
+      // console.log(userData)
+      if(userid){
         setUserId(userid); 
+        console.log({
+          "userid":userid,
+          "userId":userId
+        })
+
         const response = await axios.get(
-          `http://localhost:5000/auth/users/${userid}`
+          `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/${userid}`
           );  
         setName(response.data.name)
         setOwnerType(response.data.owner_type)
@@ -59,24 +63,23 @@ const AppProvider = ({ children }:any) => {
           :response.data.city + ", " + response.data.country
         }`)
         setUserEmail(response.data.email)
-        if(userId){
-          setVehicleData(response.data.vehicles)
-          setVehicleCalcultedData(response.data.vehicles_processed_data)
-          // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
-          setVehicleIdData(response.data.vehicles[0])
-          setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
-          // getVehicleDataFromEnode()
-        }
+        setVehicleData(response.data.vehicles)
+        setVehicleCalcultedData(response.data.vehicles_processed_data)
         setIsLoading(false)
-      } 
-      catch (error) {
-        console.error('Error, no user (userContext):', error);
+        // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
+        // setVehicleIdData(response.data.vehicles[0])
+        // setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
       }
-    };
-    // if(userId){
+    } 
+    catch (error) {
+      console.error('Error, no user (userContext):', error);
+    }
+  };
+
+  // Hook for fetching the user details
+  useEffect(() => {
     fetchUserDetails();
-    // }
-  }, [userId]);
+  }, [userid]);
 
   // useEffect(()=>{
   //   if(userId){
@@ -92,78 +95,89 @@ const AppProvider = ({ children }:any) => {
     returns the new socket
   */
   const SettingWebsocket = async () => {
-
-    const authToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
+    // const authToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
+    const authToken = localStorage.getItem('IdToken')
     
     if(authToken){
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/websocket/generate-token`,{
-        headers: {
-          authorization: `Bearer ${authToken}`
-        }
-      })
-
-      console.log(response.data)
-      const socket = new WebSocket(`wss://gav5fur5v0.execute-api.ap-south-1.amazonaws.com/development?token=${response.data.uniqueToken}`);
-      setWebSocket(socket)
-
-      socket.onopen = (event) => {
-        console.log('Websocket connection established with userId: '+userId+"\n"+event);
-      };
-  
-      socket.onmessage = (event) => {
-        const SocketData = JSON.parse(event.data);
-        
-        // Handle data from the server, including the 'updatedData' field, as needed
-        console.log('Received data from the server: \n'+ JSON.stringify(SocketData) 
-        +"eventName: \n"+SocketData.eventName+"\n"
-        +"SoH: "+SocketData.updatedData.vehicles_processed_data[vehicleData[0]?.id]?.chargeRateData.totalEnergyConsumed
-        )
-  
-        setName(SocketData.updatedData.name)
-        setUserCountry(SocketData.updatedData.country)
-        setOwnerType(SocketData.updatedData.owner_type)
-        setUserEmail(SocketData.updatedData.email)
-        setUserCity(SocketData.updatedData.city ? SocketData.updatedData.city : "")
-        setUserState(SocketData.updatedData.state ? SocketData.updatedData.state : "")
-        setVehicleData(SocketData.updatedData.vehicles)
-        setVehicleCalcultedData(SocketData.updatedData.vehicles_processed_data)
-      };
-  
-      socket.onerror = (event:any) => {
-        console.error('WebSocket Error:', event);
-        
-        if(!userId){
-          socket.close();
-        }
-        else {
-          switch (event.code){
-            case 1000:
-              console.log('error code 1000.')
-            break;
-            case 1006:
-              socket.close()
-              SettingWebsocket();
-              // setWebSocket(newSocket)
-              console.log('error code 1006.')
-            break;
+      try{
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/websocket/generate-token`,{
+          headers: {
+            authorization: `Bearer ${authToken}`
           }
-        }
-      };
+        })
+        console.log("socket"+response.data)
+        const socket = new WebSocket(`wss://gav5fur5v0.execute-api.ap-south-1.amazonaws.com/development?token=${response.data.uniqueToken}`);
+        setWebSocket(socket)
   
-      socket.onclose = async (event) => {
-        console.log('Websocket connection closed with userId and event: ' + userId, event);
+        socket.onopen = (event) => {
+          console.log('Websocket connection established with userId: '+userId+"\n"+event);
+        };
+    
+        socket.onmessage = (event) => {
+          const SocketData = JSON.parse(event.data);
+          
+          // Handle data from the server, including the 'updatedData' field, as needed
+          console.log('Received data from the server: \n'+ JSON.stringify(SocketData) 
+          +"eventName: \n"+SocketData.eventName+"\n"
+          +"SoH: "+SocketData.updatedData.vehicles_processed_data[vehicleData[0]?.id]?.chargeRateData.totalEnergyConsumed
+          )
+    
+          setName(SocketData.updatedData.name)
+          setUserCountry(SocketData.updatedData.country)
+          setOwnerType(SocketData.updatedData.owner_type)
+          setUserEmail(SocketData.updatedData.email)
+          setUserCity(SocketData.updatedData.city ? SocketData.updatedData.city : "")
+          setUserState(SocketData.updatedData.state ? SocketData.updatedData.state : "")
+          setVehicleData(SocketData.updatedData.vehicles)
+          setVehicleCalcultedData(SocketData.updatedData.vehicles_processed_data)
+        };
+    
+        socket.onerror = async (event:any) => {
+          console.log('WebSocket Error:', event);
+          
+          if(!userId){
+            socket.close();
+          }
+          else {
+            switch (event.code){
+              case 1000:
+                console.log('error code 1000.')
+              break;
+              case 1006:
+                socket.close()
+                await RefreshToken(SettingWebsocket)
+                // setWebSocket(newSocket)
+                console.log('error code 1006.')
+              break;
+            }
+          }
+        };
+    
+        socket.onclose = async (event) => {
+          console.log('Websocket connection closed with userId and event: ' + userId, event);
+    
+          // Optionally, you can attempt to reopen the connection here.
+          // You can also handle different close codes and reasons.
+          console.log('Trying to reconnect to the websocket')
   
-        // Optionally, you can attempt to reopen the connection here.
-        // You can also handle different close codes and reasons.
-        console.log('Trying to reconnect to the websocket')
-        if(userId){
-          console.log('userId present'+ userId)
-          SettingWebsocket();
+          if(userid){
+            console.log('userId present'+ userId)
+            await RefreshToken(SettingWebsocket)
+          }
+          else{
+            setWebSocket(null)
+          }
+        };
+      }
+      catch(error:any){
+        if(error === "Request failed with status code 403"){
+          console.log(error)
+          await RefreshToken(SettingWebsocket)
         }
         else{
-          setWebSocket(null)
+          console.log('Catch socket error'+ error)
         }
-      };
+      }
     }
     else{
       toast.error('No authToken found, please login again.')
@@ -175,10 +189,10 @@ const AppProvider = ({ children }:any) => {
     Sets a new a websocket when the component renders
   */
   useEffect(() => {
-    if (userId) {
+    if (userid) {
       SettingWebsocket();
     }
-  }, [userId]);
+  }, [userid]);
 
   /* 
     Sets the temperature according to the useLocation 
@@ -269,7 +283,6 @@ const AppProvider = ({ children }:any) => {
   useEffect(() => {
     if(userId){
       console.log("userId: "+userId)
-      console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
       console.log(vehicleData)
       // console.log("mintemp: "+JSON.stringify(temperatureData))
       // console.log(vehicleCalcultedIdData)
@@ -286,7 +299,6 @@ const AppProvider = ({ children }:any) => {
 
       // State Variables
       vehicleData,
-      vehicleIdData,
       vehicleCalcultedData,
       userId,
       userLocation,
@@ -297,7 +309,8 @@ const AppProvider = ({ children }:any) => {
       userCountry,
       userImage,
       isLoading,
-      vehicleCalcultedIdData,
+      // vehicleCalcultedIdData,
+      // vehicleIdData,
       name,
       unit,
       isImageLoading,
@@ -309,8 +322,8 @@ const AppProvider = ({ children }:any) => {
       setName,
       setVehicleData,
       setVehicleCalcultedData,
-      setVehicleIdData,
-      setVehicleCalcultedIdData,
+      // setVehicleIdData,
+      // setVehicleCalcultedIdData,
       setUserCity,
       setUserState,
       setUserCountry,

@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 
 import {PagesLayout} from '@/layouts/'
 import AuthInput from './AuthComponents/AuthInput';
+import axios from 'axios';
 
 const ForgotPassword = () => {
   const [username, setUsername] = useState('');
@@ -24,29 +25,71 @@ const ForgotPassword = () => {
   const initiateForgotPassword = async () => {
     // Should add code to implement if the email is present in the database
     // and only then run the code below
-    user.forgotPassword({
-      onSuccess: function (data) {
-        console.log(data);
-        toast.success('Code sent to:' + data);
-        setStep('confirm');
+
+    // user.forgotPassword({
+    //   onSuccess: function (data) {
+    //     console.log(data);
+    //     toast.success('Code sent to:' + data);
+    //     setStep('confirm');
+    //   },
+    //   onFailure: function (err) {
+    //     toast.error(err.message || JSON.stringify(err));
+    //   },
+    // });
+    let config = {
+      method: 'post',
+      url: `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/forgotpassword`,
+      headers: { 
+        'Content-Type': 'application/json'
       },
-      onFailure: function (err) {
-        toast.error(err.message || JSON.stringify(err));
-      },
-    });
+      data : JSON.stringify({
+        "userId": username,
+      })
+    };
+    axios.request(config)
+    .then((res)=>{ 
+      console.log(res.data);
+      toast.success('Code sent to:' + res.data);
+      setStep('confirm');
+    })
+    .catch((err)=>{
+      toast.error(err.message || JSON.stringify(err));
+    })
   };
 
   const confirmForgotPassword = async () => {
-    user.confirmPassword(confirmationCode, newPassword, {
-      onSuccess() {
-        toast.success('Password reset confirmed!');
-        router.push('/auth/login/');
+    // user.confirmPassword(confirmationCode, newPassword, {
+    //   onSuccess() {
+    //     toast.success('Password reset confirmed!');
+    //     router.push('/auth/login/');
+    //   },
+    //   onFailure(err) {
+    //     console.log('Password reset not confirmed!');
+    //     toast.error('Password reset not confirmed!');
+    //   },
+    // });
+    let config = {
+      method: 'post',
+      url: `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/confirmforgotpassword`,
+      headers: { 
+        'Content-Type': 'application/json'
       },
-      onFailure(err) {
-        console.log('Password reset not confirmed!');
-        toast.error('Password reset not confirmed!');
-      },
-    });
+      data : JSON.stringify({
+        "userId": username,
+        "confirmationCode":  confirmationCode,
+        "newPassword":  newPassword 
+      })
+    };
+    axios.request(config)
+    .then((res)=>{ 
+      console.log(res.data)
+      toast.success('Password reset confirmed!');
+      router.push('/auth/login/');
+    })
+    .catch((err)=>{
+      console.log('Password reset not confirmed!');
+      toast.error('Password reset not confirmed!');
+    })
   };
 
   return (
@@ -71,11 +114,13 @@ const ForgotPassword = () => {
                   inputClassname='border-me-green-200'
                   inputValue={username}
                   inputOnChange={(e) => setUsername(e.target.value)}
-                  children={<button
+                  children={
+                  <button
                     type="submit"
                     onClick={initiateForgotPassword}
-                    className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black py-2.5 text-center text-sm font-semibold shadow-sm">
-                    Confirm OTP
+                    className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black py-2.5 text-center text-sm font-semibold shadow-sm"
+                    >
+                      Send OTP
                   </button>}
                 />
 
@@ -114,15 +159,16 @@ const ForgotPassword = () => {
                     inputClassname={`border-me-green-200`}
                     inputValue={newPassword}
                     inputOnChange={(e) => setNewPassword(e.target.value)}
-                    children={null}
+                    children={
+                      <button
+                        type="submit"
+                        onClick={confirmForgotPassword}
+                        className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Confirm OTP
+                      </button>
+                    }
                   />
 
-                <button
-                  type="submit"
-                  onClick={confirmForgotPassword}
-                  className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                  Confirm OTP
-                </button>
               </div>
             </div>
           )}

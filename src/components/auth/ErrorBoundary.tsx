@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { useRouter } from "next/router";
 import React from "react"
 
 type ErrorBoundaryProps = {
@@ -16,9 +15,11 @@ class ErrorBoundary extends React.Component {
   
   handleError() {
       this.setState({ hasError: false })
-      // redirect('/')
-      const router = useRouter()
-      router.push('/')
+      window.history.replaceState({
+        fromHashChange: true
+      },null, '/dashboard');
+      
+      window.location.reload()
     }
 
     static getDerivedStateFromError(error:any) {

@@ -1,31 +1,36 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { AccountContext } from '@/context/account';
-// import socket from '@/configs/webSockets/WebSockets';
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
 }
 
 const ProtectedRoute = ({
-   children,
+    children,
   }:ProtectedRouteProps) => {
-  const { getSession } = useContext(AccountContext);
+  const { isAuthenticated,checkAuthentication,logout } = useContext(AccountContext);
   const router = useRouter();
 
   useEffect(() => {
-    const checkAuthentication = async () => {
+    const checkUserAuthentication = async () => {
       try {
         // Check if the user has an active session
-        await getSession();
-      } catch (error) {
+        // await getSession();
+        await checkAuthentication()
+        console.log("User has an active session")
+      } 
+      catch (error) {
         // If there is no active session, redirect to the login page
+        console.log(error)
         router.replace('/auth/login/')
+        window.location.reload()
+        // await logout()
       }
     };
     // window.location.reload()
-    checkAuthentication();
-  }, [getSession]);
+    checkUserAuthentication();
+  }, [isAuthenticated]);
 
   return (
     <>

@@ -20,7 +20,6 @@ const Signup = () => {
   const [confirmInputType,setConfirmInputType] = useState('password')
   const [verifyProcess, setVerifyProcess] = useState(false);
   const [input, setInput] = useState({
-    username: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -38,6 +37,20 @@ const Signup = () => {
     event.preventDefault();
     setInputType('password')
     setConfirmInputType('password')
+
+    let data = JSON.stringify({
+      userId:input.email,
+      password:input.password
+    });
+    
+    let config = {
+      method: 'post',
+      url: `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/User-Cognito-Signup`,
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
 
     // changed the 4th parameter to [] from null
     // userPool.signUp(input.email, input.password, [], [], (err:any, data) => {
@@ -63,18 +76,13 @@ const Signup = () => {
     //     setVerifyProcess(true);
     //   }
     // });
-    axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/User-Cognito-Signup`,{
-      headers:{
-        userId:input.email,
-        password:input.password
-      }
-    })
+    axios.request(config)
     .then((res) => {
       console.log(res.data)
       if(res.data){
-        localStorage.setItem('userId', res.data.userSub);
+        localStorage.setItem('userId', res.data.UserSub);
       } 
-      toast.success('OTP has been sent to your email. Please confirm your email to continue');
+      toast.success(`OTP has been sent through ${res.data.CodeDeliveryDetails.DeliveryMedium} to ${res.data.CodeDeliveryDetails.Destination}. Please confirm your email to continue`);
       setVerifyProcess(true);
     })
     .catch((err) => {
@@ -150,7 +158,7 @@ const Signup = () => {
                     inputOnChange={(e) => onInputChange(e)}
                     children={null}
                   />
-                  <button className='focus:outline-none focus:border-none' type='button' onClick={()=>setInputType(inputType === 'text' ? 'password': 'text')}>
+                  <button className='my-auto focus:outline-none focus:border-none' type='button' onClick={()=>setInputType(inputType === 'text' ? 'password': 'text')}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  
                       strokeWidth={1.5} stroke="currentColor" 
                       className={`w-4 h-4 focus:outline-none focus:border-none ${inputType === 'text' ? 'hidden' : 'flex'}`}>
@@ -180,7 +188,7 @@ const Signup = () => {
                     inputOnChange={(e) => onInputChange(e)}
                     children={null}
                   />
-                  <button className='focus:outline-none focus:border-none' type='button' onClick={()=>setConfirmInputType(confirmInputType === 'text' ? 'password': 'text')}>
+                  <button className='my-auto focus:outline-none focus:border-none' type='button' onClick={()=>setConfirmInputType(confirmInputType === 'text' ? 'password': 'text')}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  
                       strokeWidth={1.5} stroke="currentColor" 
                       className={`w-4 h-4 ${confirmInputType === 'text' ? 'hidden' : 'flex'}`}>

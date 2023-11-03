@@ -15,9 +15,9 @@ export type UserContextProps = {
   userImage:string;
   isLoading:boolean;
   vehicleData:vehicleDataProps[];
-  vehicleIdData:vehicleDataProps|undefined;
   vehicleCalcultedData:Record<string, vehicleCalcultedDataProps>|undefined|null;
-  vehicleCalcultedIdData: vehicleCalcultedDataProps|undefined|null;
+  // vehicleIdData:vehicleDataProps|undefined;
+  // vehicleCalcultedIdData: vehicleCalcultedDataProps|undefined|null;
   name:string;
   unit:string;
   isImageLoading:boolean;
@@ -26,8 +26,8 @@ export type UserContextProps = {
 
   // State Functions
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
-  setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
-  setVehicleCalcultedIdData:React.Dispatch<React.SetStateAction<vehicleCalcultedDataProps | undefined>>;
+  // setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
+  // setVehicleCalcultedIdData:React.Dispatch<React.SetStateAction<vehicleCalcultedDataProps | undefined>>;
   setVehicleCalcultedData:React.Dispatch<React.SetStateAction<Record<string, vehicleCalcultedDataProps>| undefined>>;
   setUnit:React.Dispatch<React.SetStateAction<string>>;
   setName:React.Dispatch<React.SetStateAction<string>>;
@@ -190,7 +190,10 @@ export type vehicleCalcultedDataProps = {
     min:number|null;
     max:number|null;
   }
-  soh:number|null;
+  sohData: {
+    currentSoh: number|null;
+    prevMonthsSoh: number[]|null[]|any;
+  }
   totalChargingSessions:number|null;
 }
 
@@ -334,7 +337,23 @@ export type AuthListBoxProps = {
 //               "avgRealRange":300,
 //               "minRange":null
 //            },
-//            "soh":98,
+//            "sohData": {
+//              "currentSoh": 0,
+//              "prevMonthsSoh": [
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null
+//                ]
+//              }
 //            "chargeRateData":{
 //               "chargeStartTime":null,
 //               "totalEnergyConsumed":0,

@@ -1,28 +1,31 @@
+import React, { Suspense, useContext, useEffect, useState } from 'react'
+import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect } from 'react'
 import { AppContext } from '@/context/userContext';
+import { vehicleCalcultedDataProps, vehicleDataProps } from '@/utils/props';
 
 import { DashboardLayout } from '@/layouts/';
 import {Loader} from '@/components/shared';
 import VehicleComponent from '@/components/dashboard/vehicle-components/VehicleComponent';
-import axios from 'axios';
 
 const VehicleDashboardContent = () => {
   const router = useRouter();
   const { vehicleId } = router.query;
+  const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
+  const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
   const {
     userId,
     userLocation, 
     isLoading,
     unit, 
-    vehicleIdData,
+    // vehicleIdData,
     temperatureData,
     vehicleData,
     vehicleCalcultedData,
-    vehicleCalcultedIdData,
+    // vehicleCalcultedIdData,
     setDistanceValue, 
-    setVehicleIdData,
-    setVehicleCalcultedIdData,
+    // setVehicleIdData,
+    // setVehicleCalcultedIdData,
     // filteredVehicleData,
   } = useContext(AppContext)
 
@@ -45,6 +48,7 @@ const VehicleDashboardContent = () => {
         console.log('No vehicles added.')
       }
     }
+    console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
     filteredVehicleData(vehicleId)
   },[vehicleId,vehicleData])
 
@@ -62,14 +66,16 @@ const VehicleDashboardContent = () => {
           )
           :
           (
-            <VehicleComponent
-              vehicleIdData={vehicleIdData}
-              vehicleCalcultedIdData={vehicleCalcultedIdData}
-              temperatureData={temperatureData}
-              unit={unit}
-              userLocation={userLocation}
-              setDistanceValue={setDistanceValue}
-            />
+            <Suspense fallback={<Loader LoaderSize={24}/>}>
+              <VehicleComponent
+                vehicleIdData={vehicleIdData}
+                vehicleCalcultedIdData={vehicleCalcultedIdData}
+                temperatureData={temperatureData}
+                unit={unit}
+                userLocation={userLocation}
+                setDistanceValue={setDistanceValue}
+              />
+            </Suspense>
           )
         }
       </div>
