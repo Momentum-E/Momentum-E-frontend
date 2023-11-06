@@ -193,7 +193,7 @@ const AppProvider = ({ children }:any) => {
         // const res = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=4b950044e17b4d2683693010232807&q=${userLocation?.split(',')[0].replace(" ","+")}`)
         let config = {
           method: 'post',
-          url:  `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/userData/get-temperature`,
+          url:  `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/get-temperature`,
           headers: { 
             "Content-Type": "application/json"
           },
@@ -204,8 +204,8 @@ const AppProvider = ({ children }:any) => {
         axios.request(config)
         .then((res)=>{
           const data = {
-            minTemperature: res.data.forecast.forecastday[0].day.mintemp_c,
-            maxTemperature: res.data.forecast.forecastday[0].day.maxtemp_c,
+            minTemperature: res.data.minTemperature,
+            maxTemperature: res.data.maxTemperature,
           }
           setTemperatureData(data);
           localStorage.setItem('temperatureData', JSON.stringify(data));
