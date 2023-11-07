@@ -20,6 +20,7 @@ const SidebarDarkLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarDarkLo
 })
 
 const Sidebar:React.FC<SidebarProps> = ({
+  idToken,
   id,
   isLoading,
   vehicleData, 
@@ -42,8 +43,11 @@ const Sidebar:React.FC<SidebarProps> = ({
     if(newPage === ''){
       newPage = 'redirect/dashboard' 
     }
-    axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`)
+    axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`,{
+      headers: {
+        authorization:`Bearer ${idToken}`
+      }
+    })
       .then((res) => {
         console.log(res.data);
         const linkUrl = res.data.linkUrl;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAccountContext } from '@/context/account';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import Pool from '@/context/user-pool/user-pool';
@@ -10,9 +11,9 @@ import ConfirmSignup from '@/pages/auth/confirmSignup';
 import AuthInput from '@/components/auth/AuthComponents/AuthInput';
 
 const SignIn = () => {
-  const { setIsAuthenticated, } = useAccountContext();
+  const { setIsAuthenticated } = useAccountContext();
   
-  // const router = useRouter();
+  const router = useRouter();
   const [userConfirmed, setUserConfirmed] = useState(true)
   const [Input, setInput] = useState<{
     email:string;
@@ -38,7 +39,6 @@ const SignIn = () => {
     }
     if (err.code === 'UserNotConfirmedException') {
       const errorMessage = err.message + 'Please verify your email.';
-      //AWS error message with a toast message
       toast.error(errorMessage);
       setUserConfirmed(false)
     }
@@ -51,35 +51,30 @@ const SignIn = () => {
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     // const authenticate = async (Username:string, Password:string) => {
-      await new Promise((resolve, reject) => {
-        const user = new CognitoUser({ Username:Input.email, Pool });
-  
-        const authDetails = new AuthenticationDetails({ Username:Input.email, Password:Input.password });
-  
-        user.authenticateUser(authDetails, {
-          onSuccess: (data) => {
-            console.log('onSuccess: ', data);
-            resolve(data);
-            setIsAuthenticated(true);
-  
-            window.history.replaceState({
-              fromHashChange: true
-            },null, '/dashboard');
-  
-            window.location.reload()
-          },
-          onFailure: (err) => {
-            console.error('onFailure: ', err);
-            reject(err);
-            handleAWSError(err)
-            setIsAuthenticated(false);
-          },
-          newPasswordRequired: (data) => {
-            console.log('newPasswordRequired: ', data);
-            alert('New password required, kindly change your password.')
-          },
-        });
-      });
+    const user = new CognitoUser({ Username:Input.email, Pool });
+    const authDetails = new AuthenticationDetails({ Username:Input.email, Password:Input.password });
+
+    user.authenticateUser(authDetails, {
+      onSuccess: (data) => {
+        console.log('onSuccess: ', data);
+        setIsAuthenticated(true);
+
+        window.history.replaceState({
+          fromHashChange: true
+        },null, '/dashboard');
+        // router.replace('/dashboard','/dashboard')
+        window.location.reload()
+      },
+      onFailure: (err) => {
+        console.error('onFailure: ', err);
+        handleAWSError(err)
+        setIsAuthenticated(false);
+      },
+      newPasswordRequired: (data) => {
+        console.log('newPasswordRequired: ', data);
+        alert('New password required, kindly change your password.')
+      },
+    });
     // };
     
     // authenticate(input.email, input.password)
@@ -165,7 +160,6 @@ const SignIn = () => {
             </div>
           </section>
         </main>
-
       ):
       (
         <ConfirmSignup username={Input.email}/>

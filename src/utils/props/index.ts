@@ -1,6 +1,6 @@
 export type UserContextProps = {
   // Functions
-  // filteredVehicleData:(v_id: string|string|string[] | undefined) => void;
+  UpdateIdToken:() => Promise<void>;
   setDistanceValue:(val: number|null|undefined) => string | number | undefined;
   fetchUserImage:() => Promise<void>;
 
@@ -15,19 +15,16 @@ export type UserContextProps = {
   userImage:string;
   isLoading:boolean;
   vehicleData:vehicleDataProps[];
-  // vehicleIdData:vehicleDataProps|undefined;
   vehicleCalcultedData:Record<string, vehicleCalcultedDataProps>|undefined|null;
-  // vehicleCalcultedIdData: vehicleCalcultedDataProps|undefined|null;
   name:string;
   unit:string;
   isImageLoading:boolean;
   temperatureData: temperatureDataProps;
   webSocket:WebSocket|null;
+  idToken:string|null
 
   // State Functions
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
-  // setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
-  // setVehicleCalcultedIdData:React.Dispatch<React.SetStateAction<vehicleCalcultedDataProps | undefined>>;
   setVehicleCalcultedData:React.Dispatch<React.SetStateAction<Record<string, vehicleCalcultedDataProps>| undefined>>;
   setUnit:React.Dispatch<React.SetStateAction<string>>;
   setName:React.Dispatch<React.SetStateAction<string>>;
@@ -53,6 +50,7 @@ export type SelectorProps = {
 
 export type SidebarProps = {
   id:string|any;
+  idToken:string|null;
   isLoading:boolean;
   vehicleData:vehicleDataProps[];
   isTab: boolean;
@@ -65,6 +63,7 @@ export type SidebarProps = {
 export type GetUserDataComponentProps = {
   heading:string;
   page:string;
+  idToken?:string|null;
   isRequired:boolean;
   userId:string|null;
   userEmail:string|null;
@@ -121,6 +120,7 @@ export type CharginPatternProps ={
     avgSoC:number|null|undefined;
     chargeRate:number|null|undefined;
     totalChargingSessions:number|null|undefined;
+    powerDilveryState:string|undefined;
     connectorType:string|null|undefined
     batteryLevel:number|null|undefined;
     isCharging:boolean|undefined;
@@ -190,7 +190,10 @@ export type vehicleCalcultedDataProps = {
     min:number|null;
     max:number|null;
   }
-  soh:number|null;
+  sohData:{
+    currentSoh:number|null;
+    prevMonthsSoh:number[]|null[];
+  }
   totalChargingSessions:number|null;
 }
 
@@ -214,35 +217,16 @@ export type DashboardLayoutProps = {
 }
 
 export type DashboardNavbarProps = {
-  webSocket:WebSocket|null;
-  setIsOpen: any;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isOpen: boolean;
   page:string | string[] | undefined;
   name:string|any;
   id:string|any;
-  isTab:boolean;
-  userImage:string;
-  isImageLoading:boolean;
-  setName:React.Dispatch<React.SetStateAction<string>>;
-  setUserCity:React.Dispatch<React.SetStateAction<string>>;
-  setUserState:React.Dispatch<React.SetStateAction<string>>;
-  setUserCountry:React.Dispatch<React.SetStateAction<string>>;
-  setUserEmail:React.Dispatch<React.SetStateAction<string>>;
-  setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>;
 };
 
 export type UserSideMenuProps = {
-  webSocket:WebSocket|null;
   name:string|any;
   id:string;
-  userImage:string;
-  isImageLoading:boolean;
-  setName:React.Dispatch<React.SetStateAction<string>>;
-  setUserCity:React.Dispatch<React.SetStateAction<string>>;
-  setUserState:React.Dispatch<React.SetStateAction<string>>;
-  setUserCountry:React.Dispatch<React.SetStateAction<string>>;
-  setUserEmail:React.Dispatch<React.SetStateAction<string>>;
-  setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>;
 }
 
 export type UserImageProps ={
@@ -253,7 +237,6 @@ export type UserImageProps ={
   svgClassName:string;
   isLoading:boolean;
   fontSize:number;
-  // setUserImage:React.Dispatch<React.SetStateAction<string>>;
 }   
 
 export type HeadingProps = {
@@ -334,7 +317,10 @@ export type AuthListBoxProps = {
 //               "avgRealRange":300,
 //               "minRange":null
 //            },
-//            "soh":98,
+//            "sohData":{
+//              "currentSoh":0,
+//              "prevMonthsSoh":[null,null,null,null,null,null,null,null,null,null,null,null]
+//            }
 //            "chargeRateData":{
 //               "chargeStartTime":null,
 //               "totalEnergyConsumed":0,

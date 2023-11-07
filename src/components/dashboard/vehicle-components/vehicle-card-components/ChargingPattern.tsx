@@ -10,6 +10,7 @@ const ChargingPattern = ({
     connectorType,
     batteryLevel,
     isCharging,
+    powerDilveryState,
     timeRemaining
 }:CharginPatternProps) => {
   return (
@@ -18,7 +19,7 @@ const ChargingPattern = ({
             <p className='flex flex-col text-sm font-medium text-gray-500'>
                 Average SoC
                 <span className='text-black dark:text-white-100 text-base'>
-                    {avgSoC}%
+                    {avgSoC?.toFixed(2)}%
                 </span>
             </p>
             <p className='flex flex-col text-sm font-medium text-gray-500'>
@@ -47,7 +48,8 @@ const ChargingPattern = ({
                     <span className='flex items-center justify-center border border-me-green-200 text-me-green-100 bg-white-100 dark:bg-gray-900 dark:text-white-100 dark:border-white-100 m-0 p-0.5 px-1 rounded-md text-xs'>
                         {
                             isCharging?
-                            "Charging Time Remaining:"+timeRemaining
+                            "Charging Time Remaining:"+" "+timeRemaining+"\n"
+                            +"Power Dilvery State: "+" "+powerDilveryState
                             :
                             "Vehicle not charging"
                         }

@@ -16,42 +16,50 @@ const VehicleDashboardContent = () => {
     userLocation, 
     isLoading,
     unit, 
-    // vehicleIdData,
     temperatureData,
     vehicleData,
     vehicleCalcultedData,
-    // vehicleCalcultedIdData,
+    idToken,
+    UpdateIdToken,
     setDistanceValue, 
-    // setVehicleIdData,
-    // setVehicleCalcultedIdData,
   } = useContext(AppContext)
   
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
   const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
   
-  useEffect(()=>{
-    // Function for getting data of a particular vehicle_Id
-    const filteredVehicleData = (v_id:any) => {
-      if(v_id && vehicleCalcultedData && vehicleData && vehicleData.length > 0){
-        setVehicleIdData(vehicleData.find(vehicle => vehicle.id === vehicleId))
-        setVehicleCalcultedIdData(vehicleCalcultedData[v_id])
-
-        axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/users/${userId}/${vehicleId}`)
+  // Function for getting data of a particular vehicle_Id
+  const filteredVehicleData = (v_id:any) => {
+    if(idToken && v_id && vehicleCalcultedData && vehicleData && vehicleData.length > 0){
+      setVehicleIdData(vehicleData.find(vehicle => vehicle.id === vehicleId))
+      setVehicleCalcultedIdData(vehicleCalcultedData[v_id])
+      try{
+        axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/users/${userId}/${vehicleId}`,{
+          headers:{
+            authorization: `Bearer ${idToken}`
+          }
+        })
         .then((res) => {
           // console.log(res.data)
+          console.log("SoH: "+vehicleCalcultedIdData?.sohData.currentSoh)
         })
-        .catch((err) => {
+        .catch(async (err) => {
           console.log("Error in filteredVehicleData: "+err)
+          await UpdateIdToken()
+          // filteredVehicleData(vehicleId)
         })
       }
-      else{
-        console.log('No vehicles added.')
+      catch(error){
+        console.log("Caught error in filteredVehicleData: "+error)
       }
     }
+    else{
+      console.log('No vehicles added.')
+    }
+  }
+
+  useEffect(()=>{
     filteredVehicleData(vehicleId)
   },[vehicleId,vehicleData])
-
-
 
   return (
     <DashboardLayout page={`vehicles / ${vehicleIdData?.information?.vin}`}>

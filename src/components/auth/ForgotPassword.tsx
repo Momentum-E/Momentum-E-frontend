@@ -27,7 +27,7 @@ const ForgotPassword = () => {
     user.forgotPassword({
       onSuccess: function (data) {
         console.log(data);
-        toast.success('Code sent to:' + data);
+        toast.success('Code sent to ' + data.CodeDeliveryDetails.Destination);
         setStep('confirm');
       },
       onFailure: function (err) {

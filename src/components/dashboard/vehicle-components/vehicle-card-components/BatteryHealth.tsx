@@ -27,7 +27,7 @@ const BatteryHealth = ({
           SoH
           <span className='text-black dark:text-white-100 text-sm'>
             {
-              SoH ? 
+              SoH||SoH===0 ? 
                 SoH.toFixed(2)+" "+"%"
               : 
                 "-"
@@ -38,7 +38,7 @@ const BatteryHealth = ({
           Estimated Degradation
           <span className='text-black dark:text-white-100 text-sm'>
             {
-              SoH ? 
+              SoH||SoH===0 ? 
                 (100-SoH).toFixed(2)+" "+"%" 
               : 
                 "-"

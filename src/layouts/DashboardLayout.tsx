@@ -23,16 +23,8 @@ const DashboardLayout = ({
     isLoading,
     userId, 
     vehicleData,
-    name, 
-    userImage, 
-    isImageLoading,
-    webSocket,
-    setName,
-    setVehicleData,
-    setUserCity,
-    setUserState,
-    setUserCountry,
-    setUserEmail,
+    name,
+    idToken,
   } = useContext(AppContext)
   const {theme, setTheme} = useTheme()
   
@@ -49,40 +41,32 @@ const DashboardLayout = ({
 
   return (
     <ProtectedRoute>
-      <div className='relative'>
-        <div className='flex'>
+      <div className='relative flex'>
+        {/* <div className=''> */}
           <Sidebar 
-          id={userId}
-          isLoading={isLoading}
-          vehicleData={vehicleData||[]} 
-          isOpen={isOpen} 
-          setIsOpen={setIsOpen} 
-          isTab={isTab}
-          page={page}
-          theme={theme}
+            idToken={idToken}
+            id={userId}
+            isLoading={isLoading}
+            vehicleData={vehicleData||[]} 
+            isOpen={isOpen} 
+            setIsOpen={setIsOpen} 
+            isTab={isTab}
+            page={page}
+            theme={theme}
           />
           <div className="max-w-full flex-1 h-screen overflow-hidden">
             <DashboardNavbar 
-              webSocket={webSocket}
               name={name} 
               id={userId}
               page={page===undefined ? '' : page}
-              isTab={isTab} 
+              // isTab={isTab} 
               setIsOpen={setIsOpen} 
               isOpen={isOpen} 
-              userImage={userImage}
-              isImageLoading={isImageLoading}
-              setName={setName}
-              setVehicleData={setVehicleData}
-              setUserCity={setUserCity}
-              setUserState={setUserState}
-              setUserCountry={setUserCountry}
-              setUserEmail={setUserEmail}
             />
               {children}
               <SetValue/> 
           </div>
-        </div>
+        {/* </div> */}
       </div>
     </ProtectedRoute>
   );

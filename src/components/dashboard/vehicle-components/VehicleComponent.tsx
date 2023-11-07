@@ -109,11 +109,12 @@ const VehicleComponent = ({
                                 connectorType={vehicleCalcultedIdData?.connectorType}
                                 batteryLevel = {vehicleIdData?.chargeState.batteryLevel}
                                 isCharging={vehicleIdData?.chargeState.isCharging}
+                                powerDilveryState={vehicleIdData?.chargeState.powerDeliveryState}
                                 timeRemaining={vehicleIdData?.chargeState.chargeTimeRemaining}
                             />
                         }
                         InfoIconPresent={true}
-                        InfoIconContent={"Last Updated"+"\n" +convertDate(vehicleIdData?.chargeState.lastUpdated)}
+                        InfoIconContent={"Last Updated" +convertDate(vehicleIdData?.chargeState.lastUpdated)}
                         SideBlockPresent={true}
                         SideBlockHeading={'Total Energy Consumed'}
                         SideBlockData={vehicleCalcultedIdData?.chargeRateData.totalEnergyConsumed}
@@ -149,11 +150,11 @@ const VehicleComponent = ({
                         CardName={'Battery Health'}
                         VehicleComponent=
                         { 
-                            <BatteryHealth SoH={vehicleCalcultedIdData?.soh}/> 
+                            <BatteryHealth SoH={vehicleCalcultedIdData?.sohData.currentSoh}/> 
                         }
                         SideBlockPresent={true}
                         SideBlockHeading={'State of Health'}
-                        SideBlockData={vehicleCalcultedIdData?.soh}
+                        SideBlockData={vehicleCalcultedIdData?.sohData.currentSoh}
                         SideBlockUnit='%'
                     />
                 </section>

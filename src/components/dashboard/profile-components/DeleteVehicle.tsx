@@ -5,11 +5,13 @@ import { VendorCountProp } from '@/utils/props';
 import { Modal } from '@/components/shared';
 
 type DeleteVehicleProps = {
+    idToken:string|null;
     userId:string|any;
     VendorCounts: VendorCountProp[];
 }
 
 const DeleteVehicle:React.FC<DeleteVehicleProps> = ({
+    idToken,
     userId,
     VendorCounts,
 }) => {
@@ -19,7 +21,11 @@ const DeleteVehicle:React.FC<DeleteVehicleProps> = ({
     // This deletes all the vehicles for a particular vendor_type (eg: Tesla, BMW) 
     function DeleteEntireVendor(vendorName:string){
         axios
-        .get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/delete-entire-vendor/${userId}/${vendorName}`)
+        .get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/delete-entire-vendor/${userId}/${vendorName}`,{
+            headers:{
+                authorization: `Bearer ${idToken}`
+            }
+        })
         .then((res) => {
             if(res.status === 204){
                 toast.success('Vehicles deleted successfully.')

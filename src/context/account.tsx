@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { toast } from 'react-toastify';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
@@ -55,41 +54,11 @@ const AccountProvider = ({ children }:any) => {
     });
   };
 
-  // const authenticate = async (Username:string, Password:string) => {
-  //   await new Promise((resolve, reject) => {
-  //     const user = new CognitoUser({ Username, Pool });
-
-  //     const authDetails = new AuthenticationDetails({ Username, Password });
-
-  //     user.authenticateUser(authDetails, {
-  //       onSuccess: (data) => {
-  //         console.log('onSuccess: ', data);
-  //         resolve(data);
-  //         setIsAuthenticated(true);
-
-  //         window.history.replaceState({
-  //           fromHashChange: true
-  //         },null, '/dashboard');
-
-  //         window.location.reload()
-  //       },
-  //       onFailure: (err) => {
-  //         console.error('onFailure: ', err);
-  //         reject(err);
-  //         setIsAuthenticated(false);
-  //       },
-  //       newPasswordRequired: (data) => {
-  //         console.log('newPasswordRequired: ', data);
-  //         alert('New password required, kindly change your password.')
-  //       },
-  //     });
-  //   });
-  // };
-
   const DeleteUserAccount = async (username:string,password:string) => {
     const user = new CognitoUser({ Username: username, Pool });
     const authDetails = new AuthenticationDetails({ Username: username, Password: password });
-
+    const token = localStorage.getItem(`CognitoIdentityServiceProvider.${process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID}.${username}.idToken`)
+    
     user.authenticateUser(authDetails, {
       onSuccess: (session) => {
         user.deleteUser((err, data) => {
@@ -101,7 +70,11 @@ const AccountProvider = ({ children }:any) => {
             setIsAuthenticated(false)
             
             // Delete user from DynamoDb
-            axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/delete/${username}`)
+            axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/delete/${username}`,{
+              headers: {
+                authorization:`Bearer ${token}`
+              }
+            })
             .then((res)=>{
               console.log('Deleted user from dynamoDB: '+res.data)
             }).catch((err)=>{
@@ -109,14 +82,22 @@ const AccountProvider = ({ children }:any) => {
             })
 
             // Deleting the user from enode
-            axios.get(`http://localhost:5000/vehicles/delete-user/${username}`)
+            axios.get(`http://localhost:5000/vehicles/delete-user/${username}`,{
+              headers:{
+                authorization:`Bearer ${token}`
+              }
+            })
             .then((res)=>{
               console.log('Deleted user from enode: '+res.data)
             }).catch((err)=>{
               console.log('Error deleting user from enode: '+err)
             })
 
-            axios.delete(`http://localhost:5000/user-data/users/image/${username}`)
+            axios.delete(`http://localhost:5000/user-data/users/image/${username}`,{
+              headers:{
+                authorization:`Bearer ${token}`
+              }
+            })
             .then((res)=>{
               console.log('User image from s3: '+res.data)
             }).catch((err)=>{
@@ -146,7 +127,6 @@ const AccountProvider = ({ children }:any) => {
   return (
     <AccountContext.Provider value={{
         isAuthenticated,
-        // authenticate,
         setIsAuthenticated,
         getSession,
         DeleteUserAccount,
