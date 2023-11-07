@@ -105,7 +105,7 @@ const AppProvider = ({ children }:any) => {
       setUserState(response.data.state)
       setUserCountry(response.data.country)
       setUserLocation(`${
-        response.data.state === ""||undefined ? response.data.country
+        response.data.state === "" ? response.data.country
         :response.data.city === "" ? response.data.state + ", " + response.data.country 
         :response.data.city + ", " + response.data.country
       }`)
@@ -218,7 +218,14 @@ const AppProvider = ({ children }:any) => {
 
   const UpdateIdToken = async () => {
     const session:any = await getSession()
+    // const oldToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`) 
+    // if(session.idToken.jwtToken === oldToken){
+    //   console.log("Token similar: "+session.idToken.jwtToken === oldToken)
+    // }
+    // else{
     setIdToken(session.idToken.jwtToken)
+    localStorage.setItem("CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken",session.idToken.jwtToken)
+    // }
   }
 
   /* 
@@ -244,7 +251,9 @@ const AppProvider = ({ children }:any) => {
               // "Content-Type": "application/json"
             },
             data :{
-              "userLocation": userLocation
+              "userLocation": userState === "" ? userCountry
+              :userCity === "" ? userState + ", " + userCountry
+              :userCity + ", "+ userState +", " + userCountry
             }
           };
           axios.request(config)
@@ -310,6 +319,7 @@ const AppProvider = ({ children }:any) => {
         console.log('fetchUserImage Error: \n'+error)
         setUserImage('')
         setIsImageLoading(false)
+        UpdateIdToken()
       })
     }
     catch(error){

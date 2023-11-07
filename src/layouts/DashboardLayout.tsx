@@ -42,31 +42,28 @@ const DashboardLayout = ({
   return (
     <ProtectedRoute>
       <div className='relative flex'>
-        {/* <div className=''> */}
-          <Sidebar 
-            idToken={idToken}
+        <Sidebar 
+          idToken={idToken}
+          id={userId}
+          isLoading={isLoading}
+          vehicleData={vehicleData||[]} 
+          isOpen={isOpen} 
+          setIsOpen={setIsOpen} 
+          isTab={isTab}
+          page={page}
+          theme={theme}
+        />
+        <div className="max-w-full flex-1 h-screen overflow-hidden">
+          <DashboardNavbar 
+            name={name} 
             id={userId}
-            isLoading={isLoading}
-            vehicleData={vehicleData||[]} 
-            isOpen={isOpen} 
+            page={page===undefined ? '' : page}
             setIsOpen={setIsOpen} 
-            isTab={isTab}
-            page={page}
-            theme={theme}
+            isOpen={isOpen} 
           />
-          <div className="max-w-full flex-1 h-screen overflow-hidden">
-            <DashboardNavbar 
-              name={name} 
-              id={userId}
-              page={page===undefined ? '' : page}
-              // isTab={isTab} 
-              setIsOpen={setIsOpen} 
-              isOpen={isOpen} 
-            />
-              {children}
-              <SetValue/> 
-          </div>
-        {/* </div> */}
+            {children}
+            <SetValue/> 
+        </div>
       </div>
     </ProtectedRoute>
   );

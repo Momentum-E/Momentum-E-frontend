@@ -13,7 +13,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
 
   return (
     <Disclosure as="nav" className="relative w-full z-10">
-      {({ open }) => (
+      {/* {({ open }) => ( */}
         <>
           <div className="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
@@ -67,7 +67,13 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                       <span className='text-gray-400'>
                         Dashboard
                       </span> 
-                      {" / " + page}
+                      {
+                        page.toString().split('/')[0].trim()==='vehicles'
+                        ?
+                        " / " + page.toString().split('/')[0]+" / " +JSON.parse(page.toString().split("/")[1]).vin
+                        :
+                        " / " + page
+                      }
                     </p>
                     <span className="text-xl md:text-md dark:text-white-100 whitespace-pre flex flex-shrink-0">
                       Dashboard
@@ -82,7 +88,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             </div>
           </div>
         </>
-      )}
+      {/* )} */}
     </Disclosure>
   );
 };

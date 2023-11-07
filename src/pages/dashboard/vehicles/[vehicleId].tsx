@@ -62,7 +62,7 @@ const VehicleDashboardContent = () => {
   },[vehicleId,vehicleData])
 
   return (
-    <DashboardLayout page={`vehicles / ${vehicleIdData?.information?.vin}`}>
+    <DashboardLayout page={`vehicles / ${JSON.stringify({id:vehicleIdData?.id,vin:vehicleIdData?.information.vin})}`}>
       <div className='h-screen overflow-y-auto overflow-x-hidden pb-16 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300'>
         {
           isLoading?

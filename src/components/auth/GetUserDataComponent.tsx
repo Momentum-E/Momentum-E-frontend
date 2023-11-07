@@ -87,20 +87,15 @@ const GetUserDataComponent = ({
         name: Name===""?name:Name,
       };
       console.log(newFormData);
-      // axios(`http://localhost:5000/auth/users/${userId}`, {
-      //   method: 'PATCH',
-      //   data: newFormData,
-      // })
-      axios.patch(`http://localhost:5000/auth/users/${userId}`,{
+      axios.patch(`http://localhost:5000/auth/users/${userId}`,newFormData,{
         headers: {
           authorization: `Bearer ${idToken}`
-        },
-        data:newFormData
+        }
       })
       .then((res) => {
         console.log(res);
         toast.success('User updated successfully');
-        window.location.reload()
+        // window.location.reload()
       })
       .catch((err) => {
         console.error(err);

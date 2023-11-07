@@ -219,7 +219,7 @@ export type DashboardLayoutProps = {
 export type DashboardNavbarProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isOpen: boolean;
-  page:string | string[] | undefined;
+  page:string | string[];
   name:string|any;
   id:string|any;
 };

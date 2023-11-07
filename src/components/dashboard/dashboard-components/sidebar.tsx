@@ -48,15 +48,15 @@ const Sidebar:React.FC<SidebarProps> = ({
         authorization:`Bearer ${idToken}`
       }
     })
-      .then((res) => {
-        console.log(res.data);
-        const linkUrl = res.data.linkUrl;
-        router.push(linkUrl);
-      })
-      .catch((err) => {
-        console.error(err)
-        addVehicle(page)
-      });
+    .then((res) => {
+      console.log(res.data);
+      const linkUrl = res.data.linkUrl;
+      router.push(linkUrl);
+    })
+    .catch((err) => {
+      console.error(err)
+      addVehicle(page)
+    });
   };
 
   return (
@@ -94,7 +94,7 @@ const Sidebar:React.FC<SidebarProps> = ({
 
         <div
           className="flex px-4 p-2 dark:text-white-100 bg-me-green-200 dark:bg-gray-700/50 rounded-lg items-center justify-center hover:bg-me-green-200/90 dark:hover:bg-gray-700/40 cursor-pointer focus:bg-blue-200"
-          onClick={()=>addVehicle(page)}>
+          onClick={()=>addVehicle(`vehicles / ${JSON.parse(page.toString().split("/")[1]).id}`)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -116,7 +116,7 @@ const Sidebar:React.FC<SidebarProps> = ({
           vehicleData={vehicleData}
           setIsOpen={setIsOpen}
           isTab={isTab}
-          page={page}
+          page={`vehicles / ${JSON.parse(page.toString().split("/")[1]).vin}`}
         />
       </div>
     </>
