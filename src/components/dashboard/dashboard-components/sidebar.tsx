@@ -116,7 +116,13 @@ const Sidebar:React.FC<SidebarProps> = ({
           vehicleData={vehicleData}
           setIsOpen={setIsOpen}
           isTab={isTab}
-          page={`vehicles / ${JSON.parse(page.toString().split("/")[1]).vin}`}
+          page={
+            page === ''
+            ?
+            page
+            :
+            `vehicles / ${JSON.parse(page.toString().split("/")[1]).vin}`
+            }
         />
       </div>
     </>

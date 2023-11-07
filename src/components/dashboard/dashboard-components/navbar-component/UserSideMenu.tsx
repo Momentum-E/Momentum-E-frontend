@@ -54,7 +54,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
                         </span>
                     </p>
                     <div className="md:w-[20%]">
-                        <Menu.Button className="flex justify-end rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <Menu.Button className="flex justify-end rounded-full focus:outline-none ring-2">
                             <UserImage 
                                 userImage={userImage}
                                 imageWidth={32}
