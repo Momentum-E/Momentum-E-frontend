@@ -31,6 +31,10 @@ const YourVehicles = ({
         onVehicleClick()
     },[vehicleId])
 
+    // useEffect(()=>{
+    //     console.log(page)
+    // })
+
     return (
       <div className='h-full'>
         {/* vehice items */}  

@@ -40,9 +40,21 @@ const Sidebar:React.FC<SidebarProps> = ({
 
   const addVehicle = (getPage:string) => {
     let newPage = getPage.split(" ").join('')
-    if(newPage === ''){
-      newPage = 'redirect/dashboard' 
+    if(getPage.split("/")[0].trim() === "profile"){
+      newPage = getPage.split(" ").join('')
     }
+    else if( page === ""||undefined ){
+      newPage = 'redirect/dashboard'
+    }
+    else if(getPage.split("/")[0].trim() === "vehicles"){
+      newPage = `vehicles/${JSON.parse(page.toString().split("/")[1]).id}}`
+    }
+    else{
+      console.log("No conditon matched"+getPage)
+    }
+    // if(newPage === ''){
+    //   newPage = 'redirect/dashboard' 
+    // }
     axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`,{
       headers: {
         authorization:`Bearer ${idToken}`
@@ -94,7 +106,8 @@ const Sidebar:React.FC<SidebarProps> = ({
 
         <div
           className="flex px-4 p-2 dark:text-white-100 bg-me-green-200 dark:bg-gray-700/50 rounded-lg items-center justify-center hover:bg-me-green-200/90 dark:hover:bg-gray-700/40 cursor-pointer focus:bg-blue-200"
-          onClick={()=>addVehicle(`vehicles / ${JSON.parse(page.toString().split("/")[1]).id}`)}>
+          // onClick={()=>addVehicle(`vehicles / ${JSON.parse(page.toString().split("/")[1]).id}`)}
+          onClick={()=>addVehicle(page)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -117,7 +130,7 @@ const Sidebar:React.FC<SidebarProps> = ({
           setIsOpen={setIsOpen}
           isTab={isTab}
           page={
-            page === ''
+            page.toString().split("/")[0].trim() === "profile" || page === ""
             ?
             page
             :
