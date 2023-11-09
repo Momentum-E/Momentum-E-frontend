@@ -12,6 +12,8 @@ export type UserContextProps = {
   userCountry:string|undefined;
   userLocation:string;
   userId:string;
+  vehicleCalcultedIdData: vehicleCalcultedDataProps | undefined;
+  vehicleIdData: vehicleDataProps | undefined;
   userImage:string;
   isLoading:boolean;
   vehicleData:vehicleDataProps[];
@@ -26,6 +28,8 @@ export type UserContextProps = {
   // State Functions
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
   setVehicleCalcultedData:React.Dispatch<React.SetStateAction<Record<string, vehicleCalcultedDataProps>| undefined>>;
+  setVehicleIdData: React.Dispatch<React.SetStateAction<vehicleDataProps | undefined>>;
+  setVehicleCalcultedIdData: React.Dispatch<React.SetStateAction<vehicleCalcultedDataProps | undefined>>;
   setUnit:React.Dispatch<React.SetStateAction<string>>;
   setName:React.Dispatch<React.SetStateAction<string>>;
   setUserCity:React.Dispatch<React.SetStateAction<string>>;
@@ -81,6 +85,7 @@ export type YourVehicleProps = {
 
 export type VehicleUsageProps ={
   avgDailyDistance:number|null| undefined;
+  avgDistancePrevMonths:(number | null)[]|undefined;
   SoCMinRange:number|null| undefined;
   SoCMaxRange:number|null| undefined;
   avgRealRangeObserved:number|null| undefined;
@@ -97,6 +102,7 @@ export type VehicleUsageProps ={
 
 export type BatteryHealthProps = {
   SoH:number|undefined|null;
+  PrevMonthsSoH:(number | null)[];
 }
 
 export type BasicCarDataProps = {
@@ -163,7 +169,7 @@ export type vehicleDataProps = {
 
 export type vehicleCalcultedDataProps = {
   avgDailyMiles:{
-    avgDistancePrevMonths:number[]|null[]|any;
+    avgDistancePrevMonths:(number | null)[];
     avgValue:number|null;
     prevMonthOdometerReading:number|null;
     currentOdometerReading:number|null;
@@ -192,7 +198,7 @@ export type vehicleCalcultedDataProps = {
   }
   sohData:{
     currentSoh:number|null;
-    prevMonthsSoh:number[]|null[];
+    prevMonthsSoh:(number|null)[];
   }
   totalChargingSessions:number|null;
 }
@@ -200,7 +206,7 @@ export type vehicleCalcultedDataProps = {
 export type VehicleComponentProps = {
   vehicleIdData:vehicleDataProps|undefined;
   temperatureData:temperatureDataProps;
-  vehicleCalcultedIdData:vehicleCalcultedDataProps|undefined|null;
+  vehicleCalculatedIdData:vehicleCalcultedDataProps|undefined|null;
   unit: string;
   userLocation: string;
   setDistanceValue:(val: number|null|undefined) => string|number|undefined;

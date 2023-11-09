@@ -1,12 +1,12 @@
 import React from 'react'
-import statisticsChartsData from '@/configs/statistics-charts-data';
-import dynamic from 'next/dynamic'
+import {VehicleUsageChart} from '@/configs/';
 import { VehicleUsageProps } from '@/utils/props';
-
-const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+// import { VehicleChart } from '../VehicleCard';
+// import { chartsConfig } from "@/configs";
 
 const VehicleUsage = ({
   avgDailyDistance,
+  avgDistancePrevMonths,
   SoCMinRange,
   SoCMaxRange,
   avgRealRangeObserved,
@@ -18,22 +18,71 @@ const VehicleUsage = ({
   unit,
 }:VehicleUsageProps ) => {
 
-  const chartData = statisticsChartsData()
+  // const AvgDailyMiles = {
+  //   series: [
+  //     {
+  //       name: "Miles",
+  //       data: avgDistancePrevMonths,
+  //     },
+  //   ],
+  //   options: {
+  //     colors: ["#C6DE41"],
+  //     ...chartsConfig,
+  //     xaxis: {
+  //       // {
+  //         axisTicks: {
+  //           show: false,
+  //         },
+  //         axisBorder: {
+  //           show: false,
+  //         },
+  //         labels: {
+  //           style: {
+  //             colors: "#848484",
+  //             fontSize: "13px",
+  //             fontFamily: "inherit",
+  //             fontWeight: 300,
+  //           },
+  //         },
+  //       // },
+  //       categories: 
+  //       [
+  //         "Jan", 
+  //         "Feb", 
+  //         "Mar",
+  //         "Apr",
+  //         "May",
+  //         "Jun",
+  //         "Jul",
+  //         "Aug",
+  //         "Sep",
+  //         "Oct",
+  //         "Nov",
+  //         "Dec"
+  //       ],
+  //     },
+  //   },
+  // };
 
   return (
     <>  
         <div className="h-1/3 md:h-2/3 p-1.5 rounded-xl border border-me-green-100 bg-[#F6F6F6] dark:bg-me-green-300">
           <span className="text-sm text-gray-500">
-            {chartData[0].title} 
+            {/* {chartData[0].title}  */}
+            Avg Distance Driven 
           </span>
           <div className="text-black">
-            <Chart 
-              type={"bar"}
-              height={chartData[0].chart.height} 
-              width={chartData[0].chart.width} 
-              options={chartData[0].chart.options} 
-              series={chartData[0].chart.series}
-            />
+            {
+              avgDistancePrevMonths && 
+              <VehicleUsageChart data={avgDistancePrevMonths}/>
+            }
+            {/* <VehicleChart 
+              type='bar'
+              height={'100%'}
+              width={'100%'}
+              series={AvgDailyMiles.series}
+              options={AvgDailyMiles.options}
+            /> */}
           </div>  
         </div>
         <div className="flex h-2/3 flex-col gap-4 md:flex-row justify-between">

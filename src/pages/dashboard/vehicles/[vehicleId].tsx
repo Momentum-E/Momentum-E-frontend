@@ -40,7 +40,7 @@ const VehicleDashboardContent = () => {
         })
         .then((res) => {
           console.log(res.data)
-          // console.log("SoH: "+vehicleCalcultedIdData?.sohData.currentSoh)
+          console.log("SoH: "+vehicleCalcultedIdData?.sohData.currentSoh)
         })
         .catch(async (err) => {
           console.log("Error in filteredVehicleData: "+err)
@@ -75,7 +75,7 @@ const VehicleDashboardContent = () => {
           (
             <VehicleComponent
               vehicleIdData={vehicleIdData}
-              vehicleCalcultedIdData={vehicleCalcultedIdData}
+              vehicleCalculatedIdData={vehicleCalcultedIdData}
               temperatureData={temperatureData}
               unit={unit}
               userLocation={userLocation}

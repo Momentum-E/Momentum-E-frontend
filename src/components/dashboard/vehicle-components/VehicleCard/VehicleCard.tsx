@@ -9,7 +9,7 @@ type VehicleCardProps = {
     VehicleComponent: JSX.Element
     SideBlockPresent: boolean
     InfoIconPresent?:boolean
-    InfoIconContent?:string|JSX.Element;
+    InfoIconContent?:string;
     SideBlockHeading?: string
     SideBlockData?: string | number | undefined | null
     SideBlockUnit?: string 
@@ -36,10 +36,10 @@ const VehicleCard: React.FC<VehicleCardProps>  = ({
                 <span className='ml-2 my-auto hover:cursor-pointer focus:none outline:none border-none'>
                     {
                         InfoIconPresent &&
-                        <Tippy placement='right' arrow={false} content={InfoIconContent
-                            // <span className='flex items-center justify-center border border-me-green-200 text-me-green-100 bg-white-100 dark:bg-gray-900 dark:text-white-100 dark:border-white-100 m-0 p-0.5 px-1 rounded-md text-xs'>
-                            //     {InfoIconContent}
-                            // </span>
+                        <Tippy placement='right' arrow={false} content={
+                            <span className='flex items-center justify-center border border-me-green-200 text-me-green-100 bg-white-100 dark:bg-gray-900 dark:text-white-100 dark:border-white-100 m-0 p-0.5 px-1 rounded-md text-xs'>
+                                {InfoIconContent}
+                            </span>
                         }>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
@@ -52,7 +52,7 @@ const VehicleCard: React.FC<VehicleCardProps>  = ({
                 SideBlockPresent && 
                 <CardSideBlock
                     CardHeading={SideBlockHeading}
-                    CardData={SideBlockData ? SideBlockData : '-'}
+                    CardData={SideBlockData||SideBlockData===0 ? SideBlockData : '-'}
                     CardUnit={SideBlockUnit}
                 />
             }

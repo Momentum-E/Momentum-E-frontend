@@ -27,8 +27,8 @@ const AppProvider = ({ children }:any) => {
   const [userEmail,setUserEmail] = useState<string>("")
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
-  // const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
-  // const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
+  const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
+  const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
   const [unit, setUnit] = useState<string>('Km')
   const [isLoading, setIsLoading] = useState(true)
   const [isImageLoading, setIsImageLoading] = useState(true)  
@@ -363,16 +363,16 @@ const AppProvider = ({ children }:any) => {
       temperatureData,
       webSocket,
       idToken,
-      // vehicleCalcultedIdData,
-      // vehicleIdData,
+      vehicleCalcultedIdData,
+      vehicleIdData,
 
       // State Functions
       setUnit,
       setName,
       setVehicleData,
       setVehicleCalcultedData,
-      // setVehicleIdData,
-      // setVehicleCalcultedIdData,
+      setVehicleIdData,
+      setVehicleCalcultedIdData,
       setUserCity,
       setUserState,
       setUserCountry,

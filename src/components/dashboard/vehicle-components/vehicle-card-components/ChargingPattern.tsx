@@ -45,16 +45,18 @@ const ChargingPattern = ({
             <Tippy 
                 placement='bottom'
                 content={
-                    <span className='flex items-center justify-center border border-me-green-200 text-me-green-100 bg-white-100 dark:bg-gray-900 dark:text-white-100 dark:border-white-100 m-0 p-0.5 px-1 rounded-md text-xs'>
-                        {
-                            isCharging?
-                            "Charging Time Remaining:"+" "+timeRemaining+"\n"
-                            +"Power Dilvery State: "+" "+powerDilveryState
-                            :
-                            "Vehicle not charging"
+                        isCharging?
+                            <span className='flex items-center justify-center border border-me-green-200 text-me-green-100 bg-white-100 dark:bg-gray-900 dark:text-white-100 dark:border-white-100 m-0 p-0.5 px-1 rounded-md text-xs'>
+                                Charging Time Remaining:{timeRemaining}
+                                <br/>
+                                Power Dilvery State: {powerDilveryState}
+                            </span>
+                        :
+                            <span className='flex items-center justify-center border border-me-green-200 text-me-green-100 bg-white-100 dark:bg-gray-900 dark:text-white-100 dark:border-white-100 m-0 p-0.5 px-1 rounded-md text-xs'>
+                                Vehicle not charging
+                            </span>
                         }
-                    </span>
-                }
+                
             >
                 <div className={`${isCharging? "bg-me-green-200 ":"bg-gray-500"} absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full p-2`}>
                     <svg width="30" height="29" viewBox="0 0 30 29" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
