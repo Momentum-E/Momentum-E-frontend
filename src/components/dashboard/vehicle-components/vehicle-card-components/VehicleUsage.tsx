@@ -111,7 +111,7 @@ const VehicleUsage = ({
             </p>
             
             <p className='flex w-full flex-col md:justify-between text-sm font-medium text-gray-500'>
-              Range Observed Max/Min ( {unit} )
+              Range Observed Min/Max ( {unit} )
               <span className='text-black dark:text-white-100 text-sm'>
                 {`${setDistanceValue(minRange)} / ${setDistanceValue(maxRange)}`}
               </span>
