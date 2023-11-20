@@ -15,7 +15,8 @@ import { AppContext } from '@/context/userContext';
 
 const owner_type = [{ type: 'Individual Owner' }, { type: 'Fleet Owner' }];
 
-const GetUserDataComponent:React.FC<GetUserDataComponentProps> = ({
+const GetUserDataComponent = ({
+  idToken,
   isRequired,
   heading,
   page,
@@ -23,7 +24,7 @@ const GetUserDataComponent:React.FC<GetUserDataComponentProps> = ({
   userEmail,
   formDiv,
   buttonName,
-}) => {
+}:GetUserDataComponentProps) => {
   const countryData = Country.getAllCountries();
   const router = useRouter();
   const {name, userOwnerType ,userCity,userState,userCountry} = useContext(AppContext)
@@ -86,19 +87,20 @@ const GetUserDataComponent:React.FC<GetUserDataComponentProps> = ({
         name: Name===""?name:Name,
       };
       console.log(newFormData);
-      // axios(`http://localhost:5000/auth/users/${userId}`, {
-      //   method: 'PATCH',
-      //   data: newFormData,
-      // })
-      // .then((res) => {
-      //   console.log(res);
-      //   toast.success('User updated successfully');
-      //   window.location.reload()
-      // })
-      // .catch((err) => {
-      //   console.error(err);
-      //   toast.error('Something went wrong');
-      // });
+      axios.patch(`http://localhost:5000/auth/users/${userId}`,newFormData,{
+        headers: {
+          authorization: `Bearer ${idToken}`
+        }
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success('User updated successfully');
+        // window.location.reload()
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error('Something went wrong');
+      });
     }
     else{
       const formData = {

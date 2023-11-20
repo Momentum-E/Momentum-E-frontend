@@ -18,11 +18,13 @@ const Profile = () => {
   const {
     userId,
     name,
+    idToken,
     userEmail,
     vehicleData,
     userImage,
     isImageLoading,
-    fetchUserImage
+    fetchUserImage,
+    setUserImage
   } = useContext(AppContext)
   const [VendorCounts, setVendorCounts] = useState<VendorCountProp[]>([])
 
@@ -53,20 +55,25 @@ const Profile = () => {
       <div className="max-h-full overflow-auto">
         <div className="max-w-xl w-full mx-auto flex flex-col items-center space-y-10 px-2 md:px-0 pt-10 pb-20 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
           <UploadUserImage
+            idToken={idToken}
             userId={userId}
             userImage={userImage}
             isImageLoading={isImageLoading}
             fetchUserImage={fetchUserImage}
+            setUserImage={setUserImage}
           />
           <DeleteVehicle 
+            idToken={idToken}
             userId={userId} 
             VendorCounts={VendorCounts}
           /> 
           <VehicleIntervention
+            idToken={idToken}
             vehicleData={vehicleData}
           />
           <div className=" border border-me-green-200 p-4 rounded-xl w-full">
             <GetUserDataComponent
+              idToken={idToken}
               isRequired={false}
               heading={'Update Data'}
               page={'profile'}

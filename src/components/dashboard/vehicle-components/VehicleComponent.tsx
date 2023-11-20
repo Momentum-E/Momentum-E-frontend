@@ -1,5 +1,6 @@
 import React from 'react'
 import { VehicleComponentProps } from '@/utils/props';
+// import statisticsChartsData from '@/configs/statistics-charts-data';
 
 import {
     BasicCarData,
@@ -13,11 +14,12 @@ import { VehicleCard } from '@/components/dashboard/vehicle-components/VehicleCa
 const VehicleComponent = ({
     vehicleIdData,
     temperatureData,
-    vehicleCalcultedIdData,
+    vehicleCalculatedIdData,
     unit,
     userLocation,
     setDistanceValue,
 }:VehicleComponentProps) => {
+    // const chartData = statisticsChartsData()
 
     const convertDate = (toDate:string|undefined|null) => {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -51,7 +53,7 @@ const VehicleComponent = ({
                     {/* should come from DynamoDB */}
                     <BasicCarData 
                         heading='Data Points Collected'
-                        data={vehicleCalcultedIdData?.dataPointCollected}
+                        data={vehicleCalculatedIdData?.dataPointCollected}
                         icon=
                         {
                             <svg xmlns="http://www.w3.org/2000/svg" className='w-10 h-11' viewBox="0 0 48 48" fill="none">
@@ -103,20 +105,21 @@ const VehicleComponent = ({
                         VehicleComponent=
                         {
                             <ChargingPattern
-                                avgSoC={vehicleCalcultedIdData?.socData.avgValue}
-                                chargeRate={vehicleCalcultedIdData?.chargeRateData.avgChargingRate}
-                                totalChargingSessions={vehicleCalcultedIdData?.totalChargingSessions}
-                                connectorType={vehicleCalcultedIdData?.connectorType}
+                                avgSoC={vehicleCalculatedIdData?.socData.avgValue}
+                                chargeRate={vehicleCalculatedIdData?.chargeRateData.avgChargingRate}
+                                totalChargingSessions={vehicleCalculatedIdData?.totalChargingSessions}
+                                connectorType={vehicleCalculatedIdData?.connectorType}
                                 batteryLevel = {vehicleIdData?.chargeState.batteryLevel}
                                 isCharging={vehicleIdData?.chargeState.isCharging}
+                                powerDilveryState={vehicleIdData?.chargeState.powerDeliveryState}
                                 timeRemaining={vehicleIdData?.chargeState.chargeTimeRemaining}
                             />
                         }
                         InfoIconPresent={true}
-                        InfoIconContent={"Last Updated"+"\n" +convertDate(vehicleIdData?.chargeState.lastUpdated)}
+                        InfoIconContent={"Last Updated" +convertDate(vehicleIdData?.chargeState.lastUpdated)}
                         SideBlockPresent={true}
                         SideBlockHeading={'Total Energy Consumed'}
-                        SideBlockData={vehicleCalcultedIdData?.chargeRateData.totalEnergyConsumed}
+                        SideBlockData={vehicleCalculatedIdData?.chargeRateData.totalEnergyConsumed}
                         SideBlockUnit='kW'
                     />
                 </section>
@@ -129,13 +132,14 @@ const VehicleComponent = ({
                         VehicleComponent=
                         {
                             <VehicleUsage 
-                                avgDailyDistance={vehicleCalcultedIdData?.avgDailyMiles.avgValue}
-                                SoCMinRange={vehicleCalcultedIdData?.socData.min}
-                                SoCMaxRange={vehicleCalcultedIdData?.socData.max}
-                                avgRealRangeObserved={vehicleCalcultedIdData?.rangeData.avgRealRange}
-                                minRange={vehicleCalcultedIdData?.rangeData.minRange}
-                                maxRange={vehicleCalcultedIdData?.rangeData.maxRange}
-                                certifiedRange={vehicleCalcultedIdData?.certifiedRange}
+                                avgDailyDistance={vehicleCalculatedIdData?.avgDailyMiles.avgValue}
+                                avgDistancePrevMonths = {vehicleCalculatedIdData?.avgDailyMiles.avgDistancePrevMonths}
+                                SoCMinRange={vehicleCalculatedIdData?.socData.min}
+                                SoCMaxRange={vehicleCalculatedIdData?.socData.max}
+                                avgRealRangeObserved={vehicleCalculatedIdData?.rangeData.avgRealRange}
+                                minRange={vehicleCalculatedIdData?.rangeData.minRange}
+                                maxRange={vehicleCalculatedIdData?.rangeData.maxRange}
+                                certifiedRange={vehicleCalculatedIdData?.certifiedRange}
                                 temperatureData={temperatureData}
                                 setDistanceValue={setDistanceValue}
                                 unit={unit}
@@ -149,11 +153,14 @@ const VehicleComponent = ({
                         CardName={'Battery Health'}
                         VehicleComponent=
                         { 
-                            <BatteryHealth SoH={vehicleCalcultedIdData?.soh}/> 
+                            <BatteryHealth
+                                SoH={vehicleCalculatedIdData?.sohData.currentSoh}
+                                PrevMonthsSoH = {vehicleCalculatedIdData?.sohData.prevMonthsSoh}
+                            /> 
                         }
                         SideBlockPresent={true}
                         SideBlockHeading={'State of Health'}
-                        SideBlockData={vehicleCalcultedIdData?.soh}
+                        SideBlockData={vehicleCalculatedIdData?.sohData.currentSoh}
                         SideBlockUnit='%'
                     />
                 </section>

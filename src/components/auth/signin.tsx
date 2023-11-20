@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { useAccountContext } from '@/context/account';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
+import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import Pool from '@/context/user-pool/user-pool';
 import 'react-toastify/dist/ReactToastify.css';
 
 import ConfirmSignup from '@/pages/auth/confirmSignup';
 import AuthInput from '@/components/auth/AuthComponents/AuthInput';
 
 const SignIn = () => {
-  const { authenticate } = useAccountContext();
+  const { setIsAuthenticated } = useAccountContext();
   
-  // const router = useRouter();
+  const router = useRouter();
   const [userConfirmed, setUserConfirmed] = useState(true)
-  const [input, setInput] = useState({
+  const [Input, setInput] = useState<{
+    email:string;
+    password:string;
+  }>({
     email: '',
     password: '',
   });
@@ -33,7 +39,6 @@ const SignIn = () => {
     }
     if (err.code === 'UserNotConfirmedException') {
       const errorMessage = err.message + 'Please verify your email.';
-      //AWS error message with a toast message
       toast.error(errorMessage);
       setUserConfirmed(false)
     }
@@ -45,15 +50,41 @@ const SignIn = () => {
 
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    // const authenticate = async (Username:string, Password:string) => {
+    const user = new CognitoUser({ Username:Input.email, Pool });
+    const authDetails = new AuthenticationDetails({ Username:Input.email, Password:Input.password });
+
+    user.authenticateUser(authDetails, {
+      onSuccess: (data) => {
+        console.log('onSuccess: ', data);
+        setIsAuthenticated(true);
+
+        window.history.replaceState({
+          fromHashChange: true
+        },null, '/dashboard');
+        // router.replace('/dashboard','/dashboard')
+        window.location.reload()
+      },
+      onFailure: (err) => {
+        console.error('onFailure: ', err);
+        handleAWSError(err)
+        setIsAuthenticated(false);
+      },
+      newPasswordRequired: (data) => {
+        console.log('newPasswordRequired: ', data);
+        alert('New password required, kindly change your password.')
+      },
+    });
+    // };
     
-    authenticate(input.email, input.password)
-    .then((data: any) => {
-      // check is the email is verified
-        console.log(data)
-      })
-      .catch((err: any) => {
-        handleAWSError(err);
-      });
+    // authenticate(input.email, input.password)
+    // .then((data: any) => {
+    //   // check is the email is verified
+    //     console.log(data)
+    //   })
+    //   .catch((err: any) => {
+    //     handleAWSError(err);
+    //   });
   };
 
   return (
@@ -85,7 +116,7 @@ const SignIn = () => {
                     inputType='email'
                     inputAutocomplete='email'
                     inputClassname='border-me-green-200'
-                    inputValue={input.email}
+                    inputValue={Input.email}
                     inputOnChange={(e) => onInputChange(e)}
                     children={null}
                   />
@@ -98,7 +129,7 @@ const SignIn = () => {
                     inputType='password'
                     inputAutocomplete='password'
                     inputClassname={`border-me-green-200`}
-                    inputValue={input.password}
+                    inputValue={Input.password}
                     inputOnChange={(e) => onInputChange(e)}
                     children={null}
                   />
@@ -129,10 +160,9 @@ const SignIn = () => {
             </div>
           </section>
         </main>
-
       ):
       (
-        <ConfirmSignup username={input.email}/>
+        <ConfirmSignup username={Input.email}/>
       )
     }
     <ToastContainer />

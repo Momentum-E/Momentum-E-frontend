@@ -20,6 +20,7 @@ const SidebarDarkLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarDarkLo
 })
 
 const Sidebar:React.FC<SidebarProps> = ({
+  idToken,
   id,
   isLoading,
   vehicleData, 
@@ -39,20 +40,35 @@ const Sidebar:React.FC<SidebarProps> = ({
 
   const addVehicle = (getPage:string) => {
     let newPage = getPage.split(" ").join('')
-    if(newPage === ''){
-      newPage = 'redirect/dashboard' 
+    if(getPage.split("/")[0].trim() === "profile"){
+      newPage = getPage.split(" ").join('')
     }
-    axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`)
-      .then((res) => {
-        console.log(res.data);
-        const linkUrl = res.data.linkUrl;
-        router.push(linkUrl);
-      })
-      .catch((err) => {
-        console.error(err)
-        addVehicle(page)
-      });
+    else if( page === ""||undefined ){
+      newPage = 'redirect/dashboard'
+    }
+    else if(getPage.split("/")[0].trim() === "vehicles"){
+      newPage = `vehicles/${JSON.parse(page.toString().split("/")[1]).id}}`
+    }
+    else{
+      console.log("No conditon matched"+getPage)
+    }
+    // if(newPage === ''){
+    //   newPage = 'redirect/dashboard' 
+    // }
+    axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`,{
+      headers: {
+        authorization:`Bearer ${idToken}`
+      }
+    })
+    .then((res) => {
+      console.log(res.data);
+      const linkUrl = res.data.linkUrl;
+      router.push(linkUrl);
+    })
+    .catch((err) => {
+      console.error(err)
+      addVehicle(page)
+    });
   };
 
   return (
@@ -90,6 +106,7 @@ const Sidebar:React.FC<SidebarProps> = ({
 
         <div
           className="flex px-4 p-2 dark:text-white-100 bg-me-green-200 dark:bg-gray-700/50 rounded-lg items-center justify-center hover:bg-me-green-200/90 dark:hover:bg-gray-700/40 cursor-pointer focus:bg-blue-200"
+          // onClick={()=>addVehicle(`vehicles / ${JSON.parse(page.toString().split("/")[1]).id}`)}
           onClick={()=>addVehicle(page)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +129,13 @@ const Sidebar:React.FC<SidebarProps> = ({
           vehicleData={vehicleData}
           setIsOpen={setIsOpen}
           isTab={isTab}
-          page={page}
+          page={
+            page.toString().split("/")[0].trim() === "profile" || page === ""
+            ?
+            page
+            :
+            `vehicles / ${JSON.parse(page.toString().split("/")[1]).vin}`
+            }
         />
       </div>
     </>
