@@ -1,23 +1,29 @@
 import { useEffect } from 'react';
 import { useTheme } from 'next-themes';
-
 import { ConfirmSignUp } from '@/components/auth/';
 
 type ConfirmSignupProps = {
-  username:string
+  password?:string;
+  username:string;
+  // redirectUrl:string
 }
 
 const ConfirmSignup = ({ 
-  username 
+  password,
+  username,
+  // redirectUrl
 }: ConfirmSignupProps) => {
-
   const { setTheme } = useTheme()
   useEffect(()=>{
       setTheme('dark')
   })
 
   return (
-    <ConfirmSignUp username={username} />
+    <ConfirmSignUp 
+      password={password}
+      username={username} 
+      // redirectUrl={redirectUrl}
+    />
   );
 };
 export default ConfirmSignup;

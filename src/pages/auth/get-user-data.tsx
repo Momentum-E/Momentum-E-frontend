@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { useTheme } from 'next-themes';
-
-import GetUserDataComponent from '@/components/auth/GetUserDataComponent'; 
+// import { useRouter } from 'next/router';
+import { GetUserDataComponent } from '@/components/auth/'; 
 
 const GetUserData = () => {
-
+  // const router = useRouter()
+  // const {email,userId,price_id} = router.query
   const { setTheme } = useTheme()
   useEffect(()=>{
     setTheme('dark')

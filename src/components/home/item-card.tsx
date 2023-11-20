@@ -10,7 +10,7 @@ const ItemCard: React.FC<ItemCardProps> = ({
   imageClassname,
 }) => {
   return (
-    <div className=" p-5 w-60 md:border-none border border-2 rounded-lg border-me-green-200">  
+    <div className=" p-5 w-60 md:border-none border-2 rounded-lg border-me-green-200">  
       <div className="rounded-full flex justify-center items-center w-32 h-32 px-5 text-center border-2 border-gray-700/70 md:border-me-green-200 md:shadow-me-green-100 md:shadow-md -rotate-45 m-auto">
         <Image
           src={imageSource}

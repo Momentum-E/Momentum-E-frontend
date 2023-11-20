@@ -28,7 +28,7 @@ const Selector: React.FC<SelectorProps> = ({
             required
             autoComplete={'id'}
             id={id}
-            className="block w-full border border-[#C6DE41] px-2 py-2 text-black dark:text-white-100 bg-transparent rounded text-sm focus:outline-none focus:ring-0 sm:text-sm sm:leading-6"
+            className="block w-full border border-me-green-200 p-2 text-black dark:text-white-100 bg-transparent rounded text-sm focus:outline-none focus:ring-0 sm:text-sm sm:leading-6"
             displayValue={(value:string|any) => value.name||value}
             onChange={(event) => setQuery(event.target.value)}
           />

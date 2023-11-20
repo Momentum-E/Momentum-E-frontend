@@ -25,7 +25,8 @@ export default function NavBar() {
               <button
                 className="p-2 text-gray-700 rounded-md outline-none focus:border-gray-400 focus:border"
                 onClick={() => setNavbar(!navbar)}>
-                {navbar ? (
+                {
+                navbar ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-6 h-6 text-white-100"
@@ -37,7 +38,9 @@ export default function NavBar() {
                       clipRule="evenodd"
                     />
                   </svg>
-                ) : (
+                ) 
+                : 
+                (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-6 h-6 text-white-100"
@@ -56,33 +59,48 @@ export default function NavBar() {
             </div>
           </div>
         </div>
+
+        {/* Navbar in mobile mode */}
         <div>
           <div
             className={`justify-self-center pb-3 md:hidden mt-8 md:pb-0 md:mt-0 ${
-              navbar ? 'block' : 'hidden'
-            }`}>
+              navbar ? 'block' : 'hidden'}`}
+          >
             <ul className="items-center justify-center space-y-5 md:flex md:space-x-6 md:space-y-0">
-              <li className="text-white-100 hover:text-indigo-200">
-                <Link href="/">Home</Link>
+              <li>
+                <Link 
+                  href="/"
+                  className="px-4 py-2 text-white-100 hover:text-indigo-200">
+                  Home
+                </Link>
               </li>
-              <li className="text-white-100 hover:text-indigo-200">
-                <Link href="/about-us">About Us</Link>
+              <li>
+                <Link 
+                  className="px-4 py-2 text-white-100 hover:text-indigo-200"
+                  href="/about-us">
+                  About Us
+                </Link>
               </li>
             {
               !isAuthenticated ?
               (
-              <div className="mt-3 space-y-2 lg:hidden md:inline-block">
-                <Link
-                  href="/auth/login"
-                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
-                  Login
-                </Link>
-                <Link
-                  href="/auth/register"
-                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
-                  Register
-                </Link>
-              </div>
+                <div className="mt-3 space-y-2 lg:hidden md:inline-block">
+                  <Link
+                    href="/pricing"
+                    className="px-4 py-2 text-white-100 hover:text-indigo-200">
+                    Pricing
+                  </Link>
+                  <Link
+                    href="/auth/login"
+                    className="inline-block w-full px-4 py-2 text-center text-white-100 rounded-md shadow hover:bg-gray-700/4">
+                    Log In
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    className="inline-block w-full px-4 py-2 text-center text-white-100 rounded-md shadow bg-gray-700/40">
+                    Sign Up
+                  </Link>
+                </div>
               ):
               (
                 <div className="">
@@ -95,19 +113,19 @@ export default function NavBar() {
               )
             }
             </ul>
-
-
           </div>
         </div>
+
+        {/* Navbar in desktop mode */}
         <div className="hidden space-x-2 md:inline-block">
           <Link
             href="/"
-            className="px-4 py-2 text-white-100 rounded-md shadow hover:bg-gray-700/40">
+            className="px-4 py-2 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
             Home
           </Link>
           <Link
             href="/#aboutus"
-            className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
+            className="px-4 py-2 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
             About Us
           </Link>
           {
@@ -115,21 +133,26 @@ export default function NavBar() {
             (
               <>
                 <Link
+                  href="/pricing"
+                  className="px-4 py-2 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
+                  Pricing
+                </Link>
+                <Link
                   href="/auth/login"
-                  className="px-4 py-2 text-white-100 rounded-md shadow hover:bg-gray-700/40">
-                  Login
+                  className="px-4 py-2 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
+                  Log In
                 </Link>
                 <Link
                   href="/auth/register"
-                  className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
-                  Register
+                  className="px-4 py-2 text-white-100 shadow border-b-2 border-gray-700 hover:border-me-green-200">
+                  Sign Up
                 </Link>
               </>
             ):
             (
               <Link
                 href="/dashboard/"
-                className="px-4 py-2 text-white-100 bg-white rounded-md shadow hover:bg-gray-700/40">
+                className="px-4 py-2 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
                 Dashboard
               </Link>
             )

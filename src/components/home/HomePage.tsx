@@ -11,7 +11,7 @@ import {
 } from '@/assets/images/';
 import { Heading, ItemCard, GetInTouch } from './';
 
-const Hero = () => {
+const HomePage = () => {
   
   return (
     <div className=" text-white-100 pt-5 space-y-5">
@@ -141,4 +141,4 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+export default HomePage;

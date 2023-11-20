@@ -43,7 +43,7 @@ const Footer = ({
               User
             </div>
             <Link className="my-3 block text-white-200" href="/auth/login">
-              <span className='hover:border-b hover:border-white-200'>Sign in</span>
+              <span className='hover:border-b hover:border-white-200'>Log In</span>
             </Link>
             <Link className="my-3 block text-white-200" href="/auth/register">
               <span className='hover:border-b hover:border-white-200'>New Account</span>
@@ -59,7 +59,7 @@ const Footer = ({
             <Link className="my-3 block text-white-200" href="/#">
               <span className='hover:border-b hover:border-white-200'>Analytics</span>
             </Link>
-            <Link className="my-3 block text-white-200" href="pricing">
+            <Link className="my-3 block text-white-200" href="/pricing">
               <span className='hover:border-b hover:border-white-200'>Pricing</span>
             </Link>
           </div>
