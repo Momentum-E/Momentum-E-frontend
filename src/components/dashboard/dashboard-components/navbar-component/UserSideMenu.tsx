@@ -54,14 +54,14 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
                         </span>
                     </p>
                     <div className="md:w-[20%]">
-                        <Menu.Button className="flex justify-end rounded-full focus:outline-none ring-2">
+                        <Menu.Button className={`${userImage ? '' : 'p-1'} flex justify-end rounded-full focus:outline-none ring-2`}>
                             <UserImage 
                                 userImage={userImage}
-                                imageWidth={32}
-                                imageHeight={32}
+                                imageWidth={28}
+                                imageHeight={28}
                                 imageSize='h-8 w-8'
-                                svgClassName='w-8 h-8'
-                                fontSize={12}    
+                                svgClassName='w-full'
+                                loaderSize={12}    
                                 isLoading={isImageLoading}
                             />
                         </Menu.Button>

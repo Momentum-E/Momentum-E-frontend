@@ -100,73 +100,34 @@ const GetUserDataComponent = ({
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // if(page==='profile'){
-      if((country.name||country)===""){
-        setCity(userCity)
-        setState(userState)
-        setCountry(userCountry)
+    if((country.name||country)===""){
+      setCity(userCity)
+      setState(userState)
+      setCountry(userCountry)
+    }
+    const newFormData = {
+      email: userEmail,
+      country: country?.name||country,
+      city: city?.name||city,
+      state: state?.name||state,
+      // owner_type: ownerType?.type,
+      name: Name===""?name:Name,
+    };
+    console.log(newFormData);
+    axios.patch(`http://localhost:5000/auth/users/${userId}`,newFormData,{
+      headers: {
+        authorization: `Bearer ${idToken}`
       }
-      const newFormData = {
-        email: userEmail,
-        country: country?.name||country,
-        city: city?.name||city,
-        state: state?.name||state,
-        // owner_type: ownerType?.type,
-        name: Name===""?name:Name,
-      };
-      console.log(newFormData);
-      axios.patch(`http://localhost:5000/auth/users/${userId}`,newFormData,{
-        headers: {
-          authorization: `Bearer ${idToken}`
-        }
-      })
-      .then((res) => {
-        console.log(res);
-        toast.success('User updated successfully');
-        // window.location.reload()
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error('Something went wrong');
-      });
-    // }
-    // else{
-    //   const {email,userId} = router.query
-    //   const formData = {
-    //     userId: userId,
-    //     email: email,
-    //     // owner_type: ownerType?.type,
-    //     country: country?.name,
-    //     state: state?.name===undefined?'':state.name,
-    //     city: city?.name===undefined?'':city.name,
-    //     name: Name,
-    //     vehicles:[],
-    //   };
-  
-    //   axios(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/signup`, {
-    //     method: 'POST',
-    //     data: formData,
-    //   })
-    //   .then(async (res) => {
-    //     console.log(res.data, formData);
-    //     toast.success('Pay to continue');
-    //     localStorage.removeItem('email');
-    //     localStorage.removeItem('userId');
-    //     localStorage.removeItem('password')
-    //     // router.replace('/auth/login')
-        
-    //     // Go to the user payment portal and redirect to the login page.
-    //     if(subscriptionType.type === subscription_type[0].type){
-    //       await PaymentGateway(process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_MONTHLY);
-    //     }
-    //     else if(subscriptionType.type === subscription_type[1].type) {
-    //       await PaymentGateway(process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_YEARLY);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     toast.error(err);
-    //   });
-    // };
+    })
+    .then((res) => {
+      console.log(res);
+      toast.success('User updated successfully');
+      // window.location.reload()
+    })
+    .catch((err) => {
+      console.error(err);
+      toast.error('Something went wrong');
+    });
   }
 
   return (

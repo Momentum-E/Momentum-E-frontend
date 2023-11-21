@@ -155,7 +155,7 @@ const VehicleComponent = ({
                         { 
                             <BatteryHealth
                                 SoH={vehicleCalculatedIdData?.sohData.currentSoh}
-                                PrevMonthsSoH = {vehicleCalculatedIdData?.sohData.prevMonthsSoh}
+                                PrevMonthsSoH={vehicleCalculatedIdData?.sohData.prevMonthsSoh}
                             /> 
                         }
                         SideBlockPresent={true}

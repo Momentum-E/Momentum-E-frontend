@@ -102,7 +102,7 @@ export type VehicleUsageProps ={
 
 export type BatteryHealthProps = {
   SoH:number|undefined|null;
-  PrevMonthsSoH:(number | null)[];
+  PrevMonthsSoH:(number | null)[]|null[]|number[];
 }
 
 export type BasicCarDataProps = {
@@ -112,7 +112,7 @@ export type BasicCarDataProps = {
 }
 
 export type vehicleInfoProps = {
-  Odometer:number|undefined;
+  Odometer:number|null|undefined;
   Brand:string|null|undefined;
   Model:string|null|undefined;
   Year:number|null|undefined;
@@ -162,8 +162,8 @@ export type vehicleDataProps = {
       year: number|null;
   },
   odometer:{
-    distance:number|undefined;
-    lastUpdated:string|undefined;
+    distance:number|null;
+    lastUpdated:string|null;
   }
 };
 
@@ -198,13 +198,13 @@ export type vehicleCalcultedDataProps = {
   }
   sohData:{
     currentSoh:number|null;
-    prevMonthsSoh:(number|null)[];
+    prevMonthsSoh:(number|null)[]|null[]|number[]|undefined;
   }
   totalChargingSessions:number|null;
 }
 
 export type VehicleComponentProps = {
-  vehicleIdData:vehicleDataProps|undefined;
+  vehicleIdData:vehicleDataProps|undefined|null;
   temperatureData:temperatureDataProps;
   vehicleCalculatedIdData:vehicleCalcultedDataProps|undefined|null;
   unit: string;
@@ -242,7 +242,7 @@ export type UserImageProps ={
   imageSize?:string;
   svgClassName:string;
   isLoading:boolean;
-  fontSize:number;
+  loaderSize:number;
 }   
 
 export type HeadingProps = {

@@ -11,7 +11,7 @@ export const UserImage:React.FC<UserImageProps> = ({
     imageSize,
     svgClassName,
     isLoading,
-    fontSize,
+    loaderSize,
 }) => {
 
     return (
@@ -36,7 +36,7 @@ export const UserImage:React.FC<UserImageProps> = ({
             )
             :
             (
-                <Loader LoaderSize={fontSize}/>
+                <Loader LoaderSize={loaderSize}/>
             )
         }
         </>

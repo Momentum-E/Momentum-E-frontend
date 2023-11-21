@@ -114,7 +114,7 @@ const UploadUserImage:React.FC<UploadUserImageProps> = ({
                 imageHeight={160}
                 svgClassName={'w-20 h-20'}
                 imageSize={'w-40 h-40'}
-                fontSize={24}
+                loaderSize={24}
             />
             <div className="absolute hidden border dark:border-white-100 border-black group-hover:flex items-center justify-center group-hover:bg-black/20 rounded-full w-40 h-40">
                 <div className="p-1 flex bg-gray-900 rounded-r-full rounded-l-full">

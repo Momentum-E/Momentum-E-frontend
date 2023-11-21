@@ -84,7 +84,10 @@ const BatteryHealth = ({
     <>
       <div className=" rounded-2xl w-full h-2/3 border text-black border-me-green-100 bg-[#F6F6F6] dark:bg-me-green-300">
         {/* {  */}
-        <BatteryHealthChart data={PrevMonthsSoH}/>
+        {
+          PrevMonthsSoH && 
+          <BatteryHealthChart data={PrevMonthsSoH}/>
+        }
         {/* <VehicleChart 
           type='area'
           height={'100%'}

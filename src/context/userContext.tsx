@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { AccountContext } from './account';
 import { 
@@ -8,6 +8,7 @@ import {
   temperatureDataProps
 } from '@/utils/props';
 import { useRouter } from 'next/router';
+// import useSWR from 'swr'
 import { toast } from 'react-toastify'; 
 
 const AppContext = createContext({} as UserContextProps);
@@ -25,11 +26,12 @@ const AppProvider = ({ children }:any) => {
   const [userLocation, setUserLocation] = useState<string>("");
   const [userImage, setUserImage] = useState<string>("")
   const [userEmail,setUserEmail] = useState<string>("")
+  const [unit, setUnit] = useState<string>('Km')
+
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
   const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
-  const [unit, setUnit] = useState<string>('Km')
   const [isLoading, setIsLoading] = useState(true)
   const [isImageLoading, setIsImageLoading] = useState(true)  
   const [webSocket, setWebSocket] = useState<WebSocket|null>(null);
@@ -94,6 +96,7 @@ const AppProvider = ({ children }:any) => {
       const userid = session.idToken.payload.sub;
       setIdToken(IdToken)
       setUserId(userid); 
+      
       const response = await axios.get(`http://localhost:5000/auth/users/${userid}`,{
         headers: {
           authorization:`Bearer ${IdToken}`
@@ -130,13 +133,13 @@ const AppProvider = ({ children }:any) => {
   */
   const SettingWebsocket = async () => {
 
-    const authToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
+    const idToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
     
-    if(authToken){
+    if(idToken){
       try{
         const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/websocket/generate-token`,{
           headers: {
-            authorization: `Bearer ${authToken}`
+            authorization: `Bearer ${idToken}`
           }
         })
   
@@ -224,7 +227,7 @@ const AppProvider = ({ children }:any) => {
     // }
     // else{
     setIdToken(session.idToken.jwtToken)
-    localStorage.setItem("CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken",session.idToken.jwtToken)
+    localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`,session.idToken.jwtToken)
     // }
   }
 

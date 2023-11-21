@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useContext } from 'react';
 import { SidebarProps } from '@/utils/props';
 import axios from 'axios';
-
+import { AppContext } from '@/context/userContext';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
@@ -30,7 +30,7 @@ const Sidebar:React.FC<SidebarProps> = ({
   page,
   theme,
  }) => {
-  
+  const { UpdateIdToken } = useContext(AppContext);
   const router = useRouter();
   const { pathname } = router;
 
@@ -67,6 +67,7 @@ const Sidebar:React.FC<SidebarProps> = ({
     })
     .catch((err) => {
       console.error(err)
+      UpdateIdToken()
       addVehicle(page)
     });
   };
