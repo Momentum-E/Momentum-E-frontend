@@ -4,6 +4,7 @@ import { Disclosure } from '@headlessui/react';
 import { UserSideMenu } from './navbar-component';
 
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
+  isTab,
   name,
   setIsOpen,
   isOpen,

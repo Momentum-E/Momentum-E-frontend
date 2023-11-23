@@ -10,7 +10,7 @@ type PricingCardProps = {
     subsPeriod:string,
     features: string[],
     // buttonText: string,
-    buttonLink: string
+    buttonLink: string|undefined,
 }
 
 const PricingCard:React.FC<PricingCardProps> = ({
@@ -22,6 +22,29 @@ const PricingCard:React.FC<PricingCardProps> = ({
     // buttonText,
     buttonLink
 }) => {
+    const router = useRouter()
+    const PaymentGateway = async (priceId:string|undefined) => {
+        let config = {
+          method:"post",
+          url:`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/subscription/create-checkout-session`,
+          headers:{
+            "Content-type": "application/json",
+          },
+          data:JSON.stringify({
+              priceId: priceId,
+              quantity: 1
+          })
+        }
+        axios.request(config)
+        .then(async (res)=>{
+            console.log(res.data)
+            router.push(res.data.sessionURL)
+            // const sessionId = res.data.sessionId
+        })
+        .catch((err)=>{
+            console.error(err)
+        })
+      }
 
     return (
     <div className="flex flex-col justify-between p-6 mx-auto max-w-md text-center bg-white rounded-lg border border-me-green-200 shadow xl:p-8 text-white-100">
@@ -61,16 +84,15 @@ const PricingCard:React.FC<PricingCardProps> = ({
                 }       
             </ul>
 
-            <Link href={buttonLink} className="w-full text-black bg-me-green-200 font-semibold rounded-lg text-md px-3 py-2.5 text-center">
+            {/* <Link href={buttonLink} className="w-full text-black bg-me-green-200 font-semibold rounded-lg text-md px-3 py-2.5 text-center">
                 Subscribe
-                {/* {buttonText} */}
-            </Link>
-            {/* <button
-                onClick={()=>PaymentGateway()}
+            </Link> */}
+            <button
+                onClick={()=>PaymentGateway(buttonLink)}
                 className="w-full text-black bg-me-green-200 font-semibold rounded-lg text-md px-3 py-2.5 text-center"
             >
-                {buttonText}
-            </button> */}
+                Subscribe
+            </button>
         </div>
     </div>
   )

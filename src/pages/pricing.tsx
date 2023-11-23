@@ -30,7 +30,7 @@ const pricing = () => {
                     'Free updates: 6 months'
                 ]}
                 // buttonText='Subscribe'
-                buttonLink={`/auth/register?subs_period=Monthly`}
+                buttonLink={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_MONTHLY}
             />
     
             <PricingCard 
@@ -46,7 +46,7 @@ const pricing = () => {
                     'Free updates: 6 months'
                 ]}
                 // buttonText='Contact Us'
-                buttonLink={`/auth/register?subs_period=Yearly`}
+                buttonLink={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_YEARLY}
             />
         </section>
     </PagesLayout>

@@ -34,7 +34,7 @@ const DashboardLayout = ({
     :
       setIsOpen(true)
   }, [isTab]);
-
+  
   useEffect(() => {
     setTheme(theme||'dark')
   },[theme])
@@ -55,6 +55,7 @@ const DashboardLayout = ({
         />
         <div className="max-w-full flex-1 h-screen overflow-hidden">
           <DashboardNavbar 
+            isTab={isTab}
             name={name} 
             id={userId}
             page={page===undefined ? '' : page}

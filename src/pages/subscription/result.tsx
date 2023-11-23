@@ -16,13 +16,16 @@ const result = () => {
     useEffect(() => {
         if(result === 'FAILURE'){
             console.log({result,data})
-            // Delete user data from the db and cognito
-            router.replace(`/auth/login?email=${data.session.customer_details.email}&payment_status=${data.session.payment_status}&result=${result}`)
+            setTimeout(()=>{
+                router.replace('/pricing')
+            },2000)
         }
         if (data) {
-            // Save necessary data in the db
+            // Subscription data saved in db through webhooks  
             console.log(data);
-            router.replace(`/auth/login?email=${data.session.customer_details.email}&payment_status=${data.session.payment_status}&result=${result}`)
+            setTimeout(()=>{
+                router.replace(`/auth/register?payment_status=${data.session.payment_status}&result=${result}&email=${data.session.customer_details.email}`)
+            },2000)
         }
     }, [data]);
 

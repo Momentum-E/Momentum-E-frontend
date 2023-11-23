@@ -18,8 +18,6 @@ type ConfirmSignUpProps = {
 const ConfirmSignUp = ({
     password,
     username,
-    // handleLogin
-    // redirectUrl
 }:ConfirmSignUpProps) => {
     const { setIsAuthenticated } = useAccountContext();
     // const router = useRouter();
@@ -86,6 +84,9 @@ const ConfirmSignUp = ({
                         alert('New password required, kindly change your password.')
                     },
                     });
+                }
+                else{
+                    console.log("No Password Present")
                 }
                 // router.replace('/dasboard')
             }

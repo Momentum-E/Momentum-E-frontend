@@ -35,7 +35,7 @@ const Sidebar:React.FC<SidebarProps> = ({
   const { pathname } = router;
 
   useEffect(() => {
-    isTab && setIsOpen(false);
+    isTab && setIsOpen(false)
   }, [pathname]);
 
   const addVehicle = (getPage:string) => {
@@ -75,10 +75,9 @@ const Sidebar:React.FC<SidebarProps> = ({
   return (
     <>
       <div
-        className={`${!isOpen ? `hidden ` : `block `} fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50 `}
+        className={`${isOpen ? `` : `hidden`}` + " fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50"}
         onClick={() => setIsOpen(false)}
-      >      
-      </div>
+      />      
       <div
         className={`${
           isOpen ? ` ` : `transform -translate-x-full `
@@ -107,7 +106,6 @@ const Sidebar:React.FC<SidebarProps> = ({
 
         <div
           className="flex px-4 p-2 dark:text-white-100 bg-me-green-200 dark:bg-gray-700/50 rounded-lg items-center justify-center hover:bg-me-green-200/90 dark:hover:bg-gray-700/40 cursor-pointer focus:bg-blue-200"
-          // onClick={()=>addVehicle(`vehicles / ${JSON.parse(page.toString().split("/")[1]).id}`)}
           onClick={()=>addVehicle(page)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

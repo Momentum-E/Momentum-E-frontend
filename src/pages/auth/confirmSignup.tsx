@@ -11,7 +11,6 @@ type ConfirmSignupProps = {
 const ConfirmSignup = ({ 
   password,
   username,
-  // redirectUrl
 }: ConfirmSignupProps) => {
   const { setTheme } = useTheme()
   useEffect(()=>{
