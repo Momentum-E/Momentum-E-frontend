@@ -47,7 +47,7 @@ export type temperatureDataProps = {
 
 export type SelectorProps = {
   data: any;
-  selected: string;
+  selected: Record<any,any>;
   setSelected: React.Dispatch<string|any>;
   id: any;
 };
@@ -274,12 +274,16 @@ export type AuthInputProps = {
 }
 
 export type AuthListBoxProps = {
-  labelFor:string;
   isRequired:boolean;
   labelName:string;
-  data:{ type: string; }[];
-  value:any;
-  OnChange:React.ChangeEventHandler<HTMLInputElement> | undefined;
+  data: any;
+  selected: Record<any,any>;
+  setSelected: React.Dispatch<string|Record<any,any>>;
+  id: string;
+  // labelFor:string;
+  // data:Record<any,any>[];
+  // value:any;
+  // OnChange:React.ChangeEventHandler<HTMLInputElement> | undefined;
 }
 
 // {

@@ -20,27 +20,27 @@ const result = () => {
                 router.replace('/pricing')
             },2000)
         }
-        if (data) {
+        else if (data) {
             // Subscription data saved in db through webhooks  
             console.log(data);
             setTimeout(()=>{
-                router.replace(`/auth/register?payment_status=${data.session.payment_status}&result=${result}&email=${data.session.customer_details.email}`)
+                router.replace(`/auth/register?payment_status=${data.session.payment_status}&result=${result}`)
             },2000)
         }
     }, [data]);
 
-    if(result === 'FAILURE')
-    return (
-        <div className="flex items-center justify-center w-full h-screen">
-            Payment Cancelled
-        </div>    
-    )
     if (isLoading) 
     return (
         <div className="flex items-center justify-center w-full h-screen">
             <Loader LoaderSize={36}/>
         </div>
     ) 
+    if(result === 'FAILURE')
+    return (
+        <div className="flex items-center justify-center w-full h-screen">
+            Payment Cancelled
+        </div>    
+    )
     if (error) 
     return (
         <div className='flex items-center justify-center w-full h-screen'>
@@ -52,7 +52,7 @@ const result = () => {
             <p className='font-semibold flex flex-col items-center justify-center text-xl text-me-green-200'>
                 Payment Successful
                 <span className='font-semibold text-base'>
-                    Please login and confim your email.
+                    Please Sign Up and confim your email.
                 </span>
             </p>
         </div>

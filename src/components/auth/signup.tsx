@@ -40,7 +40,6 @@ const Signup = () => {
   
   useEffect(() => {
     console.log(router.query)
-
   }, [])
   
   // const [subscriptionType, setSubscriptionType] = useState<{type:string}>(
@@ -187,6 +186,7 @@ const Signup = () => {
             </div>
 
             <form
+              autoComplete='off'
               action="#"
               method="POST"
               onSubmit={(event) => onSubmit(event)}
@@ -321,14 +321,10 @@ const Signup = () => {
 
                 <div className="sm:col-span-2 mt-2.5 space-y-8">
                   <div>
-                    <label
-                      htmlFor="country"
-                      className="block text-sm mb-2.5 leading-6 text-black dark:text-white-100">
-                      Country
-                      <span className="text-red-500 pl-1">*</span>
-                    </label>
-                    <AuthSelector
+                    <AuthListBox
+                      isRequired={true}
                       id={'country'}
+                      labelName='Country'
                       data={countryData}
                       selected={country}
                       setSelected={setCountry}
@@ -338,14 +334,10 @@ const Signup = () => {
                   <div>
                     {(state) && (
                       <div>
-                        <label
-                          htmlFor="state"
-                          className="block text-sm leading-6 text-black dark:text-white-100">
-                          State
-                          <span className="text-red-500 pl-1">*</span>
-                        </label>
-                        <AuthSelector
+                        <AuthListBox
+                          isRequired={true}
                           id={'state'}
+                          labelName='State'
                           data={stateData}
                           selected={state}
                           setSelected={setState}
@@ -357,7 +349,7 @@ const Signup = () => {
                   <div>
                     {city && (
                       <div>
-                        <label
+                        {/* <label
                           htmlFor="city"
                           className="block text-sm leading-6 text-black dark:text-white-100">
                           City
@@ -365,6 +357,14 @@ const Signup = () => {
                         </label>
                         <AuthSelector
                           id={'city'}
+                          data={cityData}
+                          selected={city}
+                          setSelected={setCity}
+                        /> */}
+                        <AuthListBox
+                          isRequired={true}
+                          id={'city'}
+                          labelName='City'
                           data={cityData}
                           selected={city}
                           setSelected={setCity}
