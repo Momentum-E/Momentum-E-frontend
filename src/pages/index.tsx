@@ -11,13 +11,9 @@ function Landing() {
   })
   
   return (
-    // <>
     <PagesLayout>
-      <main className="px-4 lg:px-16">
-        <HomePage />
-      </main>
+      <HomePage />
     </PagesLayout>
-    // </>
   );
 }
 

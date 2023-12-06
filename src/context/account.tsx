@@ -1,13 +1,15 @@
 import { toast } from 'react-toastify';
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import { CognitoUser, AuthenticationDetails, CognitoUserSession } from 'amazon-cognito-identity-js';
 import Pool from './user-pool/user-pool';
 import axios from 'axios';
 
 type AccountContextProps = {
+  user:string|null;
+  IdToken:string;
+  accessToken:string;
   isAuthenticated:boolean;
   setIsAuthenticated:React.Dispatch<React.SetStateAction<boolean>>;
-  // authenticate:(Username: string, Password: string) => Promise<void>;
   getSession:() => Promise<unknown>;
   DeleteUserAccount:(username: string, password: string) => Promise<void>;
   logout: () => void;
@@ -17,6 +19,10 @@ const AccountContext = createContext({} as AccountContextProps);
 
 const AccountProvider = ({ children }:any) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<string|null>(null)
+  const [IdToken, setIdToken] = useState<string>("");
+  const [accessToken, setAccessToken] = useState<string>("");
+  const [refreshToken, setRefreshToken] = useState<string>("");
 
   useEffect(() => {
     checkAuthentication();
@@ -40,11 +46,19 @@ const AccountProvider = ({ children }:any) => {
     return await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser();
       if (user) {
-        user.getSession((err:any, session:any) => {
+        user.getSession((err:any, session:CognitoUserSession) => {
           if (err) {
-            reject();
+            reject(err);
           } else {
             resolve(session);
+            // console.log("IdToken: "+ session.getIdToken().getJwtToken())
+            // console.log("accessToken: "+ session.getAccessToken().getJwtToken())
+            // console.log("refreshToken: "+ session.getRefreshToken().getToken())
+            // console.log("UserId: "+ user.getUsername())
+            setUser(user.getUsername())
+            setIdToken(session.getIdToken().getJwtToken());
+            setAccessToken(session.getAccessToken().getJwtToken());
+            setRefreshToken(session.getRefreshToken().getToken());
           }
         });
       } 
@@ -55,6 +69,7 @@ const AccountProvider = ({ children }:any) => {
   };
 
   const DeleteUserAccount = async (username:string,password:string) => {
+    await getSession();
     const user = new CognitoUser({ Username: username, Pool });
     const authDetails = new AuthenticationDetails({ Username: username, Password: password });
     const token = localStorage.getItem(`CognitoIdentityServiceProvider.${process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID}.${username}.idToken`)
@@ -82,7 +97,7 @@ const AccountProvider = ({ children }:any) => {
             })
 
             // Deleting the user from enode
-            axios.get(`http://localhost:5000/vehicles/delete-user/${username}`,{
+            axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/delete-user/${username}`,{
               headers:{
                 authorization:`Bearer ${token}`
               }
@@ -93,7 +108,8 @@ const AccountProvider = ({ children }:any) => {
               console.log('Error deleting user from enode: '+err)
             })
 
-            axios.delete(`http://localhost:5000/user-data/users/image/${username}`,{
+            // Deleting user saved image from S3 bucket 
+            axios.delete(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/users/image/${username}`,{
               headers:{
                 authorization:`Bearer ${token}`
               }
@@ -102,6 +118,19 @@ const AccountProvider = ({ children }:any) => {
               console.log('User image from s3: '+res.data)
             }).catch((err)=>{
               console.log('Error deleting user image from s3: '+err)
+            })
+
+            // Deleting user subscription from stripe 
+            axios.delete(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/subscription/delete-customer?email=${username}`,{
+              headers:{
+                authorization:`Bearer ${token}`
+              }
+            })
+            .then((res)=>{
+              console.log('Customer deleted from stripe: '+res.data)
+            })
+            .catch((err)=>{
+              console.log('Error deleting customer from stripe: '+ err)
             })
 
             console.log('User deleted successfully',data);
@@ -126,12 +155,15 @@ const AccountProvider = ({ children }:any) => {
 
   return (
     <AccountContext.Provider value={{
-        isAuthenticated,
-        setIsAuthenticated,
-        getSession,
-        DeleteUserAccount,
-        logout 
-      }}>
+      user,
+      IdToken,
+      accessToken,
+      isAuthenticated,
+      setIsAuthenticated,
+      getSession,
+      DeleteUserAccount,
+      logout 
+    }}>
       {children}
     </AccountContext.Provider>
   );

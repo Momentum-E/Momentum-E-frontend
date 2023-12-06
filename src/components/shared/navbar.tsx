@@ -11,8 +11,8 @@ export default function NavBar() {
   
   return (
     <nav className="w-full shadow">
-      <div className="justify-between px-4 mx-auto lg:max-w-6xl md:items-center md:flex md:px-8">
-        <div>
+      <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
+        {/* <div> */}
           <div className="flex items-center justify-between py-3 md:py-5 md:block">
             <Link href="/">
               <h2 className="text-2xl font-bold text-white-100">
@@ -58,27 +58,17 @@ export default function NavBar() {
               </button>
             </div>
           </div>
-        </div>
+        {/* </div> */}
 
         {/* Navbar in mobile mode */}
-        <div>
-          <div
-            className={`justify-self-center pb-3 md:hidden mt-8 md:pb-0 md:mt-0 ${
-              navbar ? 'block' : 'hidden'}`}
-          >
+        {/* <div> */}
+          <div className={`justify-self-center pb-3 md:hidden mt-8 md:pb-0 md:mt-0 ${navbar ? 'block' : 'hidden'}`}>
             <ul className="items-center justify-center space-y-5 md:flex md:space-x-6 md:space-y-0">
               <li>
                 <Link 
                   href="/"
                   className="px-4 py-2 text-white-100 hover:text-indigo-200">
                   Home
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  className="px-4 py-2 text-white-100 hover:text-indigo-200"
-                  href="/about-us">
-                  About Us
                 </Link>
               </li>
             {
@@ -107,54 +97,75 @@ export default function NavBar() {
                   <Link
                   href="/dashboard/"
                   className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
-                  Dashboard
-                </Link>
+                    Dashboard
+                  </Link>
                 </div>
               )
             }
             </ul>
           </div>
-        </div>
+        {/* </div> */}
 
         {/* Navbar in desktop mode */}
-        <div className="hidden space-x-2 md:inline-block">
+        <div className="hidden md:flex rounded-2xl space-x-5 mx-5 justify-center bg-gray-800/30">
           <Link
             href="/"
-            className="px-4 py-2 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
+            className="px-4 py-3 text-white-100 shadow rounded-s-xl hover:border-b-2 hover:border-me-green-200">
             Home
           </Link>
-          <Link
+          {/* <Link
             href="/#aboutus"
             className="px-4 py-2 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
             About Us
-          </Link>
+          </Link> */}
           {
             !isAuthenticated ?
             (
               <>
                 <Link
-                  href="/pricing"
-                  className="px-4 py-2 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
-                  Pricing
-                </Link>
-                <Link
                   href="/auth/login"
-                  className="px-4 py-2 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
+                  className="px-4 py-3 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
                   Log In
                 </Link>
                 <Link
                   href="/auth/register"
-                  className="px-4 py-2 text-white-100 shadow border-b-2 border-gray-700 hover:border-me-green-200">
+                  className="px-4 py-3 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
                   Sign Up
+                </Link>
+                <Link
+                  href="/pricing"
+                  className="ease-in-out duration-300 flex items-center justify-center px-4 py-3 group text-white-100 shadow bg-[#1B1C1E] hover:bg-me-green-200 rounded-xl">
+                  <span className="flex flex-row items-center justify-around group-hover:text-[#1B1C1E]">
+                    Pricing
+                    <span className="bg-me-green-200 group-hover:bg-[#1B1C1E] rounded-full ml-2 p-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ease-in-out duration-300 group-hover:rotate-45 group-hover:text-white-100 text-[#1B1C1E] ">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                      </svg>
+                    </span>
+                  </span>
                 </Link>
               </>
             ):
-            (
-              <Link
-                href="/dashboard/"
-                className="px-4 py-2 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
-                Dashboard
-              </Link>
+            ( 
+              <>
+                <Link
+                  href="/pricing"
+                  className="px-4 py-3 text-white-100 shadow  hover:border-b-2 hover:border-me-green-200">
+                  Pricing
+                </Link>
+                <Link
+                  href="/dashboard"
+                  className="ease-in-out duration-300 flex items-center justify-center px-4 py-3 group text-white-100 shadow bg-[#1B1C1E] hover:bg-me-green-200 rounded-xl">
+                  <span className="flex flex-row items-center justify-around group-hover:text-[#1B1C1E]">
+                    Dashboard
+                    <span className="bg-me-green-200 group-hover:bg-[#1B1C1E] rounded-full ml-2 p-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ease-in-out duration-300 group-hover:rotate-45 group-hover:text-white-100 text-[#1B1C1E] ">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                      </svg>
+                    </span>
+                  </span>
+                </Link>
+              </>
             )
           }
         </div>

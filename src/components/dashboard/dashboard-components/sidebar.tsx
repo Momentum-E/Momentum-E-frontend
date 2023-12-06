@@ -1,4 +1,4 @@
-import React, { useEffect,useContext } from 'react';
+import React, { useState,useEffect,useContext } from 'react';
 import { SidebarProps } from '@/utils/props';
 import axios from 'axios';
 import { AppContext } from '@/context/userContext';
@@ -33,6 +33,7 @@ const Sidebar:React.FC<SidebarProps> = ({
   const { UpdateIdToken } = useContext(AppContext);
   const router = useRouter();
   const { pathname } = router;
+  const [errorNumber, setErrorNumber] = useState<number>(0);
 
   useEffect(() => {
     isTab && setIsOpen(false)
@@ -65,10 +66,16 @@ const Sidebar:React.FC<SidebarProps> = ({
       const linkUrl = res.data.linkUrl;
       router.push(linkUrl);
     })
-    .catch((err) => {
+    .catch(async (err) => {
+      setErrorNumber(errorNumber+1)
+      await UpdateIdToken()
       console.error(err)
-      UpdateIdToken()
-      addVehicle(page)
+      if(errorNumber>=10){
+        window.location.reload()
+      }
+      else{
+        addVehicle(page)
+      }
     });
   };
 

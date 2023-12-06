@@ -32,7 +32,7 @@ const UserSideMenu:React.FC<UserSideMenuProps> = ({
 
     const SignOut = () => {
         logout();
-        router.replace('/auth/login')  
+        // router.replace('/auth/login')  
         setName("")  
         setVehicleData([])
         setUserCity("")

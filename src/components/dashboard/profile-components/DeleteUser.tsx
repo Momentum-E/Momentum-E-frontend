@@ -4,7 +4,7 @@ import { AccountContext } from '@/context/account';
 import { Modal } from '@/components/shared';
 
 type DeleteUserProps = {
-    userId:string;
+    userId:string|null;
 }
 
 const DeleteUser:React.FC<DeleteUserProps>  = ({
@@ -17,7 +17,9 @@ const DeleteUser:React.FC<DeleteUserProps>  = ({
 
     function DeleteUser() {
         setIsOpen(false)
-        DeleteUserAccount(userId,Password)
+        if(userId){
+            DeleteUserAccount(userId,Password)
+        }
     }
 
     function onButtonClick(){

@@ -10,7 +10,7 @@ const Footer = ({
   isAuthenticated
 }:FooterProps ) => {
   return !isAuthenticated ? (
-    <div className="text-white-100 mt-10">
+    <div className="text-white-100 mt-10 sm:px-6 lg:px-16">
       <div className="max-w-7xl m-auto text-gray-100 flex flex-wrap justify-between pt-5 border-t">
         <div className="p-5 w-48 ">
           <figure>
@@ -74,7 +74,7 @@ const Footer = ({
       <div
         className="flex pb-5 px-5 m-auto text-gray-100 text-md flex-col
           md:flex-row max-w-7xl">
-        <div className="mt-2">© Copyright 2023. All Rights Reserved.</div>
+        <div className="mt-2">© Copyright Momentech 2023. All Rights Reserved.</div>
       </div>
     </div>
   ):

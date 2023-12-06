@@ -11,7 +11,7 @@ export type UserContextProps = {
   userState:string|undefined;
   userCountry:string|undefined;
   userLocation:string;
-  userId:string;
+  userId:string|null;
   vehicleCalcultedIdData: vehicleCalcultedDataProps | undefined;
   vehicleIdData: vehicleDataProps | undefined;
   userImage:string;
@@ -23,7 +23,7 @@ export type UserContextProps = {
   isImageLoading:boolean;
   temperatureData: temperatureDataProps;
   webSocket:WebSocket|null;
-  idToken:string|null
+  // idToken:string|null
 
   // State Functions
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>

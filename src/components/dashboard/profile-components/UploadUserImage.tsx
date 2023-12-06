@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 type UploadUserImageProps = {
     idToken:string|null;
-    userId:string;
+    userId:string|null;
     userImage:string;
     isImageLoading:boolean;
     fetchUserImage:() => Promise<void>;

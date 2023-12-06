@@ -19,7 +19,7 @@ const getInTouch = () => {
 
     return (
     <>
-      <div className=" flex flex-row mx-auto space-x-5 rounded-lg py-4 px-4 max-w-xl bg-white-100">
+      <div className=" flex flex-row mx-auto space-x-5 rounded-lg py-4 px-4 mb-16 max-w-xl bg-white-100">
         <div className="flex flex-1 flex-col space-y-5 justify-between h-full w-full text-sm text-[#060E02]">
           <h2 className='text-black text-xl font-bold text-left'>GET IN TOUCH WITH US</h2>
           <p className='h-full'>

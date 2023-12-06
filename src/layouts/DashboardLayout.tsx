@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useTheme } from 'next-themes';
 import { AppContext } from '@/context/userContext';
+import { AccountContext } from '@/context/account';
 
 import {
   Sidebar,
@@ -23,9 +24,9 @@ const DashboardLayout = ({
     isLoading,
     userId, 
     vehicleData,
-    name,
-    idToken,
+    name
   } = useContext(AppContext)
+  const { IdToken } = useContext(AccountContext)
   const {theme, setTheme} = useTheme()
   
   useEffect(() => {
@@ -43,7 +44,7 @@ const DashboardLayout = ({
     <ProtectedRoute>
       <div className='relative flex'>
         <Sidebar 
-          idToken={idToken}
+          idToken={IdToken}
           id={userId}
           isLoading={isLoading}
           vehicleData={vehicleData||[]} 

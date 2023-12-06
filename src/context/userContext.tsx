@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { AccountContext } from './account';
+import { SubscriptionContext } from '@/context/subscriptionContext';
 import { 
   vehicleDataProps, 
   vehicleCalcultedDataProps, 
@@ -15,9 +16,10 @@ const AppContext = createContext({} as UserContextProps);
 
 const AppProvider = ({ children }:any) => {
   const router = useRouter();
-  const { getSession } = useContext(AccountContext);
+  const { getSession, setIsAuthenticated, IdToken, user } = useContext(AccountContext);
+  const { getSubscriptionDetails } = useContext(SubscriptionContext);
 
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState<string|null>(user);
   const [name, setName] = useState<string>('');
   const [userOwnerType, setOwnerType] = useState<string>("");
   const [userCity, setUserCity] = useState<string>("");
@@ -39,7 +41,7 @@ const AppProvider = ({ children }:any) => {
     minTemperature: null,
     maxTemperature: null,
   })
-  const [idToken,setIdToken] = useState<string|null>(null) 
+  // const [idToken,setIdToken] = useState<string|null>(null) 
 
   useEffect(() => {
     // const IdToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`)
@@ -73,31 +75,20 @@ const AppProvider = ({ children }:any) => {
   useEffect(() => {
     if(userId){
       console.log("userId: "+userId)
-      // console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
       console.log(vehicleData)
     } 
   }, [userId])
-
-  // useEffect(()=>{
-  //   if(userId){
-  //     if(name===""||userOwnerType===""||userCountry===""){
-  //       router.replace(`/dashboard/profile/${userId}`)
-  //       // toast.info('Please fill your details first.')
-  //     }
-  //   }
-  // },[])
   
   // Hook for fetching the user details
   const fetchUserDetails =  async () => {
     try {
       const session:any = await getSession();
-      console.log(session)
-      const IdToken = session.idToken.jwtToken
+      // console.log(session)
+      // const IdToken = session.idToken.jwtToken
       const userid = session.idToken.payload.sub;
-      setIdToken(IdToken)
+      // setIdToken(IdToken)
       setUserId(userid); 
-      
-      const response = await axios.get(`http://localhost:5000/auth/users/${userid}`,{
+      const response = await axios.get(`http://localhost:5000/auth/users/${user}`,{
         headers: {
           authorization:`Bearer ${IdToken}`
         }
@@ -113,6 +104,7 @@ const AppProvider = ({ children }:any) => {
         :response.data.city + ", " + response.data.country
       }`)
       setUserEmail(response.data.email)
+      await getSubscriptionDetails(response.data.email)
       if(userId){
         setVehicleData(response.data.vehicles)
         setVehicleCalcultedData(response.data.vehicles_processed_data)
@@ -123,7 +115,8 @@ const AppProvider = ({ children }:any) => {
       setIsLoading(false)
     } 
     catch (error) {
-      console.error('Error, no user (userContext):', error);
+      console.log('Error, no user (userContext):', error);
+      setIsAuthenticated(false);
     }
   };
 
@@ -133,13 +126,13 @@ const AppProvider = ({ children }:any) => {
   */
   const SettingWebsocket = async () => {
 
-    const idToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
+    // const idToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
     
-    if(idToken){
+    if(IdToken){
       try{
         const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/websocket/generate-token`,{
           headers: {
-            authorization: `Bearer ${idToken}`
+            authorization: `Bearer ${IdToken}`
           }
         })
   
@@ -183,7 +176,6 @@ const AppProvider = ({ children }:any) => {
               break;
               case 1006:
                 socket.close()
-                // SettingWebsocket();
                 console.log('error code 1006.')
               break;
             }
@@ -198,6 +190,8 @@ const AppProvider = ({ children }:any) => {
           console.log('Trying to reconnect to the websocket')
           if(userId){
             console.log('userId present'+ userId)
+            // await UpdateIdToken()
+            window.location.reload()
             SettingWebsocket();
           }
           else{
@@ -206,8 +200,7 @@ const AppProvider = ({ children }:any) => {
         };
       }
       catch(error){
-        const session:any = await getSession()
-        setIdToken(session.idToken.jwtToken)
+        const session = await getSession()
         SettingWebsocket()
       }
     }
@@ -226,9 +219,9 @@ const AppProvider = ({ children }:any) => {
     //   console.log("Token similar: "+session.idToken.jwtToken === oldToken)
     // }
     // else{
-    setIdToken(session.idToken.jwtToken)
-    localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`,session.idToken.jwtToken)
+    // setIdToken(session.idToken.jwtToken)
     // }
+    localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`,session.idToken.jwtToken)
   }
 
   /* 
@@ -250,7 +243,7 @@ const AppProvider = ({ children }:any) => {
             method: 'post',
             url:  `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/get-temperature`,
             headers: { 
-              authorization:`Bearer ${idToken}`
+              authorization:`Bearer ${IdToken}`
               // "Content-Type": "application/json"
             },
             data :{
@@ -298,9 +291,9 @@ const AppProvider = ({ children }:any) => {
   const fetchUserImage = async () => {
     console.log('Fetching user image.')
     try{
-      axios.get(`http://localhost:5000/user-data/users/image/${userId}`,{
+      axios.get(`http://localhost:5000/user-data/users/image/${user}`,{
         headers: {
-          authorization: `Bearer ${idToken}`
+          authorization: `Bearer ${IdToken}`
         }
       })
       .then(async (response) => {
@@ -365,7 +358,6 @@ const AppProvider = ({ children }:any) => {
       isImageLoading,
       temperatureData,
       webSocket,
-      idToken,
       vehicleCalcultedIdData,
       vehicleIdData,
 

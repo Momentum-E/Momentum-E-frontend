@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {AuthInput} from '@/components/auth/AuthComponents';
 
 type ChangeUserPasswordProps = {
-  userId:string;
+  userId:string|null;
 }
 
 const ChangeUserPassword:React.FC<ChangeUserPasswordProps>  = ({
@@ -19,7 +19,7 @@ const ChangeUserPassword:React.FC<ChangeUserPasswordProps>  = ({
     const changeUserPassword = () => {
         const user = Pool.getCurrentUser();
         // const AwsAccessToken = localStorage.getItem('CognitoIdentityServiceProvider.5anhoi3gpfgvnqsd609smuh0qi.e113adfa-1041-707e-a338-dd09ed225f53.accessToken')
-        if (user) {
+        if (user&&userId) {
           const authenticationDetails = new AuthenticationDetails({
             Username:userId,
             Password: OldPassword,

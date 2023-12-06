@@ -1,11 +1,13 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import { useAccountContext } from '@/context/account';
+// import { useSubscriptionContext } from '@/context/subscriptionContext';
 import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
 import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 import Pool from '@/context/user-pool/user-pool';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 // import { useRouter } from 'next/router';
 
 import ConfirmSignup from '@/pages/auth/confirmSignup';
@@ -49,32 +51,55 @@ const SignIn = () => {
 
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    // const authenticate = async (Username:string, Password:string) => {
-    const user = new CognitoUser({ Username:Input.email, Pool });
-    const authDetails = new AuthenticationDetails({ Username:Input.email, Password:Input.password });
-
-    user.authenticateUser(authDetails, {
-      onSuccess: (data) => {
-        console.log('onSuccess: ', data);
-        setIsAuthenticated(true);
-
-        window.history.replaceState({
-          fromHashChange: true
-        },null, '/dashboard');
-        window.location.reload()
+    // const authenticate = async (Username:string, Password:string) => 
+    axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/subscription/get-payment-subscription-status`,{
+      params:{
+        email:Input.email
       },
+    })
+    .then((res)=>{
+        console.log(res.data)
+        if(res.status !== 404){
+          console.log(res.data.paymentStatus)
+          console.log(res.data.subscriptionStatus)
 
-      onFailure: (err) => {
-        console.error('onFailure: ', err);
-        handleAWSError(err)
-        setIsAuthenticated(false);
-      },
-      
-      newPasswordRequired: (data) => {
-        console.log('newPasswordRequired: ', data);
-        alert('New password required, kindly change your password.')
-      },
-    });
+          if(res.data.paymentStatus === 'paid' && res.data.subscriptionStatus === 'active'){
+            const user = new CognitoUser({ Username:Input.email, Pool });
+            const authDetails = new AuthenticationDetails({ Username:Input.email, Password:Input.password });
+            
+            user.authenticateUser(authDetails, {
+              onSuccess: (data) => {
+                console.log('onSuccess: ', data);
+                setIsAuthenticated(true);
+                
+                window.history.replaceState({
+                  fromHashChange: true
+                },null, '/dashboard');
+                window.location.reload()
+              },
+        
+              onFailure: (err) => {
+                console.error('onFailure: ', err);
+                handleAWSError(err)
+                setIsAuthenticated(false);
+              },
+              
+              newPasswordRequired: (data) => {
+                console.log('newPasswordRequired: ', data);
+                alert('New password required, kindly change your password.')
+              },
+            });
+          }
+        }
+        else{
+          console.log('No data found for the email')
+          toast.error('No subscription found for the email: '+ email)
+        }
+    })
+    .catch((err)=>{
+      toast.error('No subscription found for the email: '+ Input.email)
+      console.log(err)
+    })
     // };
     
     // authenticate(input.email, input.password)

@@ -161,7 +161,7 @@ const Signup = () => {
         });
       }
       else{
-        toast.info(`There is no active subscription for the email ${input.email}. For any assistance contact info@momentum-e.com.`)
+        toast.info(`There is no active subscription for ${input.email}. Please pay and then register.`)
       }
     })
     .catch((err) => {
