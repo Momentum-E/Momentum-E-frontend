@@ -14,7 +14,7 @@ import ConfirmSignup from '@/pages/auth/confirmSignup';
 import AuthInput from '@/components/auth/AuthComponents/AuthInput';
 
 const SignIn = () => {
-  const { setIsAuthenticated } = useAccountContext();
+  const { setIsAuthenticated, IdToken } = useAccountContext();
   
   const [userConfirmed, setUserConfirmed] = useState(true)
   const [Input, setInput] = useState<{
@@ -93,11 +93,11 @@ const SignIn = () => {
         }
         else{
           console.log('No data found for the email')
-          toast.error('No subscription found for the email: '+ email)
+          toast.error('No subscription found for the email: '+ Input.email)
         }
     })
     .catch((err)=>{
-      toast.error('No subscription found for the email: '+ Input.email)
+      // toast.error('No subscription found for the email: '+ Input.email)
       console.log(err)
     })
     // };

@@ -53,6 +53,7 @@ export type SelectorProps = {
 };
 
 export type SidebarProps = {
+  NumberVehiclePaid:number|undefined;
   id:string|any;
   idToken:string|null;
   isLoading:boolean;
@@ -102,7 +103,7 @@ export type VehicleUsageProps ={
 
 export type BatteryHealthProps = {
   SoH:number|undefined|null;
-  PrevMonthsSoH:(number | null)[]|null[]|number[];
+  PrevMonthsSoH:(number | null)[]|null[]|number[]|undefined;
 }
 
 export type BasicCarDataProps = {
@@ -253,6 +254,8 @@ export type HeadingProps = {
 };
 
 export type ItemCardProps = {
+  // ref: (node?: Element | null | undefined) => void;
+  // controls:any;
   heading?: string;
   description?: string;
   imageSource?:any,

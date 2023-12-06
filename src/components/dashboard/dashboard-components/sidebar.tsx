@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
 import YourVehicles from './sidebar-components/YourVehicles';
+import { toast } from 'react-toastify';
 const DarkLine = dynamic (() => import('@/utils/sidebar_icons/DarkLine'), {
   ssr: false,
 });
@@ -20,6 +21,7 @@ const SidebarDarkLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarDarkLo
 })
 
 const Sidebar:React.FC<SidebarProps> = ({
+  NumberVehiclePaid,
   idToken,
   id,
   isLoading,
@@ -39,44 +41,48 @@ const Sidebar:React.FC<SidebarProps> = ({
     isTab && setIsOpen(false)
   }, [pathname]);
 
-  const addVehicle = (getPage:string) => {
-    let newPage = getPage.split(" ").join('')
-    if(getPage.split("/")[0].trim() === "profile"){
-      newPage = getPage.split(" ").join('')
-    }
-    else if( page === ""||undefined ){
-      newPage = 'redirect/dashboard'
-    }
-    else if(getPage.split("/")[0].trim() === "vehicles"){
-      newPage = `vehicles/${JSON.parse(page.toString().split("/")[1]).id}}`
-    }
-    else{
-      console.log("No conditon matched"+getPage)
-    }
-    // if(newPage === ''){
-    //   newPage = 'redirect/dashboard' 
-    // }
-    axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`,{
-      headers: {
-        authorization:`Bearer ${idToken}`
+  const addVehicle = async (getPage:string) => {
+    if(NumberVehiclePaid && vehicleData && vehicleData.length < NumberVehiclePaid)
+    {
+      let newPage = getPage.split(" ").join('')
+      if(getPage.split("/")[0].trim() === "profile"){
+        newPage = getPage.split(" ").join('')
       }
-    })
-    .then((res) => {
-      console.log(res.data);
-      const linkUrl = res.data.linkUrl;
-      router.push(linkUrl);
-    })
-    .catch(async (err) => {
-      setErrorNumber(errorNumber+1)
-      await UpdateIdToken()
-      console.error(err)
-      if(errorNumber>=10){
-        window.location.reload()
+      else if( page === ""||undefined ){
+        newPage = 'redirect/dashboard'
+      }
+      else if(getPage.split("/")[0].trim() === "vehicles"){
+        newPage = `vehicles/${JSON.parse(page.toString().split("/")[1]).id}}`
       }
       else{
-        addVehicle(page)
+        console.log("No conditon matched"+getPage)
       }
-    });
+    
+      axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`,{
+        headers: {
+          authorization:`Bearer ${idToken}`
+        }
+      })
+      .then((res) => {
+        console.log(res.data);
+        const linkUrl = res.data.linkUrl;
+        router.push(linkUrl);
+      })
+      .catch(async (err) => {
+        setErrorNumber(errorNumber+1)
+        await UpdateIdToken()
+        console.error(err)
+        if(errorNumber>=10){
+          window.location.reload()
+        }
+        else{
+          addVehicle(page)
+        }
+      });
+    }
+    else{
+      alert('Vehicle Count Reached. Please pay to add extra vehicles.')
+    }
   };
 
   return (

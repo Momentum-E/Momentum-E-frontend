@@ -41,7 +41,7 @@ const VehicleDashboardContent = () => {
         })
         .then((res) => {
           console.log(res.data)
-          console.log("SoH: "+vehicleCalcultedIdData?.sohData.currentSoh)
+          // console.log("SoH: "+vehicleCalcultedIdData?.sohData.currentSoh)
         })
         .catch(async (err) => {
           console.log("Error in filteredVehicleData: "+err)

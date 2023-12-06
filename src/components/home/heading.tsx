@@ -10,11 +10,6 @@ const Heading: React.FC<HeadingProps> = ({
   tertiaryHeading,
 }) => {
 
-  const squareVariants = {
-    visible: { opacity: 1, scale: 1, transition: { duration: 3 } },
-    hidden: { opacity: 0, scale: 0 }
-  };
-
   const controls = useAnimation();
   const [ref, inView] = useInView();
   useEffect(() => {
@@ -41,7 +36,7 @@ const Heading: React.FC<HeadingProps> = ({
     //     {tertiaryHeading}
     //   </h1>
     // </>
-    <div className="relative sm:w-full sm:px-6 md:pt-20 lg:px-16 md:w-3/4 ">
+    <div className="relative sm:w-full sm:px-6 sm:py-20 md:pt-20 lg:px-16 lg:w-3/4 ">
       <div className="absolute translate-y-12 translate-x-10 rounded-full w-full h-full bg-me-green-100/40 blur-[120px]"></div>
       
       <motion.h1 
@@ -72,7 +67,7 @@ const Heading: React.FC<HeadingProps> = ({
             opacity: 1, 
             scale: 1, 
             transition: { 
-              duration: 1 
+              duration: 2
             } 
           },
           hidden: { 

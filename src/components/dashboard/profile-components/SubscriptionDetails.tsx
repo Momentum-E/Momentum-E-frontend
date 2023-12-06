@@ -9,13 +9,25 @@ type SubscriptionDetailsProps = {
 const SubscriptionDetails:React.FC<SubscriptionDetailsProps> = ({
     email
 }) => {
-    const {} = useContext(SubscriptionContext);
+    const { subscriptionData } = useContext(SubscriptionContext);
 
     // useEffect(() => {
     //     getSubscriptionDetails(email)
     //     return () => {
     //     }
     // }, [])
+    const convertDate = (toDate:Date|string|undefined) => {
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        if(toDate){
+            const date = new Date(toDate).getDate();
+            const month = new Date(toDate).getMonth();
+            const year = new Date(toDate).getFullYear();
+            return `${date} ${monthNames[month]} ${year}`
+        }
+        else{
+            return "-"
+        }
+    }
     
 
     return (
@@ -23,13 +35,31 @@ const SubscriptionDetails:React.FC<SubscriptionDetailsProps> = ({
             <p className='mt-2 text-center text-xl leading-9 text-black dark:text-white-100'>
                 subscription Details
             </p>
-
-            <Link 
-                className='flex justify-center w-full rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm' 
-                href='https://billing.stripe.com/p/login/test_eVadR455ObBI1Rm4gg'
-            >
-                Update Details
-            </Link>
+            {/* <div className="">
+            </div> */}
+            <p className="text-white-200 text-base font-medium">Subscription Start: {" "}
+                <span className="text-white-100 text-base font-normal">{convertDate(subscriptionData?.startDate)}</span>
+            </p>
+            <p className="text-white-200 text-base font-medium">Subscription End: {" "}
+                <span className="text-white-100 text-base font-normal">{convertDate(subscriptionData?.endDate)}</span>
+            </p>
+            <p className="text-white-200 text-base font-medium">Payment Status: {" "}
+                <span className="text-white-100 text-base font-normal">{subscriptionData?.paymentStatus.toUpperCase()}</span>
+            </p>
+            <p className="text-white-200 text-base font-medium">Vehicles Allowed: {" "}
+                <span className="text-white-100 text-base font-normal">{subscriptionData?.quantity}</span>
+            </p>
+            <p className="text-white-200 text-base font-medium">Amount Paid: {" "}
+                <span className="text-white-100 text-base font-normal">{`${subscriptionData?.amountTotal} ${subscriptionData?.currency.toUpperCase()}`}</span>
+            </p>
+            <div className="w-full flex justify-center">
+                <Link 
+                    className='flex justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm' 
+                    href='https://billing.stripe.com/p/login/test_eVadR455ObBI1Rm4gg'
+                >
+                    Update Details
+                </Link>
+            </div>
         </div>
     )
 }

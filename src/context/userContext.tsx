@@ -82,37 +82,42 @@ const AppProvider = ({ children }:any) => {
   // Hook for fetching the user details
   const fetchUserDetails =  async () => {
     try {
-      const session:any = await getSession();
-      // console.log(session)
-      // const IdToken = session.idToken.jwtToken
-      const userid = session.idToken.payload.sub;
-      // setIdToken(IdToken)
-      setUserId(userid); 
-      const response = await axios.get(`http://localhost:5000/auth/users/${user}`,{
-        headers: {
-          authorization:`Bearer ${IdToken}`
+      if(user !== null){
+        const session:any = await getSession();
+        // console.log(session)
+        // const IdToken = session.idToken.jwtToken
+        const userid = session.idToken.payload.sub;
+        // setIdToken(IdToken)
+        setUserId(userid); 
+        const response = await axios.get(`http://localhost:5000/auth/users/${user}`,{
+          headers: {
+            authorization:`Bearer ${IdToken}`
+          }
+        });  
+        await getSubscriptionDetails(response.data.email)
+        setName(response.data.name)
+        setOwnerType(response.data.owner_type)
+        setUserCity(response.data.city)
+        setUserState(response.data.state)
+        setUserCountry(response.data.country)
+        setUserLocation(`${
+          response.data.state === "" ? response.data.country
+          :response.data.city === "" ? response.data.state + ", " + response.data.country 
+          :response.data.city + ", " + response.data.country
+        }`)
+        setUserEmail(response.data.email)
+        if(userId){
+          setVehicleData(response.data.vehicles)
+          setVehicleCalcultedData(response.data.vehicles_processed_data)
+          // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
+          // setVehicleIdData(response.data.vehicles[0])
+          // setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
         }
-      });  
-      setName(response.data.name)
-      setOwnerType(response.data.owner_type)
-      setUserCity(response.data.city)
-      setUserState(response.data.state)
-      setUserCountry(response.data.country)
-      setUserLocation(`${
-        response.data.state === "" ? response.data.country
-        :response.data.city === "" ? response.data.state + ", " + response.data.country 
-        :response.data.city + ", " + response.data.country
-      }`)
-      setUserEmail(response.data.email)
-      await getSubscriptionDetails(response.data.email)
-      if(userId){
-        setVehicleData(response.data.vehicles)
-        setVehicleCalcultedData(response.data.vehicles_processed_data)
-        // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
-        // setVehicleIdData(response.data.vehicles[0])
-        // setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
+        setIsLoading(false)
       }
-      setIsLoading(false)
+      else{
+        console.log('user is null.')
+      }
     } 
     catch (error) {
       console.log('Error, no user (userContext):', error);
@@ -200,7 +205,8 @@ const AppProvider = ({ children }:any) => {
         };
       }
       catch(error){
-        const session = await getSession()
+        // await getSession()
+        window.location.reload()
         SettingWebsocket()
       }
     }

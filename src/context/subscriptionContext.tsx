@@ -4,6 +4,7 @@ import axios from 'axios';
 import { AccountContext } from './account';
 
 type SubscriptionContextProps = {
+  subscriptionData:subscriptionDataProps|undefined;
   getSubscriptionDetails: (email: string) => Promise<void>
 }
 
@@ -27,9 +28,16 @@ type subscriptionDataProps = {
 const SubscriptionContext = createContext({} as SubscriptionContextProps);
 
 const SubscriptionProvider = ({ children }:any) => {
-  const { IdToken } = useContext(AccountContext)
-  const [ subscriptionData, setSubscriptionData ] = useState<subscriptionDataProps|null>(null)
-  
+  const { IdToken,logout } = useContext(AccountContext)
+  const [ subscriptionData, setSubscriptionData ] = useState<subscriptionDataProps>()
+
+  useEffect(()=>{
+    if(subscriptionData?.subscriptionStatus === 'cancelled'){
+      toast.error('Your subscription has been cancelled. Kindly pay and login again.')
+      logout()
+    }
+  },[subscriptionData])
+
   const getSubscriptionDetails = async (email:string) => {
     // const token = localStorage.getItem(`CognitoIdentityServiceProvider.${process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID}.${username}.idToken`)
     axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/subscription/get-customer-details`,{
@@ -58,6 +66,7 @@ const SubscriptionProvider = ({ children }:any) => {
 
   return (
     <SubscriptionContext.Provider value={{
+      subscriptionData,
       getSubscriptionDetails
       }}>
       {children}

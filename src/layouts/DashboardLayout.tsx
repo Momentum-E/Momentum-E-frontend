@@ -3,6 +3,7 @@ import { useMediaQuery } from 'react-responsive';
 import { useTheme } from 'next-themes';
 import { AppContext } from '@/context/userContext';
 import { AccountContext } from '@/context/account';
+import { SubscriptionContext } from '@/context/subscriptionContext';
 
 import {
   Sidebar,
@@ -19,13 +20,13 @@ const DashboardLayout = ({
   const isTab = useMediaQuery({ query: '(max-width:767px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
 
-
   const {
     isLoading,
     userId, 
     vehicleData,
     name
   } = useContext(AppContext)
+  const { subscriptionData } = useContext(SubscriptionContext)
   const { IdToken } = useContext(AccountContext)
   const {theme, setTheme} = useTheme()
   
@@ -44,6 +45,7 @@ const DashboardLayout = ({
     <ProtectedRoute>
       <div className='relative flex'>
         <Sidebar 
+          NumberVehiclePaid={subscriptionData?.quantity}
           idToken={IdToken}
           id={userId}
           isLoading={isLoading}
