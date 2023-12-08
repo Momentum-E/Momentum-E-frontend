@@ -1,22 +1,37 @@
-import React,{ useEffect } from 'react';
-import { useAnimation, motion, useScroll } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-// import { BoxContainer } from './';
+import React,{ useEffect,useRef } from 'react';
+import { useAnimation, motion, useInView } from "framer-motion";
 import { HeadingProps } from '@/utils/props';
+// import { BoxContainer } from './';
 
 const Heading: React.FC<HeadingProps> = ({
   primaryHeading,
   secondaryHeading,
   tertiaryHeading,
 }) => {
+  const variants = {
+    hidden: { 
+      left:0, 
+      opacity: 0 
+    },
+    visible: { 
+      left:"100%", 
+      opacity: 1 
+    }
+  }
 
+  const transition = {
+    duration:0.75,
+    ease:"easeIn"
+  }
+
+  const ref = useRef(null);
   const controls = useAnimation();
-  const [ref, inView] = useInView();
+  const inView = useInView(ref,{once:false})
   useEffect(() => {
     if (inView) {
       controls.start("visible");
     }
-  }, [controls, inView]);
+  }, [inView]);
 
   return (
     // <>
@@ -36,49 +51,29 @@ const Heading: React.FC<HeadingProps> = ({
     //     {tertiaryHeading}
     //   </h1>
     // </>
-    <div className="relative sm:w-full sm:px-6 sm:py-20 md:pt-20 lg:px-16 lg:w-3/4 ">
+    <div className="relative sm:w-full sm:px-6 sm:py-20 md:pt-20 lg:px-16 lg:w-3/4">
       <div className="absolute translate-y-12 translate-x-10 rounded-full w-full h-full bg-me-green-100/40 blur-[120px]"></div>
       
       <motion.h1 
-        variants={{
-          visible: { 
-            opacity: 1, 
-            scale: 1, 
-            transition: { 
-              duration: 2
-            } 
-          },
-          hidden: { 
-            opacity: 0, 
-            scale: 0 
-          }
-        }}
+        variants={variants}
         ref={ref}
-        animate={controls}
         initial="hidden"
-        className="sm:text-5xl sm:font-medium md:text-left md:text-[5rem] md:font-medium md:leading-tight xl:text-8xl">  
+        animate={controls}
+        transition={transition}
+        className="sm:text-5xl sm:font-medium md:text-left md:text-[5rem] md:font-medium md:leading-tight xl:text-8xl"
+      >  
         <span className="text-me-green-200 cursor-normal"> AI-led battery health </span> 
         <span className="">and EV fleet management</span>
       </motion.h1>
 
       <motion.h2
-        variants={{
-          visible: { 
-            opacity: 1, 
-            scale: 1, 
-            transition: { 
-              duration: 2
-            } 
-          },
-          hidden: { 
-            opacity: 0, 
-            scale: 0 
-          }
-        }}
+        variants={variants}
         ref={ref}
-        animate={controls}
         initial="hidden"
-        className='w-[80%] sm:pt-8 font-normal sm:text-xl md:text-left md:ml-0 md:text-3xl '>
+        animate={controls}
+        transition={transition}
+        className='w-[80%] sm:pt-8 font-normal sm:text-xl md:text-left md:ml-0 md:text-3xl'
+      >
         Get a full understanding of <span className="hover:text-me-green-200 cursor-default border-b-2 border-me-green-200">battery degradation</span>,{" "}
         <span className="hover:text-me-green-200 cursor-default border-b-2 border-me-green-200">performance</span> and {" "} 
         <span className="hover:text-me-green-200 cursor-default border-b-2 border-me-green-200">real range</span>.

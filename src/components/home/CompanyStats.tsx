@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import CompanyStatsCard from './CompanyStatsCard'
-import { useAnimation, motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import { useAnimation, motion, useInView } from "framer-motion";
+// import { useInView } from "react-intersection-observer";
 
 const CompanyStats = () => {
     const container = {
-        hidden: { opacity: 1},
+        hidden: { opacity: 0},
         visible: {
         opacity: 1,
         scale: 1,
@@ -16,9 +16,10 @@ const CompanyStats = () => {
             }
         }
     }
-
+    
+    const ref = useRef(null);
     const controls = useAnimation();
-    const [ref, inView] = useInView();
+    const inView = useInView(ref, {once:false});
   
     useEffect(() => {
       if (inView) {

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useAnimation, motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 
 type companyStatsProps = {
   statValue:string,
@@ -13,8 +12,12 @@ const companyStats:React.FC<companyStatsProps> = ({
 }) => {
     
   const item = {
-    hidden: { left:0 },
+    hidden: {
+      opacity: 0, 
+      left:0 
+    },
     visible: {
+      opacity: 1,
       left:"100%",
     }
   }

@@ -8,14 +8,14 @@ import {
   UserContextProps, 
   temperatureDataProps
 } from '@/utils/props';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 // import useSWR from 'swr'
 import { toast } from 'react-toastify'; 
 
 const AppContext = createContext({} as UserContextProps);
 
 const AppProvider = ({ children }:any) => {
-  const router = useRouter();
+  // const router = useRouter();
   const { getSession, setIsAuthenticated, IdToken, user } = useContext(AccountContext);
   const { getSubscriptionDetails } = useContext(SubscriptionContext);
 
@@ -41,17 +41,13 @@ const AppProvider = ({ children }:any) => {
     minTemperature: null,
     maxTemperature: null,
   })
-  // const [idToken,setIdToken] = useState<string|null>(null) 
 
+  // Hook for fetching user details from the DB
   useEffect(() => {
-    // const IdToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`)
-    // setIdToken(IdToken)
-    // console.log(idToken)
-    // if(userId){
     fetchUserDetails();
-    // }
   }, [userId]);
     
+  // Function for getting the temperature data from the DB
   useEffect(()=>{
     getTemperatureData()
   },[userLocation])
@@ -83,12 +79,6 @@ const AppProvider = ({ children }:any) => {
   const fetchUserDetails =  async () => {
     try {
       if(user !== null){
-        const session:any = await getSession();
-        // console.log(session)
-        // const IdToken = session.idToken.jwtToken
-        const userid = session.idToken.payload.sub;
-        // setIdToken(IdToken)
-        setUserId(userid); 
         const response = await axios.get(`http://localhost:5000/auth/users/${user}`,{
           headers: {
             authorization:`Bearer ${IdToken}`
@@ -116,6 +106,9 @@ const AppProvider = ({ children }:any) => {
         setIsLoading(false)
       }
       else{
+        const session:any = await getSession();
+        const userid = session.idToken.payload.sub;
+        setUserId(userid); 
         console.log('user is null.')
       }
     } 
@@ -239,12 +232,14 @@ const AppProvider = ({ children }:any) => {
     const currentDate = new Date()
     if(storedDate){
       const savedDate = new Date(storedDate)
-      if(userLocation){
+      if(userId && userLocation){
         if (!savedDate || (savedDate.getDate() <= currentDate.getDate() || savedDate.getMonth()<=savedDate.getMonth())) {
-          console.log(storedDate)
-          console.log(savedDate)
+          console.log({
+            Message:"Temperature data not found in local storage. Fetching from server.",
+            Stored_Date:storedDate,
+            Saved_Date:savedDate,
+          })
           // Fetch data from server
-          console.log('Fetching temperature data from server.')
           let config = {
             method: 'post',
             url:  `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/get-temperature`,
@@ -284,12 +279,12 @@ const AppProvider = ({ children }:any) => {
           }
         }
       }
-      else{
-        if(userId){
-          router.replace(`/dashboard/profile/${userId}`)
-          toast.info('Please input your location.')
-        }
-      }
+      // else{
+      //   if(userId){
+      //     router.replace(`/dashboard/profile/${userId}`)
+      //     toast.info('Please input your location.')
+      //   }
+      // }
     }
   }
 

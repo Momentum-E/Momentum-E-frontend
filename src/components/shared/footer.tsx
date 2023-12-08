@@ -11,14 +11,14 @@ const Footer = ({
 }:FooterProps ) => {
   return !isAuthenticated ? (
     <div className="text-white-100 mt-10 sm:px-6 lg:px-16">
-      <div className="max-w-7xl m-auto text-gray-100 flex flex-wrap justify-between pt-5 border-t">
+      <div className="max-w-7xl m-auto text-gray-100 flex flex-wrap justify-between py-16 border-t">
         <div className="p-5 w-48 ">
           <figure>
             <Image src={logo} height={120} width={120} alt="logo" />
           </figure>
         </div>
-        <div className="flex flex-wrap justify-evenly text-sm">
-          <div className="p-5 w-40 text-sm">
+        <div className="flex flex-wrap justify-evenly text-sm mx-4">
+          {/* <div className="p-5 w-40 text-sm">
             <div className=" uppercase text-white-100 font-bold">
               Home
             </div>
@@ -37,9 +37,9 @@ const Footer = ({
                 Products
               </span>
             </a>
-          </div>
-          <div className="p-5 w-40 text-sm">
-            <div className="uppercase text-white-100 font-bold text-sm">
+          </div> */}
+          <div className="p-5 w-40 ">
+            <div className="uppercase text-white-100 font-bold">
               User
             </div>
             <Link className="my-3 block text-white-200" href="/auth/login">
@@ -49,22 +49,22 @@ const Footer = ({
               <span className='hover:border-b hover:border-white-200'>New Account</span>
             </Link>
           </div>
-          <div className="p-5 w-40 text-sm">
+          <div className="p-5 w-40 ">
             <div className="uppercase text-white-100 font-bold">
-              Product
+              Links
             </div>
-            <Link className="my-3 block text-white-200" href="/#">
-              <span className='hover:border-b hover:border-white-200'>Our Services</span>
-            </Link>
-            <Link className="my-3 block text-white-200" href="/#">
-              <span className='hover:border-b hover:border-white-200'>Analytics</span>
+            <Link className="my-3 block text-white-200" href="/">
+              <span className='hover:border-b hover:border-white-200'>Home</span>
             </Link>
             <Link className="my-3 block text-white-200" href="/pricing">
               <span className='hover:border-b hover:border-white-200'>Pricing</span>
             </Link>
+            {/* <Link className="my-3 block text-white-200" href="/pricing">
+              <span className='hover:border-b hover:border-white-200'>Pricing</span>
+            </Link> */}
           </div>
-          <div className="p-5 w-40 text-sm text-white-200">
-            <div className="uppercase text-white-100 font-bold">
+          <div className="p-5 w-40 text-white-200">
+            <div className="uppercase mb-3 text-white-100 font-bold">
               Contact us
             </div>
             91 Springboard, Bannerghatta Road, Bangalore

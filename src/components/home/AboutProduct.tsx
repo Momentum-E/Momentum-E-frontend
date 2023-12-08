@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react'
-import { useAnimation, motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
+import React, { useEffect, useRef } from 'react'
+import { useAnimation, motion, useInView } from "framer-motion";
 import {
     battery_insight_1,
     battery_insight_3,
@@ -16,14 +15,15 @@ const AboutProduct = () => {
       opacity: 1,
       scale: 1,
       transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2
+        delayChildren: 0.5,
+        staggerChildren: 0.5
       }
     }
   }
     
+  const ref = useRef(null);
   const controls = useAnimation();
-  const [ref, inView] = useInView();
+  const inView= useInView(ref, {once:false});
   useEffect(() => {
     if (inView) {
       controls.start("visible");

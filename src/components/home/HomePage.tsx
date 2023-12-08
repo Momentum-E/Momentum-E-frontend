@@ -131,18 +131,20 @@ const HomePage = () => {
     <main className=" text-white-100 mx-auto sm:px-4 md:px-14 lg:px-20">
       {/* Section 1 into */}
       {/* bg-background-lines-dots bg-cover bg-center bg-no-repeat */}
-      <section className="flex flex-col md:h-[110vh] md:space-y-7">
+      <section id='' className="flex flex-col md:h-[110vh] md:space-y-7">
         {/* <div className="h-screen relative w-full overflow-hidden flex flex-col items-center justify-center pointer-events-none"> */}
           {/* <div className="absolute inset-0 w-full h-full  pointer-events-none" /> */}
           {/* <BoxContainer/> */}
-        <Heading/>  
         {/* </div> */}
+        <Reveal>
+          <Heading/>  
+        </Reveal>
       </section>
 
-      <section className="">  
-        <Reveal className="flex bg-black sm:flex-col md:flex-row w-full border border-gray-700">
-        {/* bg-background-flowing-cyber-dots bg-cover bg-no-repeat */}
-          <>
+      <Reveal>
+        <section id='About_Us' className="">  
+          <div className="flex bg-black sm:flex-col md:flex-row w-full border border-gray-700">
+            {/* bg-background-flowing-cyber-dots bg-cover bg-no-repeat */}
             <div className="flex flex-col sm:py-10 md:pt-0 md:w-[40%] space-y-4 px-10 items-center justify-center text-left border-r border-gray-700">
               <h2 className='text-me-green-200 font-medium text-3xl'>
                 Manage your EV with confidence.
@@ -155,22 +157,24 @@ const HomePage = () => {
             <div className="flex items-center justify-center md:-translate-y-12 pb-10 md:mx-auto md:my-auto">
               <AboutProduct/>
             </div>
-          </>
-        </Reveal>
-      </section>
+          </div>
+        </section>
+      </Reveal>
       
       {/* bg-background-shallow-depth-field bg-cover bg-top bg-no-repeat */}
-      <section className="relative py-44">
-        <div className="absolute -translate-y-16 rounded-full w-full h-full bg-me-green-100/30 blur-[120px]"></div>
-        <Reveal className="flex flex-col items-center space-y-10 sm:px-6 lg:px-16">
-          <CompanyStats/>
-        </Reveal>
-      </section>
+      <Reveal>
+        <section id='Our_Numbers' className="relative py-44">
+          <div className="absolute -translate-y-16 rounded-full w-full h-full bg-me-green-100/30 blur-[120px]"></div>
+          <div className="flex flex-col items-center space-y-10 sm:px-6 lg:px-16">
+            <CompanyStats/>
+          </div>
+        </section>
+      </Reveal>
 
-      <section className="pb-16">  
-        {/* Set a background for this div */}
-        <Reveal className="flex h-screen md:flex-row-reverse sm:flex-col-reverse w-full border border-gray-700">
-          <>
+      <Reveal>
+        <section id='Get_Started' className="pb-16">  
+          {/* Set a background for this div */}
+          <div className="flex h-screen md:flex-row-reverse sm:flex-col-reverse w-full border border-gray-700">
             <div className="flex flex-col bg-black h-full sm:py-10 md:pt-0 md:w-[40%] p-10 items-center justify-center text-left border-l border-gray-700">
               <span className="text-white-100 text-lg font-light leading-relaxed mb-6">
                 I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me to add your own content and make changes to the font.
@@ -186,11 +190,13 @@ const HomePage = () => {
                 Are You Ready to Accelerate Your Business?
               </h2>
             </div>
-          </>
-        </Reveal>
-      </section>
+          </div>
+        </section>
+      </Reveal>
       
-      <GetInTouch/>
+      <Reveal>
+        <GetInTouch/>
+      </Reveal>
     </main>
   );
 };

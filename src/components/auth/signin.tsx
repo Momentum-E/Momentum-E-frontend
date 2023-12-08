@@ -58,10 +58,9 @@ const SignIn = () => {
       },
     })
     .then((res)=>{
-        console.log(res.data)
+        console.log(res.data + res.status)
         if(res.status !== 404){
-          console.log(res.data.paymentStatus)
-          console.log(res.data.subscriptionStatus)
+          console.log("Payment Status: "+res.data+res.status)
 
           if(res.data.paymentStatus === 'paid' && res.data.subscriptionStatus === 'active'){
             const user = new CognitoUser({ Username:Input.email, Pool });

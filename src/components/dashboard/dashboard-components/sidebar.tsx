@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
 import YourVehicles from './sidebar-components/YourVehicles';
-import { toast } from 'react-toastify';
+import { Modal } from '@/components/shared'
 const DarkLine = dynamic (() => import('@/utils/sidebar_icons/DarkLine'), {
   ssr: false,
 });
@@ -36,6 +36,7 @@ const Sidebar:React.FC<SidebarProps> = ({
   const router = useRouter();
   const { pathname } = router;
   const [errorNumber, setErrorNumber] = useState<number>(0);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     isTab && setIsOpen(false)
@@ -81,9 +82,15 @@ const Sidebar:React.FC<SidebarProps> = ({
       });
     }
     else{
-      alert('Vehicle Count Reached. Please pay to add extra vehicles.')
+      // modal open -> redirection to stripe dashboard
+      setModalOpen(true)
+      // alert('Vehicle Count Reached. Please pay to add extra vehicles.')
     }
   };
+
+  // const StripeRedirect =  () => {
+  //   console.log('Redirect to stripe dashboard.')
+  // }
 
   return (
     <>
@@ -137,19 +144,29 @@ const Sidebar:React.FC<SidebarProps> = ({
         </div>
 
         <YourVehicles
-          isLoading={isLoading}
-          vehicleData={vehicleData}
-          setIsOpen={setIsOpen}
-          isTab={isTab}
-          page={
-            page.toString().split("/")[0].trim() === "profile" || page === ""
-            ?
-            page
-            :
-            `vehicles / ${JSON.parse(page.toString().split("/")[1]).vin}`
-            }
+        isLoading={isLoading}
+        vehicleData={vehicleData}
+        setIsOpen={setIsOpen}
+        isTab={isTab}
+        page={
+          page.toString().split("/")[0].trim() === "profile" || page === ""
+          ?
+          page
+          :
+          `vehicles / ${JSON.parse(page.toString().split("/")[1]).vin}`
+          }
         />
       </div>
+      <Modal 
+      isOpen={modalOpen} 
+      setIsOpen={setModalOpen} 
+      title='Vehicle Limit Reached' 
+      content={`More vehicles cannot be added as the user has paid for ${NumberVehiclePaid} ${NumberVehiclePaid === 1 ? 'vehicle' : 'vehicles'}. Please pay for the extra vehicles.`} 
+      buttonClass='px-2 border text-black bg-me-green-200 hover:bg-me-green-100 p-1 rounded-lg' 
+      modalFunction={() => {
+        router.replace(`${process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_DASHBOARD}`)
+        console.log('Redirect to stripe dashboard.')
+      }}/>
     </>
   );
 };

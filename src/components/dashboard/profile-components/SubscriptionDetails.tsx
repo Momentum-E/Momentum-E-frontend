@@ -11,11 +11,6 @@ const SubscriptionDetails:React.FC<SubscriptionDetailsProps> = ({
 }) => {
     const { subscriptionData } = useContext(SubscriptionContext);
 
-    // useEffect(() => {
-    //     getSubscriptionDetails(email)
-    //     return () => {
-    //     }
-    // }, [])
     const convertDate = (toDate:Date|string|undefined) => {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         if(toDate){
@@ -32,11 +27,9 @@ const SubscriptionDetails:React.FC<SubscriptionDetailsProps> = ({
 
     return (
         <div className='space-y-4 border border-me-green-200 p-4 rounded-xl w-full'>
-            <p className='mt-2 text-center text-xl leading-9 text-black dark:text-white-100'>
+            <p id='subscription_details' className='mt-2 text-center text-xl leading-9 text-black dark:text-white-100'>
                 subscription Details
             </p>
-            {/* <div className="">
-            </div> */}
             <p className="text-white-200 text-base font-medium">Subscription Start: {" "}
                 <span className="text-white-100 text-base font-normal">{convertDate(subscriptionData?.startDate)}</span>
             </p>
@@ -55,7 +48,7 @@ const SubscriptionDetails:React.FC<SubscriptionDetailsProps> = ({
             <div className="w-full flex justify-center">
                 <Link 
                     className='flex justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm' 
-                    href='https://billing.stripe.com/p/login/test_eVadR455ObBI1Rm4gg'
+                    href={`${process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_DASHBOARD}`}
                 >
                     Update Details
                 </Link>
