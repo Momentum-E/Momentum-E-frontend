@@ -2,16 +2,17 @@ import React from 'react'
 import {AuthInputProps} from '@/utils/props'
 
 function AuthInput({
-labelName,
-labelFor, 
-isRequired, 
-inputType,
-inputAutocomplete,
-inputClassname,
-inputValue,
-inputOnChange,
-outerDiv,
-children,
+  disabled=false,
+  labelName,
+  labelFor, 
+  isRequired, 
+  inputType,
+  inputAutocomplete,
+  inputClassname,
+  inputValue,
+  inputOnChange,
+  outerDiv,
+  children,
 }:AuthInputProps) {
   
   // const [InputType,setInputType] = useState('password')
@@ -31,6 +32,7 @@ children,
       </label>
       <div className={'pt-2 w-full'}>
         <input
+          disabled={disabled}
           className={'border-b w-full px-4 py-1 text-black dark:text-white-100 bg-transparent text-sm focus:outline-none focus-within:outline-none focus:ring-0 active:outline-none ease-linear transition-all duration-150 sm:text-sm sm:leading-6 '+ inputClassname}
           type={inputType}
           name={labelFor}

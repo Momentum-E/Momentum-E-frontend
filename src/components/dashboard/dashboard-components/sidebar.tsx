@@ -82,15 +82,9 @@ const Sidebar:React.FC<SidebarProps> = ({
       });
     }
     else{
-      // modal open -> redirection to stripe dashboard
       setModalOpen(true)
-      // alert('Vehicle Count Reached. Please pay to add extra vehicles.')
     }
   };
-
-  // const StripeRedirect =  () => {
-  //   console.log('Redirect to stripe dashboard.')
-  // }
 
   return (
     <>
@@ -103,7 +97,7 @@ const Sidebar:React.FC<SidebarProps> = ({
           isOpen ? ` ` : `transform -translate-x-full `
         } ease-in-out duration-200 bg-gradient-to-br from-white-100 to-me-green-200/50 dark:bg-dashboard-gradient inset-0 backdrop-blur-3xl rounded-lg p-2 space-y-4 text-gray shadow-md z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed`}>
         {/* logo */}
-        <div className="flex flex-col gap-2.5 py-2 text-white-100 items-center justify-center">
+        <div className="flex flex-col gap-2.5 py-[5px] text-white-100 items-center justify-center">
           {
             theme === 'dark'?
             ( 

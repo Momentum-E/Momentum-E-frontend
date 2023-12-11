@@ -28,6 +28,22 @@ type subscriptionDataProps = {
 const SubscriptionContext = createContext({} as SubscriptionContextProps);
 
 const SubscriptionProvider = ({ children }:any) => {
+  // Subscription status:
+  // active
+  // cancelled
+  // incomplete
+  // past_due
+  // trailing
+
+  // Payment status:
+  // paid
+  // open
+  // uncollectible
+  // void
+  // refunded
+  // Draft
+  // marked_uncollectible
+  
   const { IdToken,logout } = useContext(AccountContext)
   const [ subscriptionData, setSubscriptionData ] = useState<subscriptionDataProps>()
 

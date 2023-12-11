@@ -75,7 +75,7 @@ const Profile = () => {
             idToken={IdToken}
             vehicleData={vehicleData}
           /> */}
-          <SubscriptionDetails email={userEmail} />
+          <SubscriptionDetails idToken={IdToken} email={userEmail} />
           <div className=" border border-me-green-200 p-4 rounded-xl w-full">
             <GetUserDataComponent
               idToken={IdToken}

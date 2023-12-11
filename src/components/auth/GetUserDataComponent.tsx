@@ -24,7 +24,7 @@ const GetUserDataComponent = ({
   buttonName,
 }:GetUserDataComponentProps) => {
   const router = useRouter()
-  const priceId = router.query.price_id
+  // const priceId = router.query.price_id
   const countryData = Country.getAllCountries();
   const {
     name, 
@@ -150,6 +150,7 @@ const GetUserDataComponent = ({
         /> */}
     
         <AuthInput
+          disabled={true}
           outerDiv='sm:col-span-2'
           labelName='Company Name:'
           labelFor='company'

@@ -123,9 +123,6 @@ const AppProvider = ({ children }:any) => {
     returns the new socket
   */
   const SettingWebsocket = async () => {
-
-    // const idToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
-    
     if(IdToken){
       try{
         const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/websocket/generate-token`,{
@@ -135,7 +132,7 @@ const AppProvider = ({ children }:any) => {
         })
   
         console.log(response.data)
-        const socket = new WebSocket(`wss://gav5fur5v0.execute-api.ap-south-1.amazonaws.com/development?token=${response.data.uniqueToken}`);
+        let socket = new WebSocket(`wss://ffyvn54l83.execute-api.ap-south-1.amazonaws.com/production?token=${response.data.uniqueToken}`);
         setWebSocket(socket)
   
         socket.onopen = (event) => {
@@ -161,7 +158,7 @@ const AppProvider = ({ children }:any) => {
           setVehicleCalcultedData(SocketData.updatedData.vehicles_processed_data)
         };
     
-        socket.onerror = (event:any) => {
+        socket.onerror = async (event:any) => {
           console.error('WebSocket Error:', event);
           
           if(!userId){
@@ -173,7 +170,9 @@ const AppProvider = ({ children }:any) => {
                 console.log('error code 1000.')
               break;
               case 1006:
+                await getSession()
                 socket.close()
+                // window.location.reload()
                 console.log('error code 1006.')
               break;
             }
@@ -189,8 +188,10 @@ const AppProvider = ({ children }:any) => {
           if(userId){
             console.log('userId present'+ userId)
             // await UpdateIdToken()
-            window.location.reload()
-            SettingWebsocket();
+            // window.location.reload()
+            // socket = null
+            setWebSocket(null)
+            setTimeout(SettingWebsocket, 5000)
           }
           else{
             setWebSocket(null)
@@ -198,9 +199,11 @@ const AppProvider = ({ children }:any) => {
         };
       }
       catch(error){
-        // await getSession()
-        window.location.reload()
-        SettingWebsocket()
+        await getSession()
+        // window.location.reload()
+        console.log("Websocket Error")
+        setWebSocket(null)
+        setTimeout(SettingWebsocket, 5000)
       }
     }
     else{

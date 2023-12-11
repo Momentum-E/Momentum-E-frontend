@@ -11,7 +11,7 @@ type AccountContextProps = {
   isAuthenticated:boolean;
   setIsAuthenticated:React.Dispatch<React.SetStateAction<boolean>>;
   getSession:() => Promise<unknown>;
-  DeleteUserAccount:(username: string, password: string) => Promise<void>;
+  DeleteUserAccount:(email:string, username: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -68,7 +68,7 @@ const AccountProvider = ({ children }:any) => {
     });
   };
 
-  const DeleteUserAccount = async (username:string,password:string) => {
+  const DeleteUserAccount = async (email:string, username:string, password:string) => {
     await getSession();
     const user = new CognitoUser({ Username: username, Pool });
     const authDetails = new AuthenticationDetails({ Username: username, Password: password });
@@ -121,7 +121,7 @@ const AccountProvider = ({ children }:any) => {
             })
 
             // Deleting user subscription from stripe 
-            axios.delete(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/subscription/delete-customer?email=${username}`,{
+            axios.delete(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/subscription/delete-customer?email=${email}`,{
               headers:{
                 authorization:`Bearer ${token}`
               }

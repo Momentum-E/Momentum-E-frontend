@@ -97,7 +97,7 @@ const AuthListBox = ({
         )}
         >
             <div className="absolute z-10 w-full h-[1px] bottom-[15px] opacity-0 left-0" aria-hidden="true" tabIndex={-1}></div>
-            <select onClick={() => {}} onChange={()=>{}} tabIndex={-1} value={selected.name} name="" required={isRequired} aria-hidden="true" autoCapitalize="off" autoComplete={"off"} className="w-full z-10 h-[1px] select-none text-white-100 bg- absolute bottom-[15px] left-0 !outline-none opacity-0 shadow-none appearance-none">
+            <select onClick={() => {}} onChange={()=>{}} tabIndex={-1} value={selected.name} name="" required={isRequired} aria-hidden="true" autoCapitalize="off" autoComplete={"off"} className="w-full z-10 h-[1px] select-none pointer-events-none text-white-100 bg- absolute bottom-[15px] left-0 !outline-none opacity-0 shadow-none appearance-none">
                 <option value="" defaultChecked={true} aria-hidden="true"></option>
                 {data.map((e: any, i: number) => {
                     return <option key={i} value={e.name} aria-hidden="true">{e.name}</option>

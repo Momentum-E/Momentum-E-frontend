@@ -13,10 +13,10 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
 }) => {
 
   return (
-    <Disclosure as="nav" className="relative w-full z-10">
+    <Disclosure id='nav' as="nav" className="relative w-full z-10">
       {/* {({ open }) => ( */}
         <>
-          <div className="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8 shadow-sm dark:shadow-gray-300/10">
             <div className="relative flex h-16 items-center justify-between">
               <div className="w-full md:w-3/4">
                 <div className={`absolute inset-y-0 flex items-center md:hidden`}>

@@ -266,6 +266,7 @@ export type ItemCardProps = {
 export type AuthInputProps = {
   outerDiv:string | undefined;
   labelName:string;
+  disabled?:boolean;
   labelFor:string;
   isRequired:boolean;
   inputType:string;
