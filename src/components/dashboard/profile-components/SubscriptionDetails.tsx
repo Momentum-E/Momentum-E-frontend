@@ -29,16 +29,6 @@ const SubscriptionDetails:React.FC<SubscriptionDetailsProps> = ({
     }
 
     const CreateCustomerSession = () => {
-        // const config = {
-        //     method:"post",
-        //     url:`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/subscription/create-customer-portal-session`,
-        //     headers:{
-        //         authorization: `Bearer ${idToken}`,
-        //     },
-        //     data:{
-        //         email: email,
-        //     }
-        // }
         axios.request({
             method:"post",
             url:`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/subscription/create-customer-portal-session`,

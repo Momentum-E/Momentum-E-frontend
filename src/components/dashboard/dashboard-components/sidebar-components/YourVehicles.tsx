@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useCallback } from 'react'
 import { YourVehicleProps } from '@/utils/props';
 import {useRouter} from 'next/router';
 
@@ -20,16 +20,18 @@ const YourVehicles = ({
 
     // const {filteredVehicleData} = useAppContext()
 
-    useEffect(()=>{
-        const onVehicleClick = () => {
-            if(vehicleId){
+    // useEffect(()=>{
+        const onVehicleClick = useCallback((vid:string) => {
+            // if(vehicleId){
+            if(vid){
                 // filteredVehicleData(vehicleId)
+                setvehicleId(vid)
                 router.replace(`/dashboard/vehicles/${vehicleId}`)
                 setIsOpen(!isTab)
             }
-        }
-        onVehicleClick()
-    },[vehicleId])
+        },[])
+    //     onVehicleClick()
+    // },[vehicleId])
 
     // useEffect(()=>{
     //     console.log(page)
@@ -56,7 +58,7 @@ const YourVehicles = ({
                                 className={`${page===`vehicles / ${data.information.vin}` ? `active `:` `} 
                                 group dark:text-white-100 link flex justify-between md:justify-start`}>
                                     <button
-                                    onClick={()=>setvehicleId(data.id)}
+                                    onClick={()=>onVehicleClick(data.id)}
                                     className="px-2 h-full w-full overflow-hidden text-left overflow-ellipsis group-hover:mr-2"
                                     >
                                         {data.information.vin}

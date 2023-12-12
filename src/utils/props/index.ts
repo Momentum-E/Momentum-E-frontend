@@ -274,7 +274,7 @@ export type AuthInputProps = {
   inputClassname:string | undefined;
   inputValue:string | number | string[] | undefined
   inputOnChange:React.ChangeEventHandler<HTMLInputElement> | undefined
-  children:React.JSX.Element|null;
+  children?:React.JSX.Element|null;
 }
 
 export type AuthListBoxProps = {

@@ -89,6 +89,9 @@ const SignIn = () => {
               },
             });
           }
+          if(res.data.subscriptionStatus === 'canceled'){
+            toast.info('Your subscription has been cancelled. Please pay again and login.')
+          }
         }
         else{
           console.log('No data found for the email')
@@ -96,7 +99,7 @@ const SignIn = () => {
         }
     })
     .catch((err)=>{
-      // toast.error('No subscription found for the email: '+ Input.email)
+      toast.error(err.response.data.error)
       console.log(err)
     })
     // };
@@ -141,7 +144,7 @@ const SignIn = () => {
                   inputClassname='border-me-green-200'
                   inputValue={Input.email}
                   inputOnChange={(e) => onInputChange(e)}
-                  children={null}
+                  // children={null}
                 />
 
                 <AuthInput
@@ -154,7 +157,7 @@ const SignIn = () => {
                   inputClassname={`border-me-green-200`}
                   inputValue={Input.password}
                   inputOnChange={(e) => onInputChange(e)}
-                  children={null}
+                  // children={null}
                 />
 
                 <button

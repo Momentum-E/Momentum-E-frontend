@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { Loader } from '@/components/shared'
 
-const result = () => {
+const Result = () => {
     const router = useRouter() 
     const id = router.query.session_id
     const result = router.query.result
@@ -59,4 +59,4 @@ const result = () => {
     )
 }
 
-export default result
+export default Result

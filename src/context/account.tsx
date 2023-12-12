@@ -49,7 +49,8 @@ const AccountProvider = ({ children }:any) => {
         user.getSession((err:any, session:CognitoUserSession) => {
           if (err) {
             reject(err);
-          } else {
+          } 
+          else {
             resolve(session);
             // console.log("IdToken: "+ session.getIdToken().getJwtToken())
             // console.log("accessToken: "+ session.getAccessToken().getJwtToken())
@@ -59,6 +60,9 @@ const AccountProvider = ({ children }:any) => {
             setIdToken(session.getIdToken().getJwtToken());
             setAccessToken(session.getAccessToken().getJwtToken());
             setRefreshToken(session.getRefreshToken().getToken());
+            localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${user}.accessToken`,session.getAccessToken().getJwtToken());
+            localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${user}.refreshToken`,session.getRefreshToken().getToken());
+            localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${user}.idToken`,session.getIdToken().getJwtToken());
           }
         });
       } 

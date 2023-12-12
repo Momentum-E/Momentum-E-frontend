@@ -71,14 +71,16 @@ const ForgotPassword = () => {
                 inputClassname='border-me-green-200'
                 inputValue={username}
                 inputOnChange={(e) => setUsername(e.target.value)}
-                children={
+                >
                   <button
-                  type="submit"
-                  onClick={initiateForgotPassword}
-                  className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black py-2.5 text-center text-sm font-semibold shadow-sm">
-                  Confirm OTP
-                </button>}
-              />
+                    type="submit"
+                    onClick={initiateForgotPassword}
+                    className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black py-2.5 text-center text-sm font-semibold shadow-sm">
+                    Confirm OTP
+                  </button>
+                </AuthInput>
+
+              
             </>
           )}
           {step === 'confirm' && (
@@ -101,7 +103,7 @@ const ForgotPassword = () => {
                     inputClassname={`border-me-green-200`}
                     inputValue={confirmationCode}
                     inputOnChange={(e) => setConfirmationCode(e.target.value)}
-                    children={null}
+                    // children={null}
                   />
 
                 <AuthInput
@@ -114,7 +116,7 @@ const ForgotPassword = () => {
                     inputClassname={`border-me-green-200`}
                     inputValue={newPassword}
                     inputOnChange={(e) => setNewPassword(e.target.value)}
-                    children={null}
+                    // children={null}
                   />
 
                 <button

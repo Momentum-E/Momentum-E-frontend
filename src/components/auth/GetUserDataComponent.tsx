@@ -140,15 +140,7 @@ const GetUserDataComponent = ({
         {heading}
       </p>
       <div className="grid grid-cols-1 px-5 gap-x-8 gap-y-6 sm:grid-cols-2">
-        {/* <AuthListBox 
-          isRequired={isRequired}
-          labelName={'Subscription Type'}
-          labelFor={'subscription_type'}
-          data={subscription_type} 
-          value={subscriptionType}
-          OnChange={setSubscriptionType}
-        /> */}
-    
+        
         <AuthInput
           disabled={true}
           outerDiv='sm:col-span-2'
@@ -160,7 +152,6 @@ const GetUserDataComponent = ({
           inputClassname='border-me-green-200'
           inputValue={Name}
           inputOnChange={(e)=>setName(e.target.value)}
-          children={null}
         />
 
         <div className="sm:col-span-2 mt-2.5 space-y-8">
@@ -169,7 +160,10 @@ const GetUserDataComponent = ({
               htmlFor="country"
               className="block text-sm mb-2.5 leading-6 text-black dark:text-white-100">
               Country
-              {isRequired&&<span className="text-red-500 pl-1">*</span>}
+              { 
+                isRequired && 
+                <span className="text-red-500 pl-1">*</span>
+              }
             </label>
             <AuthSelector
               id={'country'}

@@ -65,7 +65,7 @@ const ChangeUserPassword:React.FC<ChangeUserPasswordProps>  = ({
               inputClassname='border-me-green-200'
               inputValue={OldPassword}
               inputOnChange={(e)=>(e.target.value)}
-              children={null}
+              // children={null}
             />
             <AuthInput
               outerDiv=''
@@ -77,7 +77,7 @@ const ChangeUserPassword:React.FC<ChangeUserPasswordProps>  = ({
               inputClassname='border-me-green-200'
               inputValue={OldPassword}
               inputOnChange={(e)=>setOldPassword(e.target.value)}
-              children={null}
+              // children={null}
             />
             <AuthInput
               outerDiv=''
@@ -89,7 +89,7 @@ const ChangeUserPassword:React.FC<ChangeUserPasswordProps>  = ({
               inputClassname='border-me-green-200'
               inputValue={NewPassword}
               inputOnChange={(e)=>setNewPassword(e.target.value)}
-              children={null}
+              // children={null}
             />
             <div className="w-full flex justify-center">
               <button

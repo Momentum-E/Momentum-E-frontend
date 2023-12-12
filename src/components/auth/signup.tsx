@@ -9,11 +9,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { City, Country, State } from 'country-state-city';
 
 import { 
-  AuthSelector,
   AuthInput, 
   AuthListBox 
 } from './AuthComponents';
-import { ConfirmSignUp } from '@/pages/auth';
+import ConfirmSignUp from '@/pages/auth/confirmSignup';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -38,9 +37,9 @@ const Signup = () => {
   });
   const [Name, setName] = useState('');
   
-  useEffect(() => {
-    console.log(router.query)
-  }, [])
+  // useEffect(() => {
+  //   console.log(router.query)
+  // }, [])
   
   // const [subscriptionType, setSubscriptionType] = useState<{type:string}>(
   //   (priceId === subscription_type[0].type)?
@@ -55,6 +54,16 @@ const Signup = () => {
   // Setting the data for the particular country
   const [stateData, setStateData] = useState<any>();
   const [cityData, setCityData] = useState<any>();
+  
+  // function reducer(state:any,action:any){
+  //   if(action.type === 'countryInital'){
+  //     return {
+  //       countryInital: 
+  //     }
+  //   }
+  // }
+
+  // const [cityData,  setCityData] = useReducer(reducer, {countryInital: country?.isoCode})
 
   // Setting the data of the user Location 
   const [country, setCountry] = useState<string|any>("");
@@ -205,14 +214,13 @@ const Signup = () => {
                   inputClassname='border-me-green-200'
                   inputValue={input.email}
                   inputOnChange={(e) => onInputChange(e)}
-                  children={
-                    <div className="pt-2 text-xs font-semibold text-white-100">
-                      <ul>
-                        <li>Kindly sign up with the same email as used during payment.</li>
-                      </ul>
-                    </div>
-                  }
-                />
+                >
+                  <div className="pt-2 text-xs font-semibold text-white-100">
+                    <ul>
+                      <li>Kindly sign up with the same email as used during payment.</li>
+                    </ul>
+                  </div>
+                </AuthInput>
                 
                 
                 {/* Password Input Field */}
@@ -231,7 +239,7 @@ const Signup = () => {
                     }`}
                     inputValue={input.password}
                     inputOnChange={(e) => onInputChange(e)}
-                    children={null}
+                    // children={null}
                   />
 
                   <button className='focus:outline-none focus:border-none' type='button' onClick={()=>setInputType(inputType === 'text' ? 'password': 'text')}>
@@ -263,7 +271,7 @@ const Signup = () => {
                     }`}
                     inputValue={input.confirmPassword}
                     inputOnChange={(e) => onInputChange(e)}
-                    children={null}
+                    // children={null}
                   />
                   <button className='focus:outline-none focus:border-none' type='button' onClick={()=>setConfirmInputType(confirmInputType === 'text' ? 'password': 'text')}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"  
@@ -316,7 +324,7 @@ const Signup = () => {
                   inputClassname='border-me-green-200'
                   inputValue={Name}
                   inputOnChange={(e)=>setName(e.target.value)}
-                  children={null}
+                  // children={null}
                 />
 
                 <div className="sm:col-span-2 mt-2.5 space-y-8">

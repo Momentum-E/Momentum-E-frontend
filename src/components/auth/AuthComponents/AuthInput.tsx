@@ -12,10 +12,8 @@ function AuthInput({
   inputValue,
   inputOnChange,
   outerDiv,
-  children,
+  children=null,
 }:AuthInputProps) {
-  
-  // const [InputType,setInputType] = useState('password')
 
   return (
      <div className={outerDiv}>

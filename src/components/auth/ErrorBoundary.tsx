@@ -1,12 +1,11 @@
-// @ts-nochec
 import React from "react"
 
 type ErrorBoundaryProps = {
-    hasError:boolean;
+  children:React.ReactNode;
 }
 
-class ErrorBoundary extends React.Component {
-  constructor(props:ErrorBoundaryProps ) {
+class ErrorBoundary extends React.Component<ErrorBoundaryProps,{ hasError:boolean }> {
+  constructor(props:any) {
     super(props)
     // Define a state variable to track whether is an error or not
     this.state = { hasError: false }
@@ -17,9 +16,9 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error:any) {
-      // Update state so the next render will show the fallback UI
-      console.log(error)
-      return { hasError: true }
+    // Update state so the next render will show the fallback UI
+    console.log(error)
+    return { hasError: true }
   }
 
   componentDidCatch(error:any, errorInfo:any) {

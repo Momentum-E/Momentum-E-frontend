@@ -45,19 +45,19 @@ const AppProvider = ({ children }:any) => {
   // Hook for fetching user details from the DB
   useEffect(() => {
     fetchUserDetails();
-  }, [userId]);
+  }, [userId,IdToken]);
     
   // Function for getting the temperature data from the DB
   useEffect(()=>{
     getTemperatureData()
-  },[userLocation])
+  },[userLocation,IdToken])
 
   //Hook for fetching user image on any userId change. 
   useEffect(() => {
     if(userId){
       fetchUserImage()
     }
-  },[userId])
+  },[userId,IdToken])
 
   /*
     Sets a new a websocket when the component renders
@@ -66,7 +66,7 @@ const AppProvider = ({ children }:any) => {
     if (userId) {
       SettingWebsocket();
     }
-  }, [userId]);
+  }, [userId,IdToken]);
   
   useEffect(() => {
     if(userId){
@@ -125,85 +125,91 @@ const AppProvider = ({ children }:any) => {
   const SettingWebsocket = async () => {
     if(IdToken){
       try{
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/websocket/generate-token`,{
+        axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/websocket/generate-token`,{
           headers: {
             authorization: `Bearer ${IdToken}`
           }
         })
-  
-        console.log(response.data)
-        let socket = new WebSocket(`wss://ffyvn54l83.execute-api.ap-south-1.amazonaws.com/production?token=${response.data.uniqueToken}`);
-        setWebSocket(socket)
-  
-        socket.onopen = (event) => {
-          console.log('Websocket connection established with userId: '+userId+"\n"+event);
-        };
+        .then((response)=>{
+          console.log(response.data)
+          let socket = new WebSocket(`wss://ffyvn54l83.execute-api.ap-south-1.amazonaws.com/production?token=${response.data.uniqueToken}`);
+          setWebSocket(socket)
     
-        socket.onmessage = (event) => {
-          const SocketData = JSON.parse(event.data);
-          
-          // Handle data from the server, including the 'updatedData' field, as needed
-          console.log('Received data from the server: \n'+ JSON.stringify(SocketData) 
-          +"eventName: \n"+SocketData.eventName+"\n"
-          // +"SoH: "+SocketData.updatedData.vehicles_processed_data[vehicleData[0]?.id]?.
-          )
-    
-          setName(SocketData.updatedData.name)
-          setUserCountry(SocketData.updatedData.country)
-          setOwnerType(SocketData.updatedData.owner_type)
-          setUserEmail(SocketData.updatedData.email)
-          setUserCity(SocketData.updatedData.city ? SocketData.updatedData.city : "")
-          setUserState(SocketData.updatedData.state ? SocketData.updatedData.state : "")
-          setVehicleData(SocketData.updatedData.vehicles)
-          setVehicleCalcultedData(SocketData.updatedData.vehicles_processed_data)
-        };
-    
-        socket.onerror = async (event:any) => {
-          console.error('WebSocket Error:', event);
-          
-          if(!userId){
-            socket.close();
-          }
-          else {
-            switch (event.code){
-              case 1000:
-                console.log('error code 1000.')
-              break;
-              case 1006:
-                await getSession()
-                socket.close()
-                // window.location.reload()
-                console.log('error code 1006.')
-              break;
+          socket.onopen = (event) => {
+            console.log('Websocket connection established with userId: '+userId+"\n"+event);
+          };
+      
+          socket.onmessage = (event) => {
+            const SocketData = JSON.parse(event.data);
+            
+            // Handle data from the server, including the 'updatedData' field, as needed
+            console.log('Received data from the server: \n'+ JSON.stringify(SocketData) 
+            +"eventName: \n"+SocketData.eventName+"\n"
+            // +"SoH: "+SocketData.updatedData.vehicles_processed_data[vehicleData[0]?.id]?.
+            )
+      
+            setName(SocketData.updatedData.name)
+            setUserCountry(SocketData.updatedData.country)
+            setOwnerType(SocketData.updatedData.owner_type)
+            setUserEmail(SocketData.updatedData.email)
+            setUserCity(SocketData.updatedData.city ? SocketData.updatedData.city : "")
+            setUserState(SocketData.updatedData.state ? SocketData.updatedData.state : "")
+            setVehicleData(SocketData.updatedData.vehicles)
+            setVehicleCalcultedData(SocketData.updatedData.vehicles_processed_data)
+          };
+      
+          socket.onerror = async (event:any) => {
+            console.error('WebSocket Error:', event);
+            
+            if(!userId){
+              socket.close();
             }
+            else {
+              switch (event.code){
+                case 1000:
+                  console.log('error code 1000.')
+                break;
+                case 1006:
+                  await getSession()
+                  socket.close()
+                  // window.location.reload()
+                  console.log('error code 1006.')
+                break;
+              }
+            }
+          };
+      
+          socket.onclose = async (event) => {
+            console.log('Websocket connection closed with userId and event: ' + userId, event);
+      
+            // Optionally, you can attempt to reopen the connection here.
+            // You can also handle different close codes and reasons.
+            console.log('Trying to reconnect to the websocket')
+            if(userId){
+              console.log('userId present'+ userId)
+              // await UpdateIdToken()
+              // window.location.reload()
+              // socket = null
+              setWebSocket(null)
+              setTimeout(SettingWebsocket, 5000)
+            }
+            else{
+              setWebSocket(null)
+            }
+          };
+        })
+        .catch((error)=>{
+          UpdateIdToken();
+          console.log("Websocket Error"+error+"\n"+"error_message: "+error.message);
+          setWebSocket(null)
+          setTimeout(SettingWebsocket, 5000)
+          if(error.message === 'Forbidden: Invalid token'){
+            window.location.reload()
           }
-        };
-    
-        socket.onclose = async (event) => {
-          console.log('Websocket connection closed with userId and event: ' + userId, event);
-    
-          // Optionally, you can attempt to reopen the connection here.
-          // You can also handle different close codes and reasons.
-          console.log('Trying to reconnect to the websocket')
-          if(userId){
-            console.log('userId present'+ userId)
-            // await UpdateIdToken()
-            // window.location.reload()
-            // socket = null
-            setWebSocket(null)
-            setTimeout(SettingWebsocket, 5000)
-          }
-          else{
-            setWebSocket(null)
-          }
-        };
+        })
       }
       catch(error){
-        await getSession()
-        // window.location.reload()
-        console.log("Websocket Error")
-        setWebSocket(null)
-        setTimeout(SettingWebsocket, 5000)
+        console.log('In the outer catch websocket error.')
       }
     }
     else{
@@ -223,7 +229,9 @@ const AppProvider = ({ children }:any) => {
     // else{
     // setIdToken(session.idToken.jwtToken)
     // }
-    localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`,session.idToken.jwtToken)
+    localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.accessToken`,session.getAccessToken().getJwtToken());
+    localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.refreshToken`,session.getRefreshToken().getToken());
+    localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`,session.getIdToken().getJwtToken())
   }
 
   /* 

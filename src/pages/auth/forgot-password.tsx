@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { ForgotPassword } from '@/components/auth'
 import { useTheme } from 'next-themes'
+import { PagesLayout } from '@/layouts';
 
 function ForgotPasswordPage() {
   
@@ -10,7 +11,9 @@ function ForgotPasswordPage() {
   })
   
   return (
-    <ForgotPassword/>
+    <PagesLayout>
+      <ForgotPassword/>
+    </PagesLayout>
   )
 }
 
