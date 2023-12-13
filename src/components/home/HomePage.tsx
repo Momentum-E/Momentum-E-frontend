@@ -145,13 +145,13 @@ const HomePage = () => {
         <section id='About_Us' className="">  
           <div className="flex bg-black sm:flex-col md:flex-row w-full border border-gray-700">
             {/* bg-background-flowing-cyber-dots bg-cover bg-no-repeat */}
-            <div className="flex flex-col sm:py-10 md:pt-0 md:w-[40%] space-y-4 px-10 items-center justify-center text-left border-r border-gray-700">
+            <div className="flex flex-col sm:py-8 md:pt-0 md:w-[40%] space-y-4 px-10 items-center justify-center text-left border-r border-gray-700">
               <h2 className='text-me-green-200 font-medium text-3xl'>
-                Manage your EV with confidence.
+                Manage your EV with confidence
               </h2>
-              <span className='text-white-100 text-lg leading-relaxed'>
+              {/* <span className='text-white-100 text-lg leading-relaxed'>
                 I am a paragraph. Click here to add your own text and edit me. It is easy. Just click “Edit Text” or double click me to add your own content and make changes to the font.
-              </span>
+              </span> */}
             </div>
 
             <div className="flex items-center justify-center md:-translate-y-12 pb-10 md:mx-auto md:my-auto">
@@ -162,24 +162,24 @@ const HomePage = () => {
       </Reveal>
       
       {/* bg-background-shallow-depth-field bg-cover bg-top bg-no-repeat */}
-      <Reveal>
+      {/* <div className="absolute -translate-y-16 rounded-full w-full h-full bg-me-green-100/30 blur-[120px]"></div> */}
+      {/* <Reveal>
         <section id='Our_Numbers' className="relative py-44">
-          <div className="absolute -translate-y-16 rounded-full w-full h-full bg-me-green-100/30 blur-[120px]"></div>
           <div className="flex flex-col items-center space-y-10 sm:px-6 lg:px-16">
             <CompanyStats/>
           </div>
         </section>
-      </Reveal>
+      </Reveal> */}
 
       <Reveal>
-        <section id='Get_Started' className="pb-16">  
+        <section id='Get_Started' className="pb-16 pt-20">  
           {/* Set a background for this div */}
           <div className="flex h-screen md:flex-row-reverse sm:flex-col-reverse w-full border border-gray-700">
             <div className="flex flex-col bg-black h-full sm:py-10 md:pt-0 md:w-[40%] p-10 items-center justify-center text-left border-l border-gray-700">
-              <span className="text-white-100 text-lg font-light leading-relaxed mb-6">
+              {/* <span className="text-white-100 text-lg font-light leading-relaxed mb-6">
                 I am a paragraph. Click here to add your own text and edit me. It is easy. Just click “Edit Text” or double click me to add your own content and make changes to the font.
-              </span>
-              <Link className='mr-auto border-2 border-me-green-200 hover:border-black hover:bg-me-green-200  rounded-xl p-2 font-normal text-base text-me-green-200 hover:text-black' href={'/pricing'}>
+              </span> */}
+              <Link className='mr-auto border-2 border-me-green-200 hover:border-black hover:bg-me-green-200  rounded-xl p-2.5 font-normal text-base text-me-green-200 hover:text-black' href={'/pricing'}>
                 Get Started
               </Link>
             </div>

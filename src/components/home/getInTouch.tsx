@@ -14,8 +14,9 @@ const getInTouch = () => {
     // }
 
     return (
-    // <>
-      <div id='Get_In_Touch' className=" flex flex-row mx-auto space-x-5 rounded-lg py-4 px-4 mb-16 max-w-xl bg-white-100">
+    <>
+      <div id='Get_In_Touch' className="relative flex flex-row mx-auto space-x-5 rounded-lg py-4 px-4 mb-16 max-w-xl bg-white-100">
+        <div className="absolute -translate-y-1/3 -translate-x-12 rounded-full w-[800px] h-[800px] bg-me-green-100/30 blur-[120px]"></div>
         <div className="flex flex-1 flex-col space-y-5 justify-between h-full w-full text-sm text-[#060E02]">
           <h2 className='text-black text-xl font-bold text-left'>GET IN TOUCH WITH US</h2>
           <p className=''>
@@ -32,14 +33,14 @@ const getInTouch = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
             </svg>
           </button> */}
-          <a href="mailto:info@momentum-e.com" className="rounded-md bg-me-green-200 px-4 py-2 font-medium text-white hover:bg-me-green-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-[#060E02]">
+          <a href="mailto:info@momentum-e.com" className="group rounded-md bg-me-green-200 px-4 py-2 font-medium text-white hover:bg-me-green-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-[#060E02] group-hover:rotate-45">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
             </svg>
           </a>
         </div>
       </div>
-
+    </>
       // <Transition appear show={isOpen} as={Fragment}>
       //   <Dialog as="div" className="relative z-10" onClose={()=>setIsOpen(false)}>
       //     <Transition.Child
@@ -147,7 +148,6 @@ const getInTouch = () => {
       //     </div>
       //   </Dialog>
       // </Transition> 
-    // </>
   )
 }
 

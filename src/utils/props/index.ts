@@ -253,16 +253,6 @@ export type HeadingProps = {
   tertiaryHeading?: string;
 };
 
-export type ItemCardProps = {
-  // ref: (node?: Element | null | undefined) => void;
-  // controls:any;
-  heading?: string;
-  description?: string;
-  imageSource?:any,
-  imageAlt?:any,
-  imageClassname?:string,
-};
-
 export type AuthInputProps = {
   outerDiv:string | undefined;
   labelName:string;

@@ -49,7 +49,15 @@ const AboutProduct = () => {
           imageAlt='EV Fleets'
           imageClassname='h-11 w-11'
           heading="EV Fleets"
-          description="Optimize costs. Increase battery life. Reduce fleet downtime."
+          description={
+            <span>
+              Optimize costs.
+              <br/>
+              Increase battery life.
+              <br/>
+              Reduce fleet downtime.
+            </span>
+          }
         />
 
         {/* Grid 2 */}
@@ -59,7 +67,7 @@ const AboutProduct = () => {
           imageSource={battery_insight_1}
           imageAlt='Plan for Second life'
           imageClassname='h-11 w-11'
-          heading="EV Owner"
+          heading="Plan for second life"
           description="Understand degradation history to plan for second life of batteries"
         />
         <div className="hidden md:block md:p-5"></div>
@@ -82,7 +90,7 @@ const AboutProduct = () => {
           imageAlt='Battery Recyclers'
           imageClassname='h-11 w-11'
           heading="Battery Recyclers"
-          description="Partner with us to widen your supply chain."
+          description="Partner with us to widen your supply chain"
         />
 
         {/* Grid 4 */}
@@ -90,7 +98,7 @@ const AboutProduct = () => {
           // ref={ref}
           // controls={controls}
           imageSource={momentum_e_1}
-          imageAlt='Digital Company'
+          imageAlt='Completely Digital'
           imageClassname='h-11 w-11'
           heading="Company Digital"
           description="Pure-play software platform. No aftermarket hardware needed."

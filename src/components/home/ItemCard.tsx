@@ -1,11 +1,16 @@
 import React from 'react';
-import { useAnimation, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from 'next/image';
-import { ItemCardProps } from '@/utils/props';
+
+type ItemCardProps = {
+  heading?: string;
+  description?: string|React.JSX.Element;
+  imageSource?:any,
+  imageAlt?:any,
+  imageClassname?:string,
+};
 
 const ItemCard = ({ 
-  // ref,
-  // controls,
   heading, 
   description,
   imageSource,

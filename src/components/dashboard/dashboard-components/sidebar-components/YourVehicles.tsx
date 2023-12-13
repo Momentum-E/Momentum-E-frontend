@@ -9,7 +9,7 @@ const YourVehicles = ({
     isTab,
     page,
 }:YourVehicleProps) => {
-    let [vehicleId,setvehicleId]=useState<string>() 
+    // let [vehicleId,setvehicleId]=useState<string>() 
     const router = useRouter()
 
     // // Function for deleting a single vehicle. 
@@ -21,21 +21,24 @@ const YourVehicles = ({
     // const {filteredVehicleData} = useAppContext()
 
     // useEffect(()=>{
-        const onVehicleClick = useCallback((vid:string) => {
-            // if(vehicleId){
-            if(vid){
-                // filteredVehicleData(vehicleId)
-                setvehicleId(vid)
-                router.replace(`/dashboard/vehicles/${vehicleId}`)
-                setIsOpen(!isTab)
-            }
-        },[])
+    //     const onVehicleClick = useCallback(() => {
+    //         if(vehicleId){
+    //         // if(vid){
+    //             // filteredVehicleData(vehicleId)
+    //             router.replace(`/dashboard/vehicles/${vehicleId}`)
+    //             setIsOpen(!isTab)
+    //         }
+    //     },[])
     //     onVehicleClick()
     // },[vehicleId])
 
-    // useEffect(()=>{
-    //     console.log(page)
-    // })
+    const onVehicleClick = useCallback((vid:string) => {
+        if(vid){
+            // setvehicleId(vid)
+            router.replace(`/dashboard/vehicles/${vid}`)
+            setIsOpen(!isTab)
+        }
+    },[])
 
     return (
       <div className='h-full'>
@@ -58,6 +61,7 @@ const YourVehicles = ({
                                 className={`${page===`vehicles / ${data.information.vin}` ? `active `:` `} 
                                 group dark:text-white-100 link flex justify-between md:justify-start`}>
                                     <button
+                                    // onClick={()=>setvehicleId(data.id)}
                                     onClick={()=>onVehicleClick(data.id)}
                                     className="px-2 h-full w-full overflow-hidden text-left overflow-ellipsis group-hover:mr-2"
                                     >

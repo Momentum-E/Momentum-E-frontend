@@ -62,8 +62,8 @@ const Heading: React.FC<HeadingProps> = ({
         transition={transition}
         className="sm:text-5xl sm:font-medium md:text-left md:text-[5rem] md:font-medium md:leading-tight xl:text-8xl"
       >  
-        <span className="text-me-green-200 cursor-normal"> AI-led battery health </span> 
-        <span className="">and EV fleet management</span>
+        <span className="text-me-green-200 cursor-normal">AI-Driven Battery analytics{" "}</span> 
+        <span className="">and EV fleet management platform</span>
       </motion.h1>
 
       <motion.h2
