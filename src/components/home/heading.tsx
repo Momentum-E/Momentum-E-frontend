@@ -52,7 +52,7 @@ const Heading: React.FC<HeadingProps> = ({
     //   </h1>
     // </>
     <div className="relative sm:w-full sm:px-6 sm:py-20 md:pt-20 lg:px-16 lg:w-3/4">
-      <div className="absolute translate-y-12 translate-x-10 rounded-full w-full h-full bg-me-green-100/40 blur-[120px]"></div>
+      <div className="absolute md:translate-y-12 md:translate-x-10 rounded-full w-full h-full -z-10 bg-me-green-100/40 blur-[120px]"></div>
       
       <motion.h1 
         variants={variants}
@@ -60,7 +60,7 @@ const Heading: React.FC<HeadingProps> = ({
         initial="hidden"
         animate={controls}
         transition={transition}
-        className="sm:text-5xl sm:font-medium md:text-left md:text-[5rem] md:font-medium md:leading-tight xl:text-8xl"
+        className="sm:text-5xl sm:font-medium md:text-left md:text-[4.5rem] md:font-medium md:leading-tight xl:text-8xl"
       >  
         <span className="text-me-green-200 cursor-normal">AI-Driven Battery analytics{" "}</span> 
         <span className="">and EV fleet management platform</span>

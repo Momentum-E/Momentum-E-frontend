@@ -35,7 +35,7 @@ const ChargingPattern = ({
                 <Progress 
                     type="dashboard" 
                     percent={(batteryLevel!==null) ? batteryLevel : undefined} 
-                    status='exception' 
+                    format = {() => " "}
                     strokeLinecap="round"
                     size={200}
                     strokeColor={{ '0%': 'rgba(198, 222, 65, 0.00)', '100%': '#C6DE41' }} 

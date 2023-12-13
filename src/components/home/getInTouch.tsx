@@ -1,5 +1,5 @@
-import React, {Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react';
+import React from 'react'
+// import { Dialog, Transition } from '@headlessui/react';
 
 const getInTouch = () => {
 
@@ -14,9 +14,9 @@ const getInTouch = () => {
     // }
 
     return (
-    <>
+    <div className='relative'>
+      <div className="absolute md:-translate-y-1/3 md:-translate-x-12 rounded-full sm:w-[600px] sm:h-[600px] bg-me-green-100/30 md:-z-10 blur-[120px]"></div>
       <div id='Get_In_Touch' className="relative flex flex-row mx-auto space-x-5 rounded-lg py-4 px-4 mb-16 max-w-xl bg-white-100">
-        <div className="absolute -translate-y-1/3 -translate-x-12 rounded-full w-[800px] h-[800px] bg-me-green-100/30 blur-[120px]"></div>
         <div className="flex flex-1 flex-col space-y-5 justify-between h-full w-full text-sm text-[#060E02]">
           <h2 className='text-black text-xl font-bold text-left'>GET IN TOUCH WITH US</h2>
           <p className=''>
@@ -40,7 +40,7 @@ const getInTouch = () => {
           </a>
         </div>
       </div>
-    </>
+    </div>
       // <Transition appear show={isOpen} as={Fragment}>
       //   <Dialog as="div" className="relative z-10" onClose={()=>setIsOpen(false)}>
       //     <Transition.Child

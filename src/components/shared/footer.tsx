@@ -74,7 +74,7 @@ const Footer = ({
       <div
         className="flex pb-5 px-5 m-auto text-gray-100 text-md flex-col
           md:flex-row max-w-7xl">
-        <div className="mt-2">© Copyright Momentech 2023. All Rights Reserved.</div>
+        <div className="mt-2">© Copyright Momentech Solutions Private Limited 2023. All Rights Reserved.</div>
       </div>
     </div>
   ):
