@@ -1,7 +1,7 @@
 import React from 'react';
-import Link from 'next/link'
+// import Link from 'next/link'
 
-import { Reveal, Heading, CompanyStats, AboutProduct ,GetInTouch } from './';
+import { Reveal, Heading, AboutProduct ,GetInTouch } from './';
 
 const HomePage = () => {
   return (
@@ -171,20 +171,15 @@ const HomePage = () => {
         </section>
       </Reveal> */}
 
-      <Reveal>
+      {/* <Reveal>
         <section id='Get_Started' className="pb-16 pt-20">  
-          {/* Set a background for this div */}
           <div className="flex h-screen md:flex-row-reverse sm:flex-col-reverse w-full border border-gray-700">
             <div className="flex flex-col bg-black h-full sm:py-10 md:pt-0 md:w-[40%] p-10 items-center justify-center text-left border-l border-gray-700">
-              {/* <span className="text-white-100 text-lg font-light leading-relaxed mb-6">
-                I am a paragraph. Click here to add your own text and edit me. It is easy. Just click “Edit Text” or double click me to add your own content and make changes to the font.
-              </span> */}
               <Link className='mr-auto border-2 border-me-green-200 hover:border-black hover:bg-me-green-200  rounded-xl p-2.5 font-normal text-base text-me-green-200 hover:text-black' href={'/pricing'}>
                 Get Started
               </Link>
             </div>
 
-            {/* bg-background-globe bg-cover bg-center bg-no-repeat  */}
             <div className="flex items-center justify-center h-full bg-background-globe bg-cover bg-center bg-no-repeat md:p-14 md:pt-0 md:mx-auto md:my-auto">
               <h2 className='text-white-100 font-medium text-3xl text-center'>
                 Are You Ready to Accelerate Your Business?
@@ -192,7 +187,7 @@ const HomePage = () => {
             </div>
           </div>
         </section>
-      </Reveal>
+      </Reveal> */}
       
       <Reveal>
         <GetInTouch/>
