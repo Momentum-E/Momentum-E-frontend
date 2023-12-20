@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react'
-import { AppContext } from '@/context/userContext';
-import { AccountContext } from '@/context/account';
+import { AppContext } from '@/context/UserContext';
+import { AccountContext } from '@/context/AccountContext';
 
 import { DashboardLayout } from '@/layouts/';
 import {Loader} from '@/components/shared';

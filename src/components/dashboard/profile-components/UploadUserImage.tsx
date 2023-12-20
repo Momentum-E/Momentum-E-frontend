@@ -35,17 +35,6 @@ const UploadUserImage:React.FC<UploadUserImageProps> = ({
             return
         }
 
-        // let data = {
-        //     imageName: userId,
-        //     type: `image/${imageFileType}`,
-        // }
-
-        // let AxiosHeaders = {
-        //     headers:{
-        //         'Content-Type': 'application/json',
-        //         authorization: `Bearer ${idToken}`,
-        //     }
-        // }
         let config = {
             method:"post",
             url:`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/users/image`,

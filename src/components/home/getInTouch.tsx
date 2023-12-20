@@ -17,7 +17,7 @@ const getInTouch = () => {
     return (
     <>
       <div id='Get_In_Touch' className="relative flex flex-row mx-auto space-x-5 rounded-lg py-4 px-4 my-16 max-w-xl bg-white-100">
-        <div className="absolute -translate-y-1/3 -translate-x-12 rounded-full w-[800px] h-[800px] bg-me-green-100/30 blur-[120px]"></div>
+        <div className="absolute -translate-y-1/3 -translate-x-12 rounded-full w-[400px] h-[400px] bg-me-green-100/30 blur-[120px]"></div>
         <div className="flex flex-1 flex-col space-y-5 justify-between h-full w-full text-sm text-[#060E02]">
           <h2 className='text-black text-xl font-bold text-left'>GET IN TOUCH WITH US</h2>
           <p className=''>

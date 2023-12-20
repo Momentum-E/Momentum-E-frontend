@@ -1,7 +1,7 @@
 import React, { Fragment, useContext } from 'react'
 import { useTheme } from 'next-themes';
 import { Popover, Transition } from '@headlessui/react';
-import { AppContext } from '@/context/userContext';
+import { AppContext } from '@/context/UserContext';
 
 const SetValue = () => {
 

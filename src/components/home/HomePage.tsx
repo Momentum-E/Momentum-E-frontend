@@ -128,10 +128,10 @@ const HomePage = () => {
     //     </div>
     //   </div> */}
     // </div>
-    <main className=" text-white-100 mx-auto sm:px-4 md:px-14 lg:px-20">
+    <main className=" text-white-100 mx-auto sm:px-4 md:px-14 lg:px-20 overflow-x-clip">
       {/* Section 1 into */}
       {/* bg-background-lines-dots bg-cover bg-center bg-no-repeat */}
-      <section id='' className="flex flex-col md:h-[110vh] md:space-y-7">
+      <section id='Heading' className="flex flex-col md:h-[110vh] md:space-y-7">
         {/* <div className="h-screen relative w-full overflow-hidden flex flex-col items-center justify-center pointer-events-none"> */}
           {/* <div className="absolute inset-0 w-full h-full  pointer-events-none" /> */}
           {/* <BoxContainer/> */}

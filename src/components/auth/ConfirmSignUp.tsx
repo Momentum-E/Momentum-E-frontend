@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import userPool from '../../context/user-pool/user-pool';
 // import { useRouter } from 'next/router';
-import { useAccountContext } from '@/context/account';
+import { useAccountContext } from '@/context/AccountContext';
 
 type ConfirmSignUpProps = {
     password?:string;

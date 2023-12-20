@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import { AccountContext } from './account';
+import { AccountContext } from './AccountContext';
 
 type SubscriptionContextProps = {
   subscriptionData:subscriptionDataProps|undefined;

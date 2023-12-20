@@ -1,7 +1,7 @@
 import React from 'react'
 import { vehicleInfoProps } from '@/utils/props';
-import Image from 'next/image'
-import { audi_e_tron_9_black } from '@/assets/images'
+// import Image from 'next/image'
+// import { audi_e_tron_9_black } from '@/assets/images'
 
 const  VehicleInfo = ({
   Odometer,

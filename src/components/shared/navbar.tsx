@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import { useAccountContext } from '@/context/account';
+import { useAccountContext } from '@/context/AccountContext';
 
 import { SidebarLightLogo } from '@/utils/sidebar_icons';
 
@@ -76,16 +76,19 @@ export default function NavBar() {
               (
                 <div className="mt-3 space-y-2 lg:hidden md:inline-block">
                   <Link
+                    // data-testid="pricing-nav"
                     href="/pricing"
                     className="px-4 py-2 text-white-100 hover:text-indigo-200">
                     Pricing
                   </Link>
                   <Link
+                    // data-testid="login-nav"
                     href="/auth/login"
                     className="inline-block w-full px-4 py-2 text-center text-white-100 rounded-md shadow hover:bg-gray-700/4">
                     Log In
                   </Link>
                   <Link
+                    // data-testid="register-nav"
                     href="/auth/register"
                     className="inline-block w-full px-4 py-2 text-center text-white-100 rounded-md shadow bg-gray-700/40">
                     Sign Up
@@ -95,8 +98,9 @@ export default function NavBar() {
               (
                 <div className="">
                   <Link
-                  href="/dashboard/"
-                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
+                    // data-testid="dashboard-nav"
+                    href="/dashboard/"
+                    className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
                     Dashboard
                   </Link>
                 </div>
@@ -109,6 +113,7 @@ export default function NavBar() {
         {/* Navbar in desktop mode */}
         <div className="hidden md:flex rounded-2xl space-x-5 mx-5 justify-center bg-gray-800/30">
           <Link
+            data-testid="home-nav"
             href="/"
             className="px-4 py-3 text-white-100 shadow rounded-s-xl hover:border-b-2 hover:border-me-green-200">
             Home
@@ -123,16 +128,19 @@ export default function NavBar() {
             (
               <>
                 <Link
+                  data-testid="login-nav"
                   href="/auth/login"
                   className="px-4 py-3 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
                   Log In
                 </Link>
                 <Link
+                  data-testid="register-nav"
                   href="/auth/register"
                   className="px-4 py-3 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
                   Sign Up
                 </Link>
                 <Link
+                  data-testid="pricing-nav"
                   href="/pricing"
                   className="ease-in-out duration-300 flex items-center justify-center px-4 py-3 group text-white-100 shadow bg-[#1B1C1E] hover:bg-me-green-200 rounded-xl">
                   <span className="flex flex-row items-center justify-around group-hover:text-[#1B1C1E]">
@@ -149,11 +157,13 @@ export default function NavBar() {
             ( 
               <>
                 <Link
+                  data-testid="pricing-nav"
                   href="/pricing"
                   className="px-4 py-3 text-white-100 shadow  hover:border-b-2 hover:border-me-green-200">
                   Pricing
                 </Link>
                 <Link
+                  data-testid="dashboard-nav"
                   href="/dashboard"
                   className="ease-in-out duration-300 flex items-center justify-center px-4 py-3 group text-white-100 shadow bg-[#1B1C1E] hover:bg-me-green-200 rounded-xl">
                   <span className="flex flex-row items-center justify-around group-hover:text-[#1B1C1E]">

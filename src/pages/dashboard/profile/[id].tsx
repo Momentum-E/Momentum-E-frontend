@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { AppContext } from '@/context/userContext';
-import { AccountContext } from '@/context/account';
+import { AppContext } from '@/context/UserContext';
+import { AccountContext } from '@/context/AccountContext';
 
 import { DashboardLayout } from '@/layouts';
 import {

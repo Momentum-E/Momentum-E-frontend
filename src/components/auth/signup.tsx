@@ -12,7 +12,7 @@ import {
   AuthInput, 
   AuthListBox 
 } from './AuthComponents';
-import ConfirmSignUp from '@/pages/auth/confirmSignup';
+import ConfirmSignUp from '@/pages/auth/confirm-signup';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -36,10 +36,6 @@ const Signup = () => {
     confirmPassword: '',
   });
   const [Name, setName] = useState('');
-  
-  // useEffect(() => {
-  //   console.log(router.query)
-  // }, [])
   
   // const [subscriptionType, setSubscriptionType] = useState<{type:string}>(
   //   (priceId === subscription_type[0].type)?
@@ -183,7 +179,7 @@ const Signup = () => {
       {
         verifyProcess === false ? 
         (
-          <div className="isolate px-6 py-24 sm:py-24 lg:px-8">
+          <section id='sign_up' className="isolate px-6 py-24 sm:py-24 lg:px-8">
             <div className="mx-auto max-w-2xl pb-10 text-center">
               <h2 className="text-3xl font-bold tracking-tight text-white-100 sm:text-4xl">
                 Sign Up
@@ -195,6 +191,7 @@ const Signup = () => {
             </div>
 
             <form
+              data-testid="register-form"
               autoComplete='off'
               action="#"
               method="POST"
@@ -357,18 +354,6 @@ const Signup = () => {
                   <div>
                     {city && (
                       <div>
-                        {/* <label
-                          htmlFor="city"
-                          className="block text-sm leading-6 text-black dark:text-white-100">
-                          City
-                          <span className="text-red-500 pl-1">*</span>
-                        </label>
-                        <AuthSelector
-                          id={'city'}
-                          data={cityData}
-                          selected={city}
-                          setSelected={setCity}
-                        /> */}
                         <AuthListBox
                           isRequired={true}
                           id={'city'}
@@ -440,7 +425,7 @@ const Signup = () => {
               </div>
             </form>
             <ToastContainer />
-          </div>
+          </section>
         ) : 
         (
           <ConfirmSignUp 

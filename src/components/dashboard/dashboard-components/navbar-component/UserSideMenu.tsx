@@ -2,8 +2,8 @@ import React,{ Fragment, useContext } from 'react'
 import  { Menu, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router';
 import { UserImage } from '@/components/dashboard/profile-components/UserImage';
-import { useAccountContext } from '@/context/account';
-import { AppContext } from '@/context/userContext';
+import { useAccountContext } from '@/context/AccountContext';
+import { AppContext } from '@/context/UserContext';
 
 import { UserSideMenuProps } from '@/utils/props';
 

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useTheme } from 'next-themes';
-import { AppContext } from '@/context/userContext';
-import { AccountContext } from '@/context/account';
+import { AppContext } from '@/context/UserContext';
+import { AccountContext } from '@/context/AccountContext';
 import { SubscriptionContext } from '@/context/subscriptionContext';
 
 import {

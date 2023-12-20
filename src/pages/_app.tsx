@@ -2,8 +2,8 @@ import React from 'react';
 import '@/styles/globals.css';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
-import { AccountProvider} from '@/context/account';
-import { AppProvider } from '@/context/userContext';
+import { AccountProvider} from '@/context/AccountContext';
+import { AppProvider } from '@/context/UserContext';
 import { SubscriptionProvider } from '@/context/subscriptionContext';
 import {ErrorBoundary} from '@/components/auth'
 

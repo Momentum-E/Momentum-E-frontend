@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useState } from 'react';
-import { useAccountContext } from '@/context/account';
+import { useAccountContext } from '@/context/AccountContext';
 // import { useSubscriptionContext } from '@/context/subscriptionContext';
 import Link from 'next/link';
 import { ToastContainer, toast } from 'react-toastify';
@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 // import { useRouter } from 'next/router';
 
-import ConfirmSignup from '@/pages/auth/confirmSignup';
+import ConfirmSignup from '@/pages/auth/confirm-signup';
 import AuthInput from '@/components/auth/AuthComponents/AuthInput';
 
 const SignIn = () => {
@@ -119,7 +119,7 @@ const SignIn = () => {
     {
       userConfirmed ? 
       (
-        <main className="w-full h-full py-14 min-h-screen">
+        <main data-testid="login-form" className="w-full h-full py-14 min-h-screen">
           <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
               <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white-100">
@@ -135,6 +135,7 @@ const SignIn = () => {
                 onSubmit={(event) => handleLogin(event)}>
 
                 <AuthInput
+                  data-testid="email-input"
                   outerDiv=''
                   labelName='Email'
                   labelFor='email'
@@ -148,6 +149,7 @@ const SignIn = () => {
                 />
 
                 <AuthInput
+                  data-testid="password-input"
                   outerDiv=''
                   labelName='Password'
                   labelFor='password'
@@ -161,6 +163,7 @@ const SignIn = () => {
                 />
 
                 <button
+                  data-testid="login-submit-btn"
                   type="submit"
                   className="flex justify-center w-full rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm">
                   Log In
@@ -193,7 +196,7 @@ const SignIn = () => {
         />
       )
     }
-    <ToastContainer />
+    <ToastContainer/>
     </>
   );
 };

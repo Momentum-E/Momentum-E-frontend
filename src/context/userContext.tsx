@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import { AccountContext } from './account';
+import { AccountContext } from './AccountContext';
 import { SubscriptionContext } from '@/context/subscriptionContext';
 import { 
   vehicleDataProps, 
@@ -45,19 +45,19 @@ const AppProvider = ({ children }:any) => {
   // Hook for fetching user details from the DB
   useEffect(() => {
     fetchUserDetails();
-  }, [userId,IdToken]);
+  }, [userId]);
     
   // Function for getting the temperature data from the DB
   useEffect(()=>{
     getTemperatureData()
-  },[userLocation,IdToken])
+  },[userLocation])
 
   //Hook for fetching user image on any userId change. 
   useEffect(() => {
     if(userId){
       fetchUserImage()
     }
-  },[userId,IdToken])
+  },[userId])
 
   /*
     Sets a new a websocket when the component renders
@@ -181,15 +181,13 @@ const AppProvider = ({ children }:any) => {
       
           socket.onclose = async (event) => {
             console.log('Websocket connection closed with userId and event: ' + userId, event);
-      
-            // Optionally, you can attempt to reopen the connection here.
+
             // You can also handle different close codes and reasons.
             console.log('Trying to reconnect to the websocket')
             if(userId){
               console.log('userId present'+ userId)
               // await UpdateIdToken()
               // window.location.reload()
-              // socket = null
               setWebSocket(null)
               setTimeout(SettingWebsocket, 5000)
             }
@@ -203,7 +201,9 @@ const AppProvider = ({ children }:any) => {
           console.log("Websocket Error"+error+"\n"+"error_message: "+error.message);
           setWebSocket(null)
           setTimeout(SettingWebsocket, 5000)
-          if(error.message === 'Forbidden: Invalid token'){
+          console.log("error.response: " + error.response)
+          if(error.response.status === 403){
+            console.log('Token expired, refreshing')
             window.location.reload()
           }
         })

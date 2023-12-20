@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { AccountContext } from '@/context/account';
+import { AccountContext } from '@/context/AccountContext';
 // import { AppContext } from '@/context/userContext';
 
 type ProtectedRouteProps = {

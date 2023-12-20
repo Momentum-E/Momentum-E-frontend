@@ -1,7 +1,7 @@
 import React, { useState,useEffect,useContext } from 'react';
 import { SidebarProps } from '@/utils/props';
 import axios from 'axios';
-import { AppContext } from '@/context/userContext';
+import { AppContext } from '@/context/UserContext';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
@@ -66,8 +66,14 @@ const Sidebar:React.FC<SidebarProps> = ({
       })
       .then((res) => {
         console.log(res.data);
-        const linkUrl = res.data.linkUrl;
-        router.push(linkUrl);
+        
+        if(res.data.title === 'Unauthorized' || res.data.title === 'Connections limit reached' || res.data.detail === 'Unauthorized for resource' || res.data.message === 'Unauthorized for resource' || res.data.error === 'https://docs.enode.io/problems/unauthorized'){
+          alert("There is some issue from our side. If the error persist contact us at info@momentum-e.com.")
+        }
+        else{
+          const linkUrl = res.data.linkUrl;
+          router.push(linkUrl);
+        }
       })
       .catch(async (err) => {
         setErrorNumber(errorNumber+1)

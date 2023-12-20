@@ -1,7 +1,6 @@
 import React from 'react'
 import axios from 'axios';
 import {useRouter} from 'next/router'
-import Link from 'next/link'
 
 type PricingCardProps = {
     title: string,
@@ -9,7 +8,6 @@ type PricingCardProps = {
     price: number,
     subsPeriod:string,
     features: string[],
-    // buttonText: string,
     buttonLink: string|undefined,
 }
 

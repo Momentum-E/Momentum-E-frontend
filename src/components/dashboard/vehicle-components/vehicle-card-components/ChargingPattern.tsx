@@ -33,7 +33,8 @@ const ChargingPattern = ({
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <Progress 
                     type="dashboard" 
-                    percent={(batteryLevel!==null) ? batteryLevel : undefined} 
+                    percent={(batteryLevel!==null) ? batteryLevel : undefined}
+                    format={() => ""} 
                     // status='exception' 
                     strokeLinecap="round"
                     size={200}
