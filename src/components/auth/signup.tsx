@@ -3,7 +3,7 @@ import userPool from '../../context/user-pool/user-pool';
 import Link from 'next/link';
 import { Switch } from '@headlessui/react';
 import axios from 'axios';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { City, Country, State } from 'country-state-city';
@@ -20,11 +20,10 @@ function classNames(...classes: string[]) {
 // const subscription_type = [{ type: 'Monthly' }, { type: 'Yearly' }];
 
 const Signup = () => {
-  const router = useRouter()
-  const {payment_status,result,email} = router.query
+  // const router = useRouter()
+  // const {payment_status,result,email} = router.query
   const countryData = Country.getAllCountries();
 
-  
   const [agreed, setAgreed] = useState(false);
   const [inputType,setInputType] = useState<'text'|'password'>('password')
   const [confirmInputType,setConfirmInputType] = useState('password')
@@ -50,16 +49,6 @@ const Signup = () => {
   // Setting the data for the particular country
   const [stateData, setStateData] = useState<any>();
   const [cityData, setCityData] = useState<any>();
-  
-  // function reducer(state:any,action:any){
-  //   if(action.type === 'countryInital'){
-  //     return {
-  //       countryInital: 
-  //     }
-  //   }
-  // }
-
-  // const [cityData,  setCityData] = useReducer(reducer, {countryInital: country?.isoCode})
 
   // Setting the data of the user Location 
   const [country, setCountry] = useState<string|any>("");
@@ -409,6 +398,7 @@ const Signup = () => {
 
               <div className="mt-10">
                 <button
+                  data-testid="register-submit-btn"
                   disabled={
                     input.password === input.confirmPassword && agreed
                       ? false
