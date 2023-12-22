@@ -1,22 +1,25 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { AccountContext } from './account';
+import { SubscriptionContext } from '@/context/subscriptionContext';
 import { 
   vehicleDataProps, 
   vehicleCalcultedDataProps, 
   UserContextProps, 
   temperatureDataProps
 } from '@/utils/props';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
+// import useSWR from 'swr'
 import { toast } from 'react-toastify'; 
 
 const AppContext = createContext({} as UserContextProps);
 
 const AppProvider = ({ children }:any) => {
-  const router = useRouter();
-  const { getSession } = useContext(AccountContext);
+  // const router = useRouter();
+  const { getSession, setIsAuthenticated, IdToken, user } = useContext(AccountContext);
+  const { getSubscriptionDetails } = useContext(SubscriptionContext);
 
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState<string|null>(user);
   const [name, setName] = useState<string>('');
   const [userOwnerType, setOwnerType] = useState<string>("");
   const [userCity, setUserCity] = useState<string>("");
@@ -25,11 +28,12 @@ const AppProvider = ({ children }:any) => {
   const [userLocation, setUserLocation] = useState<string>("");
   const [userImage, setUserImage] = useState<string>("")
   const [userEmail,setUserEmail] = useState<string>("")
+  const [unit, setUnit] = useState<string>('Km')
+
   const [vehicleData, setVehicleData] = useState<vehicleDataProps[]>([]);
   const [vehicleCalcultedData,setVehicleCalcultedData] = useState<Record<string,vehicleCalcultedDataProps>>()
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
   const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
-  const [unit, setUnit] = useState<string>('Km')
   const [isLoading, setIsLoading] = useState(true)
   const [isImageLoading, setIsImageLoading] = useState(true)  
   const [webSocket, setWebSocket] = useState<WebSocket|null>(null);
@@ -37,27 +41,23 @@ const AppProvider = ({ children }:any) => {
     minTemperature: null,
     maxTemperature: null,
   })
-  const [idToken,setIdToken] = useState<string|null>(null) 
 
+  // Hook for fetching user details from the DB
   useEffect(() => {
-    // const IdToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`)
-    // setIdToken(IdToken)
-    // console.log(idToken)
-    // if(userId){
     fetchUserDetails();
-    // }
-  }, [userId]);
+  }, [userId,IdToken]);
     
+  // Function for getting the temperature data from the DB
   useEffect(()=>{
     getTemperatureData()
-  },[userLocation])
+  },[userLocation,IdToken])
 
   //Hook for fetching user image on any userId change. 
   useEffect(() => {
     if(userId){
       fetchUserImage()
     }
-  },[userId])
+  },[userId,IdToken])
 
   /*
     Sets a new a websocket when the component renders
@@ -66,61 +66,55 @@ const AppProvider = ({ children }:any) => {
     if (userId) {
       SettingWebsocket();
     }
-  }, [userId]);
+  }, [userId,IdToken]);
   
   useEffect(() => {
     if(userId){
       console.log("userId: "+userId)
-      // console.log("vId: "+JSON.stringify(vehicleIdData?.information.vin))
       console.log(vehicleData)
     } 
   }, [userId])
-
-  // useEffect(()=>{
-  //   if(userId){
-  //     if(name===""||userOwnerType===""||userCountry===""){
-  //       router.replace(`/dashboard/profile/${userId}`)
-  //       // toast.info('Please fill your details first.')
-  //     }
-  //   }
-  // },[])
   
   // Hook for fetching the user details
   const fetchUserDetails =  async () => {
     try {
-      const session:any = await getSession();
-      console.log(session)
-      const IdToken = session.idToken.jwtToken
-      const userid = session.idToken.payload.sub;
-      setIdToken(IdToken)
-      setUserId(userid); 
-      const response = await axios.get(`http://localhost:5000/auth/users/${userid}`,{
-        headers: {
-          authorization:`Bearer ${IdToken}`
+      if(user !== null){
+        const response = await axios.get(`http://localhost:5000/auth/users/${user}`,{
+          headers: {
+            authorization:`Bearer ${IdToken}`
+          }
+        });  
+        await getSubscriptionDetails(response.data.email)
+        setName(response.data.name)
+        setOwnerType(response.data.owner_type)
+        setUserCity(response.data.city)
+        setUserState(response.data.state)
+        setUserCountry(response.data.country)
+        setUserLocation(`${
+          response.data.state === "" ? response.data.country
+          :response.data.city === "" ? response.data.state + ", " + response.data.country 
+          :response.data.city + ", " + response.data.country
+        }`)
+        setUserEmail(response.data.email)
+        if(userId){
+          setVehicleData(response.data.vehicles)
+          setVehicleCalcultedData(response.data.vehicles_processed_data)
+          // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
+          // setVehicleIdData(response.data.vehicles[0])
+          // setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
         }
-      });  
-      setName(response.data.name)
-      setOwnerType(response.data.owner_type)
-      setUserCity(response.data.city)
-      setUserState(response.data.state)
-      setUserCountry(response.data.country)
-      setUserLocation(`${
-        response.data.state === "" ? response.data.country
-        :response.data.city === "" ? response.data.state + ", " + response.data.country 
-        :response.data.city + ", " + response.data.country
-      }`)
-      setUserEmail(response.data.email)
-      if(userId){
-        setVehicleData(response.data.vehicles)
-        setVehicleCalcultedData(response.data.vehicles_processed_data)
-        // Setting vehicleIdData and vehicleCalcultedIdData as the first vehicle in the list
-        // setVehicleIdData(response.data.vehicles[0])
-        // setVehicleCalcultedIdData(response.data.vehicles_processed_data[response.data.vehicles[0].id])
+        setIsLoading(false)
       }
-      setIsLoading(false)
+      else{
+        const session:any = await getSession();
+        const userid = session.idToken.payload.sub;
+        setUserId(userid); 
+        console.log('user is null.')
+      }
     } 
     catch (error) {
-      console.error('Error, no user (userContext):', error);
+      console.log('Error, no user (userContext):', error);
+      setIsAuthenticated(false);
     }
   };
 
@@ -129,83 +123,93 @@ const AppProvider = ({ children }:any) => {
     returns the new socket
   */
   const SettingWebsocket = async () => {
-
-    const authToken = localStorage.getItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`);
-    
-    if(authToken){
+    if(IdToken){
       try{
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/websocket/generate-token`,{
+        axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/websocket/generate-token`,{
           headers: {
-            authorization: `Bearer ${authToken}`
+            authorization: `Bearer ${IdToken}`
           }
         })
-  
-        console.log(response.data)
-        const socket = new WebSocket(`wss://gav5fur5v0.execute-api.ap-south-1.amazonaws.com/development?token=${response.data.uniqueToken}`);
-        setWebSocket(socket)
-  
-        socket.onopen = (event) => {
-          console.log('Websocket connection established with userId: '+userId+"\n"+event);
-        };
+        .then((response)=>{
+          console.log(response.data)
+          let socket = new WebSocket(`wss://ffyvn54l83.execute-api.ap-south-1.amazonaws.com/production?token=${response.data.uniqueToken}`);
+          setWebSocket(socket)
     
-        socket.onmessage = (event) => {
-          const SocketData = JSON.parse(event.data);
-          
-          // Handle data from the server, including the 'updatedData' field, as needed
-          console.log('Received data from the server: \n'+ JSON.stringify(SocketData) 
-          +"eventName: \n"+SocketData.eventName+"\n"
-          // +"SoH: "+SocketData.updatedData.vehicles_processed_data[vehicleData[0]?.id]?.
-          )
-    
-          setName(SocketData.updatedData.name)
-          setUserCountry(SocketData.updatedData.country)
-          setOwnerType(SocketData.updatedData.owner_type)
-          setUserEmail(SocketData.updatedData.email)
-          setUserCity(SocketData.updatedData.city ? SocketData.updatedData.city : "")
-          setUserState(SocketData.updatedData.state ? SocketData.updatedData.state : "")
-          setVehicleData(SocketData.updatedData.vehicles)
-          setVehicleCalcultedData(SocketData.updatedData.vehicles_processed_data)
-        };
-    
-        socket.onerror = (event:any) => {
-          console.error('WebSocket Error:', event);
-          
-          if(!userId){
-            socket.close();
-          }
-          else {
-            switch (event.code){
-              case 1000:
-                console.log('error code 1000.')
-              break;
-              case 1006:
-                socket.close()
-                // SettingWebsocket();
-                console.log('error code 1006.')
-              break;
+          socket.onopen = (event) => {
+            console.log('Websocket connection established with userId: '+userId+"\n"+event);
+          };
+      
+          socket.onmessage = (event) => {
+            const SocketData = JSON.parse(event.data);
+            
+            // Handle data from the server, including the 'updatedData' field, as needed
+            console.log('Received data from the server: \n'+ JSON.stringify(SocketData) 
+            +"eventName: \n"+SocketData.eventName+"\n"
+            // +"SoH: "+SocketData.updatedData.vehicles_processed_data[vehicleData[0]?.id]?.
+            )
+      
+            setName(SocketData.updatedData.name)
+            setUserCountry(SocketData.updatedData.country)
+            setOwnerType(SocketData.updatedData.owner_type)
+            setUserEmail(SocketData.updatedData.email)
+            setUserCity(SocketData.updatedData.city ? SocketData.updatedData.city : "")
+            setUserState(SocketData.updatedData.state ? SocketData.updatedData.state : "")
+            setVehicleData(SocketData.updatedData.vehicles)
+            setVehicleCalcultedData(SocketData.updatedData.vehicles_processed_data)
+          };
+      
+          socket.onerror = async (event:any) => {
+            console.error('WebSocket Error:', event);
+            
+            if(!userId){
+              socket.close();
             }
+            else {
+              switch (event.code){
+                case 1000:
+                  console.log('error code 1000.')
+                break;
+                case 1006:
+                  await getSession()
+                  socket.close()
+                  // window.location.reload()
+                  console.log('error code 1006.')
+                break;
+              }
+            }
+          };
+      
+          socket.onclose = async (event) => {
+            console.log('Websocket connection closed with userId and event: ' + userId, event);
+      
+            // Optionally, you can attempt to reopen the connection here.
+            // You can also handle different close codes and reasons.
+            console.log('Trying to reconnect to the websocket')
+            if(userId){
+              console.log('userId present'+ userId)
+              // await UpdateIdToken()
+              // window.location.reload()
+              // socket = null
+              setWebSocket(null)
+              setTimeout(SettingWebsocket, 5000)
+            }
+            else{
+              setWebSocket(null)
+            }
+          };
+        })
+        .catch((error)=>{
+          UpdateIdToken();
+          console.log("Websocket Error"+error+"\n"+"error_message: "+error.message);
+          setWebSocket(null)
+          setTimeout(SettingWebsocket, 5000)
+          if(error.message === 'Forbidden: Invalid token'){
+            window.location.reload()
           }
-        };
-    
-        socket.onclose = async (event) => {
-          console.log('Websocket connection closed with userId and event: ' + userId, event);
-    
-          // Optionally, you can attempt to reopen the connection here.
-          // You can also handle different close codes and reasons.
-          console.log('Trying to reconnect to the websocket')
-          if(userId){
-            console.log('userId present'+ userId)
-            SettingWebsocket();
-          }
-          else{
-            setWebSocket(null)
-          }
-        };
+        })
       }
       catch(error){
-        const session:any = await getSession()
-        setIdToken(session.idToken.jwtToken)
-        SettingWebsocket()
+        console.log('In the outer catch websocket error.')
       }
     }
     else{
@@ -223,9 +227,11 @@ const AppProvider = ({ children }:any) => {
     //   console.log("Token similar: "+session.idToken.jwtToken === oldToken)
     // }
     // else{
-    setIdToken(session.idToken.jwtToken)
-    localStorage.setItem("CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken",session.idToken.jwtToken)
+    // setIdToken(session.idToken.jwtToken)
     // }
+    localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.accessToken`,session.getAccessToken().getJwtToken());
+    localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.refreshToken`,session.getRefreshToken().getToken());
+    localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${userId}.idToken`,session.getIdToken().getJwtToken())
   }
 
   /* 
@@ -237,17 +243,19 @@ const AppProvider = ({ children }:any) => {
     const currentDate = new Date()
     if(storedDate){
       const savedDate = new Date(storedDate)
-      if(userLocation){
+      if(userId && userLocation){
         if (!savedDate || (savedDate.getDate() <= currentDate.getDate() || savedDate.getMonth()<=savedDate.getMonth())) {
-          console.log(storedDate)
-          console.log(savedDate)
+          console.log({
+            Message:"Temperature data not found in local storage. Fetching from server.",
+            Stored_Date:storedDate,
+            Saved_Date:savedDate,
+          })
           // Fetch data from server
-          console.log('Fetching temperature data from server.')
           let config = {
             method: 'post',
             url:  `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/get-temperature`,
             headers: { 
-              authorization:`Bearer ${idToken}`
+              authorization:`Bearer ${IdToken}`
               // "Content-Type": "application/json"
             },
             data :{
@@ -282,12 +290,12 @@ const AppProvider = ({ children }:any) => {
           }
         }
       }
-      else{
-        if(userId){
-          router.replace(`/dashboard/profile/${userId}`)
-          toast.info('Please input your location.')
-        }
-      }
+      // else{
+      //   if(userId){
+      //     router.replace(`/dashboard/profile/${userId}`)
+      //     toast.info('Please input your location.')
+      //   }
+      // }
     }
   }
 
@@ -295,9 +303,9 @@ const AppProvider = ({ children }:any) => {
   const fetchUserImage = async () => {
     console.log('Fetching user image.')
     try{
-      axios.get(`http://localhost:5000/user-data/users/image/${userId}`,{
+      axios.get(`http://localhost:5000/user-data/users/image/${user}`,{
         headers: {
-          authorization: `Bearer ${idToken}`
+          authorization: `Bearer ${IdToken}`
         }
       })
       .then(async (response) => {
@@ -362,7 +370,6 @@ const AppProvider = ({ children }:any) => {
       isImageLoading,
       temperatureData,
       webSocket,
-      idToken,
       vehicleCalcultedIdData,
       vehicleIdData,
 

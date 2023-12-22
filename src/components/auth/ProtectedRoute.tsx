@@ -21,7 +21,8 @@ const ProtectedRoute = ({
         const session = await getSession();
       } catch (error) {
         // If there is no active session, redirect to the login page
-        router.replace('/auth/login/')
+        console.log("No active session, redirecting to login")
+        router.replace('/auth/login')
       }
     };
     // window.location.reload()

@@ -10,6 +10,22 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      'sm': '10px',
+      // => @media (min-width: 640px) { ... }
+
+      'md': '768px',
+      // => @media (min-width: 768px) { ... }
+
+      'lg': '1024px',
+      // => @media (min-width: 1024px) { ... }
+
+      'xl': '1280px',
+      // => @media (min-width: 1280px) { ... }
+
+      '2xl': '1536px',
+      // => @media (min-width: 1536px) { ... }
+    },
     colors: {
       transparent: 'transparent',
       'white': {
@@ -24,7 +40,10 @@ module.exports = {
       },
       'red':colors.red,
       'green':colors.green,
-      gray: colors.gray,
+      'gray': colors.gray,
+      'blue': colors.blue,
+      'neutral': colors.neutral,
+      'slate': colors.slate,
     },
     
     extend: {
@@ -33,7 +52,14 @@ module.exports = {
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         'dashboard-gradient': 'linear-gradient(157deg, #131315 0%, rgba(26, 31, 55, 0.00) 100%)',
         'dashboard-sidebar-image':"url('../assets/images/dashboard-need-help.png')",
-        'logo_whitw_nocap':"url('../assets/logos/src/assets/logos/logos/logo_white_nocap.png')"
+        // 'background-lines-dots-structure': "url('../assets/images/background-connecting-lines-dots-structure.jpg')",
+        // 'background-lines-dots': "url('../assets/images/background-connecting-lines-dots.jpg')",
+        // 'background-flowing-cyber-dots': "url('../assets/images/background-flowing-cyber-dots.jpg')",
+        // 'background-flowing-lines': "url('../assets/images/background-flowing-lines.jpg')",
+        'background-globe': "url('../assets/images/background-globe.jpg')",
+        // 'background-shallow-depth-field': "url('../assets/images/background-shallow-depth-field.jpg')",
+        // 'background-halftone-dots-design': "url('../assets/images/banner-with-halftone-dots-design.jpg')",
+        'logo_white_nocap':"url('../assets/logos/src/assets/logos/logos/logo_white_nocap.png')"
       },
       gridTemplateRows: {
         // Simple 8 row grid

@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useTheme } from 'next-themes';
 import { AppContext } from '@/context/userContext';
+import { AccountContext } from '@/context/account';
+import { SubscriptionContext } from '@/context/subscriptionContext';
 
 import {
   Sidebar,
@@ -18,14 +20,14 @@ const DashboardLayout = ({
   const isTab = useMediaQuery({ query: '(max-width:767px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
 
-
   const {
     isLoading,
     userId, 
     vehicleData,
-    name,
-    idToken,
+    name
   } = useContext(AppContext)
+  const { subscriptionData } = useContext(SubscriptionContext)
+  const { IdToken } = useContext(AccountContext)
   const {theme, setTheme} = useTheme()
   
   useEffect(() => {
@@ -34,7 +36,7 @@ const DashboardLayout = ({
     :
       setIsOpen(true)
   }, [isTab]);
-
+  
   useEffect(() => {
     setTheme(theme||'dark')
   },[theme])
@@ -43,7 +45,8 @@ const DashboardLayout = ({
     <ProtectedRoute>
       <div className='relative flex'>
         <Sidebar 
-          idToken={idToken}
+          NumberVehiclePaid={subscriptionData?.quantity}
+          idToken={IdToken}
           id={userId}
           isLoading={isLoading}
           vehicleData={vehicleData||[]} 
@@ -55,6 +58,7 @@ const DashboardLayout = ({
         />
         <div className="max-w-full flex-1 h-screen overflow-hidden">
           <DashboardNavbar 
+            isTab={isTab}
             name={name} 
             id={userId}
             page={page===undefined ? '' : page}

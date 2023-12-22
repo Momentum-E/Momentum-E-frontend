@@ -11,7 +11,7 @@ export type UserContextProps = {
   userState:string|undefined;
   userCountry:string|undefined;
   userLocation:string;
-  userId:string;
+  userId:string|null;
   vehicleCalcultedIdData: vehicleCalcultedDataProps | undefined;
   vehicleIdData: vehicleDataProps | undefined;
   userImage:string;
@@ -23,7 +23,7 @@ export type UserContextProps = {
   isImageLoading:boolean;
   temperatureData: temperatureDataProps;
   webSocket:WebSocket|null;
-  idToken:string|null
+  // idToken:string|null
 
   // State Functions
   setVehicleData:React.Dispatch<React.SetStateAction<vehicleDataProps[]>>
@@ -47,12 +47,13 @@ export type temperatureDataProps = {
 
 export type SelectorProps = {
   data: any;
-  selected: string;
+  selected: Record<any,any>;
   setSelected: React.Dispatch<string|any>;
   id: any;
 };
 
 export type SidebarProps = {
+  NumberVehiclePaid:number|undefined;
   id:string|any;
   idToken:string|null;
   isLoading:boolean;
@@ -102,7 +103,7 @@ export type VehicleUsageProps ={
 
 export type BatteryHealthProps = {
   SoH:number|undefined|null;
-  PrevMonthsSoH:(number | null)[];
+  PrevMonthsSoH:(number | null)[]|null[]|number[]|undefined;
 }
 
 export type BasicCarDataProps = {
@@ -112,7 +113,7 @@ export type BasicCarDataProps = {
 }
 
 export type vehicleInfoProps = {
-  Odometer:number|undefined;
+  Odometer:number|null|undefined;
   Brand:string|null|undefined;
   Model:string|null|undefined;
   Year:number|null|undefined;
@@ -162,8 +163,8 @@ export type vehicleDataProps = {
       year: number|null;
   },
   odometer:{
-    distance:number|undefined;
-    lastUpdated:string|undefined;
+    distance:number|null;
+    lastUpdated:string|null;
   }
 };
 
@@ -198,13 +199,13 @@ export type vehicleCalcultedDataProps = {
   }
   sohData:{
     currentSoh:number|null;
-    prevMonthsSoh:(number|null)[];
+    prevMonthsSoh:(number|null)[]|null[]|number[]|undefined;
   }
   totalChargingSessions:number|null;
 }
 
 export type VehicleComponentProps = {
-  vehicleIdData:vehicleDataProps|undefined;
+  vehicleIdData:vehicleDataProps|undefined|null;
   temperatureData:temperatureDataProps;
   vehicleCalculatedIdData:vehicleCalcultedDataProps|undefined|null;
   unit: string;
@@ -223,6 +224,7 @@ export type DashboardLayoutProps = {
 }
 
 export type DashboardNavbarProps = {
+  isTab:boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isOpen: boolean;
   page:string | string[];
@@ -242,7 +244,7 @@ export type UserImageProps ={
   imageSize?:string;
   svgClassName:string;
   isLoading:boolean;
-  fontSize:number;
+  loaderSize:number;
 }   
 
 export type HeadingProps = {
@@ -251,17 +253,10 @@ export type HeadingProps = {
   tertiaryHeading?: string;
 };
 
-export type ItemCardProps = {
-  heading?: string;
-  description?: string;
-  imageSource?:any,
-  imageAlt?:any,
-  imageClassname?:string,
-};
-
 export type AuthInputProps = {
   outerDiv:string | undefined;
   labelName:string;
+  disabled?:boolean;
   labelFor:string;
   isRequired:boolean;
   inputType:string;
@@ -269,16 +264,20 @@ export type AuthInputProps = {
   inputClassname:string | undefined;
   inputValue:string | number | string[] | undefined
   inputOnChange:React.ChangeEventHandler<HTMLInputElement> | undefined
-  children:React.JSX.Element|null;
+  children?:React.JSX.Element|null;
 }
 
 export type AuthListBoxProps = {
-  labelFor:string;
   isRequired:boolean;
   labelName:string;
-  data:{ type: string; }[];
-  value:any;
-  OnChange:React.ChangeEventHandler<HTMLInputElement> | undefined;
+  data: any;
+  selected: Record<any,any>;
+  setSelected: React.Dispatch<string|Record<any,any>>;
+  id: string;
+  // labelFor:string;
+  // data:Record<any,any>[];
+  // value:any;
+  // OnChange:React.ChangeEventHandler<HTMLInputElement> | undefined;
 }
 
 // {

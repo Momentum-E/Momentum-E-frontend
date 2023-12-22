@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppContext } from '@/context/userContext';
+import { AccountContext } from '@/context/account';
 
 import { DashboardLayout } from '@/layouts';
 import {
@@ -9,7 +10,8 @@ import {
   DeleteVehicle,
   DeleteUser,
   UploadUserImage,
-  VehicleIntervention
+  VehicleIntervention,
+  SubscriptionDetails
 } from '@/components/dashboard/profile-components/';
 import GetUserDataComponent from '@/components/auth/GetUserDataComponent';
 import { VendorCountProp } from '@/utils/props';
@@ -18,7 +20,7 @@ const Profile = () => {
   const {
     userId,
     name,
-    idToken,
+    // idToken,
     userEmail,
     vehicleData,
     userImage,
@@ -26,6 +28,8 @@ const Profile = () => {
     fetchUserImage,
     setUserImage
   } = useContext(AppContext)
+  const {IdToken} = useContext(AccountContext)
+
   const [VendorCounts, setVendorCounts] = useState<VendorCountProp[]>([])
 
   // Getting the vehicle Data count
@@ -55,7 +59,7 @@ const Profile = () => {
       <div className="max-h-full overflow-auto">
         <div className="max-w-xl w-full mx-auto flex flex-col items-center space-y-10 px-2 md:px-0 pt-10 pb-20 scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-300">
           <UploadUserImage
-            idToken={idToken}
+            idToken={IdToken}
             userId={userId}
             userImage={userImage}
             isImageLoading={isImageLoading}
@@ -63,17 +67,18 @@ const Profile = () => {
             setUserImage={setUserImage}
           />
           <DeleteVehicle 
-            idToken={idToken}
+            idToken={IdToken}
             userId={userId} 
             VendorCounts={VendorCounts}
           /> 
-          <VehicleIntervention
-            idToken={idToken}
+          {/* <VehicleIntervention
+            idToken={IdToken}
             vehicleData={vehicleData}
-          />
+          /> */}
+          <SubscriptionDetails idToken={IdToken} email={userEmail} />
           <div className=" border border-me-green-200 p-4 rounded-xl w-full">
             <GetUserDataComponent
-              idToken={idToken}
+              idToken={IdToken}
               isRequired={false}
               heading={'Update Data'}
               page={'profile'}

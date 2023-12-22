@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '@/context/userContext';
+import { AccountContext } from '@/context/account';
 
 import { DashboardLayout } from '@/layouts/';
 import {Loader} from '@/components/shared';
@@ -19,28 +20,28 @@ const VehicleDashboardContent = () => {
     temperatureData,
     vehicleData,
     vehicleCalcultedData,
-    idToken,
     UpdateIdToken,
     setDistanceValue, 
   } = useContext(AppContext)
+  const {IdToken} = useContext(AccountContext)
   
   const [vehicleIdData, setVehicleIdData] = useState<vehicleDataProps>()
   const [vehicleCalcultedIdData,setVehicleCalcultedIdData] = useState<vehicleCalcultedDataProps>()
   
   // Function for getting data of a particular vehicle_Id
   const filteredVehicleData = (v_id:any) => {
-    if(idToken && v_id && vehicleCalcultedData && vehicleData && vehicleData.length > 0){
+    if(IdToken && v_id && vehicleCalcultedData && vehicleData && vehicleData.length > 0){
       setVehicleIdData(vehicleData.find(vehicle => vehicle.id === vehicleId))
       setVehicleCalcultedIdData(vehicleCalcultedData[v_id])
       try{
         axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/users/${userId}/${vehicleId}`,{
           headers:{
-            authorization: `Bearer ${idToken}`
+            authorization: `Bearer ${IdToken}`
           }
         })
         .then((res) => {
           console.log(res.data)
-          console.log("SoH: "+vehicleCalcultedIdData?.sohData.currentSoh)
+          // console.log("SoH: "+vehicleCalcultedIdData?.sohData.currentSoh)
         })
         .catch(async (err) => {
           console.log("Error in filteredVehicleData: "+err)
