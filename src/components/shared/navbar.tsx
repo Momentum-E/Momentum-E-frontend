@@ -1,129 +1,175 @@
-import { Disclosure } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import logo from '../../assets/logos/logo_white_nocap.png';
+import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { useAccountContext } from '@/context/account';
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
+import { SidebarLightLogo } from '@/utils/sidebar_icons';
 
-const Navbar = () => {
+export default function NavBar() {
+  const [navbar, setNavbar] = useState(false);
+  
+  const {isAuthenticated} = useAccountContext()
+  
   return (
-    <Disclosure as="nav" className="relative z-10 bg-gray-800">
-      {({ open }) => (
-        <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  {/* expanded image */}
-                  <Image
-                    className="block h-8 w-auto lg:hidden"
-                    src={logo}
-                    alt="Momentum-E"
-                    height={100}
-                    width={100}
-                  />
-                  {/* reduced image */}
-                  <Image
-                    className="hidden h-8 w-auto lg:block"
-                    src={logo}
-                    alt="Momentum-e"
-                    height={100}
-                    width={100}
-                  />
-                </div>
-                <div className="hidden lg:mx-auto sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    <Link
-                      href="/"
-                      className={
-                        'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'
-                      }>
-                      Home
-                    </Link>
-                    <a
-                      href="#aboutus"
-                      className={
-                        'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'
-                      }>
-                      About Us
-                    </a>
-                    <Link
-                      href="/auth/login"
-                      className={
-                        'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'
-                      }>
-                      Login
-                    </Link>
-                    <Link
-                      href="/auth/register"
-                      className={
-                        'text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'
-                      }>
-                      Register
-                    </Link>
-                  </div>
-                </div>
-              </div>
+    <nav className="w-full shadow">
+      <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
+        {/* <div> */}
+          <div className="flex items-center justify-between py-3 md:py-5 md:block">
+            <Link href="/">
+              <h2 className="text-2xl font-bold text-white-100">
+                <figure>
+                  <SidebarLightLogo/>
+                </figure>
+              </h2>
+            </Link>
+            <div className="md:hidden">
+              <button
+                className="p-2 text-gray-700 rounded-md outline-none focus:border-gray-400 focus:border"
+                onClick={() => setNavbar(!navbar)}>
+                {
+                navbar ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 text-white-100"
+                    viewBox="0 0 20 20"
+                    fill="currentColor">
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                ) 
+                : 
+                (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 text-white-100"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                )}
+              </button>
             </div>
           </div>
+        {/* </div> */}
 
-          <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              <Disclosure.Button>
-                <Link
+        {/* Navbar in mobile mode */}
+        {/* <div> */}
+          <div className={`justify-self-center pb-3 md:hidden mt-8 md:pb-0 md:mt-0 ${navbar ? 'block' : 'hidden'}`}>
+            <ul className="items-center justify-center space-y-5 md:flex md:space-x-6 md:space-y-0">
+              <li>
+                <Link 
                   href="/"
-                  className={classNames(
-                    'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
-                  )}>
+                  className="px-4 py-2 text-white-100 hover:text-indigo-200">
                   Home
                 </Link>
-              </Disclosure.Button>
-              <Disclosure.Button as="a" href="#aboutus">
-                <span
-                  className={classNames(
-                    'text-gray-300 w-1/5 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
-                  )}>
-                  About Us
-                </span>
-              </Disclosure.Button>
-              <Disclosure.Button>
-                <Link
-                  href="/login"
-                  className={classNames(
-                    'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
-                  )}>
-                  Login
-                </Link>
-              </Disclosure.Button>
-              <Disclosure.Button>
-                <Link
-                  href="/register"
-                  className={classNames(
-                    'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium'
-                  )}>
-                  Register
-                </Link>
-              </Disclosure.Button>
-            </div>
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
-  );
-};
+              </li>
+            {
+              !isAuthenticated ?
+              (
+                <div className="mt-3 space-y-2 lg:hidden md:inline-block">
+                  <Link
+                    href="/pricing"
+                    className="px-4 py-2 text-white-100 hover:text-indigo-200">
+                    Pricing
+                  </Link>
+                  <Link
+                    href="/auth/login"
+                    className="inline-block w-full px-4 py-2 text-center text-white-100 rounded-md shadow hover:bg-gray-700/4">
+                    Log In
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    className="inline-block w-full px-4 py-2 text-center text-white-100 rounded-md shadow bg-gray-700/40">
+                    Sign Up
+                  </Link>
+                </div>
+              ):
+              (
+                <div className="">
+                  <Link
+                  href="/dashboard/"
+                  className="inline-block w-full px-4 py-2 text-center text-white-100 bg-gray-600 rounded-md shadow hover:bg-gray-700/40">
+                    Dashboard
+                  </Link>
+                </div>
+              )
+            }
+            </ul>
+          </div>
+        {/* </div> */}
 
-export default Navbar;
+        {/* Navbar in desktop mode */}
+        <div className="hidden md:flex rounded-2xl space-x-5 mx-5 justify-center bg-gray-800/30">
+          <Link
+            href="/"
+            className="px-4 py-3 text-white-100 shadow rounded-s-xl hover:border-b-2 hover:border-me-green-200">
+            Home
+          </Link>
+          {/* <Link
+            href="/#aboutus"
+            className="px-4 py-2 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
+            About Us
+          </Link> */}
+          {
+            !isAuthenticated ?
+            (
+              <>
+                <Link
+                  href="/auth/login"
+                  className="px-4 py-3 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
+                  Log In
+                </Link>
+                <Link
+                  href="/auth/register"
+                  className="px-4 py-3 text-white-100 shadow hover:border-b-2 hover:border-me-green-200">
+                  Sign Up
+                </Link>
+                <Link
+                  href="/pricing"
+                  className="ease-in-out duration-300 flex items-center justify-center px-4 py-3 group text-white-100 shadow bg-[#1B1C1E] hover:bg-me-green-200 rounded-xl">
+                  <span className="flex flex-row items-center justify-around group-hover:text-[#1B1C1E]">
+                    Pricing
+                    <span className="bg-me-green-200 group-hover:bg-[#1B1C1E] rounded-full ml-2 p-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ease-in-out duration-300 group-hover:rotate-45 group-hover:text-white-100 text-[#1B1C1E] ">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                      </svg>
+                    </span>
+                  </span>
+                </Link>
+              </>
+            ):
+            ( 
+              <>
+                <Link
+                  href="/pricing"
+                  className="px-4 py-3 text-white-100 shadow  hover:border-b-2 hover:border-me-green-200">
+                  Pricing
+                </Link>
+                <Link
+                  href="/dashboard"
+                  className="ease-in-out duration-300 flex items-center justify-center px-4 py-3 group text-white-100 shadow bg-[#1B1C1E] hover:bg-me-green-200 rounded-xl">
+                  <span className="flex flex-row items-center justify-around group-hover:text-[#1B1C1E]">
+                    Dashboard
+                    <span className="bg-me-green-200 group-hover:bg-[#1B1C1E] rounded-full ml-2 p-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ease-in-out duration-300 group-hover:rotate-45 group-hover:text-white-100 text-[#1B1C1E] ">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                      </svg>
+                    </span>
+                  </span>
+                </Link>
+              </>
+            )
+          }
+        </div>
+      </div>
+    </nav>
+  )
+}

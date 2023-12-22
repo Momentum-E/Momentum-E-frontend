@@ -1,14 +1,19 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap');
 @tailwind base;
+@layer base {
+  html {
+    font-family: 'Orbitron', sans-serif;
+    /* background-color: #060e02; */
+    /* @apply bg-gray-[#060e02;] */
+  }
+  .link {
+    @apply py-2 px-1 rounded-md font-normal hover:bg-me-green-200/80 dark:hover:bg-gray-700/25 flex items-center md:cursor-pointer cursor-default duration-200;
+  }
+  .active {
+    @apply font-medium bg-me-green-200/60 dark:bg-gray-700/40;
+  }
+}
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-  }
-  .link {
-    @apply p-2 flex rounded-md font-normal gap-6 items-center md:cursor-pointer cursor-default duration-200;
-  }
-  .active {
-    @apply bg-blue-200 text-black font-medium;
-  }
-}
