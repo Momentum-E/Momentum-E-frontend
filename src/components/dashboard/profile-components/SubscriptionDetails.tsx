@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
+
 import { SubscriptionContext } from '@/context/subscriptionContext';
 
 type SubscriptionDetailsProps = {
@@ -12,8 +11,7 @@ const SubscriptionDetails:React.FC<SubscriptionDetailsProps> = ({
     email,
     idToken
 }) => {
-    const router = useRouter();
-    const { subscriptionData } = useContext(SubscriptionContext);
+    const { subscriptionData,createCustomerSession } = useContext(SubscriptionContext);
 
     const convertDate = (toDate:Date|string|undefined) => {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -28,29 +26,6 @@ const SubscriptionDetails:React.FC<SubscriptionDetailsProps> = ({
         }
     }
 
-    const CreateCustomerSession = () => {
-        axios.request({
-            method:"post",
-            url:`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/subscription/create-customer-portal-session`,
-            headers:{
-                authorization: `Bearer ${idToken}`,
-            },
-            data:{
-                email: email,
-            }
-        })
-        .then((response) => {
-            console.log("Fetching the session url")
-            if(response.status === 200){
-                console.log(response)
-                router.replace(response.data.sessionURL)    
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-    }
-    
     const subsDetails = {
         SubscriptionStart:convertDate(subscriptionData?.startDate),
         SubscriptionEnd:convertDate(subscriptionData?.endDate),
@@ -137,7 +112,7 @@ const SubscriptionDetails:React.FC<SubscriptionDetailsProps> = ({
                 <button 
                     className='flex justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm' 
                     // href={`${process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_DASHBOARD}`}
-                    onClick={CreateCustomerSession}
+                    onClick={()=>createCustomerSession(email)}
                 >
                     Update Details
                 </button>

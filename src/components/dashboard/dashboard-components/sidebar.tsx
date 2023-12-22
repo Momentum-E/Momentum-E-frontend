@@ -2,6 +2,7 @@ import React, { useState,useEffect,useContext } from 'react';
 import { SidebarProps } from '@/utils/props';
 import axios from 'axios';
 import { AppContext } from '@/context/userContext';
+import { SubscriptionContext } from '@/context/subscriptionContext';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
@@ -32,7 +33,8 @@ const Sidebar:React.FC<SidebarProps> = ({
   page,
   theme,
  }) => {
-  const { UpdateIdToken } = useContext(AppContext);
+  const {createCustomerSession} = useContext(SubscriptionContext)
+  const { UpdateIdToken,userEmail } = useContext(AppContext);
   const router = useRouter();
   const { pathname } = router;
   const [errorNumber, setErrorNumber] = useState<number>(0);
@@ -65,9 +67,16 @@ const Sidebar:React.FC<SidebarProps> = ({
         }
       })
       .then((res) => {
-        console.log(res.data);
-        const linkUrl = res.data.linkUrl;
-        router.push(linkUrl);
+        if(res.data.type === "https://docs.enode.io/problems/forbidden" && res.data.title === "Connections limit reached"){
+          console.log("Error: "+ res.data.type)
+          alert('This is an error from our side, Kindly contact the admin at info@momentum-e.com')
+          return 
+        }
+        else{
+          console.log(res.data);
+          const linkUrl = res.data.linkUrl;
+          router.push(linkUrl);
+        }
       })
       .catch(async (err) => {
         setErrorNumber(errorNumber+1)
@@ -77,7 +86,7 @@ const Sidebar:React.FC<SidebarProps> = ({
           window.location.reload()
         }
         else{
-          addVehicle(page)
+          // addVehicle(page)
         }
       });
     }
@@ -158,7 +167,8 @@ const Sidebar:React.FC<SidebarProps> = ({
       content={`More vehicles cannot be added as the user has paid for ${NumberVehiclePaid} ${NumberVehiclePaid === 1 ? 'vehicle' : 'vehicles'}. Please pay for the extra vehicles.`} 
       buttonClass='px-2 border text-black bg-me-green-200 hover:bg-me-green-100 p-1 rounded-lg' 
       modalFunction={() => {
-        router.replace(`${process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_DASHBOARD}`)
+        // router.replace(`${process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_DASHBOARD}`)
+        createCustomerSession(userEmail)
         console.log('Redirect to stripe dashboard.')
       }}/>
     </>

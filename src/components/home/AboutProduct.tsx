@@ -15,8 +15,8 @@ const AboutProduct = () => {
       opacity: 1,
       scale: 1,
       transition: {
-        delayChildren: 0.5,
-        staggerChildren: 0.5
+        delayChildren: 0.25,
+        staggerChildren: 0.25
       }
     }
   }
@@ -100,7 +100,7 @@ const AboutProduct = () => {
           imageSource={momentum_e_1}
           imageAlt='Completely Digital'
           imageClassname='h-11 w-11'
-          heading="Company Digital"
+          heading="Completely Digital"
           description="Pure-play software platform. No aftermarket hardware needed."
         />
       </motion.div>

@@ -1,11 +1,13 @@
 import { toast } from 'react-toastify';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { AccountContext } from './account';
 
 type SubscriptionContextProps = {
   subscriptionData:subscriptionDataProps|undefined;
-  getSubscriptionDetails: (email: string) => Promise<void>
+  createCustomerSession: (email: string) => void;
+  getSubscriptionDetails: (email: string) => Promise<void>;
 }
 
 type subscriptionDataProps = {
@@ -43,8 +45,9 @@ const SubscriptionProvider = ({ children }:any) => {
   // refunded
   // Draft
   // marked_uncollectible
-  
-  const { IdToken,logout } = useContext(AccountContext)
+
+  const router = useRouter();
+  const { IdToken, logout } = useContext(AccountContext)
   const [ subscriptionData, setSubscriptionData ] = useState<subscriptionDataProps>()
 
   useEffect(()=>{
@@ -80,9 +83,37 @@ const SubscriptionProvider = ({ children }:any) => {
     })
   };
 
+  const createCustomerSession = (email:string) => {
+    axios.request({
+        method:"post",
+        url:`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/subscription/create-customer-portal-session`,
+        headers:{
+            authorization: `Bearer ${IdToken}`,
+        },
+        data:{
+            email: email,
+        }
+    })
+    .then((response) => {
+        console.log("Fetching the session url")
+        if(response.status === 200){
+            console.log(response)
+            router.replace(response.data.sessionURL)    
+        }
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+  }
+
+
   return (
     <SubscriptionContext.Provider value={{
+      // data
       subscriptionData,
+
+      // Functions
+      createCustomerSession,
       getSubscriptionDetails
       }}>
       {children}

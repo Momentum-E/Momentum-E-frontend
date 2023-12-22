@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { YourVehicleProps } from '@/utils/props';
 import {useRouter} from 'next/router';
 
