@@ -52,7 +52,7 @@ const VehicleCard: React.FC<VehicleCardProps>  = ({
                 SideBlockPresent && 
                 <CardSideBlock
                     CardHeading={SideBlockHeading}
-                    CardData={SideBlockData ? SideBlockData : '-'}
+                    CardData={SideBlockData||SideBlockData===0 ? SideBlockData : '-'}
                     CardUnit={SideBlockUnit}
                 />
             }

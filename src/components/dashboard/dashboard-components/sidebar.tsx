@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState,useEffect,useContext } from 'react';
 import { SidebarProps } from '@/utils/props';
 import axios from 'axios';
-
+import { AppContext } from '@/context/userContext';
+import { SubscriptionContext } from '@/context/subscriptionContext';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 
 import YourVehicles from './sidebar-components/YourVehicles';
+import { Modal } from '@/components/shared'
 const DarkLine = dynamic (() => import('@/utils/sidebar_icons/DarkLine'), {
   ssr: false,
 });
@@ -20,6 +22,8 @@ const SidebarDarkLogo = dynamic (()=>import('@/utils/sidebar_icons/SidebarDarkLo
 })
 
 const Sidebar:React.FC<SidebarProps> = ({
+  NumberVehiclePaid,
+  idToken,
   id,
   isLoading,
   vehicleData, 
@@ -29,45 +33,80 @@ const Sidebar:React.FC<SidebarProps> = ({
   page,
   theme,
  }) => {
-  
+  const {createCustomerSession} = useContext(SubscriptionContext)
+  const { UpdateIdToken,userEmail } = useContext(AppContext);
   const router = useRouter();
   const { pathname } = router;
+  const [errorNumber, setErrorNumber] = useState<number>(0);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    isTab && setIsOpen(false);
+    isTab && setIsOpen(false)
   }, [pathname]);
 
-  const addVehicle = (getPage:string) => {
-    let newPage = getPage.split(" ").join('')
-    if(newPage === ''){
-      newPage = 'redirect/dashboard' 
-    }
-    axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`)
-      .then((res) => {
-        console.log(res.data);
-        const linkUrl = res.data.linkUrl;
-        router.push(linkUrl);
+  const addVehicle = async (getPage:string) => {
+    if(NumberVehiclePaid && vehicleData && vehicleData.length < NumberVehiclePaid)
+    {
+      let newPage = getPage.split(" ").join('')
+      if(getPage.split("/")[0].trim() === "profile"){
+        newPage = getPage.split(" ").join('')
+      }
+      else if( page === ""||undefined ){
+        newPage = 'redirect/dashboard'
+      }
+      else if(getPage.split("/")[0].trim() === "vehicles"){
+        newPage = `vehicles/${JSON.parse(page.toString().split("/")[1]).id}}`
+      }
+      else{
+        console.log("No conditon matched"+getPage)
+      }
+    
+      axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/users/${id}/link/${newPage}/`,{
+        headers: {
+          authorization:`Bearer ${idToken}`
+        }
       })
-      .catch((err) => {
+      .then((res) => {
+        if(res.data.type === "https://docs.enode.io/problems/forbidden" && res.data.title === "Connections limit reached"){
+          console.log("Error: "+ res.data.type)
+          alert('This is an error from our side, Kindly contact the admin at info@momentum-e.com')
+          return 
+        }
+        else{
+          console.log(res.data);
+          const linkUrl = res.data.linkUrl;
+          router.push(linkUrl);
+        }
+      })
+      .catch(async (err) => {
+        setErrorNumber(errorNumber+1)
+        await UpdateIdToken()
         console.error(err)
-        addVehicle(page)
+        if(errorNumber>=10){
+          window.location.reload()
+        }
+        else{
+          // addVehicle(page)
+        }
       });
+    }
+    else{
+      setModalOpen(true)
+    }
   };
 
   return (
     <>
       <div
-        className={`${!isOpen ? `hidden ` : `block `} fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50 `}
+        className={`${isOpen ? `` : `hidden`}` + " fixed inset-0 max-h-screen z-[999] md:hidden bg-black/50"}
         onClick={() => setIsOpen(false)}
-      >      
-      </div>
+      />      
       <div
         className={`${
           isOpen ? ` ` : `transform -translate-x-full `
         } ease-in-out duration-200 bg-gradient-to-br from-white-100 to-me-green-200/50 dark:bg-dashboard-gradient inset-0 backdrop-blur-3xl rounded-lg p-2 space-y-4 text-gray shadow-md z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed`}>
         {/* logo */}
-        <div className="flex flex-col gap-2.5 py-2 text-white-100 items-center justify-center">
+        <div className="flex flex-col gap-2.5 py-[5px] text-white-100 items-center justify-center">
           {
             theme === 'dark'?
             ( 
@@ -108,13 +147,30 @@ const Sidebar:React.FC<SidebarProps> = ({
         </div>
 
         <YourVehicles
-          isLoading={isLoading}
-          vehicleData={vehicleData}
-          setIsOpen={setIsOpen}
-          isTab={isTab}
-          page={page}
+        isLoading={isLoading}
+        vehicleData={vehicleData}
+        setIsOpen={setIsOpen}
+        isTab={isTab}
+        page={
+          page.toString().split("/")[0].trim() === "profile" || page === ""
+          ?
+          page
+          :
+          `vehicles / ${JSON.parse(page.toString().split("/")[1]).vin}`
+          }
         />
       </div>
+      <Modal 
+      isOpen={modalOpen} 
+      setIsOpen={setModalOpen} 
+      title='Vehicle Limit Reached' 
+      content={`More vehicles cannot be added as the user has paid for ${NumberVehiclePaid} ${NumberVehiclePaid === 1 ? 'vehicle' : 'vehicles'}. Please pay for the extra vehicles.`} 
+      buttonClass='px-2 border text-black bg-me-green-200 hover:bg-me-green-100 p-1 rounded-lg' 
+      modalFunction={() => {
+        // router.replace(`${process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_DASHBOARD}`)
+        createCustomerSession(userEmail)
+        console.log('Redirect to stripe dashboard.')
+      }}/>
     </>
   );
 };

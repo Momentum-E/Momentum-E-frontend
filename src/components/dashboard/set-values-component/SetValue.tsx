@@ -9,7 +9,7 @@ const SetValue = () => {
     const {unit, setUnit} = useContext(AppContext)
 
     return (
-        <Popover as="div" className=" absolute right-12 bottom-8 translate-x-1/2 translate-y-1/2 ">
+        <Popover as="div" className=" absolute right-12 bottom-8 translate-x-1/2 translate-y-1/2">
             <Popover.Button className={`flex items-center justify-center p-1 bg-white-100 dark:bg-gray-900 border border-gray-900 dark:border-white-100 rounded-full md:order-2 `}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
@@ -26,7 +26,7 @@ const SetValue = () => {
             >
                 <Popover.Panel className="absolute space-y-2 right-0 bottom-10">
                     {/* <Popover.Item> */}
-                    <div className="w-24 h-full bg-white-100 p-1 rounded-lg">
+                    <div className="w-24 h-full bg-white-100 p-1 rounded-lg border border-gray-900">
                         <button className="block w-full bg-white-100 link text-black py-1" onClick={()=> setTheme( theme === "dark"? "light": "dark" )}>
                             { theme==="dark"? 
                                 <div className='flex flex-row w-full space-x-1'>

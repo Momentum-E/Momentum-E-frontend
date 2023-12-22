@@ -1,16 +1,17 @@
-// @ts-nocheck
 import { toast } from 'react-toastify';
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import { CognitoUser, AuthenticationDetails, CognitoUserSession } from 'amazon-cognito-identity-js';
 import Pool from './user-pool/user-pool';
 import axios from 'axios';
 
 type AccountContextProps = {
+  user:string|null;
+  IdToken:string;
+  accessToken:string;
   isAuthenticated:boolean;
   setIsAuthenticated:React.Dispatch<React.SetStateAction<boolean>>;
-  // authenticate:(Username: string, Password: string) => Promise<void>;
   getSession:() => Promise<unknown>;
-  DeleteUserAccount:(username: string, password: string) => Promise<void>;
+  DeleteUserAccount:(email:string, username: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -18,6 +19,10 @@ const AccountContext = createContext({} as AccountContextProps);
 
 const AccountProvider = ({ children }:any) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<string|null>(null)
+  const [IdToken, setIdToken] = useState<string>("");
+  const [accessToken, setAccessToken] = useState<string>("");
+  const [refreshToken, setRefreshToken] = useState<string>("");
 
   useEffect(() => {
     checkAuthentication();
@@ -41,11 +46,23 @@ const AccountProvider = ({ children }:any) => {
     return await new Promise((resolve, reject) => {
       const user = Pool.getCurrentUser();
       if (user) {
-        user.getSession((err:any, session:any) => {
+        user.getSession((err:any, session:CognitoUserSession) => {
           if (err) {
-            reject();
-          } else {
+            reject(err);
+          } 
+          else {
             resolve(session);
+            // console.log("IdToken: "+ session.getIdToken().getJwtToken())
+            // console.log("accessToken: "+ session.getAccessToken().getJwtToken())
+            // console.log("refreshToken: "+ session.getRefreshToken().getToken())
+            // console.log("UserId: "+ user.getUsername())
+            setUser(user.getUsername())
+            setIdToken(session.getIdToken().getJwtToken());
+            setAccessToken(session.getAccessToken().getJwtToken());
+            setRefreshToken(session.getRefreshToken().getToken());
+            localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${user}.accessToken`,session.getAccessToken().getJwtToken());
+            localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${user}.refreshToken`,session.getRefreshToken().getToken());
+            localStorage.setItem(`CognitoIdentityServiceProvider.75uahg9l9i6r2u6ikt46gu0qfk.${user}.idToken`,session.getIdToken().getJwtToken());
           }
         });
       } 
@@ -55,41 +72,12 @@ const AccountProvider = ({ children }:any) => {
     });
   };
 
-  // const authenticate = async (Username:string, Password:string) => {
-  //   await new Promise((resolve, reject) => {
-  //     const user = new CognitoUser({ Username, Pool });
-
-  //     const authDetails = new AuthenticationDetails({ Username, Password });
-
-  //     user.authenticateUser(authDetails, {
-  //       onSuccess: (data) => {
-  //         console.log('onSuccess: ', data);
-  //         resolve(data);
-  //         setIsAuthenticated(true);
-
-  //         window.history.replaceState({
-  //           fromHashChange: true
-  //         },null, '/dashboard');
-
-  //         window.location.reload()
-  //       },
-  //       onFailure: (err) => {
-  //         console.error('onFailure: ', err);
-  //         reject(err);
-  //         setIsAuthenticated(false);
-  //       },
-  //       newPasswordRequired: (data) => {
-  //         console.log('newPasswordRequired: ', data);
-  //         alert('New password required, kindly change your password.')
-  //       },
-  //     });
-  //   });
-  // };
-
-  const DeleteUserAccount = async (username:string,password:string) => {
+  const DeleteUserAccount = async (email:string, username:string, password:string) => {
+    await getSession();
     const user = new CognitoUser({ Username: username, Pool });
     const authDetails = new AuthenticationDetails({ Username: username, Password: password });
-
+    const token = localStorage.getItem(`CognitoIdentityServiceProvider.${process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID}.${username}.idToken`)
+    
     user.authenticateUser(authDetails, {
       onSuccess: (session) => {
         user.deleteUser((err, data) => {
@@ -101,7 +89,11 @@ const AccountProvider = ({ children }:any) => {
             setIsAuthenticated(false)
             
             // Delete user from DynamoDb
-            axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/delete/${username}`)
+            axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/delete/${username}`,{
+              headers: {
+                authorization:`Bearer ${token}`
+              }
+            })
             .then((res)=>{
               console.log('Deleted user from dynamoDB: '+res.data)
             }).catch((err)=>{
@@ -109,18 +101,40 @@ const AccountProvider = ({ children }:any) => {
             })
 
             // Deleting the user from enode
-            axios.get(`http://localhost:5000/vehicles/delete-user/${username}`)
+            axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/vehicles/delete-user/${username}`,{
+              headers:{
+                authorization:`Bearer ${token}`
+              }
+            })
             .then((res)=>{
               console.log('Deleted user from enode: '+res.data)
             }).catch((err)=>{
               console.log('Error deleting user from enode: '+err)
             })
 
-            axios.delete(`http://localhost:5000/user-data/users/image/${username}`)
+            // Deleting user saved image from S3 bucket 
+            axios.delete(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/users/image/${username}`,{
+              headers:{
+                authorization:`Bearer ${token}`
+              }
+            })
             .then((res)=>{
               console.log('User image from s3: '+res.data)
             }).catch((err)=>{
               console.log('Error deleting user image from s3: '+err)
+            })
+
+            // Deleting user subscription from stripe 
+            axios.delete(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/subscription/delete-customer?email=${email}`,{
+              headers:{
+                authorization:`Bearer ${token}`
+              }
+            })
+            .then((res)=>{
+              console.log('Customer deleted from stripe: '+res.data)
+            })
+            .catch((err)=>{
+              console.log('Error deleting customer from stripe: '+ err)
             })
 
             console.log('User deleted successfully',data);
@@ -145,13 +159,15 @@ const AccountProvider = ({ children }:any) => {
 
   return (
     <AccountContext.Provider value={{
-        isAuthenticated,
-        // authenticate,
-        setIsAuthenticated,
-        getSession,
-        DeleteUserAccount,
-        logout 
-      }}>
+      user,
+      IdToken,
+      accessToken,
+      isAuthenticated,
+      setIsAuthenticated,
+      getSession,
+      DeleteUserAccount,
+      logout 
+    }}>
       {children}
     </AccountContext.Provider>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback } from 'react'
 import { YourVehicleProps } from '@/utils/props';
 import {useRouter} from 'next/router';
 
@@ -9,7 +9,7 @@ const YourVehicles = ({
     isTab,
     page,
 }:YourVehicleProps) => {
-    let [vehicleId,setvehicleId]=useState<string>() 
+    // let [vehicleId,setvehicleId]=useState<string>() 
     const router = useRouter()
 
     // // Function for deleting a single vehicle. 
@@ -20,16 +20,25 @@ const YourVehicles = ({
 
     // const {filteredVehicleData} = useAppContext()
 
-    useEffect(()=>{
-        const onVehicleClick = () => {
-            if(vehicleId){
-                // filteredVehicleData(vehicleId)
-                router.replace(`/dashboard/vehicles/${vehicleId}`)
-                setIsOpen(!isTab)
-            }
+    // useEffect(()=>{
+    //     const onVehicleClick = useCallback(() => {
+    //         if(vehicleId){
+    //         // if(vid){
+    //             // filteredVehicleData(vehicleId)
+    //             router.replace(`/dashboard/vehicles/${vehicleId}`)
+    //             setIsOpen(!isTab)
+    //         }
+    //     },[])
+    //     onVehicleClick()
+    // },[vehicleId])
+
+    const onVehicleClick = useCallback((vid:string) => {
+        if(vid){
+            // setvehicleId(vid)
+            router.replace(`/dashboard/vehicles/${vid}`)
+            setIsOpen(!isTab)
         }
-        onVehicleClick()
-    },[vehicleId])
+    },[])
 
     return (
       <div className='h-full'>
@@ -52,7 +61,8 @@ const YourVehicles = ({
                                 className={`${page===`vehicles / ${data.information.vin}` ? `active `:` `} 
                                 group dark:text-white-100 link flex justify-between md:justify-start`}>
                                     <button
-                                    onClick={()=>setvehicleId(data.id)}
+                                    // onClick={()=>setvehicleId(data.id)}
+                                    onClick={()=>onVehicleClick(data.id)}
                                     className="px-2 h-full w-full overflow-hidden text-left overflow-ellipsis group-hover:mr-2"
                                     >
                                         {data.information.vin}

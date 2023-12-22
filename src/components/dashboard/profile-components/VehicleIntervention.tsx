@@ -3,15 +3,21 @@ import { vehicleDataProps } from '@/utils/props'
 import axios from 'axios';
 
 type VehicleInterventionProps = {
+    idToken:string|null;
     vehicleData: vehicleDataProps[];
 }
 
 const VehicleIntervention:React.FC<VehicleInterventionProps> = ({
+    idToken,
     vehicleData
 }) => {
 
-    // const getInterventionInformation = () => {
-    //     axios.get
+    // const getInterventionInformation = (id:string) => {
+    //     axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/users/intevention/${id}`,{
+    //         headers:{
+    //             authorization:`Bearer ${idToken}`
+    //         }
+    //     })
     // } 
 
     return (

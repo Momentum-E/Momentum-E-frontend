@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useTheme } from 'next-themes';
 import { AppContext } from '@/context/userContext';
+import { AccountContext } from '@/context/account';
+import { SubscriptionContext } from '@/context/subscriptionContext';
 
 import {
   Sidebar,
@@ -18,22 +20,14 @@ const DashboardLayout = ({
   const isTab = useMediaQuery({ query: '(max-width:767px)' });
   const [isOpen, setIsOpen] = useState(isTab ? false : true);
 
-
   const {
     isLoading,
     userId, 
     vehicleData,
-    name, 
-    userImage, 
-    isImageLoading,
-    webSocket,
-    setName,
-    setVehicleData,
-    setUserCity,
-    setUserState,
-    setUserCountry,
-    setUserEmail,
+    name
   } = useContext(AppContext)
+  const { subscriptionData } = useContext(SubscriptionContext)
+  const { IdToken } = useContext(AccountContext)
   const {theme, setTheme} = useTheme()
   
   useEffect(() => {
@@ -42,16 +36,17 @@ const DashboardLayout = ({
     :
       setIsOpen(true)
   }, [isTab]);
-
+  
   useEffect(() => {
     setTheme(theme||'dark')
   },[theme])
 
   return (
     <ProtectedRoute>
-      <div className='relative'>
-        <div className='flex'>
-          <Sidebar 
+      <div className='relative flex'>
+        <Sidebar 
+          NumberVehiclePaid={subscriptionData?.quantity}
+          idToken={IdToken}
           id={userId}
           isLoading={isLoading}
           vehicleData={vehicleData||[]} 
@@ -60,28 +55,18 @@ const DashboardLayout = ({
           isTab={isTab}
           page={page}
           theme={theme}
+        />
+        <div className="max-w-full flex-1 h-screen overflow-hidden">
+          <DashboardNavbar 
+            isTab={isTab}
+            name={name} 
+            id={userId}
+            page={page===undefined ? '' : page}
+            setIsOpen={setIsOpen} 
+            isOpen={isOpen} 
           />
-          <div className="max-w-full flex-1 h-screen overflow-hidden">
-            <DashboardNavbar 
-              webSocket={webSocket}
-              name={name} 
-              id={userId}
-              page={page===undefined ? '' : page}
-              isTab={isTab} 
-              setIsOpen={setIsOpen} 
-              isOpen={isOpen} 
-              userImage={userImage}
-              isImageLoading={isImageLoading}
-              setName={setName}
-              setVehicleData={setVehicleData}
-              setUserCity={setUserCity}
-              setUserState={setUserState}
-              setUserCountry={setUserCountry}
-              setUserEmail={setUserEmail}
-            />
-              {children}
-              <SetValue/> 
-          </div>
+            {children}
+            <SetValue/> 
         </div>
       </div>
     </ProtectedRoute>

@@ -27,7 +27,7 @@ const ForgotPassword = () => {
     user.forgotPassword({
       onSuccess: function (data) {
         console.log(data);
-        toast.success('Code sent to:' + data);
+        toast.success('Code sent to ' + data.CodeDeliveryDetails.Destination);
         setStep('confirm');
       },
       onFailure: function (err) {
@@ -43,7 +43,7 @@ const ForgotPassword = () => {
         router.push('/auth/login/');
       },
       onFailure(err) {
-        console.log('Password reset not confirmed!');
+        console.log(err);
         toast.error('Password reset not confirmed!');
       },
     });
@@ -62,27 +62,29 @@ const ForgotPassword = () => {
                 </h2>
               </div>
               <AuthInput
-                  outerDiv='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'
-                  labelName='Enter your email:'
-                  labelFor='email'
-                  isRequired={true}
-                  inputType='email'
-                  inputAutocomplete='email'
-                  inputClassname='border-me-green-200'
-                  inputValue={username}
-                  inputOnChange={(e) => setUsername(e.target.value)}
-                  children={<button
+                outerDiv='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'
+                labelName='Enter your email:'
+                labelFor='email'
+                isRequired={true}
+                inputType='email'
+                inputAutocomplete='email'
+                inputClassname='border-me-green-200'
+                inputValue={username}
+                inputOnChange={(e) => setUsername(e.target.value)}
+                >
+                  <button
                     type="submit"
                     onClick={initiateForgotPassword}
                     className="flex w-full mt-10 justify-center rounded-md bg-me-green-200 hover:bg-me-green-200/90 text-black py-2.5 text-center text-sm font-semibold shadow-sm">
                     Confirm OTP
-                  </button>}
-                />
+                  </button>
+                </AuthInput>
 
+              
             </>
           )}
           {step === 'confirm' && (
-            <div>
+            <form>
               <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="text-center text-xl font-bold leading-9 tracking-tight text-white-100">
                   Confirm OTP sent on your email to Register
@@ -101,7 +103,7 @@ const ForgotPassword = () => {
                     inputClassname={`border-me-green-200`}
                     inputValue={confirmationCode}
                     inputOnChange={(e) => setConfirmationCode(e.target.value)}
-                    children={null}
+                    // children={null}
                   />
 
                 <AuthInput
@@ -114,7 +116,7 @@ const ForgotPassword = () => {
                     inputClassname={`border-me-green-200`}
                     inputValue={newPassword}
                     inputOnChange={(e) => setNewPassword(e.target.value)}
-                    children={null}
+                    // children={null}
                   />
 
                 <button
@@ -124,7 +126,7 @@ const ForgotPassword = () => {
                   Confirm OTP
                 </button>
               </div>
-            </div>
+            </form>
           )}
         </div>
       </section>
