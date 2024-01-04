@@ -11,6 +11,7 @@ import {
 // import { useRouter } from 'next/router';
 // import useSWR from 'swr'
 import { toast } from 'react-toastify'; 
+import { current } from '@reduxjs/toolkit';
 
 const AppContext = createContext({} as UserContextProps);
 
@@ -241,10 +242,13 @@ const AppProvider = ({ children }:any) => {
   const getTemperatureData = async () => {
     const storedDate = localStorage.getItem('tempCollectedDate');
     const currentDate = new Date()
-    if(storedDate){
-      const savedDate = new Date(storedDate)
-      if(userId && userLocation){
-        if (!savedDate || (savedDate.getDate() <= currentDate.getDate() || savedDate.getMonth()<=savedDate.getMonth())) {
+    if(userId && userLocation){
+      console.log("storedDate:", storedDate);
+      if(storedDate){
+        const savedDate = new Date(storedDate)
+        console.log("savedDate:", savedDate);
+        console.log("currentDate:", currentDate);
+        if (!savedDate || (savedDate.getDate() < currentDate.getDate() || savedDate.getMonth() < currentDate.getMonth())) {
           console.log({
             Message:"Temperature data not found in local storage. Fetching from server.",
             Stored_Date:storedDate,
@@ -290,12 +294,35 @@ const AppProvider = ({ children }:any) => {
           }
         }
       }
-      // else{
-      //   if(userId){
-      //     router.replace(`/dashboard/profile/${userId}`)
-      //     toast.info('Please input your location.')
-      //   }
-      // }
+      else {
+        let config = {
+          method: 'post',
+          url:  `${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/get-temperature`,
+          headers: { 
+            authorization:`Bearer ${IdToken}`
+            // "Content-Type": "application/json"
+          },
+          data :{
+            "userLocation": userState === "" ? userCountry
+            :userCity === "" ? userState + ", " + userCountry
+            :userCity + ", "+ userState +", " + userCountry
+          }
+        };
+        axios.request(config)
+        .then((res)=>{
+          const data = {
+            minTemperature: res.data.minTemperature,
+            maxTemperature: res.data.maxTemperature,
+          }
+          console.log(data)
+          setTemperatureData(data);
+          localStorage.setItem('temperatureData', JSON.stringify(data));
+          localStorage.setItem('tempCollectedDate', currentDate.toISOString());
+        })
+        .catch((err)=>{
+          console.log("Error in getTemperatureData:"+err)
+        })
+      }
     }
   }
 
