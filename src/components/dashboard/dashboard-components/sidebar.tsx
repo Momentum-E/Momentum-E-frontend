@@ -1,7 +1,7 @@
 import React, { useState,useEffect,useContext } from 'react';
 import { SidebarProps } from '@/utils/props';
 import axios from 'axios';
-import { AppContext } from '@/context/UserContext';
+import { AppContext } from '@/context/userContext';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 

@@ -11,7 +11,7 @@ import {
   AuthSelector
 } from '@/components/auth/AuthComponents';
 import { GetUserDataComponentProps } from '@/utils/props';
-import { AppContext } from '@/context/UserContext';
+import { AppContext } from '@/context/userContext';
 
 const GetUserDataComponent = ({
   idToken,

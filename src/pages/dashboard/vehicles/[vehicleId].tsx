@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react'
-import { AppContext } from '@/context/UserContext';
+import { AppContext } from '@/context/userContext';
 import { AccountContext } from '@/context/AccountContext';
 
 import { DashboardLayout } from '@/layouts/';
