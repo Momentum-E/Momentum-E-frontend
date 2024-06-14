@@ -9,6 +9,9 @@ if (!userPoolId || !clientId) {
   );
 }
 
+// console.log("Cognito User Pool ID:", process.env.NEXT_PUBLIC_COGNITO_USERPOOL_ID);
+// console.log("Cognito Client ID:", process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID);
+
 const poolData = {
   UserPoolId: userPoolId as string,
   ClientId: clientId as string,
