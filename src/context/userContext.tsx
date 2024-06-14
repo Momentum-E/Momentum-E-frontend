@@ -80,7 +80,7 @@ const AppProvider = ({ children }:any) => {
   const fetchUserDetails =  async () => {
     try {
       if(user !== null){
-        const response = await axios.get(`http://localhost:5000/auth/users/${user}`,{
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/${user}`,{
           headers: {
             authorization:`Bearer ${IdToken}`
           }
@@ -330,7 +330,7 @@ const AppProvider = ({ children }:any) => {
   const fetchUserImage = async () => {
     console.log('Fetching user image.')
     try{
-      axios.get(`http://localhost:5000/user-data/users/image/${user}`,{
+      axios.get(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/user-data/users/image/${user}`,{
         headers: {
           authorization: `Bearer ${IdToken}`
         }

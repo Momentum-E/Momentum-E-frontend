@@ -114,7 +114,7 @@ const GetUserDataComponent = ({
       name: Name===""?name:Name,
     };
     console.log(newFormData);
-    axios.patch(`http://localhost:5000/auth/users/${userId}`,newFormData,{
+    axios.patch(`${process.env.NEXT_PUBLIC_SERVER_ROUTE}/auth/users/${userId}`,newFormData,{
       headers: {
         authorization: `Bearer ${idToken}`
       }
