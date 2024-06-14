@@ -16,10 +16,10 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
       // "@/components/*": ["components/*"],
       // "@/pages/*": ["pages/*"],
-    },
+    }
     // "plugins": [
     //   {
     //     "name": "next"
@@ -31,7 +31,10 @@
     "**/*.ts",
     "**/*.tsx",
     "src/components/auth/Signup.tsx",
-    "src/context/AccountContext.tsx"
-, "src/pages/dashboard/[content]", "src/pages/dashboard/profile", "src/components/dashboard/vehicle-components/AvgDailyMilesDriven.jsx", "cypress/component/HomePage.cy.jsx"  ],
+    "src/context/AccountContext.tsx",
+    "src/pages/dashboard/[content]",
+    "src/pages/dashboard/profile",
+    "src/components/dashboard/vehicle-components/AvgDailyMilesDriven.jsx"
+  ],
   "exclude": ["node_modules"]
 }
